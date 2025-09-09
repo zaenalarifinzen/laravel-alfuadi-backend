@@ -65,6 +65,7 @@
                                     <table class="table-striped table">
                                         <tr>
 
+                                            <th>Image</th>
                                             <th>Name</th>
                                             <th>Category</th>
                                             <th>Price</th>
@@ -73,15 +74,22 @@
                                         </tr>
                                         @foreach ($products as $product)
                                             <tr>
-                                                <td>{{$product->name}}
+                                                <td>
+                                                    @if ($product->image)
+                                                        <img src="{{ asset('images/products/' . $product->image) }}" alt="" width="100" class="img-thumbnail">
+                                                    @else
+                                                        <span class="badge badge-danger">No Image</span>
+                                                    @endif
+                                                </td>
+                                                <td>{{ $product->name }}
                                                 </td>
                                                 <td>
-                                                    {{$product->category}}
+                                                    {{ $product->category }}
                                                 </td>
                                                 <td>
-                                                    {{$product->price}}
+                                                    {{ $product->price }}
                                                 </td>
-                                                <td>{{$product->stock}}</td>
+                                                <td>{{ $product->stock }}</td>
                                                 <td>
                                                     <div class="d-flex justify-content-left">
                                                         <a href='{{ route('products.edit', $product->id) }}'
@@ -90,8 +98,8 @@
                                                             Edit
                                                         </a>
 
-                                                        <form action="{{ route('products.destroy', $product->id) }}" method="POST"
-                                                            class="ml-2">
+                                                        <form action="{{ route('products.destroy', $product->id) }}"
+                                                            method="POST" class="ml-2">
                                                             <input type="hidden" name="_method" value="DELETE" />
                                                             <input type="hidden" name="_token"
                                                                 value="{{ csrf_token() }}" />

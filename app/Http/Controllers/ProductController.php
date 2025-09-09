@@ -30,9 +30,18 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request)
     {
         $data = $request->all();
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('images/products'), $filename);
+            $data['image'] = $filename;
+        }
         Product::create($data);
+
         return redirect()->route('products.index')->with('success', 'Product succesfully created');
     }
+
 
     public function edit($id)
     {

@@ -24,8 +24,10 @@ class StoreProductRequest extends FormRequest
         return [
             'name' => 'required|max:100|min:3',
             'description' => 'required|max:300|min:3',
-            // 'description' => 'required|in:administrator,operator,user',
+            'category' => 'required|in:food,drink,snack',
+            'stock' => 'required|integer|min:0',
             'price' => 'required|numeric|min:0',
+            'image' => 'required|image|mimes:png,jpg,jpeg',
         ];
     }
 }
