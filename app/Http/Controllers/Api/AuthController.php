@@ -60,27 +60,29 @@ class AuthController extends Controller
 
         if (!$user) {
             return response([
-                'message' => ['email not found'],
-                404
-            ]);
+                'success' => false,
+                'message' => 'Email not found',
+            ], 404);
         }
 
         if (!Hash::check($request->password, $user->password)) {
             return response([
-                'message' => ['wrong password'],
-                404
-            ]);
+                'success' => false,
+                'message' => 'Wrong password',
+            ], 401);
         }
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response([
+            'success' => true,
             'user' => $user,
             'token' => $token
         ], 200);
     }
 
-    public function logout(Request $request) {
+    public function logout(Request $request)
+    {
         $request->user()->currentAccessToken()->delete();
         return response()->json([
             'message' => 'Logout success',
