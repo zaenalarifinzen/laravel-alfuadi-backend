@@ -33,9 +33,9 @@ class ProductController extends Controller
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');
-            // simpan ke storage/app/public/products
-            $path = $file->store('products', 'public');
-            $data['image'] = $path; // contoh: products/1695372632.jpg
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('images/products'), $filename);
+            $data['image'] = $filename;
         }
 
         Product::create($data);

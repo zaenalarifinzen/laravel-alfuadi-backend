@@ -77,7 +77,7 @@
                                             <tr>
                                                 <td>
                                                     @if ($product->image)
-                                                        <img src="{{ asset('storage/' . $product->image) }}" alt="" width="100" class="img-thumbnail">
+                                                        <img src="{{ asset('images/products/' . $product->image) }}" alt="" width="100" class="img-thumbnail">
                                                     @else
                                                         <span class="badge badge-danger">No Image</span>
                                                     @endif
