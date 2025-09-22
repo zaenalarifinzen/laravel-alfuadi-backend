@@ -68,6 +68,7 @@
                                             <th>Image</th>
                                             <th>Name</th>
                                             <th>Category</th>
+                                            <th>Description</th>
                                             <th>Price</th>
                                             <th>Stock</th>
                                             <th>Action</th>
@@ -76,7 +77,7 @@
                                             <tr>
                                                 <td>
                                                     @if ($product->image)
-                                                        <img src="{{ asset('images/products/' . $product->image) }}" alt="" width="100" class="img-thumbnail">
+                                                        <img src="{{ asset('storage/' . $product->image) }}" alt="" width="100" class="img-thumbnail">
                                                     @else
                                                         <span class="badge badge-danger">No Image</span>
                                                     @endif
@@ -85,6 +86,9 @@
                                                 </td>
                                                 <td>
                                                     {{ $product->category }}
+                                                </td>
+                                                <td>
+                                                    {{ $product->description }}
                                                 </td>
                                                 <td>
                                                     {{ $product->price }}

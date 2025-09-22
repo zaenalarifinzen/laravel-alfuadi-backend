@@ -14,7 +14,7 @@ class ProductController extends Controller
         // get data products
         $products = DB::table('products')
             ->when($request->input('name'), function ($query, $name) {
-                return $query->where('name', 'like', '%' . $name . '%');
+                return $query->where('name', 'like', '%'.$name.'%');
             })
             ->orderBy('created_at', 'desc')
             ->paginate(10);
@@ -33,19 +33,20 @@ class ProductController extends Controller
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');
-            $filename = time() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('images/products'), $filename);
-            $data['image'] = $filename;
+            // simpan ke storage/app/public/products
+            $path = $file->store('products', 'public');
+            $data['image'] = $path; // contoh: products/1695372632.jpg
         }
+
         Product::create($data);
 
         return redirect()->route('products.index')->with('success', 'Product succesfully created');
     }
 
-
     public function edit($id)
     {
         $product = Product::findOrFail($id);
+
         return view('pages.products.edit', compact('product'));
     }
 
@@ -54,6 +55,7 @@ class ProductController extends Controller
         $data = $request->all();
         $product = Product::findOrFail($id);
         $product->update($data);
+
         return redirect()->route('products.index')->with('success', 'Product succesfully updated');
     }
 
@@ -61,6 +63,7 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
         $product->delete();
+
         return redirect()->route('products.index')->with('success', 'Product succesfully deleted');
     }
 }
