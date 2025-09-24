@@ -20,6 +20,11 @@
                 <a class="nav-link" href="{{ route('products.index') }}"><i class="fas fa-keyboard"></i> <span>Input I'rob</span></a>
             </li>
 
+            <li class="menu-header">Aplikasi Quran Al-Fuadi</li>
+            <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('products.index') }}"><i class="fa-brands fa-youtube"></i> <span>Video Al-Fuadi</span></a>
+            </li>
+
             <li class="menu-header">Organize</li>
             <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('users.index') }}"><i class="fas fa-user"></i> <span>User</span></a>

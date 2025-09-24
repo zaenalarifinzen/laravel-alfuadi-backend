@@ -56,7 +56,7 @@
                                             <select class="form-control selectric" name="category">
                                                 <option value="food">Makanan</option>
                                                 <option value="drink">Minuman</option>
-                                                <option value="sncak">Snack</option>
+                                                <option value="snack">Snack</option>
                                             </select>
                                         </div>
                                     </div>

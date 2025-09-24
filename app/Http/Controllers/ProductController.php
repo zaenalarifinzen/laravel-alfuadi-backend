@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -33,7 +34,7 @@ class ProductController extends Controller
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');
-            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $filename = time().'.'.$file->getClientOriginalExtension();
             $file->move(public_path('images/products'), $filename);
             $data['image'] = $filename;
         }
@@ -50,13 +51,26 @@ class ProductController extends Controller
         return view('pages.products.edit', compact('product'));
     }
 
-    public function update(Request $request, $id)
+    // update product
+    public function update(UpdateProductRequest $request, $id)
     {
+        // dd($request->all());
         $data = $request->all();
         $product = Product::findOrFail($id);
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = time().'.'.$file->getClientOriginalExtension();
+            $file->move(public_path('images/products'), $filename);
+            $data['image'] = $filename;
+        } else {
+            // keep the old image if no new image is uploaded
+            $data['image'] = $product->image;
+        }
+
         $product->update($data);
 
-        return redirect()->route('products.index')->with('success', 'Product succesfully updated');
+        return redirect()->route('products.index')->with('success', "{$product->name} succesfully updated");
     }
 
     public function destroy($id)
@@ -64,6 +78,6 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         $product->delete();
 
-        return redirect()->route('products.index')->with('success', 'Product succesfully deleted');
+        return redirect()->route('products.index')->with('success', "{$product->name} succesfully deleted");
     }
 }
