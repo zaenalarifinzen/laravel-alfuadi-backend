@@ -43,7 +43,7 @@
                                         <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Name</label>
                                         <div class="col-sm-12 col-md-7">
                                             <input type="text" class="form-control @error('name') is-invalid @enderror"
-                                                name="name">
+                                                name="name" value="{{ old('name') }}">
                                             @error('name')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
@@ -54,16 +54,20 @@
                                             class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Category</label>
                                         <div class="col-sm-12 col-md-7">
                                             <select class="form-control selectric" name="category">
-                                                <option value="food">Makanan</option>
-                                                <option value="drink">Minuman</option>
-                                                <option value="snack">Snack</option>
+                                                <option value="food" {{ old('category') == 'food' ? 'selected' : '' }}>
+                                                    Makanan</option>
+                                                <option value="drink" {{ old('category') == 'drink' ? 'selected' : '' }}>
+                                                    Minuman</option>
+                                                <option value="snack" {{ old('category') == 'snack' ? 'selected' : '' }}>
+                                                    Snack</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="form-group row mb-4">
-                                        <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Description</label>
+                                        <label
+                                            class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Description</label>
                                         <div class="col-sm-12 col-md-7">
-                                            <textarea class="form-control @error('description') is-invalid @enderror" data-height="150" name="description"></textarea>
+                                            <textarea class="form-control @error('description') is-invalid @enderror" data-height="150" name="description">{{ old('description') }}</textarea>
                                             @error('description')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
@@ -76,13 +80,16 @@
                                                 <label for="image-upload" id="image-label">Choose File</label>
                                                 <input type="file" name="image" id="image-upload" />
                                             </div>
+                                            @error('image')
+                                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="form-group row mb-4">
                                         <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Price</label>
                                         <div class="col-sm-12 col-md-7">
                                             <input type="number" class="form-control @error('price') is-invalid @enderror"
-                                                name="price">
+                                                name="price" value="{{ old('price') }}">
                                             @error('price')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
@@ -92,7 +99,7 @@
                                         <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Stock</label>
                                         <div class="col-sm-12 col-md-7">
                                             <input type="number" class="form-control @error('stock') is-invalid @enderror"
-                                                name="stock">
+                                                name="stock" value="{{ old('stock') }}">
                                             @error('stock')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
