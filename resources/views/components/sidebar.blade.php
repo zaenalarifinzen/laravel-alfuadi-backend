@@ -14,6 +14,9 @@
 
             <li class="menu-header">Alfuadi Database</li>
             <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('surahs.index') }}"><i class="fas fa-list-ul"></i> <span>Daftar Surat</span></a>
+            </li>
+            <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('products.index') }}"><i class="fas fa-object-group"></i> <span>Grouping Ayat</span></a>
             </li>
             <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
