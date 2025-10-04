@@ -14,7 +14,7 @@ class WordGroupController extends Controller
     {
         $wordgroups = DB::table('word_groups')
             ->when($request->input('surah_id'), function ($query, $surah_id) {
-                return $query->where('surah_number', '=', $surah_id);
+                return $query->where('surah_id', '=', $surah_id);
             })
             ->orderBy('id', 'asc')
             ->paginate(50);

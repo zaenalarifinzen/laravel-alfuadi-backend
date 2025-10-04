@@ -76,7 +76,7 @@
                                                     {{ $wordgroup->id }}
                                                 </td>
                                                 <td>
-                                                    {{ $wordgroup->surah_number }}
+                                                    {{ $wordgroup->surah_id }}
                                                 </td>
                                                 <td>
                                                     {{ $wordgroup->verse_number }}
