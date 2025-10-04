@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Surahs')
+@section('title', 'Word Groups')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -11,14 +11,14 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Surah</h1>
+                <h1>Word Groups</h1>
                 {{-- <div class="section-header-button">
                     <a href="{{ route('products.create') }}" class="btn btn-primary">Add New</a>
                 </div> --}}
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
                     <div class="breadcrumb-item"><a href="#">Forms</a></div>
-                    <div class="breadcrumb-item">Surahs</div>
+                    <div class="breadcrumb-item">Word Groups</div>
                 </div>
             </div>
             <div class="section-body">
@@ -27,9 +27,9 @@
                         @include('layouts.alert')
                     </div>
                 </div>
-                <h2 class="section-title">Surahs</h2>
+                <h2 class="section-title">Word Groups</h2>
                 <p class="section-lead">
-                    You can manage all Surahs, such as editing, deleting and more.
+                    You can manage all Word Groups, such as editing, deleting and more.
                 </p>
 
 
@@ -37,7 +37,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4>All Surah</h4>
+                                <h4>All Verse</h4>
                             </div>
                             <div class="card-body">
                                 {{-- <div class="float-left">
@@ -49,9 +49,9 @@
                                     </select>
                                 </div> --}}
                                 <div class="float-right">
-                                    <form method="GET" action="{{ route('surahs.index') }}">
+                                    <form method="GET" action="{{ route('wordgroups.index') }}">
                                         <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Search" name="name">
+                                            <input type="text" class="form-control" placeholder="Search" name="surah_id">
                                             <div class="input-group-append">
                                                 <button class="btn btn-primary"><i class="fas fa-search"></i></button>
                                             </div>
@@ -64,31 +64,29 @@
                                 <div class="table-responsive">
                                     <table class="table-striped table">
                                         <tr>
-
                                             <th>Id</th>
-                                            <th>Name</th>
-                                            <th>Name Indonesian</th>
-                                            <th>Name English</th>
-                                            <th>Location</th>
-                                            <th>Verse Count</th>
+                                            <th>Surah Id</th>
+                                            <th>Verse Number</th>
+                                            <th>Order Number</th>
+                                            <th>Text</th>
                                         </tr>
-                                        @foreach ($surahs as $surah)
+                                        @foreach ($wordgroups as $wordgroup)
                                             <tr>
-                                                <td>{{ $surah->id }}
-                                                </td>
-                                                <td>{{ $surah->name }}
+                                                <td>
+                                                    {{ $wordgroup->id }}
                                                 </td>
                                                 <td>
-                                                    {{ $surah->name_id }}
+                                                    {{ $wordgroup->surah_number }}
                                                 </td>
                                                 <td>
-                                                    {{ $surah->name_en }}
+                                                    {{ $wordgroup->verse_number }}
                                                 </td>
                                                 <td>
-                                                    {{ $surah->location }}
+                                                    {{ $wordgroup->order_number }}
                                                 </td>
-                                                <td>{{ $surah->verse_count }}</td>
-
+                                                <td>
+                                                    {{ $wordgroup->text }}
+                                                </td>
                                             </tr>
                                         @endforeach
 
@@ -96,7 +94,7 @@
                                     </table>
                                 </div>
                                 <div class="float-right">
-                                    {{ $surahs->withQueryString()->links() }}
+                                    {{ $wordgroups->withQueryString()->links() }}
                                 </div>
                             </div>
                         </div>

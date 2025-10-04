@@ -4,6 +4,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SurahController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VerseController;
+use App\Http\Controllers\WordGroupController;
 
 Route::get('/', function () {
     return view('pages.auth.login');
@@ -17,4 +19,6 @@ Route::middleware(['auth'])->group(function(){
     Route::resource('users', UserController::class);
     Route::resource('products', ProductController::class);
     Route::resource('surahs', SurahController::class);
+    Route::resource('verses', VerseController::class);
+    Route::resource('wordgroups', WordGroupController::class);
 });

@@ -14,18 +14,34 @@
 
             <li class="menu-header">Alfuadi Database</li>
             <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('surahs.index') }}"><i class="fas fa-list-ul"></i> <span>Daftar Surat</span></a>
+                <a class="nav-link" href="{{ route('surahs.index') }}"><i class="fas fa-list-ul"></i>
+                    <span>Surat</span></a>
             </li>
             <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('products.index') }}"><i class="fas fa-object-group"></i> <span>Grouping Ayat</span></a>
+                <a class="nav-link" href="{{ route('verses.index') }}"><i class="fas fa-list-ul"></i>
+                    <span>Ayat</span></a>
             </li>
             <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('products.index') }}"><i class="fas fa-keyboard"></i> <span>Input I'rob</span></a>
+                <a class="nav-link" href="{{ route('wordgroups.index') }}"><i class="fas fa-list-ul"></i> <span>Grup
+                        Kalimat</span></a>
+            </li>
+            <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
+                <a class="nav-link" href="#"><i class="fas fa-list-ul"></i> <span>Kalimat</span></a>
+            </li>
+            <li class="menu-header">Tools</li>
+            <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('products.index') }}"><i class="fas fa-object-group"></i>
+                    <span>Grouping Ayat</span></a>
+            </li>
+            <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('products.index') }}"><i class="fas fa-keyboard"></i> <span>Input
+                        I'rob</span></a>
             </li>
 
             <li class="menu-header">Aplikasi Quran Al-Fuadi</li>
             <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('products.index') }}"><i class="fa-brands fa-youtube"></i> <span>Video Al-Fuadi</span></a>
+                <a class="nav-link" href="{{ route('products.index') }}"><i class="fa-brands fa-youtube"></i>
+                    <span>Video Al-Fuadi</span></a>
             </li>
 
             <li class="menu-header">Organize</li>
@@ -33,7 +49,8 @@
                 <a class="nav-link" href="{{ route('users.index') }}"><i class="fas fa-user"></i> <span>User</span></a>
             </li>
             <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('products.index') }}"><i class="fas fa-utensils"></i> <span>Products</span></a>
+                <a class="nav-link" href="{{ route('products.index') }}"><i class="fas fa-utensils"></i>
+                    <span>Products</span></a>
             </li>
     </aside>
 </div>

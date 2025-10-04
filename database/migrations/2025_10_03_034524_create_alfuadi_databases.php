@@ -25,13 +25,15 @@ return new class extends Migration
         Schema::create('verses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('surah_id')->constrained('surahs')->onDelete('cascade');
+            $table->integer('number');
             $table->text('text');
+            $table->text('translation_indo')->nullable();
         });
 
         // Word Groups Table
         Schema::create('word_groups', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('surah_number')->constrained('surahs')->onDelete('cascade');
+            $table->foreignId('surah_id')->constrained('surahs')->onDelete('cascade');
             $table->foreignId('verse_number')->constrained('verses')->onDelete('cascade');
             $table->integer('order_number')->nullable();
             $table->text('text');
