@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\WordGroupController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -13,3 +14,7 @@ Route::post('logout', [\App\Http\Controllers\Api\AuthController::class, 'logout'
 
 // api resource product
 Route::apiResource('products', \App\Http\Controllers\Api\ProductController::class)->middleware('auth:sanctum');
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('word_groups/merge', [WordGroupController::class, 'merge']);
+    Route::apiResource('word_groups', WordGroupController::class);
+});

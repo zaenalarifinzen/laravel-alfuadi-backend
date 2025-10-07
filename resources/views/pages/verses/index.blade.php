@@ -64,6 +64,7 @@
                                 <div class="table-responsive">
                                     <table class="table-striped table">
                                         <tr>
+                                            <th>Id</th>
                                             <th>Surah Id</th>
                                             <th>Verse Number</th>
                                             <th>Text</th>
@@ -71,9 +72,14 @@
                                         </tr>
                                         @foreach ($verses as $verse)
                                             <tr>
-                                                <td>{{ $verse->surah_id }}
+                                                <td>
+                                                    {{ $verse->id }}
                                                 </td>
-                                                <td>{{ $verse->number }}
+                                                <td>
+                                                    {{ $verse->surah_id }}
+                                                </td>
+                                                <td>
+                                                    {{ $verse->number }}
                                                 </td>
                                                 <td>
                                                     {{ $verse->text }}

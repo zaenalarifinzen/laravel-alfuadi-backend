@@ -67,6 +67,7 @@
                                             <th>Id</th>
                                             <th>Surah Id</th>
                                             <th>Verse Number</th>
+                                            <th>Verse Id</th>
                                             <th>Order Number</th>
                                             <th>Text</th>
                                         </tr>
@@ -80,6 +81,9 @@
                                                 </td>
                                                 <td>
                                                     {{ $wordgroup->verse_number }}
+                                                </td>
+                                                <td>
+                                                    {{ $wordgroup->verse_id }}
                                                 </td>
                                                 <td>
                                                     {{ $wordgroup->order_number }}

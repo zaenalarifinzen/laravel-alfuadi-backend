@@ -9,11 +9,15 @@ class WordGroups extends Model
 {
     use HasFactory;
 
+    protected $table = 'word_groups';
+
     protected $fillable = [
         'surah_id',
         'verse_number',
         'order_number',
         'text',
     ];
+
+    public $timestamps = false;
 
 }
