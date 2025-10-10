@@ -228,7 +228,7 @@
             const mergeForm = document.getElementById('merge-form');
             const wordgroupList = document.getElementById('wordgroup-list');
 
-            // 🔁 Selalu ambil checkbox terbaru dari DOM
+            // Ambil checkbox terbaru dari DOM
             function getCheckboxes() {
                 return document.querySelectorAll('.row-checkbox');
             }
@@ -290,8 +290,8 @@
                 const selected = surahSelect.options[surahSelect.selectedIndex];
                 const verseCount = selected ? selected.getAttribute('data-verse-count') : 0;
                 const currentVerse = "{{ request('verse_number') }}";
-                verseSelect.innerHTML = '<option value="">Pilih Ayat</option>';
-                for (let i = 1; i <= verseCount; i++) {
+                verseSelect.innerHTML = '<option value="1">1</option>';
+                for (let i = 2; i <= verseCount; i++) {
                     verseSelect.innerHTML +=
                         `<option value="${i}" ${currentVerse == i ? 'selected' : ''}>${i}</option>`;
                 }
