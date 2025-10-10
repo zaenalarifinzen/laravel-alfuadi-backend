@@ -30,7 +30,7 @@
             </li>
             <li class="menu-header">Tools</li>
             <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('products.index') }}"><i class="fas fa-object-group"></i>
+                <a class="nav-link" href="{{ route('wordgroups.indexByVerse') }}"><i class="fas fa-object-group"></i>
                     <span>Grouping Ayat</span></a>
             </li>
             <li class="{{ Request::is('blank-page') ? 'active' : '' }}">

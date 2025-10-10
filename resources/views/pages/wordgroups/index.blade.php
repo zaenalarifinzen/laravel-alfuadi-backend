@@ -40,14 +40,20 @@
                                 <h4>All Verse</h4>
                             </div>
                             <div class="card-body">
-                                {{-- <div class="float-left">
-                                    <select class="form-control selectric">
-                                        <option>Action For Selected</option>
-                                        <option>Move to Draft</option>
-                                        <option>Move to Pending</option>
-                                        <option>Delete Pemanently</option>
-                                    </select>
-                                </div> --}}
+                                <div class="float-left">
+                                    {{-- <select class="form-control selectric">
+                                        <option>Group</option>
+                                        <option>Delete</option>
+                                    </select> --}}
+                                    <div class="mb-3">
+                                        <form id="merge-form" action="{{ route('word_groups.merge') }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="ids" id="selected-ids">
+                                            <button type="submit" class="btn btn-primary btn-lg disabled"
+                                                id="btn-merge">Merge</button>
+                                        </form>
+                                    </div>
+                                </div>
                                 <div class="float-right">
                                     <form method="GET" action="{{ route('wordgroups.index') }}">
                                         <div class="input-group">
@@ -62,44 +68,58 @@
                                 <div class="clearfix mb-3"></div>
 
                                 <div class="table-responsive">
-                                    <table class="table-striped table">
-                                        <tr>
-                                            <th>Id</th>
-                                            <th>Surah Id</th>
-                                            <th>Verse Number</th>
-                                            <th>Verse Id</th>
-                                            <th>Order Number</th>
-                                            <th>Text</th>
-                                        </tr>
-                                        @foreach ($wordgroups as $wordgroup)
+                                    <table class="table-hover table">
+                                        <thead>
                                             <tr>
-                                                <td>
-                                                    {{ $wordgroup->id }}
-                                                </td>
-                                                <td>
-                                                    {{ $wordgroup->surah_id }}
-                                                </td>
-                                                <td>
-                                                    {{ $wordgroup->verse_number }}
-                                                </td>
-                                                <td>
-                                                    {{ $wordgroup->verse_id }}
-                                                </td>
-                                                <td>
-                                                    {{ $wordgroup->order_number }}
-                                                </td>
-                                                <td>
-                                                    {{ $wordgroup->text }}
-                                                </td>
+                                                <th class="pt-2 text-center">
+                                                    <div class="custom-checkbox custom-checkbox-table custom-control">
+                                                        <input type="checkbox" data-checkboxes="mygroup"
+                                                            data-checkbox-role="dad" class="custom-control-input"
+                                                            id="checkbox-all">
+                                                        <label for="checkbox-all"
+                                                            class="custom-control-label">&nbsp;</label>
+                                                    </div>
+                                                </th>
+                                                <th>Id</th>
+                                                <th>Surah Id</th>
+                                                <th>Verse Number</th>
+                                                <th>Verse Id</th>
+                                                <th>Order Number</th>
+                                                <th>Text</th>
                                             </tr>
-                                        @endforeach
+                                        </thead>
 
-
+                                        <tbody>
+                                            @foreach ($wordgroups as $wordgroup)
+                                                <tr>
+                                                    <td class="text-center">
+                                                        <div class="custom-checkbox custom-control">
+                                                            <input type="checkbox" data-checkboxes="mygroup"
+                                                                class="custom-control-input row-checkbox"
+                                                                id="checkbox-{{ $wordgroup->id }}"
+                                                                value="{{ $wordgroup->id }}">
+                                                            <label for="checkbox-{{ $wordgroup->id }}"
+                                                                class="custom-control-label">&nbsp;</label>
+                                                        </div>
+                                                    </td>
+                                                    <td>{{ $wordgroup->id }}</td>
+                                                    <td>{{ $wordgroup->surah_id }}</td>
+                                                    <td>{{ $wordgroup->verse_number }}</td>
+                                                    <td>{{ $wordgroup->verse_id }}</td>
+                                                    <td>{{ $wordgroup->order_number }}</td>
+                                                    <td dir="rtl" style="font-family: 'Scheherazade New', serif;">
+                                                        {{ $wordgroup->text }}
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
                                     </table>
                                 </div>
+
                                 <div class="float-right">
                                     {{ $wordgroups->withQueryString()->links() }}
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -115,4 +135,52 @@
 
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/features-posts.js') }}"></script>
+    <script src="{{ asset('js/page/modules-toastr.js') }}"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mergeButton = document.getElementById('btn-merge');
+            const checkboxes = document.querySelectorAll('.row-checkbox');
+            const idsInput = document.getElementById('selected-ids');
+            const mergeForm = document.getElementById('merge-form');
+
+            function updateMergeButton() {
+                const checkedCount = Array.from(checkboxes).filter(x => x.checked).length;
+
+                if (checkedCount >= 2) {
+                    mergeButton.classList.remove('disabled');
+                } else {
+                    mergeButton.classList.add('disabled');
+                }
+            }
+
+            checkboxes.forEach(cb => {
+                cb.addEventListener('change', updateMergeButton);
+            });
+
+            mergeForm.addEventListener('submit', (e) => {
+                const selectedIds = Array.from(checkboxes)
+                    .filter(x => x.checked)
+                    .map(x => x.value);
+
+                if (mergeButton.classList.contains('disabled')) {
+                    e.preventDefault();
+                    return;
+                }
+
+                if (selectedIds.length < 2) {
+                    e.preventDefault();
+                    alert('Pilih minimal 2 baris untuk merge');
+                    return
+                }
+
+                if (!confirm('Yakin ingin merge baris ini?')) {
+                    e.preventDefault();
+                    return
+                }
+
+                idsInput.value = selectedIds.join(',');
+            });
+        });
+    </script>
 @endpush

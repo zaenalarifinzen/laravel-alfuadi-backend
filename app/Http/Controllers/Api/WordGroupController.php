@@ -65,21 +65,21 @@ class WordGroupController extends Controller
         $ids = $request->input('ids');
 
         // 🔹 Validasi awal
-        if (!is_array($ids) || count($ids) < 2) {
+        if (! is_array($ids) || count($ids) < 2) {
             return response()->json(['message' => 'Minimal 2 ID diperlukan untuk merge'], 400);
         }
 
         // 🔹 Urutkan dulu ID-nya
         sort($ids);
 
-        // 🔹 Cek apakah urut tanpa lompat
-        for ($i = 1; $i < count($ids); $i++) {
-            if ($ids[$i] !== $ids[$i - 1] + 1) {
-                return response()->json([
-                    'message' => 'ID harus berurutan tanpa lompat (contoh: [1,2,3], bukan [1,3,5])'
-                ], 422);
-            }
-        }
+        // // 🔹 Cek apakah urut tanpa lompat
+        // for ($i = 1; $i < count($ids); $i++) {
+        //     if ($ids[$i] !== $ids[$i - 1] + 1) {
+        //         return response()->json([
+        //             'message' => 'ID harus berurutan tanpa lompat (contoh: [1,2,3], bukan [1,3,5])'
+        //         ], 422);
+        //     }
+        // }
 
         // 🔹 Ambil data word group berdasarkan ID
         $wordGroups = WordGroups::whereIn('id', $ids)
@@ -95,17 +95,20 @@ class WordGroupController extends Controller
         $first = $wordGroups->first();
 
         // 🔹 Validasi: semua harus dalam surah & verse yang sama
-        $sameSurah = $wordGroups->every(fn($wg) => $wg->surah_id === $first->surah_id);
-        $sameVerse = $wordGroups->every(fn($wg) => $wg->verse_number === $first->verse_number);
+        $sameSurah = $wordGroups->every(fn ($wg) => $wg->surah_id === $first->surah_id);
+        $sameVerse = $wordGroups->every(fn ($wg) => $wg->verse_number === $first->verse_number);
 
-        if (!$sameSurah || !$sameVerse) {
+        if (! $sameSurah || ! $sameVerse) {
             return response()->json([
-                'message' => 'Semua baris harus memiliki surah_id dan verse_id yang sama'
+                'message' => 'Semua baris harus memiliki surah_id dan verse_id yang sama',
             ], 422);
         }
 
         // 🔹 Gabungkan teks berdasarkan urutan ID
-        $mergedText = $wordGroups->pluck('text')->implode(' ');
+        $mergedText = $wordGroups
+            ->pluck('text')
+            ->map(fn ($t) => trim(str_replace(["\r", "\n"], '', $t)))
+            ->implode(' ');
 
         // 🔹 Jalankan transaksi database
         DB::transaction(function () use ($first, $ids, $mergedText) {
