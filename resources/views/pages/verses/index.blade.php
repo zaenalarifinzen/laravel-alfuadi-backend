@@ -81,7 +81,7 @@
                                                 <td>
                                                     {{ $verse->number }}
                                                 </td>
-                                                <td>
+                                                <td dir="rtl">
                                                     {{ $verse->text }}
                                                 </td>
                                                 <td>

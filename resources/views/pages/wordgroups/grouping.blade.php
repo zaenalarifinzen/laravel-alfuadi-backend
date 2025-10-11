@@ -41,11 +41,11 @@
 
         /* Pastikan tombol kanan tidak terpotong */
         /* .ltr-container .input-group-append .btn {
-            border-top-left-radius: 0 !important;
-            border-bottom-left-radius: 0 !important;
-            border-top-right-radius: 0.35rem !important;
-            border-bottom-right-radius: 0.35rem !important;
-        } */
+                                                        border-top-left-radius: 0 !important;
+                                                        border-bottom-left-radius: 0 !important;
+                                                        border-top-right-radius: 0.35rem !important;
+                                                        border-bottom-right-radius: 0.35rem !important;
+                                                    } */
 
         /* Agar input-group tidak ada overflow tersembunyi */
         .ltr-container .input-group {
@@ -73,8 +73,8 @@
 
         /* Hover */
         /* .selectgroup.selectgroup-pills .selectgroup-item:hover .selectgroup-button {
-                                                                                                                    background-color: #95a0ee;
-                                                                                                                } */
+                                                                                                                                                                background-color: #95a0ee;
+                                                                                                                                                            } */
 
         /* Saat terpilih */
         .selectgroup-input:checked+.selectgroup-button {
@@ -180,6 +180,7 @@
                                 </div>
 
                                 <div class="clearfix mb-3"></div>
+                                <small id="merge-error" class="text-danger d-block mt-2" style="display: none;"></small>
 
                             </div>
                             <div class="card-footer">
@@ -211,10 +212,11 @@
 @push('scripts')
     <!-- JS Libraies -->
     <script src="{{ asset('library/selectric/public/jquery.selectric.min.js') }}"></script>
+    <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
 
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/features-posts.js') }}"></script>
-    <script src="{{ asset('js/page/modules-toastr.js') }}"></script>
+    {{-- <script src="{{ asset('js/page/modules-sweetalert.js') }}"></script> --}}
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -222,6 +224,7 @@
             const btnUnselect = document.getElementById('btn-unselect');
             const idsInput = document.getElementById('selected-ids');
             const mergeForm = document.getElementById('merge-form');
+            const errorMsg = document.getElementById('merge-error');
             const wordgroupList = document.getElementById('wordgroup-list');
 
             // Ambil checkbox terbaru dari DOM
@@ -233,6 +236,10 @@
                 const checkboxes = document.querySelectorAll('.row-checkbox');
                 checkboxes.forEach(cb => cb.checked = false); // hapus semua centang
                 updateMergeButton();
+
+                // Reset pesan error
+                errorMsg.style.display = 'none';
+                errorMsg.textContent = '';
             });
 
             function updateMergeButton() {
@@ -246,7 +253,7 @@
                 }
             }
 
-            // 🔁 Pasang event listener ke semua checkbox (baik awal maupun setelah fetch)
+            // Pasang event listener ke semua checkbox (baik awal maupun setelah fetch)
             function bindCheckboxEvents() {
                 const checkboxes = getCheckboxes();
                 checkboxes.forEach(cb => cb.addEventListener('change', updateMergeButton));
@@ -255,10 +262,22 @@
             bindCheckboxEvents(); // pertama kali saat halaman load
 
             mergeForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+
                 const checkboxes = getCheckboxes();
+                const selectedCheckboxes = Array.from(checkboxes).filter(cb => cb.checked);
                 const selectedIds = Array.from(checkboxes)
                     .filter(x => x.checked)
                     .map(x => x.value);
+                const selectedTexts = selectedCheckboxes.map(cb => {
+                    const btn = cb.closest('.selectgroup-item')?.querySelector(
+                        '.selectgroup-button');
+                    return btn ? btn.textContent.trim() : '';
+                });
+
+                // Reset pesan error
+                errorMsg.style.display = 'none';
+                errorMsg.textContent = '';
 
                 if (mergeButton.classList.contains('disabled')) {
                     e.preventDefault();
@@ -271,13 +290,65 @@
                     return;
                 }
 
-                if (!confirm('Yakin ingin merge baris ini?')) {
+                // CEK URUTAN — tidak boleh lompat
+                const selectedIndexes = Array.from(checkboxes)
+                    .map((cb, i) => cb.checked ? i : null)
+                    .filter(i => i !== null);
+
+                const isSequential = selectedIndexes.every((val, i, arr) =>
+                    i === 0 || val - arr[i - 1] === 1
+                );
+
+                if (!isSequential) {
                     e.preventDefault();
+                    showError('Kalimat harus berurutan dan tidak boleh lompat');
                     return;
                 }
 
-                idsInput.value = selectedIds.join(',');
+                // if (!confirm('Yakin ingin merge baris ini?')) {
+                //     e.preventDefault();
+                //     return;
+                // }
+
+                // idsInput.value = selectedIds.join(',');
+
+                // buat preview (batasi panjang agar popup tidak kebanyakan teks)
+                const previewTextFull = selectedTexts.join(' ');
+                const previewText = previewTextFull.length > 200 ? previewTextFull.slice(0, 200) + '…' :
+                    previewTextFull;
+
+                swal({
+                    title: previewText,
+                    text: 'Yakin ingin menggabungkan?',
+                    // icon: 'info',
+                    buttons: {
+                        cancel: {
+                            text: 'Batal',
+                            visible: true,
+                            className: 'btn btn-danger'
+                        },
+                        confirm: {
+                            text: 'Gabungkan',
+                            visible: true,
+                            className: 'btn btn-success'
+                        }
+                    },
+                    dangerMode: true,
+                }).then((willMerge) => {
+                    if (willMerge) {
+                        idsInput.value = selectedIds.join(',');
+                        mergeForm.submit();
+                    }
+                });
             });
+
+            function showError(message) {
+                errorMsg.textContent = message;
+                errorMsg.style.display = 'block';
+                setTimeout(() => {
+                    errorMsg.style.display = 'none';
+                }, 3000);
+            }
 
 
             /** ------------------------------

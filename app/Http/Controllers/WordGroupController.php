@@ -95,15 +95,6 @@ class WordGroupController extends Controller
         // Sorting ID
         sort($ids);
 
-        // // Cek apakah urut tanpa lompat
-        // for ($i = 1; $i < count($ids); $i++) {
-        //     if ($ids[$i] !== $ids[$i - 1] + 1) {
-        //         return response()->json([
-        //             'message' => 'ID harus berurutan tanpa lompat (contoh: [1,2,3], bukan [1,3,5])'
-        //         ], 422);
-        //     }
-        // }
-
         // Get word group by ID
         $wordGroups = WordGroups::whereIn('id', $ids)
             ->orderBy('id')
