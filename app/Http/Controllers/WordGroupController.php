@@ -31,16 +31,12 @@ class WordGroupController extends Controller
         $surahs = DB::table('surahs')->select('id', 'name', 'verse_count')->get();
 
         $wordgroups = DB::table('word_groups')
-            ->when($request->input('surah_id'), function ($query, $surah_id) {
-                return $query->where('surah_id', '=', $surah_id);
-            })
-            ->when($request->input('verse_number'), function($query, $verse_number) {
-                return $query->where('verse_number', '=', $verse_number);
-            })
+            ->where('surah_id', '=', $request->input('surah_id', 1)) // default 1
+            ->where('verse_number', '=', $request->input('verse_number', 1)) // default 1         
             ->orderBy('id', 'asc')
-            ->paginate(50);
+            ->paginate(100);
 
-        return view('pages.wordgroups.merge', compact('surahs', 'wordgroups'));
+        return view('pages.wordgroups.grouping', compact('surahs', 'wordgroups'));
     }
 
     /**

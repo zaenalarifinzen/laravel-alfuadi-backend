@@ -45,14 +45,14 @@
                                         <option>Group</option>
                                         <option>Delete</option>
                                     </select> --}}
-                                    <div class="mb-3">
+                                    {{-- <div class="mb-3">
                                         <form id="merge-form" action="{{ route('word_groups.merge') }}" method="POST">
                                             @csrf
                                             <input type="hidden" name="ids" id="selected-ids">
                                             <button type="submit" class="btn btn-primary btn-lg disabled"
                                                 id="btn-merge">Merge</button>
                                         </form>
-                                    </div>
+                                    </div> --}}
                                 </div>
                                 <div class="float-right">
                                     <form method="GET" action="{{ route('wordgroups.index') }}">
@@ -71,7 +71,7 @@
                                     <table class="table-hover table">
                                         <thead>
                                             <tr>
-                                                <th class="pt-2 text-center">
+                                                {{-- <th class="pt-2 text-center">
                                                     <div class="custom-checkbox custom-checkbox-table custom-control">
                                                         <input type="checkbox" data-checkboxes="mygroup"
                                                             data-checkbox-role="dad" class="custom-control-input"
@@ -79,7 +79,7 @@
                                                         <label for="checkbox-all"
                                                             class="custom-control-label">&nbsp;</label>
                                                     </div>
-                                                </th>
+                                                </th> --}}
                                                 <th>Id</th>
                                                 <th>Surah Id</th>
                                                 <th>Verse Number</th>
@@ -92,7 +92,7 @@
                                         <tbody>
                                             @foreach ($wordgroups as $wordgroup)
                                                 <tr>
-                                                    <td class="text-center">
+                                                    {{-- <td class="text-center">
                                                         <div class="custom-checkbox custom-control">
                                                             <input type="checkbox" data-checkboxes="mygroup"
                                                                 class="custom-control-input row-checkbox"
@@ -101,7 +101,7 @@
                                                             <label for="checkbox-{{ $wordgroup->id }}"
                                                                 class="custom-control-label">&nbsp;</label>
                                                         </div>
-                                                    </td>
+                                                    </td> --}}
                                                     <td>{{ $wordgroup->id }}</td>
                                                     <td>{{ $wordgroup->surah_id }}</td>
                                                     <td>{{ $wordgroup->verse_number }}</td>

@@ -40,12 +40,12 @@
         }
 
         /* Pastikan tombol kanan tidak terpotong */
-        .ltr-container .input-group-append .btn {
+        /* .ltr-container .input-group-append .btn {
             border-top-left-radius: 0 !important;
             border-bottom-left-radius: 0 !important;
             border-top-right-radius: 0.35rem !important;
             border-bottom-right-radius: 0.35rem !important;
-        }
+        } */
 
         /* Agar input-group tidak ada overflow tersembunyi */
         .ltr-container .input-group {
@@ -73,8 +73,8 @@
 
         /* Hover */
         /* .selectgroup.selectgroup-pills .selectgroup-item:hover .selectgroup-button {
-                                                            background-color: #95a0ee;
-                                                        } */
+                                                                                                                    background-color: #95a0ee;
+                                                                                                                } */
 
         /* Saat terpilih */
         .selectgroup-input:checked+.selectgroup-button {
@@ -88,7 +88,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 0.4rem;
-            justify-content: flex-end;
+            justify-content: flex-start;
         }
 
         /* Batasi efek RTL hanya untuk teks Arab */
@@ -123,15 +123,33 @@
 @section('main')
     <div class="main-content">
         <section class="section">
-            <div class="section-header">
+            <div class="section-header d-flex justify-content-between align-items-center">
                 <h1>Grup Kalimat</h1>
-                {{-- <div class="section-header-button">
-                    <a href="{{ route('products.create') }}" class="btn btn-primary">Add New</a>
-                </div> --}}
-                <div class="section-header-breadcrumb">
-                    <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-                    <div class="breadcrumb-item"><a href="#">Forms</a></div>
-                    <div class="breadcrumb-item">Grouping Kalimat</div>
+
+                <div class="ltr-container">
+                    <form method="GET" action="{{ route('wordgroups.indexByVerse') }}" id="filter-form" class="mb-0">
+                        <div class="input-group">
+                            <select class="form-control select2" name="surah_id" id="surah-select"
+                                style="flex: 5; border-top-left-radius: 0.5rem; border-bottom-left-radius: 0.5rem;"
+                                required>
+                                @foreach ($surahs as $surah)
+                                    <option value="{{ $surah->id }}" data-verse-count="{{ $surah->verse_count }}"
+                                        {{ request('surah_id') == $surah->id ? 'selected' : '' }}>
+                                        {{ $surah->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            <select class="form-control select2" name="verse_number" id="verse-select" style="flex: 2;"
+                                required>
+                                <option value="">Pilih Ayat</option>
+                            </select>
+
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="submit">Cari</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
             <div class="section-body">
@@ -140,47 +158,17 @@
                         @include('layouts.alert')
                     </div>
                 </div>
-                <h2 class="section-title">Word Groups</h2>
-                <p class="section-lead">
-                    You can manage all Word Groups, such as editing, deleting and more.
-                </p>
-
 
                 <div class="row mt-4">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h4 id="result-verse" class="mb-0">Ayat Terpilih</h4>
-
-                                <div class="ltr-container">
-                                    <form method="GET" action="{{ route('wordgroups.indexByVerse') }}" id="filter-form"
-                                        class="mb-0">
-                                        <div class="input-group">
-                                            <select class="form-control" name="surah_id" id="surah-select" required>
-                                                @foreach ($surahs as $surah)
-                                                    <option value="{{ $surah->id }}"
-                                                        data-verse-count="{{ $surah->verse_count }}"
-                                                        {{ request('surah_id') == $surah->id ? 'selected' : '' }}>
-                                                        {{ $surah->name }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-
-                                            <select class="form-control" name="verse_number" id="verse-select" required>
-                                                <option value="">Pilih Ayat</option>
-                                            </select>
-
-                                            <div class="input-group-append">
-                                                <button class="btn btn-primary" type="submit">Cari</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
                             </div>
 
 
                             <div class="card-body">
-                                <div class="selectgroup selectgroup-pills arabic-container" dir="rtl"
+                                <div class="selectgroup selectgroup-pills arabic-container " dir="rtl"
                                     id="wordgroup-list">
                                     @foreach ($wordgroups as $wg)
                                         <label class="selectgroup-item arabic-pill">
@@ -193,19 +181,26 @@
 
                                 <div class="clearfix mb-3"></div>
 
-                                <div class="float-left">
-                                    <div class="mb-3">
-                                        <form id="merge-form" action="{{ route('word_groups.merge') }}" method="POST">
-                                            @csrf
-                                            <input type="hidden" name="ids" id="selected-ids">
-                                            <button type="submit" class="btn btn-primary btn-lg disabled"
-                                                id="btn-merge">Merge</button>
-                                        </form>
-                                    </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="d-flex gap-2 mb-3">
+                                    <button type="button" id="btn-unselect" class="btn btn-secondary mr-2"><i
+                                            class="fas fa-xmark"></i> Bersihkan
+                                        Pilihan</button>
+                                    <form id="merge-form" action="{{ route('word_groups.merge') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="ids" id="selected-ids">
+                                        <button type="submit" class="btn btn-icon icon-left btn-warning btn-lg disabled"
+                                            id="btn-merge">Gabungkan</button>
+                                    </form>
                                 </div>
-
                             </div>
                         </div>
+                    </div>
+
+                    <div class="col-12 d-flex justify-content-between align-items-end">
+                        <button type="submit" class="btn btn-primary btn-lg" id="btn-prev-verse">Sebelumnya</button>
+                        <button type="submit" class="btn btn-primary btn-lg" id="btn-next-verse">Selanjutnya</button>
                     </div>
                 </div>
             </div>
@@ -224,6 +219,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const mergeButton = document.getElementById('btn-merge');
+            const btnUnselect = document.getElementById('btn-unselect');
             const idsInput = document.getElementById('selected-ids');
             const mergeForm = document.getElementById('merge-form');
             const wordgroupList = document.getElementById('wordgroup-list');
@@ -232,6 +228,12 @@
             function getCheckboxes() {
                 return document.querySelectorAll('.row-checkbox');
             }
+
+            btnUnselect.addEventListener('click', function() {
+                const checkboxes = document.querySelectorAll('.row-checkbox');
+                checkboxes.forEach(cb => cb.checked = false); // hapus semua centang
+                updateMergeButton();
+            });
 
             function updateMergeButton() {
                 const checkboxes = getCheckboxes();
@@ -285,6 +287,48 @@
             const verseSelect = document.getElementById('verse-select');
             const resultVerse = document.getElementById('result-verse');
             const filterForm = document.getElementById('filter-form');
+            const surahId = surahSelect.value;
+            const verseNum = verseSelect.value;
+
+            function fetchVerse(surahId, verseNum) {
+                if (!surahId || !verseNum) {
+                    alert('Pilih Surah dan Ayat terlebih dahulu!');
+                    return;
+                }
+
+                fetch(
+                        `{{ route('wordgroups.indexByVerse') }}?surah_id=${surahId}&verse_number=${verseNum}`
+                    )
+                    .then(res => res.text())
+                    .then(html => {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        const newList = doc.querySelector('#wordgroup-list');
+
+                        if (newList) {
+                            wordgroupList.innerHTML = newList.innerHTML;
+                        } else {
+                            wordgroupList.innerHTML =
+                                '<p class="text-muted">Tidak ada data untuk ayat ini.</p>';
+                        }
+
+                        // Update URL di address bar tanpa reload
+                        const params = new URLSearchParams({
+                            surah_id: surahId,
+                            verse_number: verseNum
+                        });
+                        history.pushState({}, '', `?${params.toString()}`);
+
+                        updateResultText();
+                        bindCheckboxEvents(); // Re-bind event checkbox baru setelah data dimuat
+                        updateMergeButton();
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        wordgroupList.innerHTML =
+                            '<p class="text-danger">Terjadi kesalahan mengambil data.</p>';
+                    });
+            }
 
             function updateVerseOptions() {
                 const selected = surahSelect.options[surahSelect.selectedIndex];
@@ -309,63 +353,45 @@
                 }
             }
 
+
             // Tangkap submit form (Cari)
             filterForm.addEventListener('submit', function(e) {
                 e.preventDefault();
 
-                const surahId = surahSelect.value;
-                const verseNum = verseSelect.value;
-
-                if (!surahId || !verseNum) {
-                    alert('Pilih Surah dan Ayat terlebih dahulu!');
-                    return;
-                }
-
-                updateResultText();
-
-                fetch(
-                        `{{ route('wordgroups.indexByVerse') }}?surah_id=${surahId}&verse_number=${verseNum}`)
-                    .then(res => res.text())
-                    .then(html => {
-                        const parser = new DOMParser();
-                        const doc = parser.parseFromString(html, 'text/html');
-                        const newList = doc.querySelector('#wordgroup-list');
-
-                        if (newList) {
-                            wordgroupList.innerHTML = newList.innerHTML;
-                        } else {
-                            wordgroupList.innerHTML =
-                                '<p class="text-muted">Tidak ada data untuk ayat ini.</p>';
-                        }
-
-                        // ✅ Update URL di address bar tanpa reload
-                        const params = new URLSearchParams({
-                            surah_id: surahId,
-                            verse_number: verseNum
-                        });
-                        history.pushState({}, '', `?${params.toString()}`);
-
-                        // ✅ Re-bind event checkbox baru setelah data dimuat
-                        bindCheckboxEvents();
-                        updateMergeButton();
-                    })
-                    .catch(err => {
-                        console.error(err);
-                        wordgroupList.innerHTML =
-                            '<p class="text-danger">Terjadi kesalahan mengambil data.</p>';
-                    });
+                fetchVerse(surahSelect.value, verseSelect.value);
             });
 
             surahSelect.addEventListener('change', function() {
                 updateVerseOptions();
                 verseSelect.selectedIndex = 0;
-                updateResultText();
             });
 
-            verseSelect.addEventListener('change', updateResultText);
-
             if (surahSelect.value) updateVerseOptions();
-            updateResultText();
+
+            /** ------------------------------
+             *  BAGIAN 3 — CONTROLLER AYAT
+             * ------------------------------ */
+            const btnPrev = document.getElementById('btn-prev-verse');
+            const btnNext = document.getElementById('btn-next-verse');
+
+            // Tombol Sebelumnya
+            btnPrev.addEventListener('click', function() {
+                let current = parseInt(verseSelect.value);
+                if (current > 1) {
+                    verseSelect.value = current - 1;
+                    fetchVerse(surahSelect.value, verseSelect.value);
+                }
+            });
+
+            // Tombol Selanjutnya
+            btnNext.addEventListener('click', function() {
+                let current = parseInt(verseSelect.value);
+                const max = verseSelect.options.length;
+                if (current < max) {
+                    verseSelect.value = current + 1;
+                    fetchVerse(surahSelect.value, verseSelect.value);
+                }
+            });
         });
     </script>
 @endpush
