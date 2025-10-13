@@ -26,4 +26,6 @@ Route::middleware(['auth'])->group(function () {
         ->name('word_groups.merge');
     Route::post('/word_groups/split', [WordGroupController::class, 'split'])
         ->name('word_groups.split');
+    Route::post('/word_groups/complete', [WordGroupController::class, 'completeOrderNumber'])
+        ->name('word_groups.complete');
 });

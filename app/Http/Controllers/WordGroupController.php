@@ -90,6 +90,52 @@ class WordGroupController extends Controller
     }
 
     /**
+     * Complete the order number of word groups in verse.
+     */
+    public function completeOrderNumber(Request $request)
+    {
+        $surahId = $request->input('surah_id');
+        $verseNumber = $request->input('verse_number');
+
+        if (! $surahId || ! $verseNumber) {
+            return redirect()->back()->with('error', 'Surah dan ayat harus diisi.');
+        }
+
+        // Ambil semua word group dalam ayat ini
+        $groups = WordGroups::where('surah_id', $surahId)
+            ->where('verse_number', $verseNumber)
+            ->orderBy('order_number', 'asc')
+            ->get();
+
+        if ($groups->isEmpty()) {
+            return redirect()->back()->with('error', 'Tidak ada data di ayat ini');
+        }
+
+        DB::transaction(function () use ($groups) {
+            foreach ($groups as $index => $wg) {
+                $wg->update([
+                    'order_number' => $index + 1,
+                    'updated_at' => now(),
+                ]);
+            }
+        });
+
+        // Cari verse berikutnya
+        $nextVerse = $verseNumber + 1;
+        $maxVerse = DB::table('surahs')->where('id', $surahId)->value('verse_count');
+        if ($nextVerse > $maxVerse) {
+            // Jika sudah ayat terakhir, tetap di ayat terakhir
+            $nextVerse = $maxVerse;
+        }
+
+        // Redirect ke ayat berikutnya
+        return redirect()->route('wordgroups.indexByVerse', [
+            'surah_id' => $surahId,
+            'verse_number' => $nextVerse,
+        ])->with('success', 'Update berhasil');
+    }
+
+    /**
      * Merge any word group in storage.
      */
     public function merge(Request $request)

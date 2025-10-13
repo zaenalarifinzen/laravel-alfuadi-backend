@@ -172,9 +172,8 @@
                             </div>
                             <div class="card-footer">
                                 <div class="d-flex gap-2 mb-3">
-                                    <button type="button" id="btn-unselect" class="btn btn-secondary mr-2"><i
-                                            class="fas fa-xmark"></i> Bersihkan
-                                        Pilihan</button>
+                                    <button type="button" id="btn-unselect"
+                                        class="btn btn-secondary mr-2">Bersihkan</button>
                                     <form id="merge-form" action="{{ route('word_groups.merge') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="ids" id="selected-ids">
@@ -204,8 +203,13 @@
                                 <i class="ion-chevron-right" data-pack="default" data-tags="arrow, right"></i></button>
                         </div>
                         <div>
-                            <button type="submit" class="btn btn-success btn-lg" id="btn-finish">Selesai dan
-                                lanjutkan</button>
+                            <form id="complete-form" action="{{ route('word_groups.complete') }}" method="POST" class="ml-auto">
+                                @csrf
+                                <input type="hidden" name="surah_id" value="{{ request('surah_id') }}">
+                                <input type="hidden" name="verse_number" value="{{ request('verse_number') }}">
+                                <button type="submit" class="btn btn-success btn-lg" id="btn-complete">Selesai dan
+                                    lanjutkan</button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -243,6 +247,7 @@
             const filterForm = document.getElementById('filter-form');
             const btnPrev = document.getElementById('btn-prev-verse');
             const btnNext = document.getElementById('btn-next-verse');
+            const btnComplete = document.getElementById('btn-complete');
 
             // =============================
             // FUNGSI UTILITAS
