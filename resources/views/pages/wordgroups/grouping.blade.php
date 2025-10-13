@@ -5,6 +5,7 @@
 @push('style')
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="{{ asset('library/selectric/public/selectric.css') }}">
+    <link rel="stylesheet" href="{{ asset('library/ionicons201/css/ionicons.min.css') }}">
     <style>
         /* Font Arab */
         @import url('https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&family=Amiri&display=swap');
@@ -39,14 +40,6 @@
             height: calc(2.25rem + 2px) !important;
         }
 
-        /* Pastikan tombol kanan tidak terpotong */
-        /* .ltr-container .input-group-append .btn {
-                                                        border-top-left-radius: 0 !important;
-                                                        border-bottom-left-radius: 0 !important;
-                                                        border-top-right-radius: 0.35rem !important;
-                                                        border-bottom-right-radius: 0.35rem !important;
-                                                    } */
-
         /* Agar input-group tidak ada overflow tersembunyi */
         .ltr-container .input-group {
             overflow: visible !important;
@@ -70,11 +63,6 @@
             min-height: 2.4rem;
             transition: all 0.2s ease-in-out;
         }
-
-        /* Hover */
-        /* .selectgroup.selectgroup-pills .selectgroup-item:hover .selectgroup-button {
-                                                                                                                                                                background-color: #95a0ee;
-                                                                                                                                                            } */
 
         /* Saat terpilih */
         .selectgroup-input:checked+.selectgroup-button {
@@ -110,7 +98,6 @@
             gap: 0;
             /* biarkan Bootstrap handle */
         }
-
 
         .card-header .input-group {
             display: flex !important;
@@ -191,17 +178,35 @@
                                     <form id="merge-form" action="{{ route('word_groups.merge') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="ids" id="selected-ids">
-                                        <button type="submit" class="btn btn-icon icon-left btn-warning btn-lg disabled"
-                                            id="btn-merge">Gabungkan</button>
+                                        <button type="submit"
+                                            class="btn btn-icon icon-left btn-success btn-lg mr-2 disabled"
+                                            id="btn-merge">Gabungkan
+                                        </button>
+                                    </form>
+                                    <form id="split-form" action="{{ route('word_groups.split') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="id" id="split-id">
+                                        <button type="submit"
+                                            class="btn btn-icon icon-left btn-warning btn-lg mr-2 disabled"
+                                            id="btn-split">Pisahkan
+                                        </button>
                                     </form>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-12 d-flex justify-content-between align-items-end">
-                        <button type="submit" class="btn btn-primary btn-lg" id="btn-prev-verse">Sebelumnya</button>
-                        <button type="submit" class="btn btn-primary btn-lg" id="btn-next-verse">Selanjutnya</button>
+                    <div class="col-12 d-flex justify-content-between align-items-center">
+                        <div>
+                            <button type="button" class="btn btn-primary btn-lg mr-2" id="btn-prev-verse"><i
+                                    class="ion-chevron-left" data-pack="default" data-tags="arrow, left"></i></button>
+                            <button type="button" class="btn btn-primary btn-lg" id="btn-next-verse">
+                                <i class="ion-chevron-right" data-pack="default" data-tags="arrow, right"></i></button>
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-success btn-lg" id="btn-finish">Selesai dan
+                                lanjutkan</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -216,31 +221,49 @@
 
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/features-posts.js') }}"></script>
-    {{-- <script src="{{ asset('js/page/modules-sweetalert.js') }}"></script> --}}
+    <script src="{{ asset('js/page/modules-sweetalert.js') }}"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // =============================
+            // VARIABEL GLOBAL
+            // =============================
             const mergeButton = document.getElementById('btn-merge');
+            const splitButton = document.getElementById('btn-split');
             const btnUnselect = document.getElementById('btn-unselect');
             const idsInput = document.getElementById('selected-ids');
+            const splitIdInput = document.getElementById('split-id');
             const mergeForm = document.getElementById('merge-form');
+            const splitForm = document.getElementById('split-form');
             const errorMsg = document.getElementById('merge-error');
             const wordgroupList = document.getElementById('wordgroup-list');
+            const surahSelect = document.getElementById('surah-select');
+            const verseSelect = document.getElementById('verse-select');
+            const resultVerse = document.getElementById('result-verse');
+            const filterForm = document.getElementById('filter-form');
+            const btnPrev = document.getElementById('btn-prev-verse');
+            const btnNext = document.getElementById('btn-next-verse');
+
+            // =============================
+            // FUNGSI UTILITAS
+            // =============================
 
             // Ambil checkbox terbaru dari DOM
             function getCheckboxes() {
                 return document.querySelectorAll('.row-checkbox');
             }
 
-            btnUnselect.addEventListener('click', function() {
-                const checkboxes = document.querySelectorAll('.row-checkbox');
-                checkboxes.forEach(cb => cb.checked = false); // hapus semua centang
-                updateMergeButton();
+            function showError(message) {
+                errorMsg.textContent = message;
+                errorMsg.style.display = 'block';
+                setTimeout(() => {
+                    errorMsg.style.display = 'none';
+                }, 3000);
+            }
 
-                // Reset pesan error
-                errorMsg.style.display = 'none';
-                errorMsg.textContent = '';
-            });
+            // =============================
+            // FUNGSI MANAJEMEN CHECKBOX
+            // =============================
 
             function updateMergeButton() {
                 const checkboxes = getCheckboxes();
@@ -248,20 +271,41 @@
 
                 if (checkedCount >= 2) {
                     mergeButton.classList.remove('disabled');
+                    splitButton.disabled = false;
                 } else {
                     mergeButton.classList.add('disabled');
+                    splitButton.disabled = true;
+                }
+            }
+
+            function updateSplitButton() {
+                const checkboxes = getCheckboxes();
+                const checked = Array.from(checkboxes).filter(x => x.checked);
+                if (checked.length === 1) {
+                    splitButton.classList.remove('disabled');
+                    splitButton.disabled = false;
+                    splitIdInput.value = checked[0].value;
+                } else {
+                    splitButton.classList.add('disabled');
+                    splitButton.disabled = true;
+                    splitIdInput.value = '';
                 }
             }
 
             // Pasang event listener ke semua checkbox (baik awal maupun setelah fetch)
             function bindCheckboxEvents() {
                 const checkboxes = getCheckboxes();
-                checkboxes.forEach(cb => cb.addEventListener('change', updateMergeButton));
+                checkboxes.forEach(cb => cb.addEventListener('change', () => {
+                    updateMergeButton();
+                    updateSplitButton();
+                }));
             }
 
-            bindCheckboxEvents(); // pertama kali saat halaman load
+            // =============================
+            // FUNGSI UNTUK MERGE
+            // =============================
 
-            mergeForm.addEventListener('submit', (e) => {
+            function handleMergeSubmit(e) {
                 e.preventDefault();
 
                 const checkboxes = getCheckboxes();
@@ -305,13 +349,6 @@
                     return;
                 }
 
-                // if (!confirm('Yakin ingin merge baris ini?')) {
-                //     e.preventDefault();
-                //     return;
-                // }
-
-                // idsInput.value = selectedIds.join(',');
-
                 // buat preview (batasi panjang agar popup tidak kebanyakan teks)
                 const previewTextFull = selectedTexts.join(' ');
                 const previewText = previewTextFull.length > 200 ? previewTextFull.slice(0, 200) + '…' :
@@ -320,7 +357,6 @@
                 swal({
                     title: previewText,
                     text: 'Yakin ingin menggabungkan?',
-                    // icon: 'info',
                     buttons: {
                         cancel: {
                             text: 'Batal',
@@ -340,26 +376,67 @@
                         mergeForm.submit();
                     }
                 });
-            });
-
-            function showError(message) {
-                errorMsg.textContent = message;
-                errorMsg.style.display = 'block';
-                setTimeout(() => {
-                    errorMsg.style.display = 'none';
-                }, 3000);
             }
 
+            // =============================
+            // FUNGSI UNTUK SPLIT
+            // =============================
 
-            /** ------------------------------
-             *  BAGIAN 2 — FILTER SURAH & AYAT
-             * ------------------------------ */
-            const surahSelect = document.getElementById('surah-select');
-            const verseSelect = document.getElementById('verse-select');
-            const resultVerse = document.getElementById('result-verse');
-            const filterForm = document.getElementById('filter-form');
-            const surahId = surahSelect.value;
-            const verseNum = verseSelect.value;
+            function handleSplitSubmit(e) {
+                e.preventDefault();
+
+                const checkboxes = getCheckboxes();
+                const selectedCheckboxes = Array.from(checkboxes).filter(cb => cb.checked);
+
+                // Reset pesan error
+                errorMsg.style.display = 'none';
+                errorMsg.textContent = '';
+
+                if (splitButton.classList.contains('disabled')) {
+                    e.preventDefault();
+                    return;
+                }
+
+                if (selectedCheckboxes.length !== 1) {
+                    e.preventDefault();
+                    alert('Pilih tepat 1 baris untuk split');
+                    return;
+                }
+
+                const selectedText = selectedCheckboxes.map(cb => {
+                    const btn = cb.closest('.selectgroup-item')?.querySelector('.selectgroup-button');
+                    return btn ? btn.textContent.trim() : '';
+                })[0];
+
+                // buat preview (batasi panjang agar popup tidak kebanyakan teks)
+                const previewText = selectedText.length > 200 ? selectedText.slice(0, 200) + '…' : selectedText;
+
+                swal({
+                    title: previewText,
+                    text: 'Yakin ingin memisahkan kalimat ini?',
+                    buttons: {
+                        cancel: {
+                            text: 'Batal',
+                            visible: true,
+                            className: 'btn btn-danger'
+                        },
+                        confirm: {
+                            text: 'Pisahkan',
+                            visible: true,
+                            className: 'btn btn-success'
+                        }
+                    },
+                    dangerMode: true,
+                }).then((willSplit) => {
+                    if (willSplit) {
+                        splitForm.submit();
+                    }
+                });
+            }
+
+            // =============================
+            // FUNGSI UNTUK FILTER SURAH & AYAT
+            // =============================
 
             function fetchVerse(surahId, verseNum) {
                 if (!surahId || !verseNum) {
@@ -393,6 +470,7 @@
                         updateResultText();
                         bindCheckboxEvents(); // Re-bind event checkbox baru setelah data dimuat
                         updateMergeButton();
+                        updateSplitButton(); // Jangan lupa update split button juga
                     })
                     .catch(err => {
                         console.error(err);
@@ -424,45 +502,80 @@
                 }
             }
 
-
-            // Tangkap submit form (Cari)
-            filterForm.addEventListener('submit', function(e) {
+            function handleFilterSubmit(e) {
                 e.preventDefault();
-
                 fetchVerse(surahSelect.value, verseSelect.value);
-            });
+            }
 
-            surahSelect.addEventListener('change', function() {
-                updateVerseOptions();
-                verseSelect.selectedIndex = 0;
-            });
+            // =============================
+            // FUNGSI NAVIGASI AYAT
+            // =============================
 
-            if (surahSelect.value) updateVerseOptions();
-
-            /** ------------------------------
-             *  BAGIAN 3 — CONTROLLER AYAT
-             * ------------------------------ */
-            const btnPrev = document.getElementById('btn-prev-verse');
-            const btnNext = document.getElementById('btn-next-verse');
-
-            // Tombol Sebelumnya
-            btnPrev.addEventListener('click', function() {
+            function goToPrevVerse() {
                 let current = parseInt(verseSelect.value);
                 if (current > 1) {
                     verseSelect.value = current - 1;
                     fetchVerse(surahSelect.value, verseSelect.value);
                 }
-            });
+            }
 
-            // Tombol Selanjutnya
-            btnNext.addEventListener('click', function() {
+            function goToNextVerse() {
                 let current = parseInt(verseSelect.value);
                 const max = verseSelect.options.length;
                 if (current < max) {
                     verseSelect.value = current + 1;
                     fetchVerse(surahSelect.value, verseSelect.value);
                 }
+            }
+
+            // =============================
+            // INISIALISASI EVENT LISTENER
+            // =============================
+
+            // Event listener untuk checkbox
+            bindCheckboxEvents();
+
+            // Event listener untuk tombol unselect
+            btnUnselect.addEventListener('click', function() {
+                const checkboxes = getCheckboxes();
+                checkboxes.forEach(cb => cb.checked = false);
+                updateMergeButton();
+                updateSplitButton(); // Update split button juga
+
+                // Reset pesan error
+                errorMsg.style.display = 'none';
+                errorMsg.textContent = '';
             });
+
+            // Event listener untuk form merge
+            mergeForm.addEventListener('submit', handleMergeSubmit);
+
+            // Event listener untuk form split
+            splitForm.addEventListener('submit', handleSplitSubmit);
+
+            // Event listener untuk form filter
+            filterForm.addEventListener('submit', handleFilterSubmit);
+
+            // Event listener untuk perubahan surah
+            surahSelect.addEventListener('change', function() {
+                updateVerseOptions();
+                verseSelect.selectedIndex = 0;
+            });
+
+            // Event listener untuk navigasi ayat
+            btnPrev.addEventListener('click', goToPrevVerse);
+            btnNext.addEventListener('click', goToNextVerse);
+
+            // =============================
+            // INISIALISASI AWAL
+            // =============================
+
+            // Inisialisasi opsi ayat jika surah sudah dipilih
+            if (surahSelect.value) updateVerseOptions();
+
+            // Inisialisasi status tombol
+            updateMergeButton();
+            updateSplitButton();
         });
     </script>
 @endpush

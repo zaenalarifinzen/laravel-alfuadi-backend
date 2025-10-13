@@ -32,8 +32,8 @@ class WordGroupController extends Controller
 
         $wordgroups = DB::table('word_groups')
             ->where('surah_id', '=', $request->input('surah_id', 1)) // default 1
-            ->where('verse_number', '=', $request->input('verse_number', 1)) // default 1         
-            ->orderBy('id', 'asc')
+            ->where('verse_number', '=', $request->input('verse_number', 1)) // default 1
+            ->orderBy('order_number', 'asc')
             ->paginate(100);
 
         return view('pages.wordgroups.grouping', compact('surahs', 'wordgroups'));
@@ -44,7 +44,7 @@ class WordGroupController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.products.create');
     }
 
     /**
@@ -52,7 +52,17 @@ class WordGroupController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // validate request
+        $request->validate([
+            'surah_id' => 'required|integer',
+            'verse_number' => 'required|integer',
+            'text' => 'required|string',
+        ]);
+
+        // create word group
+        WordGroups::create($request->only('surah_id', 'verse_number', 'text'));
+
+        return redirect()->back()->with('success', 'Word group berhasil ditambahkan.');
     }
 
     /**
@@ -139,10 +149,94 @@ class WordGroupController extends Controller
     }
 
     /**
+     * Split the specified resource from storage.
+     */
+    public function split(Request $request)
+    {
+        $id = $request->input('id');
+        $delimiter = $request->input('delimiter', ' '); // default: spasi
+
+        if (! $id) {
+            return redirect()->back()->with('error', 'ID word group tidak boleh kosong.');
+        }
+
+        // Ambil data target
+        $wordGroup = WordGroups::find($id);
+        if (! $wordGroup) {
+            return redirect()->back()->with('error', 'Word group tidak ditemukan.');
+        }
+
+        // Pecah teks berdasarkan spasi (atau delimiter custom)
+        $parts = preg_split('/\s+/', trim($wordGroup->text));
+        if (count($parts) < 2) {
+            return redirect()->back()->with('error', 'Teks tidak bisa dipecah karena hanya satu kata.');
+        }
+
+        DB::transaction(function () use ($wordGroup, $parts) {
+            // Ambil semua baris dalam ayat yang sama
+            $groupsInVerse = WordGroups::where('surah_id', $wordGroup->surah_id)
+                ->where('verse_number', $wordGroup->verse_number)
+                ->orderBy('id', 'asc')
+                ->get();
+
+            // Inisialisasi order_number jika masih kosong
+            $needsInit = $groupsInVerse->contains(fn ($wg) => is_null($wg->order_number));
+            if ($needsInit) {
+                foreach ($groupsInVerse as $index => $wg) {
+                    $wg->update(['order_number' => $index + 1]);
+                }
+            }
+
+            // Refresh data setelah update order_number
+            $groupsInVerse = WordGroups::where('surah_id', $wordGroup->surah_id)
+                ->where('verse_number', $wordGroup->verse_number)
+                ->orderBy('order_number', 'asc')
+                ->get();
+
+            // Cari posisi baris yang akan dipecah
+            $currentIndex = $groupsInVerse->search(fn ($wg) => $wg->id === $wordGroup->id);
+
+            // Hapus baris lama
+            $wordGroup->delete();
+
+            // Geser order_number semua baris setelah posisi ini
+            $afterGroups = $groupsInVerse->slice($currentIndex + 1);
+            foreach ($afterGroups as $g) {
+                $g->update([
+                    'order_number' => $g->order_number + count($parts) - 1,
+                ]);
+            }
+
+            // Sisipkan potongan baru
+            foreach ($parts as $offset => $textPart) {
+                WordGroups::create([
+                    'surah_id' => $wordGroup->surah_id,
+                    'verse_number' => $wordGroup->verse_number,
+                    'order_number' => $currentIndex + $offset + 1,
+                    'text' => trim($textPart),
+                ]);
+            }
+        });
+
+        return redirect()->back()->with('success', 'Teks berhasil dipecah menjadi '.count($parts).' bagian dan urutan diperbarui.');
+    }
+
+    /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        //
+        // remove word group by id
+        $wordGroup = WordGroups::find($id);
+        if (! $wordGroup) {
+            return redirect()->back()->with('error', 'Word group tidak ditemukan.');
+        }
+
+        // Run database transaction
+        DB::transaction(function () use ($wordGroup) {
+            $wordGroup->delete();
+        });
+
+        return redirect()->back()->with('success', 'Word group berhasil dihapus.');
     }
 }

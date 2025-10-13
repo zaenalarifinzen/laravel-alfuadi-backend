@@ -14,6 +14,7 @@ class WordGroups extends Model
     protected $fillable = [
         'surah_id',
         'verse_number',
+        'verse_id',
         'order_number',
         'text',
     ];

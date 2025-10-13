@@ -24,4 +24,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/grouping', [WordGroupController::class, 'indexByVerse'])->name('wordgroups.indexByVerse');
     Route::post('/word_groups/merge', [WordGroupController::class, 'merge'])
         ->name('word_groups.merge');
+    Route::post('/word_groups/split', [WordGroupController::class, 'split'])
+        ->name('word_groups.split');
 });
