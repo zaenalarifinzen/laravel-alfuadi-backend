@@ -92,6 +92,7 @@
                                         <tbody>
                                             @foreach ($wordgroups as $wordgroup)
                                                 <tr>
+
                                                     {{-- <td class="text-center">
                                                         <div class="custom-checkbox custom-control">
                                                             <input type="checkbox" data-checkboxes="mygroup"

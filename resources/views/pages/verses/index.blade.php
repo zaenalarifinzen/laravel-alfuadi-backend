@@ -62,16 +62,20 @@
                                 <div class="clearfix mb-3"></div>
 
                                 <div class="table-responsive">
-                                    <table class="table-striped table">
-                                        <tr>
-                                            <th>Id</th>
-                                            <th>Surah Id</th>
-                                            <th>Verse Number</th>
-                                            <th>Text</th>
-                                            <th>Translation Indo</th>
-                                        </tr>
-                                        @foreach ($verses as $verse)
+                                    <table class="table-hover table">
+                                        <thead>
                                             <tr>
+                                                <th>Id</th>
+                                                <th>Surah Id</th>
+                                                <th>Verse Number</th>
+                                                <th>Text</th>
+                                                <th>Translation Indo</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        @foreach ($verses as $verse)
+                                            <tr {{-- onclick="window.location.href='{{ route('wordgroups.index', ['surah_id' => $verse->surah_id, 'verse_number' => $verse->number]) }}'"
+                                                style="cursor:pointer" --}}>
                                                 <td>
                                                     {{ $verse->id }}
                                                 </td>
@@ -86,6 +90,14 @@
                                                 </td>
                                                 <td>
                                                     {{ $verse->translation_indo }}
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex justify-content-left">
+                                                        <a href='{{ route('wordgroups.indexByVerse', ['surah_id' => $verse->surah_id, 'verse_number' => $verse->number]) }}'
+                                                            class="btn btn-sm btn-info btn-icon">
+                                                            Grouping
+                                                        </a>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         @endforeach

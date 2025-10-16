@@ -62,18 +62,20 @@
                                 <div class="clearfix mb-3"></div>
 
                                 <div class="table-responsive">
-                                    <table class="table-striped table">
-                                        <tr>
-
-                                            <th>Id</th>
-                                            <th>Name</th>
-                                            <th>Name Indonesian</th>
-                                            <th>Name English</th>
-                                            <th>Location</th>
-                                            <th>Verse Count</th>
-                                        </tr>
-                                        @foreach ($surahs as $surah)
+                                    <table class="table-hover table">
+                                        <thead>
                                             <tr>
+                                                <th>Id</th>
+                                                <th>Name</th>
+                                                <th>Name Indonesian</th>
+                                                <th>Name English</th>
+                                                <th>Location</th>
+                                                <th>Verse Count</th>
+                                            </tr>
+                                        </thead>
+                                        @foreach ($surahs as $surah)
+                                            <tr onclick="window.location.href='{{ route('verses.index', ['surah_id' => $surah->id]) }}'"
+                                                style="cursor:pointer">
                                                 <td>{{ $surah->id }}
                                                 </td>
                                                 <td>{{ $surah->name }}

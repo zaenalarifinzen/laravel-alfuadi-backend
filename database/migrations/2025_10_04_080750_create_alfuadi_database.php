@@ -50,6 +50,7 @@ return new class extends Migration
             $table->foreign('verse_id')->references('id')->on('verses')->onDelete('cascade');
 
             $table->integer('order_number')->nullable();
+
             $table->text('text');
         });
 
