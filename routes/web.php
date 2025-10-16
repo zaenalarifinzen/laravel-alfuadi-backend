@@ -16,8 +16,6 @@ Route::middleware(['auth'])->group(function () {
         return view('pages.dashboard');
     })->name('home');
 
-    Route::resource('users', UserController::class);
-    Route::resource('products', ProductController::class);
     Route::resource('surahs', SurahController::class);
     Route::resource('verses', VerseController::class);
     Route::resource('wordgroups', WordGroupController::class);
@@ -28,4 +26,9 @@ Route::middleware(['auth'])->group(function () {
         ->name('word_groups.split');
     Route::post('/word_groups/complete', [WordGroupController::class, 'completeOrderNumber'])
         ->name('word_groups.complete');
+
+    Route::middleware(['admin'])->group(function () {
+        Route::resource('users', UserController::class);
+        Route::resource('products', ProductController::class);
+    });
 });
