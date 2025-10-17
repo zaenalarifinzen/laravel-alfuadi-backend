@@ -113,7 +113,7 @@
                                                         {{ $wordgroup->text }}
                                                     </td>
                                                     <td dir="rtl" style="font-family: 'Scheherazade New', serif;">
-                                                        {{ $wordgroup->text_indopak }}
+                                                        {{ $wordgroup->text }}
                                                     </td>
                                                 </tr>
                                             @endforeach
