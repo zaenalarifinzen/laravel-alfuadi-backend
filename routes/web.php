@@ -19,16 +19,17 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('surahs', SurahController::class);
     Route::resource('verses', VerseController::class);
     Route::resource('wordgroups', WordGroupController::class);
-    Route::get('/grouping', [WordGroupController::class, 'indexByVerse'])->name('wordgroups.indexByVerse');
-    Route::post('/word_groups/merge', [WordGroupController::class, 'merge'])
-        ->name('word_groups.merge');
-    Route::post('/word_groups/split', [WordGroupController::class, 'split'])
-        ->name('word_groups.split');
-    Route::post('/word_groups/complete', [WordGroupController::class, 'completeOrderNumber'])
-        ->name('word_groups.complete');
 
     Route::middleware(['admin'])->group(function () {
         Route::resource('users', UserController::class);
         Route::resource('products', ProductController::class);
+
+        Route::get('/grouping', [WordGroupController::class, 'indexByVerse'])->name('wordgroups.indexByVerse');
+        Route::post('/word_groups/merge', [WordGroupController::class, 'merge'])
+            ->name('word_groups.merge');
+        Route::post('/word_groups/split', [WordGroupController::class, 'split'])
+            ->name('word_groups.split');
+        Route::post('/word_groups/complete', [WordGroupController::class, 'completeOrderNumber'])
+            ->name('word_groups.complete');
     });
 });

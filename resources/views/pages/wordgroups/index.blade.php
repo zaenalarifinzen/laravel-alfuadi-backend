@@ -85,7 +85,8 @@
                                                 <th>Verse Number</th>
                                                 <th>Verse Id</th>
                                                 <th>Order Number</th>
-                                                <th>Text</th>
+                                                <th>Text Uthmani</th>
+                                                <th>Text Indopak</th>
                                             </tr>
                                         </thead>
 
@@ -110,6 +111,9 @@
                                                     <td>{{ $wordgroup->order_number }}</td>
                                                     <td dir="rtl" style="font-family: 'Scheherazade New', serif;">
                                                         {{ $wordgroup->text }}
+                                                    </td>
+                                                    <td dir="rtl" style="font-family: 'Scheherazade New', serif;">
+                                                        {{ $wordgroup->text_indopak }}
                                                     </td>
                                                 </tr>
                                             @endforeach

@@ -10,6 +10,12 @@
         /* Font Arab */
         @import url('https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&family=Amiri&display=swap');
 
+        @font-face {
+            font-family: 'Uthmani';
+            src: url('{{ asset('fonts/UthmanicHafs1Ver18.ttf') }}') format('truetype');
+            font-display: swap;
+        }
+
         .arabic-container {
             direction: rtl;
             text-align: right;
@@ -22,9 +28,9 @@
 
         /* Gunakan font arab */
         .arabic-text {
-            font-family: 'Scheherazade New', 'Amiri', serif;
-            font-size: 1.8rem;
-            line-height: 2.2rem;
+            font-family: 'Uthmani', 'Scheherazade New', 'Amiri', serif;
+            font-size: 1.8rem !important;
+            line-height: 3.2rem !important;
             direction: rtl;
         }
 
@@ -54,7 +60,7 @@
 
         /* Sesuaikan chip agar proporsional dengan tinggi huruf Arab */
         .selectgroup.selectgroup-pills .selectgroup-item .selectgroup-button {
-            border-radius: 16px;
+            border-radius: 10px;
             padding: 0.4rem 0.8rem;
             display: inline-flex;
             align-items: center;
@@ -203,7 +209,8 @@
                                 <i class="ion-chevron-right" data-pack="default" data-tags="arrow, right"></i></button>
                         </div>
                         <div>
-                            <form id="complete-form" action="{{ route('word_groups.complete') }}" method="POST" class="ml-auto">
+                            <form id="complete-form" action="{{ route('word_groups.complete') }}" method="POST"
+                                class="ml-auto">
                                 @csrf
                                 <input type="hidden" name="surah_id" value="{{ request('surah_id') }}">
                                 <input type="hidden" name="verse_number" value="{{ request('verse_number') }}">

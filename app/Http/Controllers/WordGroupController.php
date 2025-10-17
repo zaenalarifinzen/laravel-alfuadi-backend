@@ -258,6 +258,7 @@ class WordGroupController extends Controller
                 WordGroups::create([
                     'surah_id' => $wordGroup->surah_id,
                     'verse_number' => $wordGroup->verse_number,
+                    'verse_id' => $wordGroup->verse_id,
                     'order_number' => $currentIndex + $offset + 1,
                     'text' => trim($textPart),
                 ]);
