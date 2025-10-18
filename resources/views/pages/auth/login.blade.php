@@ -32,7 +32,7 @@
                         <label for="password" class="control-label">Password</label>
                         <div class="float-right">
                             <a href="{{ route('password.request') }}" class="text-small">
-                                Forgot Password?
+                                Lupa Password?
                             </a>
                         </div>
                     </div>
@@ -48,7 +48,7 @@
                 <div class="form-group">
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" name="remember" class="custom-control-input" tabindex="3" id="remember-me">
-                        <label class="custom-control-label" for="remember-me">Remember Me</label>
+                        <label class="custom-control-label" for="remember-me">Ingat Saya</label>
                     </div>
                 </div>
 
@@ -60,7 +60,7 @@
             </form>
 
             <div class="text-muted mt-5 text-center">
-                Don't have an account? <a href="{{ route('register') }}">Create One</a>
+                Belum memiliki akun? <a href="{{ route('register') }}">Daftar</a>
             </div>
         </div>
     </div>

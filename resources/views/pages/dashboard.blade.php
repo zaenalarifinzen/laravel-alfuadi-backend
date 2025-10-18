@@ -20,14 +20,14 @@
                 <div class="col-lg-3 col-md-6 col-sm-6 col-12">
                     <div class="card card-statistic-1">
                         <div class="card-icon bg-primary">
-                            <i class="far fa-user"></i>
+                            <i class="far fa-newspaper"></i>
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>Total Admin</h4>
+                                <h4>Total Surah</h4>
                             </div>
                             <div class="card-body">
-                                10
+                                114
                             </div>
                         </div>
                     </div>
@@ -35,14 +35,14 @@
                 <div class="col-lg-3 col-md-6 col-sm-6 col-12">
                     <div class="card card-statistic-1">
                         <div class="card-icon bg-danger">
-                            <i class="far fa-newspaper"></i>
+                            <i class="fas fa-list-ul"></i>
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>News</h4>
+                                <h4>Total Ayat</h4>
                             </div>
                             <div class="card-body">
-                                42
+                                6.236
                             </div>
                         </div>
                     </div>
@@ -54,10 +54,10 @@
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>Reports</h4>
+                                <h4>Grup Kalimat</h4>
                             </div>
                             <div class="card-body">
-                                1,201
+                                77.429
                             </div>
                         </div>
                     </div>
@@ -69,16 +69,16 @@
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>Online Users</h4>
+                                <h4>Kalimat</h4>
                             </div>
                             <div class="card-body">
-                                47
+                                0
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-lg-8 col-md-12 col-12 col-sm-12">
                     <div class="card">
                         <div class="card-header">
@@ -800,7 +800,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </section>
     </div>
 @endsection
