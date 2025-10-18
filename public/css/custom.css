@@ -7,28 +7,149 @@
 
 /*# sourceMappingURL=custom.css.map */
 
-.navbar-bg {
-  content: " ";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 115px;
-  background-color: #138a84;
-  z-index: -1;
+/* @font-face {
+    font-family: "Cinzel Decorative";
+    src: url("//fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;9000");
+    font-display: swap;
+} */
+
+a {
+    color: #138a84;
+    font-weight: 500;
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+    -o-transition: all 0.5s;
 }
 
-.btn-primary, .btn-primary.disabled {
-  box-shadow: 0 2px 6px #b6eeeb;
-  background-color: #1d948e;
-  border-color: #1d948e;
+.bg-primary {
+    background-color: #1d948e !important;
 }
-.btn-primary:focus, .btn-primary.disabled:focus {
-  background-color: #138a84 !important;
+
+.navbar-bg {
+    content: " ";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 115px;
+    background-color: #138a84;
+    z-index: -1;
 }
-.btn-primary:focus:active, .btn-primary.disabled:focus:active {
-  background-color: #138a84 !important;
+
+.btn-primary,
+.btn-primary.disabled {
+    box-shadow: 0 2px 6px #b6eeeb !important;
+    background-color: #1d948e;
+    border-color: #1d948e;
 }
-.btn-primary:active, .btn-primary:hover, .btn-primary.disabled:active, .btn-primary.disabled:hover {
-  background-color: #138a84 !important;
+.btn-primary:focus,
+.btn-primary.disabled:focus {
+    background-color: #138a84 !important;
+}
+.btn-primary:focus:active,
+.btn-primary.disabled:focus:active {
+    background-color: #138a84 !important;
+}
+.btn-primary:active,
+.btn-primary:hover,
+.btn-primary.disabled:active,
+.btn-primary.disabled:hover {
+    background-color: #138a84 !important;
+}
+
+.btn-secondary,
+.btn-secondary.disabled {
+    box-shadow: 0 2px 6px #e1e5e8;
+    background-color: #9c9b9b;
+    border-color: #cdd3d8;
+    color: #fff;
+}
+.btn-secondary:hover,
+.btn-secondary:focus,
+.btn-secondary:active,
+.btn-secondary.disabled:hover,
+.btn-secondary.disabled:focus,
+.btn-secondary.disabled:active {
+    background-color: #b4b4b4 !important;
+    color: #fff !important;
+}
+
+.card .card-header h4 {
+    font-size: 16px;
+    line-height: 28px;
+    color: #138a84;
+    padding-right: 10px;
+    margin-bottom: 0;
+}
+
+.main-sidebar .sidebar-brand a {
+    font-family: "Cinzel Decorative" !important;
+    text-decoration: none;
+    text-transform: none;
+    letter-spacing: 1.5px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1d948e;
+}
+
+.section .section-header h1 {
+    margin-bottom: 0;
+    font-weight: 700;
+    display: inline-block;
+    font-size: 24px;
+    margin-top: 3px;
+    color: #138a84;
+}
+
+.swal-title {
+    margin: 0px;
+    font-family: "Scheherazade New", "Amiri", serif !important;
+    font-size: 30px;
+    color: black;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.21);
+    margin-bottom: 28px;
+}
+
+.swal-button {
+    padding: 7px 19px;
+    border-radius: 2px;
+    background-color: #2aa576 !important;
+    font-size: 12px;
+    border: 1px solid #138a84 !important;
+}
+
+.card-footer .d-flex {
+    flex-wrap: wrap; /* biarkan tombol turun ke baris baru jika ruang tidak cukup */
+    gap: 0.5rem; /* jarak antar item */
+}
+
+/* jaga margin bawah agar rapi saat membungkus */
+.card-footer .d-flex > * {
+    margin-bottom: 0 !important;
+}
+
+/* Responsif: layar kecil (mobile) */
+@media (max-width: 576px) {
+    .card-footer .d-flex > * {
+        flex: 1 1 100%; /* setiap item mengambil 100% lebar baris */
+    }
+
+    .card-footer .d-flex form {
+        display: block;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    .card-footer .d-flex .btn {
+        width: 100%;
+        white-space: normal; /* teks tombol akan wrap, tidak memaksa lebar */
+        text-align: center;
+    }
+
+    /* jika ingin mengecilkan ukuran tombol pada mobile */
+    .card-footer .d-flex .btn.btn-lg {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.95rem;
+    }
 }

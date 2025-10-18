@@ -20,10 +20,14 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('verses', VerseController::class);
     Route::resource('wordgroups', WordGroupController::class);
 
-    Route::middleware(['admin'])->group(function () {
+    // Administrator Only
+    Route::middleware(['roles:administrator'])->group(function () {
         Route::resource('users', UserController::class);
         Route::resource('products', ProductController::class);
+    });
 
+    // Administrator & Operator Only
+    Route::middleware(['roles:administrator,operator'])->group(function () {
         Route::get('/grouping', [WordGroupController::class, 'indexByVerse'])->name('wordgroups.indexByVerse');
         Route::post('/word_groups/merge', [WordGroupController::class, 'merge'])
             ->name('word_groups.merge');

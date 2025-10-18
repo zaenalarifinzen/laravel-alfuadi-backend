@@ -28,7 +28,19 @@ class WordGroupController extends Controller
      */
     public function indexByVerse(Request $request)
     {
+        $surahId = $request->input('surah_id', 1);
+        $verseNum = $request->input('verse_number', 1);
+
+        // Kalau request tidak punya parameter, redirect ke URL dengan parameter default
+        if (! $request->has(['surah_id', 'verse_number'])) {
+            return redirect()->route('wordgroups.indexByVerse', [
+                'surah_id' => $surahId,
+                'verse_number' => $verseNum,
+            ]);
+        }
+
         $surahs = DB::table('surahs')->select('id', 'name', 'verse_count')->get();
+        $currentSurah = DB::table('surahs')->where('id', $surahId)->first();
 
         $wordgroups = DB::table('word_groups')
             ->where('surah_id', '=', $request->input('surah_id', 1)) // default 1
@@ -36,7 +48,8 @@ class WordGroupController extends Controller
             ->orderBy('order_number', 'asc')
             ->paginate(100);
 
-        return view('pages.wordgroups.grouping', compact('surahs', 'wordgroups'));
+        return view('pages.wordgroups.grouping', compact('surahs', 'wordgroups', 'currentSurah',
+        'verseNum'));
     }
 
     /**
@@ -116,6 +129,7 @@ class WordGroupController extends Controller
                 $wg->update([
                     'order_number' => $index + 1,
                     'updated_at' => now(),
+                    'editor' => auth()->id(),
                 ]);
             }
         });
@@ -183,6 +197,7 @@ class WordGroupController extends Controller
             // Update first row
             WordGroups::where('id', $first->id)->update([
                 'text' => $mergedText,
+                'editor' => auth()->id(),
             ]);
 
             // delete another row

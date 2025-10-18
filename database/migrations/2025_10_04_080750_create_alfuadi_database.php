@@ -52,6 +52,10 @@ return new class extends Migration
             $table->integer('order_number')->nullable();
 
             $table->text('text');
+
+            $table->timestamps('updated_at');
+
+            $table->bigInteger('editor');
         });
 
         // Words Table

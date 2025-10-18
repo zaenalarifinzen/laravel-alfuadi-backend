@@ -17,8 +17,7 @@ class WordGroups extends Model
         'verse_id',
         'order_number',
         'text',
+        'updated_at',
+        'editor',
     ];
-
-    public $timestamps = false;
-
 }

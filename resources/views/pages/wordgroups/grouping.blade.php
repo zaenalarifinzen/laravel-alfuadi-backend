@@ -29,7 +29,7 @@
         /* Gunakan font arab */
         .arabic-text {
             font-family: 'Uthmani', 'Scheherazade New', 'Amiri', serif;
-            font-size: 1.8rem !important;
+            font-size: 1.5rem !important;
             line-height: 3.2rem !important;
             direction: rtl;
         }
@@ -60,7 +60,7 @@
 
         /* Sesuaikan chip agar proporsional dengan tinggi huruf Arab */
         .selectgroup.selectgroup-pills .selectgroup-item .selectgroup-button {
-            border-radius: 10px;
+            border-radius: 8px !important;
             padding: 0.4rem 0.8rem;
             display: inline-flex;
             align-items: center;
@@ -72,9 +72,10 @@
 
         /* Saat terpilih */
         .selectgroup-input:checked+.selectgroup-button {
-            background-color: #6777ef;
-            color: #fff;
-            border-color: #6777ef;
+            background-color: #d6f7f0 !important;
+            color: #1a1a1a !important;
+            border-color: #259980;
+            border-width: 1px;
         }
 
         /* Supaya chip rapi dalam arah kanan ke kiri */
@@ -156,7 +157,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
-                                <h4 id="result-verse" class="mb-0">Ayat Terpilih</h4>
+                                <h4 id="result-verse" class="mb-0">{{ $currentSurah->name ?? 'Al-Fatihah' }} - Ayat {{ $verseNum ?? 1 }}</h4>
                             </div>
 
 
@@ -177,9 +178,9 @@
 
                             </div>
                             <div class="card-footer">
-                                <div class="d-flex gap-2 mb-3">
+                                <div class="d-flex gap-2 mb-3 justify-content-center align-items-center flex-wrap">
                                     <button type="button" id="btn-unselect"
-                                        class="btn btn-secondary mr-2">Bersihkan</button>
+                                        class="btn btn-secondary btn-lg mr-2">Bersihkan</button>
                                     <form id="merge-form" action="{{ route('word_groups.merge') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="ids" id="selected-ids">
@@ -214,7 +215,7 @@
                                 @csrf
                                 <input type="hidden" name="surah_id" value="{{ request('surah_id') }}">
                                 <input type="hidden" name="verse_number" value="{{ request('verse_number') }}">
-                                <button type="submit" class="btn btn-success btn-lg" id="btn-complete">Selesai dan
+                                <button type="submit" class="btn btn-primary btn-lg" id="btn-complete">Simpan &
                                     lanjutkan</button>
                             </form>
                         </div>
@@ -254,7 +255,7 @@
             const filterForm = document.getElementById('filter-form');
             const btnPrev = document.getElementById('btn-prev-verse');
             const btnNext = document.getElementById('btn-next-verse');
-            const btnComplete = document.getElementById('btn-complete');
+            // const btnComplete = document.getElementById('btn-complete');
 
             // =============================
             // FUNGSI UTILITAS
@@ -472,12 +473,22 @@
                                 '<p class="text-muted">Tidak ada data untuk ayat ini.</p>';
                         }
 
-                        // Update URL di address bar tanpa reload
+                        verseSelect.value = verseNum;
+
+                        // Update URL di address bar
                         const params = new URLSearchParams({
                             surah_id: surahId,
                             verse_number: verseNum
                         });
                         history.pushState({}, '', `?${params.toString()}`);
+
+                        const completeForm = document.getElementById('complete-form');
+                        if (completeForm) {
+                            const surahInput = completeForm.querySelector('input[name="surah_id"]');
+                            const verseInput = completeForm.querySelector('input[name="verse_number"]');
+                            if (surahInput) surahInput.value = surahId;
+                            if (verseInput) verseInput.value = verseNum;
+                        }
 
                         updateResultText();
                         bindCheckboxEvents(); // Re-bind event checkbox baru setelah data dimuat

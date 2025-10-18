@@ -1,7 +1,7 @@
 <div class="main-sidebar sidebar-style-2">
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand">
-            <a href="/home">Al Fuadi</a>
+            <a href="/home">Al-Fuadi</a>
         </div>
         <div class="sidebar-brand sidebar-brand-sm">
             <a href="index.html">AF</a>
@@ -33,10 +33,10 @@
                 <a class="nav-link" href="{{ route('wordgroups.indexByVerse') }}"><i class="fas fa-object-group"></i>
                     <span>Grouping Ayat</span></a>
             </li>
-            <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('products.index') }}"><i class="fas fa-keyboard"></i> <span>Input
+            {{-- <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('wordgroups.indexByVerse') }}"><i class="fas fa-keyboard"></i> <span>Input
                         I'rob</span></a>
-            </li>
+            </li> --}}
 
             @if (auth()->check() && auth()->user()->roles === 'administrator')
                 <li class="menu-header">Aplikasi Quran Al-Fuadi</li>
