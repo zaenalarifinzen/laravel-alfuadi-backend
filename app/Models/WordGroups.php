@@ -17,6 +17,7 @@ class WordGroups extends Model
         'verse_id',
         'order_number',
         'text',
+        'created_at',
         'updated_at',
         'editor',
     ];

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Verse;
 use App\Models\WordGroups;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -26,30 +27,73 @@ class WordGroupController extends Controller
     /**
      * Display a listing of the Word Group by Verse.
      */
+    // public function indexByVerse(Request $request)
+    // {
+    //     $surahId = $request->input('surah_id', 1);
+    //     $verseNum = $request->input('verse_number', 1);
+
+    //     // Kalau request tidak punya parameter, redirect ke URL dengan parameter default
+    //     if (! $request->has(['surah_id', 'verse_number'])) {
+    //         return redirect()->route('wordgroups.indexByVerse', [
+    //             'surah_id' => $surahId,
+    //             'verse_number' => $verseNum,
+    //         ]);
+    //     }
+
+    //     $surahs = DB::table('surahs')->select('id', 'name', 'verse_count')->get();
+    //     $currentSurah = DB::table('surahs')->where('id', $surahId)->first();
+
+    //     $wordgroups = DB::table('word_groups')
+    //         ->where('surah_id', '=', $request->input('surah_id', 1)) // default 1
+    //         ->where('verse_number', '=', $request->input('verse_number', 1)) // default 1
+    //         ->orderBy('order_number', 'asc')
+    //         ->paginate(100);
+
+    //     return view('pages.wordgroups.grouping', compact('surahs', 'wordgroups', 'currentSurah',
+    //     'verseNum'));
+    // }
     public function indexByVerse(Request $request)
     {
-        $surahId = $request->input('surah_id', 1);
-        $verseNum = $request->input('verse_number', 1);
-
-        // Kalau request tidak punya parameter, redirect ke URL dengan parameter default
-        if (! $request->has(['surah_id', 'verse_number'])) {
-            return redirect()->route('wordgroups.indexByVerse', [
-                'surah_id' => $surahId,
-                'verse_number' => $verseNum,
-            ]);
-        }
 
         $surahs = DB::table('surahs')->select('id', 'name', 'verse_count')->get();
+        $surahId = $request->input('surah_id', 1);
         $currentSurah = DB::table('surahs')->where('id', $surahId)->first();
+        $verseNumber = $request->input('verse_number', 1);
 
-        $wordgroups = DB::table('word_groups')
-            ->where('surah_id', '=', $request->input('surah_id', 1)) // default 1
-            ->where('verse_number', '=', $request->input('verse_number', 1)) // default 1
+        // ambil data dari tabel verses
+        $verse = Verse::where('surah_id', $surahId)
+            ->where('number', $verseNumber)
+            ->first();
+
+        if (! $verse) {
+            return redirect()->back()->with('error', 'Ayat tidak ditemukan');
+        }
+
+        $existing = WordGroups::where('verse_id', $verse->id)
             ->orderBy('order_number', 'asc')
-            ->paginate(100);
+            ->get();
 
-        return view('pages.wordgroups.grouping', compact('surahs', 'wordgroups', 'currentSurah',
-        'verseNum'));
+        if ($existing->isNotEmpty()) {
+            // ambil dari data yang sudah ada
+            $words = $existing;
+            $isPersisted = true;
+        } else {
+            // split dari verse berdasarkan spasi
+            $splitWords = preg_split('/\s+/', trim($verse->text));
+            $words = collect($splitWords)->map(function ($word, $index) use ($verse) {
+                return (object) [
+                    'id' => $index + 1,
+                    'surah_id' => $verse->surah_id,
+                    'verse_id' => $verse->id,
+                    'verse_number' => $verse->number,
+                    'text' => $word,
+                ];
+            });
+            $isPersisted = false;
+        }
+
+        // kirim data ke view
+        return view('pages.wordgroups.grouping', compact('surahs', 'words', 'currentSurah', 'verse', 'verseNumber', 'isPersisted'));
     }
 
     /**
@@ -76,6 +120,46 @@ class WordGroupController extends Controller
         WordGroups::create($request->only('surah_id', 'verse_number', 'text'));
 
         return redirect()->back()->with('success', 'Word group berhasil ditambahkan.');
+    }
+
+    public function save(Request $request)
+    {
+        $validated = $request->validate([
+            'surah_id' => 'required|integer',
+            'verse_number' => 'required|integer',
+            'verse_id' => 'required|integer',
+            'groups' => 'required|array',
+            'groups.*.text' => 'required|string',
+        ]);
+
+        try {
+            DB::transaction(function () use ($validated) {
+                if (! empty($validated['verse_id'])) {
+                    WordGroups::where('verse_id', $validated['verse_id'])->delete();
+                } else {
+                    WordGroups::where('surah_id', $validated['surah_id'])
+                        ->where('verse_number', $validated['verse_number'])
+                        ->delete();
+                }
+
+                foreach ($validated['groups'] as $order => $group) {
+                    WordGroups::create([
+                        'surah_id' => $validated['surah_id'],
+                        'verse_number' => $validated['verse_number'],
+                        'verse_id' => $validated['verse_id'],
+                        'text' => $group['text'],
+                        'order_number' => $order + 1,
+                        'editor' => auth()->id(),
+                    ]);
+                }
+            });
+
+            return response()->json(['success' => true, 'message' => 'Data tersimpan']);
+        } catch (\Throwable $e) {
+            \Log::error('WordGroup save error: '.$e->getMessage());
+
+            return response()->json(['success' => false, 'message' => 'Server error'], 500);
+        }
     }
 
     /**
