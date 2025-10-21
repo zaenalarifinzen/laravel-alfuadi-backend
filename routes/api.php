@@ -15,6 +15,6 @@ Route::post('logout', [\App\Http\Controllers\Api\AuthController::class, 'logout'
 // api resource product
 Route::apiResource('products', \App\Http\Controllers\Api\ProductController::class)->middleware('auth:sanctum');
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('word_groups/merge', [WordGroupController::class, 'merge']);
-    Route::apiResource('word_groups', WordGroupController::class);
+    Route::post('wordgroups/merge', [WordGroupController::class, 'merge']);
+    Route::apiResource('wordgroups', WordGroupController::class);
 });

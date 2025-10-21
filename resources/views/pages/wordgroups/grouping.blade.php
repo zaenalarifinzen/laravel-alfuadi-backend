@@ -123,7 +123,7 @@
                 <div class="ltr-container">
                     <form method="GET" action="{{ route('wordgroups.indexByVerse') }}" id="filter-form" class="mb-0">
                         <div class="input-group">
-                            <select class="form-control select2" name="surah_id" id="surah-select"
+                            <select class="form-control select2" name="surah_id" id="surah-id"
                                 style="flex: 5; border-top-left-radius: 0.5rem; border-bottom-left-radius: 0.5rem;"
                                 required>
                                 @foreach ($surahs as $surah)
@@ -134,7 +134,7 @@
                                 @endforeach
                             </select>
 
-                            <select class="form-control select2" name="verse_number" id="verse-select" style="flex: 2;"
+                            <select class="form-control select2" name="verse_number" id="verse-number" style="flex: 2;"
                                 required>
                                 <option value="">Pilih Ayat</option>
                             </select>
@@ -159,7 +159,7 @@
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <input type="hidden" id="verse-id" value="{{ $verse->id }}">
                                 <input type="hidden" id="verse-number" value="{{ $verseNumber }}">
-                                <h4 id="result-verse" class="mb-0">{{ $currentSurah->name ?? 'Al-Fatihah' }} - Ayat
+                                <h4 id="result-verse" class="mb-0">{{ $currentSurahId->name ?? 'Al-Fatihah' }} - Ayat
                                     {{ $verseNumber ?? 1 }}</h4>
                             </div>
 
@@ -184,7 +184,7 @@
                                 <div class="d-flex gap-2 mb-3 justify-content-center align-items-center flex-wrap">
                                     <button type="button" id="btn-unselect"
                                         class="btn btn-secondary btn-lg mr-2">Bersihkan</button>
-                                    <form id="merge-form" action="{{ route('word_groups.merge') }}" method="POST">
+                                    <form id="merge-form" action="{{ route('wordgroups.merge') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="ids" id="selected-ids">
                                         <button type="submit"
@@ -192,7 +192,7 @@
                                             id="btn-merge">Gabungkan
                                         </button>
                                     </form>
-                                    <form id="split-form" action="{{ route('word_groups.split') }}" method="POST">
+                                    <form id="split-form" action="{{ route('wordgroups.split') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id" id="split-id">
                                         <button type="submit"
@@ -244,23 +244,27 @@
             // =============================
             // VARIABEL GLOBAL
             // =============================
-            const mergeButton = document.getElementById('btn-merge');
-            const splitButton = document.getElementById('btn-split');
             const btnUnselect = document.getElementById('btn-unselect');
-            const idsInput = document.getElementById('selected-ids');
-            const splitIdInput = document.getElementById('split-id');
-            const mergeForm = document.getElementById('merge-form');
-            const splitForm = document.getElementById('split-form');
-            const errorMsg = document.getElementById('merge-error');
-            const wordgroupList = document.getElementById('wordgroup-list');
-            const surahSelect = document.getElementById('surah-select');
-            const verseSelect = document.getElementById('verse-select');
-            const verseId = document.getElementById('verse-id').value;
-            const resultVerse = document.getElementById('result-verse');
-            const filterForm = document.getElementById('filter-form');
+            const btnMerge = document.getElementById('btn-merge');
+            const btnSplit = document.getElementById('btn-split');
             const btnPrev = document.getElementById('btn-prev-verse');
             const btnNext = document.getElementById('btn-next-verse');
             const btnComplete = document.getElementById('btn-complete');
+
+            const splitIdInput = document.getElementById('split-id');
+
+            const filterForm = document.getElementById('filter-form');
+            const mergeForm = document.getElementById('merge-form');
+            const splitForm = document.getElementById('split-form');
+
+
+            const wordgroupList = document.getElementById('wordgroup-list');
+            const currentSurahId = document.getElementById('surah-id');
+            const currentVerseNumber = document.getElementById('verse-number');
+            const currentVerseId = document.getElementById('verse-id').value;
+
+            const resultLabel = document.getElementById('result-verse');
+            const errorMsg = document.getElementById('merge-error');
 
             // =============================
             // FUNGSI UTILITAS
@@ -283,29 +287,29 @@
             // FUNGSI MANAJEMEN CHECKBOX
             // =============================
 
-            function updateMergeButton() {
+            function updatebtnMerge() {
                 const checkboxes = getCheckboxes();
                 const checkedCount = Array.from(checkboxes).filter(x => x.checked).length;
 
                 if (checkedCount >= 2) {
-                    mergeButton.classList.remove('disabled');
-                    splitButton.disabled = false;
+                    btnMerge.classList.remove('disabled');
+                    btnSplit.disabled = false;
                 } else {
-                    mergeButton.classList.add('disabled');
-                    splitButton.disabled = true;
+                    btnMerge.classList.add('disabled');
+                    btnSplit.disabled = true;
                 }
             }
 
-            function updateSplitButton() {
+            function updatebtnSplit() {
                 const checkboxes = getCheckboxes();
                 const checked = Array.from(checkboxes).filter(x => x.checked);
                 if (checked.length === 1) {
-                    splitButton.classList.remove('disabled');
-                    splitButton.disabled = false;
+                    btnSplit.classList.remove('disabled');
+                    btnSplit.disabled = false;
                     splitIdInput.value = checked[0].value;
                 } else {
-                    splitButton.classList.add('disabled');
-                    splitButton.disabled = true;
+                    btnSplit.classList.add('disabled');
+                    btnSplit.disabled = true;
                     splitIdInput.value = '';
                 }
             }
@@ -314,8 +318,8 @@
             function bindCheckboxEvents() {
                 const checkboxes = getCheckboxes();
                 checkboxes.forEach(cb => cb.addEventListener('change', () => {
-                    updateMergeButton();
-                    updateSplitButton();
+                    updatebtnMerge();
+                    updatebtnSplit();
                 }));
             }
 
@@ -333,7 +337,7 @@
                 errorMsg.style.display = 'none';
                 errorMsg.textContent = '';
 
-                if (mergeButton.classList.contains('disabled')) {
+                if (btnMerge.classList.contains('disabled')) {
                     e.preventDefault();
                     return;
                 }
@@ -359,7 +363,7 @@
                     return;
                 }
 
-                // Gabungkan text 
+                // Gabungkan text
                 const selectedText = selectedCheckboxes.map(cb => {
                     const btn = cb.closest('.selectgroup-item').querySelector('.selectgroup-button');
                     return btn.textContent.trim();
@@ -384,8 +388,8 @@
 
                 // Re-bind event ke elemen baru
                 bindCheckboxEvents();
-                updateMergeButton();
-                updateSplitButton();
+                updatebtnMerge();
+                updatebtnSplit();
 
             }
 
@@ -403,7 +407,7 @@
                 errorMsg.style.display = 'none';
                 errorMsg.textContent = '';
 
-                if (splitButton.classList.contains('disabled')) {
+                if (btnSplit.classList.contains('disabled')) {
                     e.preventDefault();
                     return;
                 }
@@ -444,8 +448,8 @@
 
                 // Re-bind event ke elemen baru
                 bindCheckboxEvents();
-                updateMergeButton();
-                updateSplitButton();
+                updatebtnMerge();
+                updatebtnSplit();
 
             }
 
@@ -476,9 +480,7 @@
                                 '<p class="text-muted">Tidak ada data untuk ayat ini.</p>';
                         }
 
-                        verseSelect.value = verseNumber;
-
-                        console.log(verseId);
+                        currentVerseNumber.value = verseNumber;
 
                         // Update URL di address bar
                         const params = new URLSearchParams({
@@ -497,8 +499,8 @@
 
                         updateResultText();
                         bindCheckboxEvents(); // Re-bind event checkbox baru setelah data dimuat
-                        updateMergeButton();
-                        updateSplitButton(); // Jangan lupa update split button juga
+                        updatebtnMerge();
+                        updatebtnSplit(); // Jangan lupa update split button juga
                     })
                     .catch(err => {
                         console.error(err);
@@ -508,31 +510,31 @@
             }
 
             function updateVerseOptions() {
-                const selected = surahSelect.options[surahSelect.selectedIndex];
+                const selected = currentSurahId.options[currentSurahId.selectedIndex];
                 const verseCount = selected ? selected.getAttribute('data-verse-count') : 0;
                 const currentVerse = "{{ request('verse_number') }}";
-                verseSelect.innerHTML = '<option value="1">1</option>';
+                currentVerseNumber.innerHTML = '<option value="1">1</option>';
                 for (let i = 2; i <= verseCount; i++) {
-                    verseSelect.innerHTML +=
+                    currentVerseNumber.innerHTML +=
                         `<option value="${i}" ${currentVerse == i ? 'selected' : ''}>${i}</option>`;
                 }
             }
 
             function updateResultText() {
-                const surahName = surahSelect.options[surahSelect.selectedIndex]?.text || '';
-                const verseNumber = verseSelect.value;
+                const surahName = currentSurahId.options[currentSurahId.selectedIndex]?.text || '';
+                const verseNumber = currentVerseNumber.value;
                 if (surahName && verseNumber) {
-                    resultVerse.textContent = `${surahName} - Ayat ${verseNumber}`;
+                    resultLabel.textContent = `${surahName} - Ayat ${verseNumber}`;
                 } else if (surahName) {
-                    resultVerse.textContent = `${surahName}`;
+                    resultLabel.textContent = `${surahName}`;
                 } else {
-                    resultVerse.textContent = 'Ayat Terpilih';
+                    resultLabel.textContent = 'Ayat Terpilih';
                 }
             }
 
             function handleFilterSubmit(e) {
                 e.preventDefault();
-                fetchVerse(surahSelect.value, verseSelect.value);
+                fetchVerse(currentSurahId.value, currentVerseNumber.value);
             }
 
             // =============================
@@ -540,19 +542,19 @@
             // =============================
 
             function goToPrevVerse() {
-                let currentVerseNumber = parseInt(verseSelect.value);
-                if (currentVerseNumber > 1) {
-                    verseSelect.value = currentVerseNumber - 1;
-                    fetchVerse(surahSelect.value, verseSelect.value);
+                let verseNumber = parseInt(currentVerseNumber.value);
+                if (verseNumber > 1) {
+                    currentVerseNumber.value = verseNumber - 1;
+                    fetchVerse(currentSurahId.value, currentVerseNumber.value);
                 }
             }
 
             function goToNextVerse() {
-                let currentVerseNumber = parseInt(verseSelect.value);
-                const max = verseSelect.options.length;
-                if (currentVerseNumber < max) {
-                    verseSelect.value = currentVerseNumber + 1;
-                    fetchVerse(surahSelect.value, verseSelect.value);
+                let verseNumber = parseInt(currentVerseNumber.value);
+                const max = currentVerseNumber.options.length;
+                if (verseNumber < max) {
+                    currentVerseNumber.value = verseNumber + 1;
+                    fetchVerse(currentSurahId.value, currentVerseNumber.value);
                 }
             }
 
@@ -560,8 +562,8 @@
             // FUNGSI SIMPAN AYAT
             // =============================
             function save() {
-                const surahId = document.getElementById('surah-select').value;
-                const verseNumber = document.getElementById('verse-select').value;
+                const surahId = document.getElementById('surah-id').value;
+                const verseNumber = document.getElementById('verse-number').value;
 
                 swal({
                     title: 'Konfirmasi',
@@ -590,7 +592,7 @@
                                 .textContent.trim()
                         }));
 
-                    fetch('/word_groups/save', {
+                    fetch('/wordgroups/save', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -601,7 +603,6 @@
                             body: JSON.stringify({
                                 surah_id: surahId,
                                 verse_number: verseNumber,
-                                verse_id: verseId,
                                 groups: groups
                             })
                         })
@@ -633,8 +634,8 @@
             btnUnselect.addEventListener('click', function() {
                 const checkboxes = getCheckboxes();
                 checkboxes.forEach(cb => cb.checked = false);
-                updateMergeButton();
-                updateSplitButton(); // Update split button juga
+                updatebtnMerge();
+                updatebtnSplit(); // Update split button juga
 
                 // Reset pesan error
                 errorMsg.style.display = 'none';
@@ -651,9 +652,9 @@
             filterForm.addEventListener('submit', handleFilterSubmit);
 
             // Event listener untuk perubahan surah
-            surahSelect.addEventListener('change', function() {
+            currentSurahId.addEventListener('change', function() {
                 updateVerseOptions();
-                verseSelect.selectedIndex = 0;
+                currentVerseNumber.selectedIndex = 0;
             });
 
             // Event listener untuk simpan
@@ -674,11 +675,11 @@
             // =============================
 
             // Inisialisasi opsi ayat jika surah sudah dipilih
-            if (surahSelect.value) updateVerseOptions();
+            if (currentSurahId.value) updateVerseOptions();
 
             // Inisialisasi status tombol
-            updateMergeButton();
-            updateSplitButton();
+            updatebtnMerge();
+            updatebtnSplit();
         });
     </script>
 @endpush

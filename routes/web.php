@@ -29,12 +29,12 @@ Route::middleware(['auth'])->group(function () {
     // Administrator & Operator Only
     Route::middleware(['roles:administrator,operator'])->group(function () {
         Route::get('/grouping', [WordGroupController::class, 'indexByVerse'])->name('wordgroups.indexByVerse');
-        Route::post('/word_groups/save', [WordGroupController::class, 'save'])->name('wordgroups.save');
-        Route::post('/word_groups/merge', [WordGroupController::class, 'merge'])
-            ->name('word_groups.merge');
-        Route::post('/word_groups/split', [WordGroupController::class, 'split'])
-            ->name('word_groups.split');
-        Route::post('/word_groups/complete', [WordGroupController::class, 'completeOrderNumber'])
-            ->name('word_groups.complete');
+        Route::post('/wordgroups/save', [WordGroupController::class, 'save'])->name('wordgroups.save');
+        Route::post('/wordgroups/merge', [WordGroupController::class, 'merge'])
+            ->name('wordgroups.merge');
+        Route::post('/wordgroups/split', [WordGroupController::class, 'split'])
+            ->name('wordgroups.split');
+        Route::post('/wordgroups/complete', [WordGroupController::class, 'completeOrderNumber'])
+            ->name('wordgroups.complete');
     });
 });

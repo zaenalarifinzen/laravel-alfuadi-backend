@@ -27,31 +27,6 @@ class WordGroupController extends Controller
     /**
      * Display a listing of the Word Group by Verse.
      */
-    // public function indexByVerse(Request $request)
-    // {
-    //     $surahId = $request->input('surah_id', 1);
-    //     $verseNum = $request->input('verse_number', 1);
-
-    //     // Kalau request tidak punya parameter, redirect ke URL dengan parameter default
-    //     if (! $request->has(['surah_id', 'verse_number'])) {
-    //         return redirect()->route('wordgroups.indexByVerse', [
-    //             'surah_id' => $surahId,
-    //             'verse_number' => $verseNum,
-    //         ]);
-    //     }
-
-    //     $surahs = DB::table('surahs')->select('id', 'name', 'verse_count')->get();
-    //     $currentSurah = DB::table('surahs')->where('id', $surahId)->first();
-
-    //     $wordgroups = DB::table('word_groups')
-    //         ->where('surah_id', '=', $request->input('surah_id', 1)) // default 1
-    //         ->where('verse_number', '=', $request->input('verse_number', 1)) // default 1
-    //         ->orderBy('order_number', 'asc')
-    //         ->paginate(100);
-
-    //     return view('pages.wordgroups.grouping', compact('surahs', 'wordgroups', 'currentSurah',
-    //     'verseNum'));
-    // }
     public function indexByVerse(Request $request)
     {
 
@@ -127,26 +102,28 @@ class WordGroupController extends Controller
         $validated = $request->validate([
             'surah_id' => 'required|integer',
             'verse_number' => 'required|integer',
-            'verse_id' => 'required|integer',
             'groups' => 'required|array',
             'groups.*.text' => 'required|string',
         ]);
 
         try {
             DB::transaction(function () use ($validated) {
-                if (! empty($validated['verse_id'])) {
-                    WordGroups::where('verse_id', $validated['verse_id'])->delete();
-                } else {
-                    WordGroups::where('surah_id', $validated['surah_id'])
-                        ->where('verse_number', $validated['verse_number'])
-                        ->delete();
+                $verse = Verse::where('surah_id', $validated['surah_id'])
+                    ->where('number', $validated['verse_number'])
+                    ->first();
+
+                if (! $verse) {
+                    throw new \Exception('Verse tidak ditemukan.');
                 }
+
+                // hapus dulu word group lama dari ayat ini
+                WordGroups::where('verse_id', $verse->id)->delete();
 
                 foreach ($validated['groups'] as $order => $group) {
                     WordGroups::create([
                         'surah_id' => $validated['surah_id'],
                         'verse_number' => $validated['verse_number'],
-                        'verse_id' => $validated['verse_id'],
+                        'verse_id' => $verse->id,
                         'text' => $group['text'],
                         'order_number' => $order + 1,
                         'editor' => auth()->id(),

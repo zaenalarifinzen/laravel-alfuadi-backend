@@ -46,7 +46,7 @@
                                         <option>Delete</option>
                                     </select> --}}
                                     {{-- <div class="mb-3">
-                                        <form id="merge-form" action="{{ route('word_groups.merge') }}" method="POST">
+                                        <form id="merge-form" action="{{ route('wordgroups.merge') }}" method="POST">
                                             @csrf
                                             <input type="hidden" name="ids" id="selected-ids">
                                             <button type="submit" class="btn btn-primary btn-lg disabled"
