@@ -209,9 +209,9 @@
 
                     <div class="col-12 d-flex justify-content-between align-items-center">
                         <div>
-                            <button type="button" class="btn btn-primary btn-lg mr-2" id="btn-prev-verse"><i
+                            <button type="button" class="btn btn-outline-primary btn-lg mr-2" id="btn-prev-verse"><i
                                     class="ion-chevron-left" data-pack="default" data-tags="arrow, left"></i></button>
-                            <button type="button" class="btn btn-primary btn-lg" id="btn-next-verse">
+                            <button type="button" class="btn btn-outline-primary btn-lg" id="btn-next-verse">
                                 <i class="ion-chevron-right" data-pack="default" data-tags="arrow, right"></i></button>
                         </div>
                         <div>
@@ -485,12 +485,8 @@
                             if (btnComplete) {
                                 if (isPersistedValue) {
                                     btnComplete.textContent = 'Update';
-                                    btnComplete.classList.remove('btn-primary');
-                                    btnComplete.classList.add('btn-warning');
                                 } else {
                                     btnComplete.textContent = 'Simpan & Lanjutkan';
-                                    btnComplete.classList.remove('btn-warning');
-                                    btnComplete.classList.add('btn-primary');
                                 }
                             }
                         } else {
