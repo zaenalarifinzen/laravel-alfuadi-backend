@@ -166,7 +166,7 @@
 
                             <div class="card-body">
                                 <div class="selectgroup selectgroup-pills arabic-container " dir="rtl"
-                                    id="wordgroup-list">
+                                    id="wordgroup-list" data-is-persisted="{{ $isPersisted ? '1' : '0' }}">
                                     @foreach ($words as $index => $word)
                                         <label class="selectgroup-item arabic-pill">
                                             <input type="checkbox" name="ids[]" value="{{ $word->id }}"
@@ -175,6 +175,8 @@
                                         </label>
                                     @endforeach
                                 </div>
+
+                                <input type="hidden" id="isPersisted" value="{{ $isPersisted ? 1 : 0 }}">
 
                                 <div class="clearfix mb-3"></div>
                                 <small id="merge-error" class="text-danger d-block mt-2" style="display: none;"></small>
@@ -475,6 +477,22 @@
 
                         if (newList) {
                             wordgroupList.innerHTML = newList.innerHTML;
+
+                            const isPersistedValue = newList.dataset.isPersisted === '1';
+                            const persistedInput = document.getElementById('isPersisted');
+                            if (persistedInput) persistedInput.value = isPersistedValue ? 1 : 0;
+
+                            if (btnComplete) {
+                                if (isPersistedValue) {
+                                    btnComplete.textContent = 'Update';
+                                    btnComplete.classList.remove('btn-primary');
+                                    btnComplete.classList.add('btn-warning');
+                                } else {
+                                    btnComplete.textContent = 'Simpan & Lanjutkan';
+                                    btnComplete.classList.remove('btn-warning');
+                                    btnComplete.classList.add('btn-primary');
+                                }
+                            }
                         } else {
                             wordgroupList.innerHTML =
                                 '<p class="text-muted">Tidak ada data untuk ayat ini.</p>';
