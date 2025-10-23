@@ -6,10 +6,15 @@
  */
 
 /*# sourceMappingURL=custom.css.map */
+@font-face {
+    font-family: "Uthmani";
+    src: url("../fonts/UthmanicHafs1Ver18.ttf") format("truetype");
+    font-display: swap;
+}
 
 @font-face {
     font-family: "LPMQ Isepmisbah";
-    src: url("{{ asset('fonts/lpmq-isepmisbah.ttf') }}") format('truetype');
+    src: url("../fonts/lpmq-isepmisbah.ttf") format("truetype");
     font-display: swap;
 }
 
@@ -74,13 +79,19 @@ a {
     color: #fff !important;
 }
 
-.btn-outline-primary, .btn-outline-primary.disabled {
-  border-color: #1d948e;
-  color: #1d948e;
+.btn-outline-primary,
+.btn-outline-primary.disabled {
+    border-color: #1d948e;
+    color: #1d948e;
 }
-.btn-outline-primary:hover, .btn-outline-primary:focus, .btn-outline-primary:active, .btn-outline-primary.disabled:hover, .btn-outline-primary.disabled:focus, .btn-outline-primary.disabled:active {
-  background-color: #1d948e !important;
-  color: #fff;
+.btn-outline-primary:hover,
+.btn-outline-primary:focus,
+.btn-outline-primary:active,
+.btn-outline-primary.disabled:hover,
+.btn-outline-primary.disabled:focus,
+.btn-outline-primary.disabled:active {
+    background-color: #1d948e !important;
+    color: #fff;
 }
 
 .card .card-header h4 {

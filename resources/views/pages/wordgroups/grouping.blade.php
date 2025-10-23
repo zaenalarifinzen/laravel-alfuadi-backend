@@ -10,18 +10,6 @@
         /* Font Arab */
         @import url('https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&family=Amiri&display=swap');
 
-        @font-face {
-            font-family: 'Uthmani';
-            src: url('{{ asset('fonts/UthmanicHafs1Ver18.ttf') }}') format('truetype');
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: "LPMQ Isepmisbah";
-            src: url("{{ asset('fonts/lpmq-isepmisbah.ttf') }}") format('truetype');
-            font-display: swap;
-        }
-
         .arabic-container {
             direction: rtl;
             text-align: right;
