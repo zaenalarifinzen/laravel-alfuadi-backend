@@ -7,11 +7,11 @@
 
 /*# sourceMappingURL=custom.css.map */
 
-/* @font-face {
-    font-family: "Cinzel Decorative";
-    src: url("//fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;9000");
+@font-face {
+    font-family: "LPMQ Isepmisbah";
+    src: url("{{ asset('fonts/lpmq-isepmisbah.ttf') }}") format('truetype');
     font-display: swap;
-} */
+}
 
 a {
     color: #138a84;
@@ -110,22 +110,22 @@ a {
     color: #138a84;
 }
 
-.swal-title {
+/* .swal-title {
     margin: 0px;
     font-family: "Scheherazade New", "Amiri", serif !important;
     font-size: 30px;
     color: black;
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.21);
     margin-bottom: 28px;
-}
+} */
 
-.swal-button {
+/* .swal-button {
     padding: 7px 19px;
     border-radius: 2px;
     background-color: #2aa576 !important;
     font-size: 12px;
     border: 1px solid #138a84 !important;
-}
+} */
 
 .card-footer .d-flex {
     flex-wrap: wrap; /* biarkan tombol turun ke baris baru jika ruang tidak cukup */

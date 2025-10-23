@@ -16,6 +16,12 @@
             font-display: swap;
         }
 
+        @font-face {
+            font-family: "LPMQ Isepmisbah";
+            src: url("{{ asset('fonts/lpmq-isepmisbah.ttf') }}") format('truetype');
+            font-display: swap;
+        }
+
         .arabic-container {
             direction: rtl;
             text-align: right;
@@ -28,7 +34,7 @@
 
         /* Gunakan font arab */
         .arabic-text {
-            font-family: 'Uthmani', 'Scheherazade New', 'Amiri', serif;
+            font-family: 'LPMQ Isepmisbah', 'Uthmani', 'Scheherazade New', 'Amiri', serif;
             font-size: 1.5rem !important;
             line-height: 3.2rem !important;
             direction: rtl;
@@ -120,11 +126,11 @@
             <div class="section-header d-flex justify-content-between align-items-center">
                 <h1>Grup Kalimat</h1>
 
-                <div class="ltr-container">
+                <div class="float-right">
                     <form method="GET" action="{{ route('wordgroups.indexByVerse') }}" id="filter-form" class="mb-0">
                         <div class="input-group">
                             <select class="form-control select2" name="surah_id" id="surah-id"
-                                style="flex: 5; border-top-left-radius: 0.5rem; border-bottom-left-radius: 0.5rem;"
+                                style="flex: 3; border-top-left-radius: 0.5rem; border-bottom-left-radius: 0.5rem;"
                                 required>
                                 @foreach ($surahs as $surah)
                                     <option value="{{ $surah->id }}" data-verse-count="{{ $surah->verse_count }}"
@@ -134,9 +140,9 @@
                                 @endforeach
                             </select>
 
-                            <select class="form-control select2" name="verse_number" id="verse-number" style="flex: 2;"
+                            <select class="form-control select2" name="verse_number" id="verse-number" style="flex: 1;"
                                 required>
-                                <option value="">Pilih Ayat</option>
+                                <option value="">1</option>
                             </select>
 
                             <div class="input-group-append">
@@ -266,6 +272,7 @@
             const currentVerseId = document.getElementById('verse-id').value;
 
             const resultLabel = document.getElementById('result-verse');
+            var modified = false;
             const errorMsg = document.getElementById('merge-error');
 
             // =============================
@@ -388,6 +395,8 @@
                 // Hapus semua label yang tergabung
                 selectedCheckboxes.forEach(cb => cb.closest('.selectgroup-item').remove());
 
+                modified = true;
+
                 // Re-bind event ke elemen baru
                 bindCheckboxEvents();
                 updatebtnMerge();
@@ -447,6 +456,10 @@
 
                 // Hapus label lama
                 label.remove();
+
+                modified = true;
+
+
 
                 // Re-bind event ke elemen baru
                 bindCheckboxEvents();
@@ -523,6 +536,27 @@
                     });
             }
 
+            function showEditConfirmation() {
+                return swal({
+                    icon: 'warning',
+                    title: 'Perubahan belum disimpan',
+                    text: 'Abaikan perubahan yang sudah ada?',
+                    buttons: {
+                        cancel: {
+                            text: 'Kembali',
+                            visible: true,
+                            className: 'btn btn-succes'
+                        },
+                        confirm: {
+                            text: 'Abaikan',
+                            visible: true,
+                            className: 'btn btn-warning'
+                        }
+                    },
+                    dangerMode: true,
+                });
+            }
+
             function updateVerseOptions() {
                 const selected = currentSurahId.options[currentSurahId.selectedIndex];
                 const verseCount = selected ? selected.getAttribute('data-verse-count') : 0;
@@ -546,29 +580,48 @@
                 }
             }
 
-            function handleFilterSubmit(e) {
+            async function handleFilterSubmit(e) {
                 e.preventDefault();
+
+                if (modified) {
+                    const confirmed = await showEditConfirmation()
+                    if (!confirmed) return;
+                };
+
                 fetchVerse(currentSurahId.value, currentVerseNumber.value);
+                modified = false;
             }
 
             // =============================
             // FUNGSI NAVIGASI AYAT
             // =============================
 
-            function goToPrevVerse() {
+            async function goToPrevVerse() {
+                if (modified) {
+                    const confirmed = await showEditConfirmation()
+                    if (!confirmed) return;
+                };
+
                 let verseNumber = parseInt(currentVerseNumber.value);
                 if (verseNumber > 1) {
                     currentVerseNumber.value = verseNumber - 1;
                     fetchVerse(currentSurahId.value, currentVerseNumber.value);
+                    modified = false;
                 }
             }
 
-            function goToNextVerse() {
+            async function goToNextVerse() {
+                if (modified) {
+                    const confirmed = await showEditConfirmation()
+                    if (!confirmed) return;
+                };
+
                 let verseNumber = parseInt(currentVerseNumber.value);
                 const max = currentVerseNumber.options.length;
                 if (verseNumber < max) {
                     currentVerseNumber.value = verseNumber + 1;
                     fetchVerse(currentSurahId.value, currentVerseNumber.value);
+                    modified = false;
                 }
             }
 
