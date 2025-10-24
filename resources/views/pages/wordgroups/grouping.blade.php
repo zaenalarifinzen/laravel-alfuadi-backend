@@ -153,7 +153,7 @@
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <input type="hidden" id="verse-id" value="{{ $verse->id }}">
                                 <input type="hidden" id="verse-number" value="{{ $verseNumber }}">
-                                <h4 id="result-verse" class="mb-0">{{ $currentSurahId->name ?? 'Al-Fatihah' }} - Ayat
+                                <h4 id="result-verse" class="mb-0">{{ $currentSurah->name ?? 'Al-Fatihah' }} - Ayat
                                     {{ $verseNumber ?? 1 }}</h4>
                             </div>
 
