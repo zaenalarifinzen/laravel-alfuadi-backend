@@ -105,6 +105,45 @@
             justify-content: flex-start !important;
             align-items: center !important;
         }
+
+        .floating-buttons {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            padding: 8px 10px;
+            width: auto;
+            max-width: calc(100% - 32px);
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 10px;
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3 ease;
+            flex-wrap: nowrap;
+            max-width: fit-content;
+        }
+
+        .floating-buttons.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        @media (max-width: 400px) {
+            .floating-buttons {
+                gap: 5px;
+                padding: 6px 8px;
+            }
+
+            .floating-buttons .btn-icon {
+                width: 40px;
+                height: 40px;
+            }
+        }
     </style>
 @endpush
 
@@ -177,7 +216,8 @@
 
                             </div>
                             <div class="card-footer">
-                                <div class="d-flex gap-2 mb-3 justify-content-center align-items-center flex-wrap">
+                                <div id="button-bar"
+                                    class="d-flex gap-2 mb-3 justify-content-center align-items-center flex-wrap">
                                     <button type="submit" id="btn-unselect" class="btn btn-icon btn-lg btn-secondary"
                                         data-toggle="tooltip" data-placement="top" title="Bersihkan Pilihan"><i
                                             class="fa-regular fa-circle-xmark"></i></button>
@@ -198,6 +238,32 @@
                                         <button type="submit" class="btn btn-icon btn-lg btn-success disabled"
                                             id="btn-merge" data-toggle="tooltip" data-placement="top" title="Gabungkan"><i
                                                 class="fa-solid fa-magnet"></i>
+                                        </button>
+                                    </form>
+                                </div>
+
+                                <div id="floating-buttons"
+                                    class="floating-buttons d-flex gap-2 mb-3 justify-content-center align-items-center flex-nowrap">
+                                    <button type="submit" id="btn-unselect" class="btn btn-icon btn-lg btn-secondary"
+                                        data-toggle="tooltip" data-placement="top" title="Bersihkan Pilihan"><i
+                                            class="fa-regular fa-circle-xmark"></i></button>
+                                    <button type="submit" id="btn-edit" class="btn btn-icon btn-lg btn-info disabled"
+                                        data-toggle="tooltip" data-placement="top" title="Edit"><i
+                                            class="fa-solid fa-pencil"></i></button>
+                                    <form id="split-form" action="{{ route('wordgroups.split') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="id" id="split-id">
+                                        <button type="submit" class="btn btn-icon btn-lg btn-warning disabled"
+                                            id="btn-split" data-toggle="tooltip" data-placement="top"
+                                            title="Pisahkan"><i class="fa-solid fa-scissors"></i>
+                                        </button>
+                                    </form>
+                                    <form id="merge-form" action="{{ route('wordgroups.merge') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="ids" id="selected-ids">
+                                        <button type="submit" class="btn btn-icon btn-lg btn-success disabled"
+                                            id="btn-merge" data-toggle="tooltip" data-placement="top"
+                                            title="Gabungkan"><i class="fa-solid fa-magnet"></i>
                                         </button>
                                     </form>
                                 </div>
@@ -821,6 +887,23 @@
                     save();
                 });
             }
+
+            // Event listener untuk floating tombol
+            const buttonBar = document.getElementById('button-bar');
+            const floatingButton = document.getElementById('floating-buttons');
+
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        floatingButton.classList.remove('show');
+                    } else {
+                        floatingButton.classList.add('show');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            if (buttonBar) observer.observe(buttonBar);
 
             // Event listener untuk navigasi ayat
             btnPrev.addEventListener('click', goToPrevVerse);
