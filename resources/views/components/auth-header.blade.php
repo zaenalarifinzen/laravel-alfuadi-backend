@@ -1,7 +1,7 @@
  <div class="login-brand">
-     <img src="{{ asset('img/alfuadi_splash_icon.png') }}"
+     <img src="{{ asset('img/alfuadi_splash_icon.svg') }}"
          alt="logo"
-         width="150"
+         height="70"
          {{-- class="shadow-light rounded-circle"> --}}
          >
  </div>

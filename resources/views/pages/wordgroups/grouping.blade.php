@@ -178,22 +178,26 @@
                             </div>
                             <div class="card-footer">
                                 <div class="d-flex gap-2 mb-3 justify-content-center align-items-center flex-wrap">
-                                    <button type="button" id="btn-unselect"
-                                        class="btn btn-secondary btn-lg mr-2">Bersihkan</button>
-                                    <form id="merge-form" action="{{ route('wordgroups.merge') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="ids" id="selected-ids">
-                                        <button type="submit"
-                                            class="btn btn-icon icon-left btn-success btn-lg mr-2 disabled"
-                                            id="btn-merge">Gabungkan
-                                        </button>
-                                    </form>
+                                    <button type="submit" id="btn-unselect" class="btn btn-icon btn-lg btn-secondary"
+                                        data-toggle="tooltip" data-placement="top" title="Bersihkan Pilihan"><i
+                                            class="fa-regular fa-circle-xmark"></i></button>
+                                    <button type="submit" id="btn-edit" class="btn btn-icon btn-lg btn-info disabled"
+                                        data-toggle="tooltip" data-placement="top" title="Edit"><i
+                                            class="fa-solid fa-pencil"></i></button>
                                     <form id="split-form" action="{{ route('wordgroups.split') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id" id="split-id">
-                                        <button type="submit"
-                                            class="btn btn-icon icon-left btn-warning btn-lg mr-2 disabled"
-                                            id="btn-split">Pisahkan
+                                        <button type="submit" class="btn btn-icon btn-lg btn-warning disabled"
+                                            id="btn-split" data-toggle="tooltip" data-placement="top" title="Pisahkan"><i
+                                                class="fa-solid fa-scissors"></i>
+                                        </button>
+                                    </form>
+                                    <form id="merge-form" action="{{ route('wordgroups.merge') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="ids" id="selected-ids">
+                                        <button type="submit" class="btn btn-icon btn-lg btn-success disabled"
+                                            id="btn-merge" data-toggle="tooltip" data-placement="top" title="Gabungkan"><i
+                                                class="fa-solid fa-magnet"></i>
                                         </button>
                                     </form>
                                 </div>
@@ -241,6 +245,7 @@
             // VARIABEL GLOBAL
             // =============================
             const btnUnselect = document.getElementById('btn-unselect');
+            const btnEdit = document.getElementById('btn-edit');
             const btnMerge = document.getElementById('btn-merge');
             const btnSplit = document.getElementById('btn-split');
             const btnPrev = document.getElementById('btn-prev-verse');
@@ -297,15 +302,19 @@
                 }
             }
 
-            function updatebtnSplit() {
+            function updatebtnEditAndSplit() {
                 const checkboxes = getCheckboxes();
                 const checked = Array.from(checkboxes).filter(x => x.checked);
                 if (checked.length === 1) {
+                    btnEdit.classList.remove('disabled');
                     btnSplit.classList.remove('disabled');
+                    btnEdit.disabled = false;
                     btnSplit.disabled = false;
                     splitIdInput.value = checked[0].value;
                 } else {
+                    btnEdit.classList.add('disabled');
                     btnSplit.classList.add('disabled');
+                    btnEdit.disabled = true;
                     btnSplit.disabled = true;
                     splitIdInput.value = '';
                 }
@@ -316,7 +325,7 @@
                 const checkboxes = getCheckboxes();
                 checkboxes.forEach(cb => cb.addEventListener('change', () => {
                     updatebtnMerge();
-                    updatebtnSplit();
+                    updatebtnEditAndSplit();
                 }));
             }
 
@@ -388,7 +397,7 @@
                 // Re-bind event ke elemen baru
                 bindCheckboxEvents();
                 updatebtnMerge();
-                updatebtnSplit();
+                updatebtnEditAndSplit();
 
             }
 
@@ -452,8 +461,76 @@
                 // Re-bind event ke elemen baru
                 bindCheckboxEvents();
                 updatebtnMerge();
-                updatebtnSplit();
+                updatebtnEditAndSplit();
 
+            }
+
+            // =============================
+            // FUNGSI UNTUK EDIT KALIMAT
+            // =============================
+
+            async function handleEditSubmit(e) {
+                e.preventDefault();
+
+                const checkboxes = getCheckboxes();
+                const selectedCheckboxes = Array.from(checkboxes).filter(cb => cb.checked);
+
+                // Reset pesan error
+                errorMsg.style.display = 'none';
+                errorMsg.textContent = '';
+
+                if (btnEdit.classList.contains('disabled')) {
+                    e.preventDefault();
+                    return;
+                }
+
+                if (selectedCheckboxes.length !== 1) {
+                    alert('Pilih 1 kalimah untuk diedit');
+                    return;
+                }
+
+                const selectedCheckbox = selectedCheckboxes[0];
+                const label = selectedCheckbox.closest('.selectgroup-item');
+                const textButton = label.querySelector('.selectgroup-button');
+                const currentText = `  ${textButton.textContent}  `;
+
+                const newText = await swal({
+                    title: 'Edit Kalimat',
+                    content: {
+                        element: 'input',
+                        attributes: {
+                            className: 'swal-content__input arabic-text',
+                            placeholder: 'Masukkan teks',
+                            value: currentText,
+                            type: 'text',
+
+                        },
+                    },
+                    buttons: {
+                        cancel: {
+                            text: 'Batal',
+                            visible: true,
+                            // className: 'btn btn-succes'
+                        },
+                        confirm: {
+                            text: 'Submit',
+                            visible: true,
+                            className: 'btn-success'
+                        }
+                    },
+                });
+
+                if (!newText) return;
+
+                // Set teks baru pada elemen yang sama
+                textButton.textContent = newText.trim();
+
+                modified = true;
+
+                // Re-bind / update state
+                bindCheckboxEvents();
+                updatebtnMerge();
+                updatebtnEditAndSplit();
             }
 
 
@@ -515,7 +592,7 @@
                         updateResultText();
                         bindCheckboxEvents(); // Re-bind event checkbox baru setelah data dimuat
                         updatebtnMerge();
-                        updatebtnSplit(); // Jangan lupa update split button juga
+                        updatebtnEditAndSplit(); // Jangan lupa update split button juga
                     })
                     .catch(err => {
                         console.error(err);
@@ -533,16 +610,39 @@
                         cancel: {
                             text: 'Kembali',
                             visible: true,
-                            className: 'btn btn-succes'
                         },
                         confirm: {
                             text: 'Abaikan',
                             visible: true,
-                            className: 'btn btn-warning'
+                            className: 'btn-success'
                         }
                     },
-                    dangerMode: true,
                 });
+            }
+
+            function showEditForm() {
+                return swal({
+                    title: 'Edit Kamimat',
+                    content: {
+                        element: 'input',
+                        attributes: {
+                            placeholder: 'Type your name',
+                            type: 'text',
+                        },
+                    },
+                    buttons: {
+                        cancel: {
+                            text: 'Batal',
+                            visible: true,
+                            className: 'btn btn-succes'
+                        },
+                        confirm: {
+                            text: 'Submit',
+                            visible: true,
+                            className: 'btn-success'
+                        }
+                    },
+                })
             }
 
             function updateVerseOptions() {
@@ -627,15 +727,13 @@
                         cancel: {
                             text: 'Batal',
                             visible: true,
-                            className: 'btn btn-danger'
                         },
                         confirm: {
                             text: 'Simpan',
                             visible: true,
-                            className: 'btn btn-success'
-                        }
+                            className: 'btn-success'
+                        },
                     },
-                    dangerMode: true,
                 }).then((willSave) => {
                     if (!willSave) return;
 
@@ -690,12 +788,15 @@
                 const checkboxes = getCheckboxes();
                 checkboxes.forEach(cb => cb.checked = false);
                 updatebtnMerge();
-                updatebtnSplit(); // Update split button juga
+                updatebtnEditAndSplit(); // Update split button juga
 
                 // Reset pesan error
                 errorMsg.style.display = 'none';
                 errorMsg.textContent = '';
             });
+
+            // Event listener untuk form merge
+            btnEdit.addEventListener('click', handleEditSubmit);
 
             // Event listener untuk form merge
             mergeForm.addEventListener('submit', handleMergeSubmit);
@@ -734,7 +835,7 @@
 
             // Inisialisasi status tombol
             updatebtnMerge();
-            updatebtnSplit();
+            updatebtnEditAndSplit();
         });
     </script>
 @endpush

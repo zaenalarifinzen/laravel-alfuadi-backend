@@ -79,6 +79,17 @@ a {
     color: #fff !important;
 }
 
+.btn-success, .btn-success.disabled {
+  box-shadow: 0 2px 6px #81d694;
+  /* background-color: #28A745; */
+  border-color: #47c363;
+  color: #fff;
+}
+.btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success.disabled:hover, .btn-success.disabled:focus, .btn-success.disabled:active {
+  background-color: #3bb557 !important;
+  color: #fff !important;
+}
+
 .btn-outline-primary,
 .btn-outline-primary.disabled {
     border-color: #1d948e;
@@ -94,12 +105,32 @@ a {
     color: #fff;
 }
 
+.card.card-primary {
+    border-top: 2px solid #1d948e;
+}
+
 .card .card-header h4 {
     font-size: 16px;
     line-height: 28px;
     color: #138a84;
     padding-right: 10px;
     margin-bottom: 0;
+}
+
+/* 3.2 Form */
+.form-control,
+.input-group-text,
+.custom-select,
+.custom-file-label {
+    background-color: #fdfdff;
+    border-color: #e4e6fc;
+}
+.form-control:focus,
+.input-group-text:focus,
+.custom-select:focus,
+.custom-file-label:focus {
+    background-color: #fefeff;
+    border-color: #6dc2bc;
 }
 
 .main-sidebar .sidebar-brand a {
@@ -138,6 +169,50 @@ a {
     border: 1px solid #138a84 !important;
 } */
 
+/* 1.25 Sweet Alert */
+.swal-button {
+    border-radius: 3px;
+    font-size: 16px;
+}
+.swal-button:focus {
+    box-shadow: none;
+}
+.swal-button.swal-button--confirm {
+    box-shadow: 0 2px 6px #d4fadd;
+    background-color: #28A745;
+    padding: 10px 24px;
+}
+.swal-button.swal-button--confirm:focus {
+    opacity: 0.8;
+}
+
+.swal-footer {
+    text-align: center;
+}
+
+.swal-text {
+    text-align: center;
+    line-height: 24px;
+    font-weight: 500;
+}
+
+.swal-content__input,
+.swal-content__textarea {
+    font-size: 30px;
+    font-family: "LPMQ Isepmisbah";
+    justify-items: center;
+    display: block;
+    box-sizing: border-box;
+    border-radius: 8px !important;
+    width: 100%;
+    height: 100%;
+}
+
+.swal-content__input:focus,
+.swal-content__textarea:focus {
+    border: 1px solid #138a84;
+}
+
 .card-footer .d-flex {
     flex-wrap: wrap; /* biarkan tombol turun ke baris baru jika ruang tidak cukup */
     gap: 0.5rem; /* jarak antar item */
@@ -148,28 +223,9 @@ a {
     margin-bottom: 0 !important;
 }
 
-/* Responsif: layar kecil (mobile) */
-@media (max-width: 576px) {
-    .card-footer .d-flex > * {
-        flex: 1 1 100%; /* setiap item mengambil 100% lebar baris */
-    }
-
-    .card-footer .d-flex form {
-        display: block;
-        width: 100%;
-        margin: 0;
-        padding: 0;
-    }
-
-    .card-footer .d-flex .btn {
-        width: 100%;
-        white-space: normal; /* teks tombol akan wrap, tidak memaksa lebar */
-        text-align: center;
-    }
-
-    /* jika ingin mengecilkan ukuran tombol pada mobile */
-    .card-footer .d-flex .btn.btn-lg {
-        padding: 0.5rem 0.75rem;
-        font-size: 0.95rem;
-    }
+.custom-radio .custom-control-input:checked ~ .custom-control-label::before,
+.custom-control-input:checked ~ .custom-control-label::before {
+    background-color: #1d948e !important;
 }
+
+
