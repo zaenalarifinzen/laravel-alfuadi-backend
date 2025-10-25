@@ -24,6 +24,9 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['roles:administrator'])->group(function () {
         Route::resource('users', UserController::class);
         Route::resource('products', ProductController::class);
+        Route::get('/example', function () {
+            return view('pages.Template.forms-advanced-form');
+        })->name('page.templatepage');; // Template Page
     });
 
     // Administrator & Operator Only

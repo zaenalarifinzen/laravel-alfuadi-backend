@@ -50,9 +50,13 @@
                     <a class="nav-link" href="{{ route('users.index') }}"><i class="fas fa-user"></i>
                         <span>User</span></a>
                 </li>
-                <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
+                {{-- <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('products.index') }}"><i class="fas fa-utensils"></i>
                         <span>Products</span></a>
+                </li> --}}
+                <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('page.templatepage') }}"><i class="fa-solid fa-file-lines"></i>
+                        <span>Template</span></a>
                 </li>
             @endif
     </aside>

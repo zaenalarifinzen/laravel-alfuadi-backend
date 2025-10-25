@@ -6,6 +6,7 @@
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="{{ asset('library/selectric/public/selectric.css') }}">
     <link rel="stylesheet" href="{{ asset('library/ionicons201/css/ionicons.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('library/select2/dist/css/select2.min.css') }}">
     <style>
         /* Font Arab */
         @import url('https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&family=Amiri&display=swap');
@@ -129,7 +130,7 @@
         }
 
         .floating-buttons.show {
-            opacity: 1;
+            opacity: 0;
             pointer-events: auto;
         }
 
@@ -156,20 +157,20 @@
                 <div class="float-right">
                     <form method="GET" action="{{ route('wordgroups.indexByVerse') }}" id="filter-form" class="mb-0">
                         <div class="input-group">
-                            <select class="form-control select2" name="surah_id" id="surah-id"
+                            <select class="form-control {{-- select2 --}} form-control-sm" name="surah-option" id="surah-option"
                                 style="flex: 3; border-top-left-radius: 0.5rem; border-bottom-left-radius: 0.5rem;"
                                 required>
+                                <option value="">Pilih Surah</option>
                                 @foreach ($surahs as $surah)
-                                    <option value="{{ $surah->id }}" data-verse-count="{{ $surah->verse_count }}"
-                                        {{ request('surah_id') == $surah->id ? 'selected' : '' }}>
+                                    <option value="{{ $surah->id }}" data-verse-count="{{ $surah->verse_count }}">
                                         {{ $surah->name }}
                                     </option>
                                 @endforeach
                             </select>
 
-                            <select class="form-control select2" name="verse_number" id="verse-number" style="flex: 1;"
-                                required>
-                                <option value="">1</option>
+                            <select class="form-control {{-- select2 --}} form-control-sm" name="verse-option" id="verse-option"
+                                style="flex: 2;" required>
+                                <option value="">Ayat</option>
                             </select>
 
                             <div class="input-group-append">
@@ -190,16 +191,19 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
-                                <input type="hidden" id="verse-id" value="{{ $verse->id }}">
-                                <input type="hidden" id="verse-number" value="{{ $verseNumber }}">
+                                <input type="hidden" id="surah-id" value="{{ $currentSurah->id }}">
+                                <input type="hidden" id="verse-number" value="{{ $currentVerse->number }}">
+                                <input type="hidden" id="isPersisted" value="{{ $isPersisted ? 1 : 0 }}">
                                 <h4 id="result-verse" class="mb-0">{{ $currentSurah->name ?? 'Al-Fatihah' }} - Ayat
-                                    {{ $verseNumber ?? 1 }}</h4>
+                                    {{ $currentVerse->number ?? 1 }}</h4>
                             </div>
 
 
                             <div class="card-body">
                                 <div class="selectgroup selectgroup-pills arabic-container " dir="rtl"
-                                    id="wordgroup-list" data-is-persisted="{{ $isPersisted ? '1' : '0' }}">
+                                    id="wordgroup-list" data-is-persisted="{{ $isPersisted ? '1' : '0' }}"
+                                    data-surah-name="{{ $currentSurah->name }}"
+                                    data-verse-number="{{ $currentVerse->number }}">
                                     @foreach ($words as $index => $word)
                                         <label class="selectgroup-item arabic-pill">
                                             <input type="checkbox" name="ids[]" value="{{ $word->id }}"
@@ -208,8 +212,6 @@
                                         </label>
                                     @endforeach
                                 </div>
-
-                                <input type="hidden" id="isPersisted" value="{{ $isPersisted ? 1 : 0 }}">
 
                                 <div class="clearfix mb-3"></div>
                                 <small id="merge-error" class="text-danger d-block mt-2" style="display: none;"></small>
@@ -236,8 +238,8 @@
                                         @csrf
                                         <input type="hidden" name="ids" id="selected-ids">
                                         <button type="submit" class="btn btn-icon btn-lg btn-success disabled"
-                                            id="btn-merge" data-toggle="tooltip" data-placement="top" title="Gabungkan"><i
-                                                class="fa-solid fa-magnet"></i>
+                                            id="btn-merge" data-toggle="tooltip" data-placement="top"
+                                            title="Gabungkan"><i class="fa-solid fa-magnet"></i>
                                         </button>
                                     </form>
                                 </div>
@@ -300,6 +302,7 @@
     <!-- JS Libraies -->
     <script src="{{ asset('library/selectric/public/jquery.selectric.min.js') }}"></script>
     <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('library/select2/dist/js/select2.full.min.js') }}"></script>
 
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/features-posts.js') }}"></script>
@@ -324,15 +327,15 @@
             const mergeForm = document.getElementById('merge-form');
             const splitForm = document.getElementById('split-form');
 
-
+            const surahOption = document.getElementById('surah-option');
+            const verseOption = document.getElementById('verse-option');
             const wordgroupList = document.getElementById('wordgroup-list');
             const currentSurahId = document.getElementById('surah-id');
             const currentVerseNumber = document.getElementById('verse-number');
-            const currentVerseId = document.getElementById('verse-id').value;
 
             const resultLabel = document.getElementById('result-verse');
-            var modified = false;
             const errorMsg = document.getElementById('merge-error');
+            let modified = false;
 
             // =============================
             // FUNGSI UTILITAS
@@ -522,13 +525,10 @@
 
                 modified = true;
 
-
-
                 // Re-bind event ke elemen baru
                 bindCheckboxEvents();
                 updatebtnMerge();
                 updatebtnEditAndSplit();
-
             }
 
             // =============================
@@ -599,12 +599,12 @@
                 updatebtnEditAndSplit();
             }
 
-
             // =============================
-            // FUNGSI UNTUK FILTER SURAH & AYAT
+            // FUNGSI UNTUK FETCH AYAT
             // =============================
 
             function fetchVerse(surahId, verseNumber) {
+                wordgroupList.innerHTML = '<p class="text-info">Memuat data...</p>';
                 if (!surahId || !verseNumber) {
                     alert('Pilih Surah dan Ayat terlebih dahulu!');
                     return;
@@ -633,11 +633,16 @@
                                     btnComplete.textContent = 'Simpan & Lanjutkan';
                                 }
                             }
+
+                            const surahName = newList.dataset.surahName || '';
+                            const verseNum = newList.dataset.verseNumber || verseNumber;
+                            updateResultText(surahName, verseNum);
                         } else {
                             wordgroupList.innerHTML =
                                 '<p class="text-muted">Tidak ada data untuk ayat ini.</p>';
                         }
 
+                        currentSurahId.value = surahId;
                         currentVerseNumber.value = verseNumber;
 
                         // Update URL di address bar
@@ -655,10 +660,13 @@
                             if (verseInput) verseInput.value = verseNumber;
                         }
 
-                        updateResultText();
-                        bindCheckboxEvents(); // Re-bind event checkbox baru setelah data dimuat
+                        bindCheckboxEvents();
                         updatebtnMerge();
-                        updatebtnEditAndSplit(); // Jangan lupa update split button juga
+                        updatebtnEditAndSplit();
+                        updateVerseOptions();
+
+                        surahOption.value = '';
+                        verseOption.value = '';
                     })
                     .catch(err => {
                         console.error(err);
@@ -666,6 +674,20 @@
                             '<p class="text-danger">Terjadi kesalahan mengambil data.</p>';
                     });
             }
+
+            function updateResultText(surahName, verseNumber) {
+                const resultLabel = document.getElementById('result-verse');
+                if (!resultLabel) return;
+
+                if (surahName && verseNumber) {
+                    resultLabel.textContent = `${surahName} - Ayat ${verseNumber}`;
+                } else if (surahName) {
+                    resultLabel.textContent = surahName;
+                } else {
+                    resultLabel.textContent = 'Ayat Terpilih';
+                }
+            }
+
 
             function showEditConfirmation() {
                 return swal({
@@ -686,51 +708,19 @@
                 });
             }
 
-            function showEditForm() {
-                return swal({
-                    title: 'Edit Kamimat',
-                    content: {
-                        element: 'input',
-                        attributes: {
-                            placeholder: 'Type your name',
-                            type: 'text',
-                        },
-                    },
-                    buttons: {
-                        cancel: {
-                            text: 'Batal',
-                            visible: true,
-                            className: 'btn btn-succes'
-                        },
-                        confirm: {
-                            text: 'Submit',
-                            visible: true,
-                            className: 'btn-success'
-                        }
-                    },
-                })
-            }
-
             function updateVerseOptions() {
-                const selected = currentSurahId.options[currentSurahId.selectedIndex];
+                const selected = surahOption.options[surahOption.selectedIndex];
                 const verseCount = selected ? selected.getAttribute('data-verse-count') : 0;
                 const currentVerse = "{{ request('verse_number') }}";
-                currentVerseNumber.innerHTML = '<option value="1">1</option>';
-                for (let i = 2; i <= verseCount; i++) {
-                    currentVerseNumber.innerHTML +=
-                        `<option value="${i}" ${currentVerse == i ? 'selected' : ''}>${i}</option>`;
+                for (let i = 1; i <= verseCount; i++) {
+                    verseOption.innerHTML +=
+                        `<option value="${i}">${i}</option>`;
                 }
-            }
 
-            function updateResultText() {
-                const surahName = currentSurahId.options[currentSurahId.selectedIndex]?.text || '';
-                const verseNumber = currentVerseNumber.value;
-                if (surahName && verseNumber) {
-                    resultLabel.textContent = `${surahName} - Ayat ${verseNumber}`;
-                } else if (surahName) {
-                    resultLabel.textContent = `${surahName}`;
+                if (surahOption.value) {
+                    verseOption.value = 1;
                 } else {
-                    resultLabel.textContent = 'Ayat Terpilih';
+                    verseOption.innerHTML = '<option value="">Ayat</option>';
                 }
             }
 
@@ -742,8 +732,9 @@
                     if (!confirmed) return;
                 };
 
-                fetchVerse(currentSurahId.value, currentVerseNumber.value);
+                fetchVerse(surahOption.value, verseOption.value);
                 modified = false;
+                console.log(`Surah Id = ${surahOption.value} Verse = ${verseOption.value}`)
             }
 
             // =============================
@@ -771,7 +762,7 @@
                 };
 
                 let verseNumber = parseInt(currentVerseNumber.value);
-                const max = currentVerseNumber.options.length;
+                const max = verseOption ? verseOption.length : 0;
                 if (verseNumber < max) {
                     currentVerseNumber.value = verseNumber + 1;
                     fetchVerse(currentSurahId.value, currentVerseNumber.value);
@@ -874,9 +865,9 @@
             filterForm.addEventListener('submit', handleFilterSubmit);
 
             // Event listener untuk perubahan surah
-            currentSurahId.addEventListener('change', function() {
+            surahOption.addEventListener('change', function() {
                 updateVerseOptions();
-                currentVerseNumber.selectedIndex = 0;
+                verseOption.selectedIndex = 0;
             });
 
             // Event listener untuk simpan
@@ -914,7 +905,7 @@
             // =============================
 
             // Inisialisasi opsi ayat jika surah sudah dipilih
-            if (currentSurahId.value) updateVerseOptions();
+            if (surahOption.value) updateVerseOptions();
 
             // Inisialisasi status tombol
             updatebtnMerge();

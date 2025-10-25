@@ -36,15 +36,15 @@ class WordGroupController extends Controller
         $verseNumber = $request->input('verse_number', 1);
 
         // ambil data dari tabel verses
-        $verse = Verse::where('surah_id', $surahId)
+        $currentVerse = Verse::where('surah_id', $surahId)
             ->where('number', $verseNumber)
             ->first();
 
-        if (! $verse) {
+        if (! $currentVerse) {
             return redirect()->back()->with('error', 'Ayat tidak ditemukan');
         }
 
-        $existing = WordGroups::where('verse_id', $verse->id)
+        $existing = WordGroups::where('verse_id', $currentVerse->id)
             ->orderBy('order_number', 'asc')
             ->get();
 
@@ -54,13 +54,13 @@ class WordGroupController extends Controller
             $isPersisted = true;
         } else {
             // split dari verse berdasarkan spasi
-            $splitWords = preg_split('/\s+/', trim($verse->text));
-            $words = collect($splitWords)->map(function ($word, $index) use ($verse) {
+            $splitWords = preg_split('/\s+/', trim($currentVerse->text));
+            $words = collect($splitWords)->map(function ($word, $index) use ($currentVerse) {
                 return (object) [
                     'id' => $index + 1,
-                    'surah_id' => $verse->surah_id,
-                    'verse_id' => $verse->id,
-                    'verse_number' => $verse->number,
+                    'surah_id' => $currentVerse->surah_id,
+                    'verse_id' => $currentVerse->id,
+                    'verse_number' => $currentVerse->number,
                     'text' => $word,
                 ];
             });
@@ -68,7 +68,7 @@ class WordGroupController extends Controller
         }
 
         // kirim data ke view
-        return view('pages.wordgroups.grouping', compact('surahs', 'words', 'currentSurah', 'verse', 'verseNumber', 'isPersisted'));
+        return view('pages.wordgroups.grouping', compact('surahs', 'currentSurah', 'currentVerse', 'words', 'isPersisted'));
     }
 
     /**
