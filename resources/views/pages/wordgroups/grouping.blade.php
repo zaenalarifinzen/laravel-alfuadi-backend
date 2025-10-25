@@ -202,7 +202,7 @@
                             <div class="card-body">
                                 <div class="selectgroup selectgroup-pills arabic-container " dir="rtl"
                                     id="wordgroup-list" data-is-persisted="{{ $isPersisted ? '1' : '0' }}"
-                                    data-surah-name="{{ $currentSurah->name }}"
+                                    data-surah-name="{{ $currentSurah->name }}" data-verse-count="{{ $currentSurah->verse_count }}"
                                     data-verse-number="{{ $currentVerse->number }}">
                                     @foreach ($words as $index => $word)
                                         <label class="selectgroup-item arabic-pill">
@@ -336,6 +336,7 @@
             const resultLabel = document.getElementById('result-verse');
             const errorMsg = document.getElementById('merge-error');
             let modified = false;
+            let maxVerse = parseInt(wordgroupList.dataset.verseCount) || 0;
 
             // =============================
             // FUNGSI UTILITAS
@@ -604,7 +605,7 @@
             // =============================
 
             function fetchVerse(surahId, verseNumber) {
-                wordgroupList.innerHTML = '<p class="text-info">Memuat data...</p>';
+                wordgroupList.innerHTML = '<p class="text-info">Loading</p>';
                 if (!surahId || !verseNumber) {
                     alert('Pilih Surah dan Ayat terlebih dahulu!');
                     return;
@@ -633,6 +634,8 @@
                                     btnComplete.textContent = 'Simpan & Lanjutkan';
                                 }
                             }
+
+                            maxVerse = newList.dataset.verseCount;
 
                             const surahName = newList.dataset.surahName || '';
                             const verseNum = newList.dataset.verseNumber || verseNumber;
@@ -734,7 +737,7 @@
 
                 fetchVerse(surahOption.value, verseOption.value);
                 modified = false;
-                console.log(`Surah Id = ${surahOption.value} Verse = ${verseOption.value}`)
+                // console.log(`Surah Id = ${surahOption.value} Verse = ${verseOption.value}`)
             }
 
             // =============================
@@ -762,7 +765,10 @@
                 };
 
                 let verseNumber = parseInt(currentVerseNumber.value);
-                const max = verseOption ? verseOption.length : 0;
+                const max = maxVerse;
+
+                // console.log(`Max: ${max}`);
+
                 if (verseNumber < max) {
                     currentVerseNumber.value = verseNumber + 1;
                     fetchVerse(currentSurahId.value, currentVerseNumber.value);
