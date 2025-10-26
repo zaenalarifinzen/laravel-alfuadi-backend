@@ -108,45 +108,6 @@
             align-items: center !important;
         }
 
-        /* .floating-buttons {
-                                                    position: fixed;
-                                                    bottom: 20px;
-                                                    left: 50%;
-                                                    transform: translateX(-50%);
-                                                    background: white;
-                                                    border-radius: 10px;
-                                                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-                                                    padding: 8px 10px;
-                                                    width: auto;
-                                                    max-width: calc(100% - 32px);
-                                                    display: flex;
-                                                    flex-wrap: nowrap;
-                                                    gap: 10px;
-                                                    z-index: 999;
-                                                    opacity: 0;
-                                                    pointer-events: none;
-                                                    transition: opacity 0.3 ease;
-                                                    flex-wrap: nowrap;
-                                                    max-width: fit-content;
-                                                }
-
-                                                .floating-buttons.show {
-                                                    opacity: 0;
-                                                    pointer-events: auto;
-                                                }
-
-                                                @media (max-width: 400px) {
-                                                    .floating-buttons {
-                                                        gap: 5px;
-                                                        padding: 6px 8px;
-                                                    }
-
-                                                    .floating-buttons .btn-icon {
-                                                        width: 40px;
-                                                        height: 40px;
-                                                    }
-                                                } */
-
         #button-bar {
             transition: opacity 0.25s ease, box-shadow 0.25s ease;
         }
@@ -242,6 +203,7 @@
                                 </div>
 
                                 <div class="clearfix mb-3"></div>
+                                <div id="button-bar-sentinel"></div>
                                 <small id="merge-error" class="text-danger d-block mt-2" style="display: none;"></small>
 
                             </div>
