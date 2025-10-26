@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{ asset('library/selectric/public/selectric.css') }}">
     <link rel="stylesheet" href="{{ asset('library/ionicons201/css/ionicons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('library/select2/dist/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('library/izitoast/dist/css/iziToast.min.css') }}">
     <style>
         /* Font Arab */
         @import url('https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&family=Amiri&display=swap');
@@ -108,43 +109,43 @@
         }
 
         /* .floating-buttons {
-                                            position: fixed;
-                                            bottom: 20px;
-                                            left: 50%;
-                                            transform: translateX(-50%);
-                                            background: white;
-                                            border-radius: 10px;
-                                            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-                                            padding: 8px 10px;
-                                            width: auto;
-                                            max-width: calc(100% - 32px);
-                                            display: flex;
-                                            flex-wrap: nowrap;
-                                            gap: 10px;
-                                            z-index: 999;
-                                            opacity: 0;
-                                            pointer-events: none;
-                                            transition: opacity 0.3 ease;
-                                            flex-wrap: nowrap;
-                                            max-width: fit-content;
-                                        }
+                                                    position: fixed;
+                                                    bottom: 20px;
+                                                    left: 50%;
+                                                    transform: translateX(-50%);
+                                                    background: white;
+                                                    border-radius: 10px;
+                                                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                                                    padding: 8px 10px;
+                                                    width: auto;
+                                                    max-width: calc(100% - 32px);
+                                                    display: flex;
+                                                    flex-wrap: nowrap;
+                                                    gap: 10px;
+                                                    z-index: 999;
+                                                    opacity: 0;
+                                                    pointer-events: none;
+                                                    transition: opacity 0.3 ease;
+                                                    flex-wrap: nowrap;
+                                                    max-width: fit-content;
+                                                }
 
-                                        .floating-buttons.show {
-                                            opacity: 0;
-                                            pointer-events: auto;
-                                        }
+                                                .floating-buttons.show {
+                                                    opacity: 0;
+                                                    pointer-events: auto;
+                                                }
 
-                                        @media (max-width: 400px) {
-                                            .floating-buttons {
-                                                gap: 5px;
-                                                padding: 6px 8px;
-                                            }
+                                                @media (max-width: 400px) {
+                                                    .floating-buttons {
+                                                        gap: 5px;
+                                                        padding: 6px 8px;
+                                                    }
 
-                                            .floating-buttons .btn-icon {
-                                                width: 40px;
-                                                height: 40px;
-                                            }
-                                        } */
+                                                    .floating-buttons .btn-icon {
+                                                        width: 40px;
+                                                        height: 40px;
+                                                    }
+                                                } */
 
         #button-bar {
             transition: opacity 0.25s ease, box-shadow 0.25s ease;
@@ -305,6 +306,7 @@
     <script src="{{ asset('library/selectric/public/jquery.selectric.min.js') }}"></script>
     <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
     <script src="{{ asset('library/select2/dist/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('library/izitoast/dist/js/iziToast.min.js') }}"></script>
 
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/features-posts.js') }}"></script>
@@ -437,7 +439,10 @@
 
                 if (!isSequential) {
                     e.preventDefault();
-                    showError('Kalimat harus berurutan dan tidak boleh lompat');
+                    iziToast.warning({
+                        message: 'Kalimat harus berurutan dan tidak boleh lompat',
+                        position: 'topRight'
+                    });
                     return;
                 }
 
@@ -504,7 +509,10 @@
 
                 const words = originalText.split(' ').filter(w => w.trim() !== '');
                 if (words.length <= 1) {
-                    showError('Tidak bisa memisah 1 kalimat');
+                    iziToast.warning({
+                        message: 'Tidak bisa memisah 1 kalimat',
+                        position: 'topRight'
+                    });
                     return;
                 }
 
