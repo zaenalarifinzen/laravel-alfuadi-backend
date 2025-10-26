@@ -99,12 +99,6 @@
                                                     @if ($user->roles == 'user') checked @endif>
                                                 <span class="selectgroup-button">User</span>
                                             </label>
-                                            <label class="selectgroup-item">
-                                                <input type="radio" name="roles" value="guest"
-                                                    class="selectgroup-input"
-                                                    @if ($user->roles == 'guest') checked @endif>
-                                                <span class="selectgroup-button">Guest</span>
-                                            </label>
                                         </div>
                                     </div>
                             </div>

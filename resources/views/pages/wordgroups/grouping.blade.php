@@ -107,43 +107,68 @@
             align-items: center !important;
         }
 
-        .floating-buttons {
+        /* .floating-buttons {
+                                            position: fixed;
+                                            bottom: 20px;
+                                            left: 50%;
+                                            transform: translateX(-50%);
+                                            background: white;
+                                            border-radius: 10px;
+                                            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                                            padding: 8px 10px;
+                                            width: auto;
+                                            max-width: calc(100% - 32px);
+                                            display: flex;
+                                            flex-wrap: nowrap;
+                                            gap: 10px;
+                                            z-index: 999;
+                                            opacity: 0;
+                                            pointer-events: none;
+                                            transition: opacity 0.3 ease;
+                                            flex-wrap: nowrap;
+                                            max-width: fit-content;
+                                        }
+
+                                        .floating-buttons.show {
+                                            opacity: 0;
+                                            pointer-events: auto;
+                                        }
+
+                                        @media (max-width: 400px) {
+                                            .floating-buttons {
+                                                gap: 5px;
+                                                padding: 6px 8px;
+                                            }
+
+                                            .floating-buttons .btn-icon {
+                                                width: 40px;
+                                                height: 40px;
+                                            }
+                                        } */
+
+        #button-bar {
+            transition: opacity 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        #button-bar:not(.floating) {
+            opacity: 1;
+        }
+
+        #button-bar.floating {
             position: fixed;
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
+            opacity: 0.95;
             background: white;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            padding: 8px 10px;
             width: auto;
-            max-width: calc(100% - 32px);
+            max-width: fit-content;
+            padding: 8px 10px;
             display: flex;
             flex-wrap: nowrap;
-            gap: 10px;
             z-index: 999;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3 ease;
-            flex-wrap: nowrap;
-            max-width: fit-content;
-        }
-
-        .floating-buttons.show {
-            opacity: 0;
-            pointer-events: auto;
-        }
-
-        @media (max-width: 400px) {
-            .floating-buttons {
-                gap: 5px;
-                padding: 6px 8px;
-            }
-
-            .floating-buttons .btn-icon {
-                width: 40px;
-                height: 40px;
-            }
         }
     </style>
 @endpush
@@ -157,7 +182,8 @@
                 <div class="float-right">
                     <form method="GET" action="{{ route('wordgroups.indexByVerse') }}" id="filter-form" class="mb-0">
                         <div class="input-group">
-                            <select class="form-control {{-- select2 --}} form-control-sm" name="surah-option" id="surah-option"
+                            <select class="form-control {{-- select2 --}} form-control-sm" name="surah-option"
+                                id="surah-option"
                                 style="flex: 3; border-top-left-radius: 0.5rem; border-bottom-left-radius: 0.5rem;"
                                 required>
                                 <option value="">Pilih Surah</option>
@@ -168,8 +194,8 @@
                                 @endforeach
                             </select>
 
-                            <select class="form-control {{-- select2 --}} form-control-sm" name="verse-option" id="verse-option"
-                                style="flex: 2;" required>
+                            <select class="form-control {{-- select2 --}} form-control-sm" name="verse-option"
+                                id="verse-option" style="flex: 2;" required>
                                 <option value="">Ayat</option>
                             </select>
 
@@ -202,7 +228,8 @@
                             <div class="card-body">
                                 <div class="selectgroup selectgroup-pills arabic-container " dir="rtl"
                                     id="wordgroup-list" data-is-persisted="{{ $isPersisted ? '1' : '0' }}"
-                                    data-surah-name="{{ $currentSurah->name }}" data-verse-count="{{ $currentSurah->verse_count }}"
+                                    data-surah-name="{{ $currentSurah->name }}"
+                                    data-verse-count="{{ $currentSurah->verse_count }}"
                                     data-verse-number="{{ $currentVerse->number }}">
                                     @foreach ($words as $index => $word)
                                         <label class="selectgroup-item arabic-pill">
@@ -219,7 +246,7 @@
                             </div>
                             <div class="card-footer">
                                 <div id="button-bar"
-                                    class="d-flex gap-2 mb-3 justify-content-center align-items-center flex-wrap">
+                                    class="d-flex gap-2 mb-3 justify-content-center align-items-center flex-nowrap">
                                     <button type="submit" id="btn-unselect" class="btn btn-icon btn-lg btn-secondary"
                                         data-toggle="tooltip" data-placement="top" title="Bersihkan Pilihan"><i
                                             class="fa-regular fa-circle-xmark"></i></button>
@@ -243,32 +270,7 @@
                                         </button>
                                     </form>
                                 </div>
-
-                                <div id="floating-buttons"
-                                    class="floating-buttons d-flex gap-2 mb-3 justify-content-center align-items-center flex-nowrap">
-                                    <button type="submit" id="btn-unselect" class="btn btn-icon btn-lg btn-secondary"
-                                        data-toggle="tooltip" data-placement="top" title="Bersihkan Pilihan"><i
-                                            class="fa-regular fa-circle-xmark"></i></button>
-                                    <button type="submit" id="btn-edit" class="btn btn-icon btn-lg btn-info disabled"
-                                        data-toggle="tooltip" data-placement="top" title="Edit"><i
-                                            class="fa-solid fa-pencil"></i></button>
-                                    <form id="split-form" action="{{ route('wordgroups.split') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="id" id="split-id">
-                                        <button type="submit" class="btn btn-icon btn-lg btn-warning disabled"
-                                            id="btn-split" data-toggle="tooltip" data-placement="top"
-                                            title="Pisahkan"><i class="fa-solid fa-scissors"></i>
-                                        </button>
-                                    </form>
-                                    <form id="merge-form" action="{{ route('wordgroups.merge') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="ids" id="selected-ids">
-                                        <button type="submit" class="btn btn-icon btn-lg btn-success disabled"
-                                            id="btn-merge" data-toggle="tooltip" data-placement="top"
-                                            title="Gabungkan"><i class="fa-solid fa-magnet"></i>
-                                        </button>
-                                    </form>
-                                </div>
+                                <div id="button-bar-sentinel"></div>
                             </div>
                         </div>
                     </div>
@@ -887,20 +889,23 @@
 
             // Event listener untuk floating tombol
             const buttonBar = document.getElementById('button-bar');
-            const floatingButton = document.getElementById('floating-buttons');
+            const sentinel = document.getElementById('button-bar-sentinel'); // [ADDED]
 
-            const observer = new IntersectionObserver(entries => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        floatingButton.classList.remove('show');
+            if (buttonBar && sentinel) {
+                const observer = new IntersectionObserver(entries => {
+                    const entry = entries[0];
+                    if (!entry.isIntersecting) {
+                        buttonBar.classList.add('floating');
                     } else {
-                        floatingButton.classList.add('show');
+                        buttonBar.classList.remove('floating');
                     }
+                }, {
+                    threshold: 0.1
                 });
-            }, {
-                threshold: 0.1
-            });
-            if (buttonBar) observer.observe(buttonBar);
+
+                observer.observe(sentinel);
+            }
+
 
             // Event listener untuk navigasi ayat
             btnPrev.addEventListener('click', goToPrevVerse);

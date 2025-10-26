@@ -10,7 +10,7 @@
 @section('main')
     <div class="card card-primary">
         <div class="card-header">
-            <h4>Register</h4>
+            <h4>Daftar</h4>
         </div>
 
         <div class="card-body">
@@ -28,7 +28,7 @@
                 @csrf
 
                 <div class="form-group">
-                    <label for="name">Name</label>
+                    <label for="name">Nama</label>
                     <input id="name" type="text" class="form-control" name="name" autofocus>
                     <div class="invalid-feedback">
                     </div>
@@ -42,7 +42,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="phone">Phone</label>
+                    <label for="phone">Nomor Handphone</label>
                     <input id="phone" type="number" class="form-control" name="phone">
                     <div class="invalid-feedback">
                     </div>
@@ -58,25 +58,25 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="password_confirmation" class="d-block">Password Confirmation</label>
+                    <label for="password_confirmation" class="d-block">Konfirmasi Password</label>
                     <input id="password_confirmation" type="password" class="form-control" name="password_confirmation">
                 </div>
 
                 <div class="form-group">
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" name="agree" class="custom-control-input" id="agree">
-                        <label class="custom-control-label" for="agree">I agree with the terms and conditions</label>
+                        <label class="custom-control-label" for="agree">Saya setuju dengan syarat dan ketentuan</label>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-lg btn-block">
-                        Register
+                        Daftar
                     </button>
                 </div>
             </form>
             <div class="text-muted mt-5 text-center">
-                Already have an account? <a href="{{ route('login') }}">Login</a>
+                Sudah memiliki akun? <a href="{{ route('login') }}">Login</a>
             </div>
         </div>
     </div>
