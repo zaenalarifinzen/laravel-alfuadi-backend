@@ -9,6 +9,8 @@ class Verse extends Model
 {
     use HasFactory;
 
+    protected $table = 'verses';
+
     protected $fillable = [
         'surah_id',
         'number',

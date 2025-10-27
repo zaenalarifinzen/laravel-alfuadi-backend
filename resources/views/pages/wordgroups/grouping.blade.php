@@ -21,15 +21,6 @@
             gap: 0.5rem;
         }
 
-
-        /* Gunakan font arab */
-        .arabic-text {
-            font-family: 'LPMQ Isepmisbah', 'Uthmani', 'Scheherazade New', 'Amiri', serif;
-            font-size: 1.5rem !important;
-            line-height: 3.2rem !important;
-            direction: rtl;
-        }
-
         /* Pastikan form tetap LTR */
         .ltr-container {
             direction: ltr !important;

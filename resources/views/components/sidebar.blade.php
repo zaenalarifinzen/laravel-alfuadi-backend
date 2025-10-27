@@ -13,38 +13,42 @@
             </li>
 
             <li class="menu-header">Alfuadi Database</li>
-            <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('surahs.index') }}"><i class="fas fa-list-ul"></i>
-                    <span>Surat</span></a>
+            <li class="nav-item dropdown ">
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-book-quran"></i>
+                    <span>Al-Quran</span></a>
+                <ul class="dropdown-menu">
+                    <li class="{{ Request::is('layout-default-layout') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('surahs.index') }}">Surah</a>
+                    </li>
+                    <li class="{{ Request::is('transparent-sidebar') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('verses.index') }}">Ayat</a>
+                    </li>
+                    <li class="{{ Request::is('wordgroups.index') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('wordgroups.index') }}">Grup Kalimat</a>
+                    </li>
+                    <li class="{{ Request::is('words') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('words.index') }}">Kalimat</a>
+                    </li>
+                </ul>
             </li>
-            <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('verses.index') }}"><i class="fas fa-list-ul"></i>
-                    <span>Ayat</span></a>
-            </li>
-            <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('wordgroups.index') }}"><i class="fas fa-list-ul"></i> <span>Grup
-                        Kalimat</span></a>
-            </li>
-            <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
-                <a class="nav-link" href="#"><i class="fas fa-list-ul"></i> <span>Kalimat</span></a>
-            </li>
+
             <li class="menu-header">Tools</li>
             <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('wordgroups.indexByVerse') }}"><i class="fas fa-object-group"></i>
                     <span>Grouping Ayat</span></a>
             </li>
-            {{-- <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('wordgroups.indexByVerse') }}"><i class="fas fa-keyboard"></i> <span>Input
-                        I'rob</span></a>
-            </li> --}}
+            <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('words.create') }}"><i class="fas fa-keyboard"></i>
+                    <span>Input Irob</span></a>
+            </li>
 
             @if (auth()->check() && auth()->user()->roles === 'administrator')
                 <li class="menu-header">Aplikasi Quran Al-Fuadi</li>
                 <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('products.index') }}"><i class="fa-brands fa-youtube"></i>
+                    <a class="nav-link" href="404"><i class="fas fa-film"></i>
                         <span>Video Al-Fuadi</span></a>
                 </li>
-                
+
                 <li class="menu-header">Organize</li>
                 <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('users.index') }}"><i class="fas fa-user"></i>
@@ -55,7 +59,7 @@
                         <span>Products</span></a>
                 </li> --}}
                 <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('page.templatepage') }}"><i class="fa-solid fa-file-lines"></i>
+                    <a class="nav-link" href="{{ route('page.templatepage') }}"><i class="fas fa-file-lines"></i>
                         <span>Template</span></a>
                 </li>
             @endif

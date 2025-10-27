@@ -4,11 +4,16 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SurahController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerseController;
+use App\Http\Controllers\WordController;
 use App\Http\Controllers\WordGroupController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('pages.auth.login');
+});
+
+Route::get('/404', function () {
+    return view('pages.error.404', ['type_menu' => 'error']);
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -39,5 +44,6 @@ Route::middleware(['auth'])->group(function () {
             ->name('wordgroups.split');
         Route::post('/wordgroups/complete', [WordGroupController::class, 'completeOrderNumber'])
             ->name('wordgroups.complete');
+        Route::resource('/words', WordController::class);
     });
 });

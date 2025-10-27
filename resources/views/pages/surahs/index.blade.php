@@ -89,7 +89,9 @@
                                                 <td>
                                                     {{ $surah->location }}
                                                 </td>
-                                                <td>{{ $surah->verse_count }}</td>
+                                                <td>
+                                                    {{ $surah->verse_count }}
+                                                </td>
 
                                             </tr>
                                         @endforeach
