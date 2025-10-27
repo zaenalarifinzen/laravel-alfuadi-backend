@@ -47,8 +47,8 @@
 
                 <div class="form-group">
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" name="remember" class="custom-control-input" tabindex="3" id="remember-me">
-                        <label class="custom-control-label" for="remember-me">Ingat Saya</label>
+                        <input type="checkbox" name="remember" class="custom-control-input" tabindex="3" id="remember">
+                        <label class="custom-control-label" for="remember">Ingat Saya</label>
                     </div>
                 </div>
 
