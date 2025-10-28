@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Surah;
 use App\Models\Word;
+use App\Models\WordGroups;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -26,9 +28,21 @@ class WordController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('pages.words.create');
+        $surahs = Surah::select('id', 'name', 'verse_count')->get();
+        $verseId = $request->input('verse_id', 1);
+        $wordGroupId = $request->input('wordgroup_id', 1);
+
+        $wordgroups = WordGroups::where('verse_id', $verseId)
+            ->orderBy('order_number', 'desc')
+            ->get();
+
+        $words = Word::where('word_group_id', $wordGroupId)
+            ->orderBy('order_number', 'desc')
+            ->get();
+
+        return view('pages.words.create', compact('surahs', 'wordgroups', 'words'));
     }
 
     /**

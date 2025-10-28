@@ -29,7 +29,6 @@ class WordGroupController extends Controller
      */
     public function indexByVerse(Request $request)
     {
-
         $surahs = DB::table('surahs')->select('id', 'name', 'verse_count')->get();
         $surahId = $request->input('surah_id', 1);
         $currentSurah = DB::table('surahs')->where('id', $surahId)->first();
@@ -67,8 +66,19 @@ class WordGroupController extends Controller
             $isPersisted = false;
         }
 
-        // kirim data ke view
-        return view('pages.wordgroups.grouping', compact('surahs', 'currentSurah', 'currentVerse', 'words', 'isPersisted'));
+        $data = [
+            'surahs' => $surahs,
+            'currentSurah' => $currentSurah,
+            'currentVerse' => $currentVerse,
+            'words' => $words,
+            'isPersisted' => $isPersisted,
+        ];
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json($data);
+        }
+
+        return view('pages.wordgroups.grouping', $data);
     }
 
     /**

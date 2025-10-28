@@ -9,6 +9,8 @@ class Surah extends Model
 {
     use HasFactory;
 
+    protected $table = 'surahs';
+
     protected $fillable = [
         'name',
         'name_id',
