@@ -35,11 +35,11 @@ class WordController extends Controller
         $wordGroupId = $request->input('wordgroup_id', 1);
 
         $wordgroups = WordGroups::where('verse_id', $verseId)
-            ->orderBy('order_number', 'desc')
+            ->orderBy('order_number', 'asc')
             ->get();
 
         $words = Word::where('word_group_id', $wordGroupId)
-            ->orderBy('order_number', 'desc')
+            ->orderBy('order_number', 'asc')
             ->get();
 
         return view('pages.words.create', compact('surahs', 'wordgroups', 'words'));

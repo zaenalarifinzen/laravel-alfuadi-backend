@@ -8,17 +8,21 @@ use Illuminate\Support\Facades\DB;
 class VerseController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display verse by surah id and verse number.
      */
     public function index(Request $request)
     {
         // get verse
-        $verses = DB::table('verses')
-            ->when($request->input('surah_id'), function ($query, $surah_id) {
-                return $query->where('surah_id', '=', $surah_id);
-            })
-            ->orderBy('id', 'asc')
-            ->paginate(50);
+        $query = DB::table('verses')
+            ->when($request->surah_id, fn($q) => $q->where('surah_id', $request->surah_id))
+            ->when($request->verse_number, fn($q) => $q->where('number', $request->verse_number))
+            ->orderBy('id', 'asc');
+
+        $verses = $query->paginate(50);
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json($verses);
+        }
 
         return view('pages.verses.index', compact('verses'));
     }

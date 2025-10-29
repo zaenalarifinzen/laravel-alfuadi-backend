@@ -6,6 +6,17 @@
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="{{ asset('library/owl.carousel/dist/assets/owl.carousel.min.css') }}">
     <link rel="stylesheet" href="{{ asset('library/owl.carousel/dist/assets/owl.theme.default.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('library/ionicons201/css/ionicons.min.css') }}">
+
+    <style>
+        #slider-rtl {
+            direction: rtl;
+        }
+
+        #slider-rtl .owl-item {
+            direction: rtl;
+        }
+    </style>
 @endpush
 
 @section('main')<div class="main-content">
@@ -44,16 +55,24 @@
             <div class="section-body">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Grup Kalimah</h4>
+
+                        <div class="d-flex justify-content-between align-items-center w-100">
+                            <button type="button" class="btn btn-outline-primary btn-lg mr-2" id="btn-prev-verse"><i
+                                    class="ion-chevron-left" data-pack="default" data-tags="arrow, left"></i></button>
+                            <h4 id="current-verse-label">Grup Kalimah</h4>
+                            <button type="button" class="btn btn-outline-primary btn-lg" id="btn-next-verse">
+                                <i class="ion-chevron-right" data-pack="default" data-tags="arrow, right"></i></button>
+                        </div>
                     </div>
                     <div class="card-body">
-                        <div class="owl-carousel owl-theme slider" id="slider1">
-                            @foreach ($wordgroups as $wordgroup)
-                                <div>
-                                    <h4 class="arabic-text word-group">{{ $wordgroup->text }}</h4>
-                                </div>
-                            @endforeach
-                        </div>
+                        <innput type="hidden" id="verse-number" value="1">
+                            <div class="owl-carousel owl-theme slider" id="slider-rtl">
+                                @foreach ($wordgroups as $wordgroup)
+                                    <div>
+                                        <h4 class="arabic-text word-group">{{ $wordgroup->text }}</h4>
+                                    </div>
+                                @endforeach
+                            </div>
                     </div>
                 </div>
 
@@ -235,4 +254,155 @@
     <script src="{{ asset('js/page/components-table.js') }}"></script>
     <script src="{{ asset('js/page/modules-slider.js') }}"></script>
     <script src="{{ asset('js/page/bootstrap-modal.js') }}"></script>
+
+    <script>
+        const $slider = $("#slider-rtl");
+
+        // Inisialisasi awal Owl Carousel
+        $slider.owlCarousel({
+            rtl: true,
+            items: 1,
+            dots: false,
+            nav: true,
+            navText: [
+                '<i class="fa fa-chevron-right"></i>',
+                '<i class="fa fa-chevron-left"></i>'
+            ]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const surahOption = document.getElementById('surah-option');
+            const verseOption = document.getElementById('verse-option');
+            const filterForm = document.getElementById('filter-form');
+
+            const btnPrev = document.getElementById('btn-prev-verse');
+            const btnNext = document.getElementById('btn-next-verse');
+
+            const currentVerseLabel = document.getElementById('current-verse-label');
+            const currentVerseNumber = document.getElementById('verse-number');
+            let modified = false;
+
+            function updateVerseOptions() {
+                const selected = surahOption.options[surahOption.selectedIndex];
+                const verseCount = selected ? selected.getAttribute('data-verse-count') : 0;
+                const currentVerse = "{{ request('verse_number') }}";
+                for (let i = 1; i <= verseCount; i++) {
+                    verseOption.innerHTML +=
+                        `<option value="${i}">${i}</option>`;
+                }
+
+                if (surahOption.value) {
+                    verseOption.value = 1;
+                } else {
+                    verseOption.innerHTML = '<option value="">Ayat</option>';
+                }
+            }
+
+            async function handleFilterSubmit(e) {
+                e.preventDefault();
+
+                // if (modified) {
+                //     const confirmed = await showEditConfirmation()
+                //     if (!confirmed) return;
+                // };
+
+                fetchWordGroups(surahOption.value, verseOption.value);
+                // modified = false;
+                // console.log(`Surah Id = ${surahOption.value} Verse = ${verseOption.value}`)
+            }
+
+            function fetchWordGroups(surah_id, verse_number) {
+                $.ajax({
+                    url: "{{ route('wordgroups.index') }}",
+                    type: "GET",
+                    data: {
+                        surah_id: surah_id,
+                        verse_number: verse_number,
+                    },
+                    success: function(response) {
+                        // console.log(response.data);
+                        $slider.trigger('destroy.owl.carousel');
+                        $slider.html('');
+
+                        $.each(response.data, function(i, wordgroup) {
+                            $slider.append(`
+                                <div>
+                                    <h4 class="arabic-text word-group">${wordgroup.text}</h4>
+                                </div>
+                            `);
+                        });
+
+                        $slider.owlCarousel({
+                            rtl: true,
+                            items: 1,
+                            dots: false,
+                            nav: true,
+                            navText: [
+                                '<i class="fa fa-chevron-right"></i>',
+                                '<i class="fa fa-chevron-left"></i>'
+                            ]
+                        });
+
+                        currentVerseLabel.textContent = `{surahName} - Ayat ${verse_number}`;
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                    }
+                })
+            }
+
+            // =============================
+            // FUNGSI NAVIGASI AYAT
+            // =============================
+
+            async function goToPrevVerse() {
+                if (modified) {
+                    const confirmed = await showEditConfirmation()
+                    if (!confirmed) return;
+                };
+
+                verseNumber = parseInt(currentVerseNumber.value) || 5;
+                console.log(verseNumber);
+
+                if (verseNumber > 1) {
+                    currentVerseNumber.value = verseNumber - 1;
+                    fetchWordGroups(1, verseNumber);
+                    modified = false;
+                }
+            }
+
+            async function goToNextVerse() {
+                if (modified) {
+                    const confirmed = await showEditConfirmation()
+                    if (!confirmed) return;
+                };
+
+                let verseNumber = parseInt(currentVerseNumber.value);
+                const max = maxVerse;
+
+                // console.log(`Max: ${max}`);
+
+                if (verseNumber < max) {
+                    currentVerseNumber.value = verseNumber + 1;
+                    fetchVerse(currentSurahId.value, currentVerseNumber.value);
+                    modified = false;
+                }
+            }
+
+            filterForm.addEventListener('submit', handleFilterSubmit);
+
+            // Event listener untuk perubahan surah
+            surahOption.addEventListener('change', function() {
+                updateVerseOptions();
+                verseOption.selectedIndex = 0;
+            });
+
+            // Inisialisasi opsi ayat jika surah sudah dipilih
+            if (surahOption.value) updateVerseOptions();
+
+            // Event listener untuk navigasi ayat
+            btnPrev.addEventListener('click', goToPrevVerse);
+            btnNext.addEventListener('click', goToNextVerse);
+        });
+    </script>
 @endpush

@@ -14,12 +14,16 @@ class WordGroupController extends Controller
      */
     public function index(Request $request)
     {
-        $wordgroups = DB::table('word_groups')
-            ->when($request->input('surah_id'), function ($query, $surah_id) {
-                return $query->where('surah_id', '=', $surah_id);
-            })
-            ->orderBy('id', 'asc')
-            ->paginate(50);
+        $query = DB::table('word_groups')
+            ->when($request->surah_id, fn ($q) => $q->where('surah_id', $request->surah_id))
+            ->when($request->verse_number, fn ($q) => $q->where('verse_number', $request->verse_number))
+            ->orderBy('order_number', 'asc');
+            
+        $wordgroups = $query->paginate(50);
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json($wordgroups);
+        }
 
         return view('pages.wordgroups.index', compact('wordgroups'));
     }
