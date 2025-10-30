@@ -18,14 +18,26 @@ class WordGroupController extends Controller
             ->when($request->surah_id, fn ($q) => $q->where('surah_id', $request->surah_id))
             ->when($request->verse_number, fn ($q) => $q->where('verse_number', $request->verse_number))
             ->orderBy('order_number', 'asc');
-            
+
         $wordgroups = $query->paginate(50);
+        $first = $wordgroups->first();
+        $verseId = $first->verse_id ?? null;
+        $verseNumber = $first->verse_number ?? null;
+
+        $surahResult = DB::table('surahs')->where('id', $first->surah_id)->first();
+
+        $data = [
+            'verse_id' => $first->verse_id ?? null,
+            'verse_number' => $first->verse_number ?? null,
+            'surah_result' => $surahResult,
+            'wordgroups' => $wordgroups->items(),
+        ];
 
         if ($request->ajax() || $request->wantsJson()) {
-            return response()->json($wordgroups);
+            return response()->json($data);
         }
 
-        return view('pages.wordgroups.index', compact('wordgroups'));
+        return view('pages.wordgroups.index', compact('surahResult', 'verseNumber', 'wordgroups'));
     }
 
     /**

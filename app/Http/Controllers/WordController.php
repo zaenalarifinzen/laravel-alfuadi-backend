@@ -37,12 +37,20 @@ class WordController extends Controller
         $wordgroups = WordGroups::where('verse_id', $verseId)
             ->orderBy('order_number', 'asc')
             ->get();
+        $first = $wordgroups->first();
 
         $words = Word::where('word_group_id', $wordGroupId)
             ->orderBy('order_number', 'asc')
             ->get();
 
-        return view('pages.words.create', compact('surahs', 'wordgroups', 'words'));
+        $surahId = $first->surah_id ?? null;
+        $surahName = null;
+        if ($first) {
+            $surahName = DB::table('surahs')->where('id', $first->surah_id)->value('name');
+        }
+        $verseNumber = $first->verse_number ?? null;
+
+        return view('pages.words.create', compact('surahs', 'surahId', 'surahName', 'verseNumber', 'wordgroups', 'words'));
     }
 
     /**

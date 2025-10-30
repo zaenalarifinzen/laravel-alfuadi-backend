@@ -54,18 +54,20 @@
 
             <div class="section-body">
                 <div class="card">
-                    <div class="card-header">
+                    <innput type="hidden" id="verse-number" value="{{ $verseNumber }}">
+                    <innput type="hidden" id="surah-id" value="{{ $surahId }}">
 
+                    <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center w-100">
                             <button type="button" class="btn btn-outline-primary btn-lg mr-2" id="btn-prev-verse"><i
                                     class="ion-chevron-left" data-pack="default" data-tags="arrow, left"></i></button>
-                            <h4 id="current-verse-label">Grup Kalimah</h4>
+                            <h4 id="current-verse-label">{{ $surahName }} ayat {{ $verseNumber }}</h4>
                             <button type="button" class="btn btn-outline-primary btn-lg" id="btn-next-verse">
                                 <i class="ion-chevron-right" data-pack="default" data-tags="arrow, right"></i></button>
                         </div>
                     </div>
+
                     <div class="card-body">
-                        <innput type="hidden" id="verse-number" value="1">
                             <div class="owl-carousel owl-theme slider" id="slider-rtl">
                                 @foreach ($wordgroups as $wordgroup)
                                     <div>
@@ -279,7 +281,10 @@
             const btnNext = document.getElementById('btn-next-verse');
 
             const currentVerseLabel = document.getElementById('current-verse-label');
+
+            const currentSurahId = document.getElementById('surah-id');
             const currentVerseNumber = document.getElementById('verse-number');
+            let maxVerse = 1;
             let modified = false;
 
             function updateVerseOptions() {
@@ -320,11 +325,12 @@
                         verse_number: verse_number,
                     },
                     success: function(response) {
-                        // console.log(response.data);
+                        console.log(response);
+
                         $slider.trigger('destroy.owl.carousel');
                         $slider.html('');
 
-                        $.each(response.data, function(i, wordgroup) {
+                        $.each(response.wordgroups, function(i, wordgroup) {
                             $slider.append(`
                                 <div>
                                     <h4 class="arabic-text word-group">${wordgroup.text}</h4>
@@ -343,7 +349,12 @@
                             ]
                         });
 
-                        currentVerseLabel.textContent = `{surahName} - Ayat ${verse_number}`;
+                        currentSurahId.value = response.surah_result.id ?? 1;
+                        currentVerseNumber.value = response.verse_number;
+                        maxVerse = response.surah_result.verse_count;
+                        console.log(maxVerse);
+                        
+                        currentVerseLabel.textContent = `${response.surah_result.name} - Ayat ${response.verse_number}`;
                     },
                     error: function(xhr) {
                         console.error(xhr.responseText);
@@ -356,17 +367,17 @@
             // =============================
 
             async function goToPrevVerse() {
+                console.log(`verse saat ini: ${currentVerseNumber.value}`);
                 if (modified) {
                     const confirmed = await showEditConfirmation()
                     if (!confirmed) return;
                 };
 
-                verseNumber = parseInt(currentVerseNumber.value) || 5;
-                console.log(verseNumber);
-
+                let verseNumber = parseInt(currentVerseNumber.value);
                 if (verseNumber > 1) {
                     currentVerseNumber.value = verseNumber - 1;
-                    fetchWordGroups(1, verseNumber);
+                    console.log(`verse target: ${currentSurahId.value} : ${currentVerseNumber.value}`);
+                    fetchWordGroups(currentSurahId.value, currentVerseNumber.value);
                     modified = false;
                 }
             }
@@ -380,11 +391,11 @@
                 let verseNumber = parseInt(currentVerseNumber.value);
                 const max = maxVerse;
 
-                // console.log(`Max: ${max}`);
+                console.log(`Max: ${max}`);
 
                 if (verseNumber < max) {
                     currentVerseNumber.value = verseNumber + 1;
-                    fetchVerse(currentSurahId.value, currentVerseNumber.value);
+                    fetchWordGroups(currentSurahId.value, currentVerseNumber.value);
                     modified = false;
                 }
             }
