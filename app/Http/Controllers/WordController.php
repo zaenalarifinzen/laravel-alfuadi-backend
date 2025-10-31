@@ -7,6 +7,7 @@ use App\Models\Word;
 use App\Models\WordGroups;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\Console\Input\Input;
 
 class WordController extends Controller
 {
@@ -15,12 +16,13 @@ class WordController extends Controller
      */
     public function index(Request $request)
     {
-        $words = DB::table('words')
-            ->when($request->input('name'), function ($query, $name) {
-                return $query->where('name', 'like', '%'.$name.'%');
-            })
-            ->orderBy('id', 'asc')
-            ->paginate(50);
+        $words = Word::where('word_group_id', $request->word_group_id)
+            ->orderBy('order_number', 'asc')
+            ->get();
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json($words);
+        }
 
         return view('pages.words.index', compact('words'));
     }
@@ -32,7 +34,7 @@ class WordController extends Controller
     {
         $surahs = Surah::select('id', 'name', 'verse_count')->get();
         $verseId = $request->input('verse_id', 1);
-        $wordGroupId = $request->input('wordgroup_id', 1);
+        $wordGroupId = $request->input('word_group_id', 1);
 
         $wordgroups = WordGroups::where('verse_id', $verseId)
             ->orderBy('order_number', 'asc')
@@ -50,7 +52,15 @@ class WordController extends Controller
         }
         $verseNumber = $first->verse_number ?? null;
 
-        return view('pages.words.create', compact('surahs', 'surahId', 'surahName', 'verseNumber', 'wordgroups', 'words'));
+        return view('pages.words.create', compact(
+            'surahs',
+            'surahId',
+            'surahName',
+            'verseNumber',
+            'verseId',
+            'wordgroups',
+            'words'
+        ));
     }
 
     /**

@@ -38,11 +38,8 @@
                                     </option>
                                 @endforeach
                             </select>
-
-                            <select class="form-control {{-- select2 --}} form-control-sm" name="verse-option"
-                                id="verse-option" style="flex: 2;" required>
-                                <option value="">Ayat</option>
-                            </select>
+                            <input type="number" class="form-control" placeholder="Ayat" name="verse-option"
+                                id="verse-option" value="" style="flex: 1;" required>
 
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="submit">Cari</button>
@@ -54,27 +51,29 @@
 
             <div class="section-body">
                 <div class="card">
-                    <innput type="hidden" id="verse-number" value="{{ $verseNumber }}">
-                    <innput type="hidden" id="surah-id" value="{{ $surahId }}">
+                    <input type="hidden" id="surah-id" value="{{ $surahId }}">
+                    <input type="hidden" id="verse-number" value="{{ $verseNumber }}">
+                    <input type="hidden" id="verse-id" value="{{ $verseId }}">
 
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center w-100">
                             <button type="button" class="btn btn-outline-primary btn-lg mr-2" id="btn-prev-verse"><i
                                     class="ion-chevron-left" data-pack="default" data-tags="arrow, left"></i></button>
-                            <h4 id="current-verse-label">{{ $surahName }} ayat {{ $verseNumber }}</h4>
+                            <h4 id="current-verse-label">{{ $surahId }}. {{ $surahName }} - Ayat
+                                {{ $verseNumber }}</h4>
                             <button type="button" class="btn btn-outline-primary btn-lg" id="btn-next-verse">
                                 <i class="ion-chevron-right" data-pack="default" data-tags="arrow, right"></i></button>
                         </div>
                     </div>
 
                     <div class="card-body">
-                            <div class="owl-carousel owl-theme slider" id="slider-rtl">
-                                @foreach ($wordgroups as $wordgroup)
-                                    <div>
-                                        <h4 class="arabic-text word-group">{{ $wordgroup->text }}</h4>
-                                    </div>
-                                @endforeach
-                            </div>
+                        <div class="owl-carousel owl-theme slider" id="slider-rtl">
+                            @foreach ($wordgroups as $wordgroup)
+                                <div>
+                                    <h4 class="arabic-text word-group" id="{{ $wordgroup->id }}">{{ $wordgroup->text }}</h4>
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
 
@@ -284,23 +283,15 @@
 
             const currentSurahId = document.getElementById('surah-id');
             const currentVerseNumber = document.getElementById('verse-number');
-            let maxVerse = 1;
+            const currentVerseId = document.getElementById('verse-id');
             let modified = false;
+            let verseCount;
 
-            function updateVerseOptions() {
+            function updateVerseCount() {
                 const selected = surahOption.options[surahOption.selectedIndex];
-                const verseCount = selected ? selected.getAttribute('data-verse-count') : 0;
-                const currentVerse = "{{ request('verse_number') }}";
-                for (let i = 1; i <= verseCount; i++) {
-                    verseOption.innerHTML +=
-                        `<option value="${i}">${i}</option>`;
-                }
+                verseCount = selected ? selected.getAttribute('data-verse-count') : 0;
+                console.log(`Jumlah Ayat: ${verseCount}`);
 
-                if (surahOption.value) {
-                    verseOption.value = 1;
-                } else {
-                    verseOption.innerHTML = '<option value="">Ayat</option>';
-                }
             }
 
             async function handleFilterSubmit(e) {
@@ -316,16 +307,22 @@
                 // console.log(`Surah Id = ${surahOption.value} Verse = ${verseOption.value}`)
             }
 
-            function fetchWordGroups(surah_id, verse_number) {
+            // =============================
+            // FUNGSI FETCH WORDGROUPS
+            // =============================
+
+            function fetchWordGroups(surah_id, verse_number, verse_id) {
+                const data = {};
+                if (surah_id !== undefined && surah_id !== null) data.surah_id = surah_id;
+                if (verse_number !== undefined && verse_number !== null) data.verse_number = verse_number;
+                if (verse_id !== undefined && verse_id !== null) data.verse_id = verse_id;
+
                 $.ajax({
                     url: "{{ route('wordgroups.index') }}",
                     type: "GET",
-                    data: {
-                        surah_id: surah_id,
-                        verse_number: verse_number,
-                    },
+                    data: data,
                     success: function(response) {
-                        console.log(response);
+                        // console.log(response);
 
                         $slider.trigger('destroy.owl.carousel');
                         $slider.html('');
@@ -349,17 +346,97 @@
                             ]
                         });
 
-                        currentSurahId.value = response.surah_result.id ?? 1;
-                        currentVerseNumber.value = response.verse_number;
-                        maxVerse = response.surah_result.verse_count;
-                        console.log(maxVerse);
-                        
-                        currentVerseLabel.textContent = `${response.surah_result.name} - Ayat ${response.verse_number}`;
+                        const activeId = $("arabic-text.word-group.active").attr("id");
+                        console.log(activeId);
+                        fetchWords(activeId);
+
+                        // Update URL di address bar
+                        const params = new URLSearchParams(data);
+                        history.pushState({}, '', `?${params.toString()}`);
+
+                        currentSurahId.value = response.surah.id;
+                        currentVerseNumber.value = response.verse.number;
+                        currentVerseId.value = response.verse.id;
+                        maxVerse = response.surah.verse_count;
+                        surahOption.value = '';
+                        verseOption.value = '';
+
+                        currentVerseLabel.textContent =
+                            `${response.surah.id}. ${response.surah.name} - Ayat ${response.verse.number}`;
                     },
                     error: function(xhr) {
                         console.error(xhr.responseText);
                     }
-                })
+                });
+            }
+
+            // =============================
+            // FUNGSI FETCH WORDS
+            // =============================
+
+            function fetchWords(word_group_id) {
+                // console.log(`Id WordGroup : ${word_group_id}`);
+
+                $.ajax({
+                    url: "{{ route('words.index') }}",
+                    type: "GET",
+                    data: {
+                        word_group_id: word_group_id,
+                    },
+                    success: function (response) {
+                        console.log(response);
+
+                        const tbody = $("#sortable-table tbody");
+                        tbody.empty();
+
+                        if (response.length === 0) {
+                            tbody.append(`
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted">
+                                        Tidak ada data kata.
+                                    </td>
+                                </tr>
+                            `);
+                            return;
+                        }
+
+                        response.forEach(function (word) {
+                            let badgeClass = 'badge-light';
+                            if (word.kalimat === 'فعل') badgeClass = 'badge-success';
+                            else if (word.kalimat === 'اسم') badgeClass = 'badge-info';
+                            else if (word.kalimat === 'حرف') badgeClass = 'badge-danger';
+
+                            const row = `
+                                <tr>
+                                    <td>
+                                        <div class="sort-handler">
+                                            <i class="fa-solid fa-grip"></i>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="arabic-text words" id="${word.id}">${word.text}</div>
+                                        <div class="table-links">
+                                            <a href="#">Detail</a>
+                                            <div class="bullet"></div>
+                                            <a href="#">Edit</a>
+                                            <div class="bullet"></div>
+                                            <a href="#" class="text-danger">Hapus</a>
+                                        </div>
+                                    </td>
+                                    <td>${word.translation ?? ''}</td>
+                                    <td>
+                                        <div class="badge ${badgeClass}">${word.kalimat ?? ''}</div>
+                                    </td>
+                                    <td class="arabic-text words">${word.jenis ?? ''}</td>
+                                </tr>
+                            `;
+                            tbody.append(row);
+                        });
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                    }
+                });
             }
 
             // =============================
@@ -367,17 +444,15 @@
             // =============================
 
             async function goToPrevVerse() {
-                console.log(`verse saat ini: ${currentVerseNumber.value}`);
                 if (modified) {
                     const confirmed = await showEditConfirmation()
                     if (!confirmed) return;
                 };
 
-                let verseNumber = parseInt(currentVerseNumber.value);
-                if (verseNumber > 1) {
-                    currentVerseNumber.value = verseNumber - 1;
-                    console.log(`verse target: ${currentSurahId.value} : ${currentVerseNumber.value}`);
-                    fetchWordGroups(currentSurahId.value, currentVerseNumber.value);
+                let verseId = parseInt(currentVerseId.value);
+                if (verseId > 1) {
+                    currentVerseId.value = verseId - 1;
+                    fetchWordGroups(null, null, currentVerseId.value);
                     modified = false;
                 }
             }
@@ -388,14 +463,12 @@
                     if (!confirmed) return;
                 };
 
-                let verseNumber = parseInt(currentVerseNumber.value);
-                const max = maxVerse;
+                let verseId = parseInt(currentVerseId.value) || 1;
+                const max = 6236;
 
-                console.log(`Max: ${max}`);
-
-                if (verseNumber < max) {
-                    currentVerseNumber.value = verseNumber + 1;
-                    fetchWordGroups(currentSurahId.value, currentVerseNumber.value);
+                if (verseId < max) {
+                    currentVerseId.value = verseId + 1;
+                    fetchWordGroups(null, null, currentVerseId.value);
                     modified = false;
                 }
             }
@@ -404,8 +477,15 @@
 
             // Event listener untuk perubahan surah
             surahOption.addEventListener('change', function() {
-                updateVerseOptions();
-                verseOption.selectedIndex = 0;
+                updateVerseCount();
+                verseOption.value = 1;
+            });
+
+            // Event listener untuk input nomor ayat
+            verseOption.addEventListener('change', function() {
+                if (parseInt(verseOption.value) > verseCount) {
+                    verseOption.value = verseCount;
+                }
             });
 
             // Inisialisasi opsi ayat jika surah sudah dipilih

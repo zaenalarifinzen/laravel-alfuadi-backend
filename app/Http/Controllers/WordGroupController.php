@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Surah;
 use App\Models\Verse;
 use App\Models\WordGroups;
 use Illuminate\Http\Request;
@@ -14,22 +15,23 @@ class WordGroupController extends Controller
      */
     public function index(Request $request)
     {
-        $query = DB::table('word_groups')
-            ->when($request->surah_id, fn ($q) => $q->where('surah_id', $request->surah_id))
-            ->when($request->verse_number, fn ($q) => $q->where('verse_number', $request->verse_number))
-            ->orderBy('order_number', 'asc');
+        $verseResult = null;
 
-        $wordgroups = $query->paginate(50);
-        $first = $wordgroups->first();
-        $verseId = $first->verse_id ?? null;
-        $verseNumber = $first->verse_number ?? null;
+        if ($request->filled('verse_id')) {
+            $verseResult = Verse::where('id', $request->verse_id)->first();
+        } elseif ($request->filled('surah_id') && $request->filled('verse_number')) {
+            $verseResult = Verse::where('surah_id', $request->surah_id)
+                ->where('number', $request->verse_number)->first();
+        }
 
-        $surahResult = DB::table('surahs')->where('id', $first->surah_id)->first();
+        $surahResult = Surah::where('id', $verseResult->surah_id)->first();
+
+        $wordgroups = WordGroups::where('verse_id', $verseResult->id)
+            ->orderBy('order_number', 'asc')->paginate(50);
 
         $data = [
-            'verse_id' => $first->verse_id ?? null,
-            'verse_number' => $first->verse_number ?? null,
-            'surah_result' => $surahResult,
+            'surah' => $surahResult,
+            'verse' => $verseResult,
             'wordgroups' => $wordgroups->items(),
         ];
 
@@ -37,7 +39,7 @@ class WordGroupController extends Controller
             return response()->json($data);
         }
 
-        return view('pages.wordgroups.index', compact('surahResult', 'verseNumber', 'wordgroups'));
+        return view('pages.wordgroups.index', compact('surahResult', 'verseResult', 'wordgroups'));
     }
 
     /**
