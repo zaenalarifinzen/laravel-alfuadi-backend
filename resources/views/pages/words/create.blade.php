@@ -61,12 +61,14 @@
 
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center w-100">
-                            <button type="button" class="btn btn-outline-primary btn-lg mr-2" id="btn-prev-verse"><i
-                                    class="ion-chevron-left" data-pack="default" data-tags="arrow, left"></i></button>
+                            <button type="button" class="btn btn-outline-primary btn-lg" id="btn-next-verse">
+                                <i class="ion-chevron-left" data-pack="default" data-tags="arrow, right"></i></button>
+
                             <h4 id="current-verse-label">{{ $surahId }}. {{ $surahName }} - Ayat
                                 {{ $verseNumber }}</h4>
-                            <button type="button" class="btn btn-outline-primary btn-lg" id="btn-next-verse">
-                                <i class="ion-chevron-right" data-pack="default" data-tags="arrow, right"></i></button>
+
+                            <button type="button" class="btn btn-outline-primary btn-lg mr-2" id="btn-prev-verse"><i
+                                    class="ion-chevron-right" data-pack="default" data-tags="arrow, left"></i></button>
                         </div>
                     </div>
 
@@ -408,11 +410,8 @@
                 `);
 
                 $.ajax({
-                    url: "{{ route('words.index') }}",
+                    url: "{{ route('words.get', ['id' => ':id']) }}".replace(':id', word_group_id),
                     type: "GET",
-                    data: {
-                        word_group_id: word_group_id,
-                    },
                     success: function(response) {
                         console.log(response);
 
@@ -430,7 +429,7 @@
                             return;
                         }
 
-                        response.forEach(function(word) {
+                        response.data.forEach(function(word) {
                             let badgeClass = 'badge-light';
                             if (word.kalimat === 'فعل') badgeClass = 'badge-success';
                             else if (word.kalimat === 'اسم') badgeClass = 'badge-info';

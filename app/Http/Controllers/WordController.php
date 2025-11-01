@@ -7,24 +7,34 @@ use App\Models\Word;
 use App\Models\WordGroups;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Symfony\Component\Console\Input\Input;
 
 class WordController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $words = Word::where('word_group_id', $request->word_group_id)
+        $words = Word::orderBy('order_number', 'asc')
+            ->paginate(25);
+
+        return view('pages.words.index', compact('words'));
+    }
+
+    /**
+     * Get a listing of the words.
+     */
+    public function getWord($word_group_id)
+    {
+        // Ambil semua word berdasarkan word_group_id
+        $words = Word::where('word_group_id', $word_group_id)
             ->orderBy('order_number', 'asc')
             ->get();
 
-        if ($request->ajax() || $request->wantsJson()) {
-            return response()->json($words);
-        }
-
-        return view('pages.words.index', compact('words'));
+        return response()->json([
+            'success' => true,
+            'data' => $words,
+        ]);
     }
 
     /**

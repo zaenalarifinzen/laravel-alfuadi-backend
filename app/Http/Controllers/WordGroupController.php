@@ -13,7 +13,18 @@ class WordGroupController extends Controller
     /**
      * Display a listing of the Word Group.
      */
-    public function index(Request $request)
+    public function index()
+    {
+        $wordgroups = WordGroups::orderBy('order_number', 'asc')
+            ->orderBy('verse_id', 'asc')->paginate(50);
+
+        return view('pages.wordgroups.index', compact('wordgroups'));
+    }
+
+    /**
+     * Display a listing of the Word Group.
+     */
+    public function getWordGroup(Request $request)
     {
         $verseResult = null;
 
@@ -35,11 +46,7 @@ class WordGroupController extends Controller
             'wordgroups' => $wordgroups->items(),
         ];
 
-        if ($request->ajax() || $request->wantsJson()) {
-            return response()->json($data);
-        }
-
-        return view('pages.wordgroups.index', compact('surahResult', 'verseResult', 'wordgroups'));
+        return response()->json($data);
     }
 
     /**

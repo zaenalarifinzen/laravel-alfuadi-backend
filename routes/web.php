@@ -44,6 +44,8 @@ Route::middleware(['auth'])->group(function () {
             ->name('wordgroups.split');
         Route::post('/wordgroups/complete', [WordGroupController::class, 'completeOrderNumber'])
             ->name('wordgroups.complete');
+
+        Route::get('/words/get/{id}', [WordController::class, 'getWord'])->name('words.get');
         Route::resource('/words', WordController::class);
     });
 });
