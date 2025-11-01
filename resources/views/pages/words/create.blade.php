@@ -16,6 +16,10 @@
         #slider-rtl .owl-item {
             direction: rtl;
         }
+
+        .td {
+            align-items: center;
+        }
     </style>
 @endpush
 
@@ -66,14 +70,26 @@
                         </div>
                     </div>
 
-                    <div class="card-body">
-                        <div class="owl-carousel owl-theme slider" id="slider-rtl">
-                            @foreach ($wordgroups as $wordgroup)
-                                <div>
-                                    <h4 class="arabic-text word-group" id="{{ $wordgroup->id }}">{{ $wordgroup->text }}</h4>
-                                </div>
-                            @endforeach
+                    <div class="card-body d-flex justify-content-between align-items-center" style="gap: 1rem;">
+                        <button id="btn-next-slide" class="btn btn-outline-primary btn-lg flex-shrink-0">
+                            <i class="fa fa-chevron-left"></i>
+                        </button>
+
+                        <div class="flex-grow-1" style="max-width: 80%; overflow: hidden;">
+                            <div class="owl-carousel owl-theme slider" id="slider-rtl">
+                                @foreach ($wordgroups as $wordgroup)
+                                    <div>
+                                        <h4 class="arabic-text word-group" wg-id="{{ $wordgroup->id }}">
+                                            {{ $wordgroup->text }}
+                                        </h4>
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
+
+                        <button id="btn-prev-slide" class="btn btn-outline-primary btn-lg flex-shrink-0">
+                            <i class="fa fa-chevron-right"></i>
+                        </button>
                     </div>
                 </div>
 
@@ -91,8 +107,8 @@
                         <div class="table-responsive">
                             <table class="table-striped table" id="sortable-table">
                                 <thead>
-                                    <tr>
-                                        <th class="text-center">
+                                    <tr class="text-center">
+                                        <th>
                                             <i class="fa-solid fa-sort"></i>
                                         </th>
                                         <th>Lafadz</th>
@@ -103,13 +119,13 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($words as $word)
-                                        <tr>
+                                        <tr class="text-center">
                                             <td>
                                                 <div class="sort-handler">
                                                     <i class="fa-solid fa-grip"></i>
                                                 </div>
                                             </td>
-                                            <td>
+                                            <td class="text-center align-middle">
                                                 <div class="arabic-text words">{{ $word->text }}</div>
                                                 <div class="table-links">
                                                     <a href="#">Detail</a>
@@ -128,7 +144,7 @@
                                                 @elseif($word->kalimat == 'اسم') badge-info
                                                 @elseif($word->kalimat == 'حرف') badge-danger
                                                 @else badge-light @endif">
-                                                    {{ $word->kalimat }}</div>
+                                                    {{ $word->kedudukan }}</div>
                                             </td>
                                             <td class="arabic-text words">
                                                 {{ $word->jenis }}
@@ -148,6 +164,7 @@
         </section>
     </div>
 
+    <!-- Modal -->
     <form class="modal-part" id="modal-login-part">
         <div class="card-body">
             <div class="form-row">
@@ -253,7 +270,6 @@
 
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/components-table.js') }}"></script>
-    <script src="{{ asset('js/page/modules-slider.js') }}"></script>
     <script src="{{ asset('js/page/bootstrap-modal.js') }}"></script>
 
     <script>
@@ -264,11 +280,20 @@
             rtl: true,
             items: 1,
             dots: false,
-            nav: true,
+            nav: false,
+            loop: false,
             navText: [
                 '<i class="fa fa-chevron-right"></i>',
                 '<i class="fa fa-chevron-left"></i>'
             ]
+        });
+
+        $("#btn-next-slide").click(function() {
+            $slider.trigger("next.owl.carousel");
+        });
+
+        $("#btn-prev-slide").click(function() {
+            $slider.trigger("prev.owl.carousel");
         });
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -330,7 +355,7 @@
                         $.each(response.wordgroups, function(i, wordgroup) {
                             $slider.append(`
                                 <div>
-                                    <h4 class="arabic-text word-group">${wordgroup.text}</h4>
+                                    <h4 class="arabic-text word-group" wg-id="${wordgroup.id}">${wordgroup.text}</h4>
                                 </div>
                             `);
                         });
@@ -339,16 +364,12 @@
                             rtl: true,
                             items: 1,
                             dots: false,
-                            nav: true,
+                            nav: false,
                             navText: [
                                 '<i class="fa fa-chevron-right"></i>',
                                 '<i class="fa fa-chevron-left"></i>'
                             ]
                         });
-
-                        const activeId = $("arabic-text.word-group.active").attr("id");
-                        console.log(activeId);
-                        fetchWords(activeId);
 
                         // Update URL di address bar
                         const params = new URLSearchParams(data);
@@ -376,6 +397,15 @@
 
             function fetchWords(word_group_id) {
                 // console.log(`Id WordGroup : ${word_group_id}`);
+                const tbody = $("#sortable-table tbody");
+                tbody.html(`
+                    <tr>
+                        <td colspan="5" class="text-center text-muted">
+                            <div class="spinner-border text-primary" role="status"></div>
+                            <span class="ml-2">Memuat...</span>
+                        </td>
+                    </tr>
+                `);
 
                 $.ajax({
                     url: "{{ route('words.index') }}",
@@ -383,7 +413,7 @@
                     data: {
                         word_group_id: word_group_id,
                     },
-                    success: function (response) {
+                    success: function(response) {
                         console.log(response);
 
                         const tbody = $("#sortable-table tbody");
@@ -400,7 +430,7 @@
                             return;
                         }
 
-                        response.forEach(function (word) {
+                        response.forEach(function(word) {
                             let badgeClass = 'badge-light';
                             if (word.kalimat === 'فعل') badgeClass = 'badge-success';
                             else if (word.kalimat === 'اسم') badgeClass = 'badge-info';
@@ -408,12 +438,12 @@
 
                             const row = `
                                 <tr>
-                                    <td>
-                                        <div class="sort-handler">
+                                    <td class="text-center align-middle w-5">
+                                        <div class="sort-handler align-middle">
                                             <i class="fa-solid fa-grip"></i>
                                         </div>
                                     </td>
-                                    <td>
+                                    <td class="text-center align-middle w-25">
                                         <div class="arabic-text words" id="${word.id}">${word.text}</div>
                                         <div class="table-links">
                                             <a href="#">Detail</a>
@@ -423,11 +453,11 @@
                                             <a href="#" class="text-danger">Hapus</a>
                                         </div>
                                     </td>
-                                    <td>${word.translation ?? ''}</td>
-                                    <td>
+                                    <td class="text-center align-middle">${word.translation ?? ''}</td>
+                                    <td class="text-center align-middle">
                                         <div class="badge ${badgeClass}">${word.kalimat ?? ''}</div>
                                     </td>
-                                    <td class="arabic-text words">${word.jenis ?? ''}</td>
+                                    <td class="arabic-text words">${word.kedudukan ?? ''}</td>
                                 </tr>
                             `;
                             tbody.append(row);
@@ -438,6 +468,62 @@
                     }
                 });
             }
+
+            $(document).ready(function() {
+                const $slider = $("#slider-rtl").owlCarousel({
+                    rtl: true,
+                    items: 5,
+                    margin: 10,
+                    nav: false,
+                    dots: false,
+                });
+
+                // Ambil id wordgroup pertama yang aktif saat halaman pertama kali dimuat
+                const firstWgId = $("#slider-rtl .owl-item.active .word-group").attr("wg-id");
+                if (firstWgId) {
+                    fetchWords(firstWgId);
+                }
+            });
+
+            function getActiveWgId(event) {
+                let $active = $slider.find('.owl-item.active').first();
+                let id = $active.find('.word-group').attr('wg-id');
+
+                if (id) return id;
+
+                try {
+                    const $items = $slider.find('.owl-item').not('.cloned');
+                    if (event && event.item && typeof event.item.index === 'number' && $items.length) {
+                        let idx = event.item.index;
+
+                        // normalize index ke range 0..length-1
+                        idx = ((idx % $items.length) + $items.length) % $items.length;
+                        id = $items.eq(idx).find('.word-group').attr('wg-id');
+                        return id;
+                    }
+                } catch (err) {
+                    console.error(err);
+                }
+                return null;
+            }
+
+            $slider.on('initialized.owl.carousel', function(e) {
+                const activeId = getActiveWgId(e);
+                if (activeId) {
+                    console.log(`Initial Active Id : ${activeId}`);
+                    fetchWords(activeId);
+                }
+            });
+
+            $slider.on('translated.owl.carousel', function(e) {
+                const activeId = getActiveWgId(e);
+                if (activeId) {
+                    console.log('Slide translated, Active Id :', activeId);
+                    fetchWords(activeId);
+                } else {
+                    console.log('No activeId found after translate');
+                }
+            });
 
             // =============================
             // FUNGSI NAVIGASI AYAT
