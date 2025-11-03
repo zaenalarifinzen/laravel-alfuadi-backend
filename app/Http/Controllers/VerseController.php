@@ -24,7 +24,7 @@ class VerseController extends Controller
             return response()->json($verses);
         }
 
-        return view('pages.verses.index', compact('verses'));
+        return view('pages.verses.index', compact('verses'), ['type_menu' => 'Al-Fuadi Database']);
     }
 
     /**

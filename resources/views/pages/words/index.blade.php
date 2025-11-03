@@ -57,32 +57,30 @@
                                     <table class="table-hover table">
                                         <thead>
                                             <tr>
-                                                <th>Id</th>
-                                                {{-- <th>Name</th>
-                                                <th>Name Indonesian</th>
-                                                <th>Name English</th>
-                                                <th>Location</th>
-                                                <th>Verse Count</th> --}}
+                                                <th>ID Kalimat</th>
+                                                <th>ID Grup</th>
+                                                <th>Teks</th>
+                                                <th>Terjemah</th>
+                                                <th>Kedudukan</th>
                                             </tr>
                                         </thead>
                                         @foreach ($words as $word)
                                             <tr>
-                                                <td>{{ $word->text }}
-                                                </td>
-                                                {{-- <td>{{ $surah->name }}
+                                                <td>
+                                                    {{ $word->id }}
                                                 </td>
                                                 <td>
-                                                    {{ $surah->name_id }}
+                                                    {{ $word->word_group_id }}
+                                                </td>
+                                                <td class="arabic-text">
+                                                    {{ $word->text }}
                                                 </td>
                                                 <td>
-                                                    {{ $surah->name_en }}
+                                                    {{ $word->translation }}
                                                 </td>
-                                                <td>
-                                                    {{ $surah->location }}
+                                                <td class="text-center">
+                                                    {{ $word->kedudukan }}
                                                 </td>
-                                                <td>
-                                                    {{ $surah->verse_count }}
-                                                </td> --}}
 
                                             </tr>
                                         @endforeach

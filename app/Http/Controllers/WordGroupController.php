@@ -15,10 +15,11 @@ class WordGroupController extends Controller
      */
     public function index()
     {
-        $wordgroups = WordGroups::orderBy('order_number', 'asc')
-            ->orderBy('verse_id', 'asc')->paginate(50);
+        $wordgroups = WordGroups::orderBy('verse_id', 'asc')
+            ->orderBy('order_number', 'asc')
+            ->paginate(50);
 
-        return view('pages.wordgroups.index', compact('wordgroups'));
+        return view('pages.wordgroups.index', compact('wordgroups'), ['type_menu' => 'Al-Fuadi Database']);
     }
 
     /**
@@ -46,7 +47,10 @@ class WordGroupController extends Controller
             'wordgroups' => $wordgroups->items(),
         ];
 
-        return response()->json($data);
+        return response()->json([
+            'success' => true,
+            'data' => $data,
+        ]);
     }
 
     /**
@@ -103,7 +107,7 @@ class WordGroupController extends Controller
             return response()->json($data);
         }
 
-        return view('pages.wordgroups.grouping', $data);
+        return view('pages.wordgroups.grouping', $data, ['type_menu' => 'Tools']);
     }
 
     /**

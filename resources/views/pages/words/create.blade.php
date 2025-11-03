@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="{{ asset('library/owl.carousel/dist/assets/owl.carousel.min.css') }}">
     <link rel="stylesheet" href="{{ asset('library/owl.carousel/dist/assets/owl.theme.default.min.css') }}">
     <link rel="stylesheet" href="{{ asset('library/ionicons201/css/ionicons.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('library/izitoast/dist/css/iziToast.min.css') }}">
+
 
     <style>
         #slider-rtl {
@@ -269,6 +271,8 @@
     <!-- JS Libraies -->
     <script src="{{ asset('library/jquery-ui-dist/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('library/owl.carousel/dist/owl.carousel.min.js') }}"></script>
+    <script src="{{ asset('library/izitoast/dist/js/iziToast.min.js') }}"></script>
+
 
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/components-table.js') }}"></script>
@@ -345,16 +349,17 @@
                 if (verse_id !== undefined && verse_id !== null) data.verse_id = verse_id;
 
                 $.ajax({
-                    url: "{{ route('wordgroups.index') }}",
+                    url: "{{ route('wordgroups.get', ['id' => ':id']) }}".replace(':id', verse_id),
                     type: "GET",
                     data: data,
                     success: function(response) {
-                        // console.log(response);
+                        console.log(`Hasil Fetch Word Group`);
+                        console.log(response);
 
                         $slider.trigger('destroy.owl.carousel');
                         $slider.html('');
 
-                        $.each(response.wordgroups, function(i, wordgroup) {
+                        $.each(response.data.wordgroups, function(i, wordgroup) {
                             $slider.append(`
                                 <div>
                                     <h4 class="arabic-text word-group" wg-id="${wordgroup.id}">${wordgroup.text}</h4>
@@ -377,18 +382,19 @@
                         const params = new URLSearchParams(data);
                         history.pushState({}, '', `?${params.toString()}`);
 
-                        currentSurahId.value = response.surah.id;
-                        currentVerseNumber.value = response.verse.number;
-                        currentVerseId.value = response.verse.id;
-                        maxVerse = response.surah.verse_count;
+                        currentSurahId.value = response.data.surah.id;
+                        currentVerseNumber.value = response.data.verse.number;
+                        currentVerseId.value = response.data.verse.id;
+                        maxVerse = response.data.surah.verse_count;
                         surahOption.value = '';
                         verseOption.value = '';
 
                         currentVerseLabel.textContent =
-                            `${response.surah.id}. ${response.surah.name} - Ayat ${response.verse.number}`;
+                            `${response.data.surah.id}. ${response.data.surah.name} - Ayat ${response.data.verse.number}`;
                     },
                     error: function(xhr) {
                         console.error(xhr.responseText);
+                        alert('Pilih 1 kalimah untuk diedit');
                     }
                 });
             }
@@ -413,7 +419,7 @@
                     url: "{{ route('words.get', ['id' => ':id']) }}".replace(':id', word_group_id),
                     type: "GET",
                     success: function(response) {
-                        console.log(response);
+                        // console.log(response);
 
                         const tbody = $("#sortable-table tbody");
                         tbody.empty();

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Word Groups')
+@section('title', 'Grup Kalimat')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -11,15 +11,15 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Word Groups</h1>
+                <h1>Grup Kalimat</h1>
                 {{-- <div class="section-header-button">
                     <a href="{{ route('products.create') }}" class="btn btn-primary">Add New</a>
                 </div> --}}
-                <div class="section-header-breadcrumb">
+                {{-- <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
                     <div class="breadcrumb-item"><a href="#">Forms</a></div>
                     <div class="breadcrumb-item">Word Groups</div>
-                </div>
+                </div> --}}
             </div>
             <div class="section-body">
                 <div class="row">
@@ -27,9 +27,9 @@
                         @include('layouts.alert')
                     </div>
                 </div>
-                <h2 class="section-title">Word Groups</h2>
+                <h2 class="section-title">Grup Kalimat</h2>
                 <p class="section-lead">
-                    You can manage all Word Groups, such as editing, deleting and more.
+                    Grup beberapa kalimat pada ayat Al-Quran.
                 </p>
 
 
@@ -37,7 +37,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4>All Verse</h4>
+                                <h4>Semua Grup Kalimat</h4>
                             </div>
                             <div class="card-body">
                                 <div class="float-left">
@@ -80,12 +80,12 @@
                                                             class="custom-control-label">&nbsp;</label>
                                                     </div>
                                                 </th> --}}
-                                                <th>Id</th>
-                                                <th>Surah Id</th>
-                                                <th>Verse Number</th>
-                                                <th>Verse Id</th>
-                                                <th>Order Number</th>
-                                                <th>Text Uthmani</th>
+                                                <th>Id Grup</th>
+                                                <th>No. Surah</th>
+                                                <th>No. Ayat</th>
+                                                <th>ID Ayat</th>
+                                                <th>Urutan</th>
+                                                <th>Teks</th>
                                             </tr>
                                         </thead>
 
@@ -108,7 +108,7 @@
                                                     <td>{{ $wordgroup->verse_number }}</td>
                                                     <td>{{ $wordgroup->verse_id }}</td>
                                                     <td>{{ $wordgroup->order_number }}</td>
-                                                    <td dir="rtl" style="font-family: 'Scheherazade New', serif;">
+                                                    <td class="arabic-text">
                                                         {{ $wordgroup->text }}
                                                     </td>
                                                 </tr>

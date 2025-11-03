@@ -70,7 +70,7 @@
                                                 <th>Verse Number</th>
                                                 <th>Text</th>
                                                 <th>Translation Indo</th>
-                                                <th>Action</th>
+                                                {{-- <th>Action</th> --}}
                                             </tr>
                                         </thead>
                                         @foreach ($verses as $verse)
@@ -91,14 +91,14 @@
                                                 <td>
                                                     {{ $verse->translation_indo }}
                                                 </td>
-                                                <td>
+                                                {{-- <td>
                                                     <div class="d-flex justify-content-left">
                                                         <a href='{{ route('wordgroups.indexByVerse', ['surah_id' => $verse->surah_id, 'verse_number' => $verse->number]) }}'
                                                             class="btn btn-sm btn-info btn-icon">
                                                             Grouping
                                                         </a>
                                                     </div>
-                                                </td>
+                                                </td> --}}
                                             </tr>
                                         @endforeach
 

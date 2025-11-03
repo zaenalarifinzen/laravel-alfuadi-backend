@@ -19,7 +19,7 @@ class SurahController extends Controller
             ->orderBy('id', 'asc')
             ->paginate(50);
 
-        return view('pages.surahs.index', compact('surahs'));
+        return view('pages.surahs.index', compact('surahs'), ['type_menu' => 'Al-Fuadi Database']);
     }
 
     /**

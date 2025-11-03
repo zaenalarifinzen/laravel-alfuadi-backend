@@ -18,19 +18,20 @@ Route::get('/404', function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/home', function () {
-        return view('pages.dashboard');
+        return view('pages.dashboard', ['type_menu' => 'dashboard']);
     })->name('home');
 
     Route::resource('surahs', SurahController::class);
     Route::resource('verses', VerseController::class);
     Route::resource('wordgroups', WordGroupController::class);
+    Route::resource('words', WordController::class);
 
     // Administrator Only
     Route::middleware(['roles:administrator'])->group(function () {
         Route::resource('users', UserController::class);
         Route::resource('products', ProductController::class);
         Route::get('/example', function () {
-            return view('pages.Template.features-post');
+            return view('pages.Template.modules-sweet-alert', ['type_menu' => '']);
         })->name('page.templatepage');; // Template Page
     });
 
@@ -46,6 +47,6 @@ Route::middleware(['auth'])->group(function () {
             ->name('wordgroups.complete');
 
         Route::get('/words/get/{id}', [WordController::class, 'getWord'])->name('words.get');
-        Route::resource('/words', WordController::class);
+        Route::get('/wordgroups/get/{id}', [WordGroupController::class, 'getWordGroup'])->name('wordgroups.get');
     });
 });

@@ -15,10 +15,11 @@ class WordController extends Controller
      */
     public function index()
     {
-        $words = Word::orderBy('order_number', 'asc')
+        $words = Word::orderBy('word_group_id', 'asc')
+            ->orderBy('order_number', 'asc')
             ->paginate(25);
 
-        return view('pages.words.index', compact('words'));
+        return view('pages.words.index', compact('words'), ['type_menu' => 'Al-Fuadi Database']);
     }
 
     /**
@@ -28,6 +29,7 @@ class WordController extends Controller
     {
         // Ambil semua word berdasarkan word_group_id
         $words = Word::where('word_group_id', $word_group_id)
+
             ->orderBy('order_number', 'asc')
             ->get();
 
@@ -69,8 +71,9 @@ class WordController extends Controller
             'verseNumber',
             'verseId',
             'wordgroups',
-            'words'
-        ));
+            'words',
+        ),
+            ['type_menu' => 'Tools']);
     }
 
     /**

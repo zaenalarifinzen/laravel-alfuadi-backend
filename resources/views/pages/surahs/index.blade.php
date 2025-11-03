@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Surahs')
+@section('title', 'Surat')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -11,15 +11,15 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Surah</h1>
+                <h1>Surat</h1>
                 {{-- <div class="section-header-button">
                     <a href="{{ route('products.create') }}" class="btn btn-primary">Add New</a>
                 </div> --}}
-                <div class="section-header-breadcrumb">
+                {{-- <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
                     <div class="breadcrumb-item"><a href="#">Forms</a></div>
-                    <div class="breadcrumb-item">Surahs</div>
-                </div>
+                    <div class="breadcrumb-item">Surat</div>
+                </div> --}}
             </div>
             <div class="section-body">
                 <div class="row">
@@ -27,9 +27,9 @@
                         @include('layouts.alert')
                     </div>
                 </div>
-                <h2 class="section-title">Surahs</h2>
+                <h2 class="section-title">Surat</h2>
                 <p class="section-lead">
-                    You can manage all Surahs, such as editing, deleting and more.
+                    Data Surat di dalam Al-Quran.
                 </p>
 
 
@@ -37,7 +37,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4>All Surah</h4>
+                                <h4>Semua Surat</h4>
                             </div>
                             <div class="card-body">
                                 {{-- <div class="float-left">
@@ -66,11 +66,11 @@
                                         <thead>
                                             <tr>
                                                 <th>Id</th>
-                                                <th>Name</th>
-                                                <th>Name Indonesian</th>
-                                                <th>Name English</th>
-                                                <th>Location</th>
-                                                <th>Verse Count</th>
+                                                <th>Nama</th>
+                                                <th>Nama Indonesia</th>
+                                                <th>Name Inggris</th>
+                                                <th>Kategori</th>
+                                                <th>Jumlah Ayat</th>
                                             </tr>
                                         </thead>
                                         @foreach ($surahs as $surah)
