@@ -7,6 +7,7 @@ use App\Models\Verse;
 use App\Models\WordGroups;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class WordGroupController extends Controller
 {
@@ -25,52 +26,87 @@ class WordGroupController extends Controller
     /**
      * Display a listing of the Word Group.
      */
-    public function getWordGroup(Request $request)
+    public function getWordGroup(Request $request, $verse_id = null)
     {
-        $verseResult = null;
-
-        if ($request->filled('verse_id')) {
-            $verseResult = Verse::where('id', $request->verse_id)->first();
+        if ($verse_id) {
+            $currentVerse = Verse::find($verse_id);
         } elseif ($request->filled('surah_id') && $request->filled('verse_number')) {
-            $verseResult = Verse::where('surah_id', $request->surah_id)
-                ->where('number', $request->verse_number)->first();
+            $currentVerse = Verse::where('surah_id', $request->surah_id)
+                ->where('number', $request->verse_number)
+                ->first();
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Parameter diperlukan',
+            ], 400);
         }
 
-        $surahResult = Surah::where('id', $verseResult->surah_id)->first();
+        if (! $currentVerse) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Ayat tidak ditemukan',
+            ], 404);
+        }
 
-        $wordgroups = WordGroups::where('verse_id', $verseResult->id)
-            ->orderBy('order_number', 'asc')->paginate(50);
+        $currentSurah = Surah::find($currentVerse->surah_id);
 
-        $data = [
-            'surah' => $surahResult,
-            'verse' => $verseResult,
-            'wordgroups' => $wordgroups->items(),
-        ];
+        $existing = WordGroups::where('verse_id', $currentVerse->id)
+            ->with(['editorInfo:id,name'])
+            ->orderBy('order_number', 'asc')
+            ->get();
+
+        if ($existing->isNotEmpty()) {
+            $wordGroups = $existing;
+            $isPersisted = true;
+        } else {
+            $splitWords = preg_split('/\s+/', trim($currentVerse->text));
+            $wordGroups = collect($splitWords)->map(function ($wordGroup, $index) use ($currentVerse) {
+                return (object) [
+                    'id' => $index + 1,
+                    'surah_id' => $currentVerse->surah_id,
+                    'verse_id' => $currentVerse->id,
+                    'verse_number' => $currentVerse->number,
+                    'text' => $wordGroup,
+                    'editorInfo' => null,
+                ];
+            });
+            $isPersisted = false;
+        }
 
         return response()->json([
             'success' => true,
-            'data' => $data,
+            'data' => [
+                'surah' => $currentSurah,
+                'verse' => $currentVerse,
+                'wordGroups' => $wordGroups,
+                'isPersisted' => $isPersisted,
+            ],
         ]);
     }
 
     /**
      * Display a listing of the Word Group by Verse.
      */
-    public function indexByVerse(Request $request)
+    public function grouping(Request $request)
     {
         $surahs = DB::table('surahs')->select('id', 'name', 'verse_count')->get();
-        $surahId = $request->input('surah_id', 1);
-        $currentSurah = DB::table('surahs')->where('id', $surahId)->first();
-        $verseNumber = $request->input('verse_number', 1);
 
         // ambil data dari tabel verses
-        $currentVerse = Verse::where('surah_id', $surahId)
-            ->where('number', $verseNumber)
-            ->first();
+        $currentVerse = null;
+        if ($request->filled('verse_id')) {
+            $currentVerse = Verse::where('id', $request->verse_id)->first();
+        } elseif ($request->filled('surah_id') && $request->filled('verse_number')) {
+            $currentVerse = Verse::where('surah_id', $request->surah_id)
+                ->where('number', $request->verse_number)->first();
+        } else {
+            $currentVerse = Verse::where('id', 1)->first();
+        }
 
         if (! $currentVerse) {
             return redirect()->back()->with('error', 'Ayat tidak ditemukan');
         }
+
+        $currentSurah = $currentSurah = Surah::where('id', $currentVerse->surah_id)->first();
 
         $existing = WordGroups::where('verse_id', $currentVerse->id)
             ->orderBy('order_number', 'asc')
@@ -102,10 +138,6 @@ class WordGroupController extends Controller
             'words' => $words,
             'isPersisted' => $isPersisted,
         ];
-
-        if ($request->ajax() || $request->wantsJson()) {
-            return response()->json($data);
-        }
 
         return view('pages.wordgroups.grouping', $data, ['type_menu' => 'Tools']);
     }
@@ -169,7 +201,7 @@ class WordGroupController extends Controller
                     ]);
                 }
             });
-
+            
             return response()->json(['success' => true, 'message' => 'Data tersimpan']);
         } catch (\Throwable $e) {
             \Log::error('WordGroup save error: '.$e->getMessage());
@@ -234,16 +266,14 @@ class WordGroupController extends Controller
             }
         });
 
-        // Cari verse berikutnya
-        $nextVerse = $verseNumber + 1;
-        $maxVerse = DB::table('surahs')->where('id', $surahId)->value('verse_count');
-        if ($nextVerse > $maxVerse) {
-            // Jika sudah ayat terakhir, tetap di ayat terakhir
-            $nextVerse = $maxVerse;
+        $nextVerse = $request->verse_id + 1;
+
+        if ($nextVerse > 6236) {
+            return redirect()->back()->with('error', 'Sudah di ayat terakhir');
         }
 
         // Redirect ke ayat berikutnya
-        return redirect()->route('wordgroups.indexByVerse', [
+        return redirect()->route('wordgroups.grouping', [
             'surah_id' => $surahId,
             'verse_number' => $nextVerse,
         ])->with('success', 'Update berhasil');

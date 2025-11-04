@@ -35,7 +35,7 @@
             @if (auth()->check() && auth()->user()->roles !== 'user')
                 <li class="menu-header">Tools</li>
                 <li class="{{ Request::is('grouping') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('wordgroups.indexByVerse') }}"><i class="fas fa-object-group"></i>
+                    <a class="nav-link" href="{{ route('wordgroups.grouping') }}"><i class="fas fa-object-group"></i>
                         <span>Grouping Ayat</span></a>
                 </li>
                 <li class="{{ Request::is('words/create') ? 'active' : '' }}">

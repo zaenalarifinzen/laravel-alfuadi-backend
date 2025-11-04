@@ -133,10 +133,9 @@
                 <h1>Grup Kalimat</h1>
 
                 <div class="float-right">
-                    <form method="GET" action="{{ route('wordgroups.indexByVerse') }}" id="filter-form" class="mb-0">
+                    <form method="GET" action="{{ route('wordgroups.grouping') }}" id="filter-form" class="mb-0">
                         <div class="input-group">
-                            <select class="form-control {{-- select2 --}} form-control-sm" name="surah-option"
-                                id="surah-option"
+                            <select class="form-control form-control-sm" name="surah-option" id="surah-option"
                                 style="flex: 3; border-top-left-radius: 0.5rem; border-bottom-left-radius: 0.5rem;"
                                 required>
                                 <option value="">Pilih Surah</option>
@@ -146,11 +145,8 @@
                                     </option>
                                 @endforeach
                             </select>
-
-                            <select class="form-control {{-- select2 --}} form-control-sm" name="verse-option"
-                                id="verse-option" style="flex: 2;" required>
-                                <option value="">Ayat</option>
-                            </select>
+                            <input type="number" class="form-control" placeholder="Ayat" name="verse-option"
+                                id="verse-option" value="" style="flex: 1;" required>
 
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="submit">Cari</button>
@@ -172,9 +168,12 @@
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <input type="hidden" id="surah-id" value="{{ $currentSurah->id }}">
                                 <input type="hidden" id="verse-number" value="{{ $currentVerse->number }}">
+                                <input type="hidden" id="verse-id" value="{{ $currentVerse->id }}">
                                 <input type="hidden" id="isPersisted" value="{{ $isPersisted ? 1 : 0 }}">
                                 <h4 id="result-verse" class="mb-0">{{ $currentSurah->name ?? 'Al-Fatihah' }} - Ayat
                                     {{ $currentVerse->number ?? 1 }}</h4>
+                                <div class="text-dark mb-2">Editor</div>
+
                             </div>
 
 
@@ -211,8 +210,8 @@
                                         @csrf
                                         <input type="hidden" name="id" id="split-id">
                                         <button type="submit" class="btn btn-icon btn-lg btn-warning disabled"
-                                            id="btn-split" data-toggle="tooltip" data-placement="top" title="Pisahkan"><i
-                                                class="fa-solid fa-scissors"></i>
+                                            id="btn-split" data-toggle="tooltip" data-placement="top"
+                                            title="Pisahkan"><i class="fa-solid fa-scissors"></i>
                                         </button>
                                     </form>
                                     <form id="merge-form" action="{{ route('wordgroups.merge') }}" method="POST">
@@ -287,13 +286,14 @@
             const surahOption = document.getElementById('surah-option');
             const verseOption = document.getElementById('verse-option');
             const wordgroupList = document.getElementById('wordgroup-list');
+            const currentVerseId = document.getElementById('verse-id');
             const currentSurahId = document.getElementById('surah-id');
             const currentVerseNumber = document.getElementById('verse-number');
 
             const resultLabel = document.getElementById('result-verse');
             const errorMsg = document.getElementById('merge-error');
             let modified = false;
-            let maxVerse = parseInt(wordgroupList.dataset.verseCount) || 0;
+            let verseCount;
 
             // =============================
             // FUNGSI UTILITAS
@@ -564,81 +564,106 @@
             }
 
             // =============================
-            // FUNGSI UNTUK FETCH AYAT
+            // FUNGSI FETCH WORD GROUPS
             // =============================
+            function fetchWordGroups(surah_id, verse_number, verse_id) {
+                let url;
 
-            function fetchVerse(surahId, verseNumber) {
-                wordgroupList.innerHTML = '<p class="text-info">Loading</p>';
-                if (!surahId || !verseNumber) {
-                    alert('Pilih Surah dan Ayat terlebih dahulu!');
-                    return;
+                if (verse_id) {
+                    url = "{{ route('wordgroups.get', ['id' => ':id']) }}".replace(':id', verse_id);
+                } else if (surah_id && verse_number) {
+                    url = "{{ route('wordgroups.get', ['id' => ':id']) }}".replace('/:id',
+                        `?surah_id=${surah_id}&verse_number=${verse_number}`);
+                } else {
+                    alert('Parameter tidak lengkap');
+                    return
                 }
 
-                fetch(
-                        `{{ route('wordgroups.indexByVerse') }}?surah_id=${surahId}&verse_number=${verseNumber}`
-                    )
-                    .then(res => res.text())
-                    .then(html => {
-                        const parser = new DOMParser();
-                        const doc = parser.parseFromString(html, 'text/html');
-                        const newList = doc.querySelector('#wordgroup-list');
+                wordgroupList.innerHTML = '<p class="text-info text-center">Loading...</p>';
 
-                        if (newList) {
-                            wordgroupList.innerHTML = newList.innerHTML;
-
-                            const isPersistedValue = newList.dataset.isPersisted === '1';
-                            const persistedInput = document.getElementById('isPersisted');
-                            if (persistedInput) persistedInput.value = isPersistedValue ? 1 : 0;
-
-                            if (btnComplete) {
-                                if (isPersistedValue) {
-                                    btnComplete.textContent = 'Update';
-                                } else {
-                                    btnComplete.textContent = 'Simpan & Lanjutkan';
-                                }
-                            }
-
-                            maxVerse = newList.dataset.verseCount;
-
-                            const surahName = newList.dataset.surahName || '';
-                            const verseNum = newList.dataset.verseNumber || verseNumber;
-                            updateResultText(surahName, verseNum);
-                        } else {
+                $.ajax({
+                    url: url,
+                    type: "GET",
+                    success: function(response) {
+                        if (!response.success || !response.data) {
                             wordgroupList.innerHTML =
-                                '<p class="text-muted">Tidak ada data untuk ayat ini.</p>';
+                                '<p class="text-info text-center">Data tidak ditemukan</p>';
                         }
 
-                        currentSurahId.value = surahId;
-                        currentVerseNumber.value = verseNumber;
+                        const data = response.data;
+                        const isPersisted = data.isPersisted;
+                        const wordGroups = data.wordGroups || [];
+                        const surah = data.surah;
+                        const verse = data.verse;
 
-                        // Update URL di address bar
-                        const params = new URLSearchParams({
-                            surah_id: surahId,
-                            verse_number: verseNumber
-                        });
-                        history.pushState({}, '', `?${params.toString()}`);
+                        if (wordGroups.length > 0) {
+                            let html = '';
+                            wordGroups.forEach(wordGroup => {
+                                html += `
+                                    <label class="selectgroup-item arabic-pill">
+                                        <input type="checkbox" name="ids[]" value="${wordGroup.id}" class="selectgroup-input row-checkbox">
+                                        <span class="selectgroup-button arabic-text">${wordGroup.text}</span>
+                                    </label>
+                                `;
+                            });
+
+                            wordgroupList.innerHTML = html;
+
+                            wordgroupList.dataset.isPersisted = isPersisted ? '1' : '0';
+                            wordgroupList.dataset.surahName = surah.name;
+                            wordgroupList.dataset.verseCount = surah.verse_count;
+                            wordgroupList.dataset.verseNumber = verse.number;
+
+                            const firstGroup = wordGroups[0];
+                            const editorName = firstGroup.editor_info ? firstGroup.editor_info.name :
+                                'Belum ada editor';
+                            $('.text-dark.mb-2').text(editorName);
+                        } else {
+                            wordgroupList.innerHTML =
+                                '<p class="text-muted">Tidak ada data kata untuk ayat ini.</p>'
+                        }
+
+                        if (btnComplete) {
+                            btnComplete.textContent = isPersisted ? 'Update' : 'Simpan & Lanjutkan';
+                        }
+
+                        if (typeof updateResultText === 'function') {
+                            updateResultText(surah.name, verse.number);
+                        }
+
+                        currentVerseId.value = verse.id;
+                        currentSurahId.value = surah.id;
+                        currentVerseNumber.value = verse.number;
+                        console.log('Verse ID saat ini: ', currentVerseId.value);
+
 
                         const completeForm = document.getElementById('complete-form');
                         if (completeForm) {
                             const surahInput = completeForm.querySelector('input[name="surah_id"]');
                             const verseInput = completeForm.querySelector('input[name="verse_number"]');
-                            if (surahInput) surahInput.value = surahId;
-                            if (verseInput) verseInput.value = verseNumber;
+                            if (surahInput) surahInput.value = surah.id;
+                            if (verseInput) verseInput.value = verse.number;
                         }
 
                         bindCheckboxEvents();
                         updatebtnMerge();
                         updatebtnEditAndSplit();
-                        updateVerseOptions();
+                        updateVerseCount();
 
                         surahOption.value = '';
                         verseOption.value = '';
-                    })
-                    .catch(err => {
-                        console.error(err);
-                        wordgroupList.innerHTML =
-                            '<p class="text-danger">Terjadi kesalahan mengambil data.</p>';
-                    });
+
+                        const params = new URLSearchParams({
+                            surah_id: surah.id,
+                            verse_number: verse.number,
+                        });
+                        history.pushState({}, '', `?${params.toString()}`);
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                        wordgroupList.innerHTML = '<p class="text-muted">Terjadi kesalahan</p>'
+                    }
+                })
             }
 
             function updateResultText(surahName, verseNumber) {
@@ -674,20 +699,10 @@
                 });
             }
 
-            function updateVerseOptions() {
+            function updateVerseCount() {
                 const selected = surahOption.options[surahOption.selectedIndex];
-                const verseCount = selected ? selected.getAttribute('data-verse-count') : 0;
-                const currentVerse = "{{ request('verse_number') }}";
-                for (let i = 1; i <= verseCount; i++) {
-                    verseOption.innerHTML +=
-                        `<option value="${i}">${i}</option>`;
-                }
+                verseCount = selected ? selected.getAttribute('data-verse-count') : 0;
 
-                if (surahOption.value) {
-                    verseOption.value = 1;
-                } else {
-                    verseOption.innerHTML = '<option value="">Ayat</option>';
-                }
             }
 
             async function handleFilterSubmit(e) {
@@ -698,7 +713,7 @@
                     if (!confirmed) return;
                 };
 
-                fetchVerse(surahOption.value, verseOption.value);
+                fetchWordGroups(surahOption.value, verseOption.value);
                 modified = false;
                 // console.log(`Surah Id = ${surahOption.value} Verse = ${verseOption.value}`)
             }
@@ -713,10 +728,12 @@
                     if (!confirmed) return;
                 };
 
-                let verseNumber = parseInt(currentVerseNumber.value);
-                if (verseNumber > 1) {
-                    currentVerseNumber.value = verseNumber - 1;
-                    fetchVerse(currentSurahId.value, currentVerseNumber.value);
+                let verseId = parseInt(currentVerseId.value);
+                // console.log(`Verse Id: ${verseId}`);
+
+                if (verseId > 1) {
+                    currentVerseId.value = verseId - 1;
+                    fetchWordGroups(null, null, currentVerseId.value);
                     modified = false;
                 }
             }
@@ -727,14 +744,14 @@
                     if (!confirmed) return;
                 };
 
-                let verseNumber = parseInt(currentVerseNumber.value);
-                const max = maxVerse;
+                let verseId = parseInt(currentVerseId.value);
+                const max = 6236;
 
                 // console.log(`Max: ${max}`);
 
-                if (verseNumber < max) {
-                    currentVerseNumber.value = verseNumber + 1;
-                    fetchVerse(currentSurahId.value, currentVerseNumber.value);
+                if (verseId < max) {
+                    currentVerseId.value = verseId + 1;
+                    fetchWordGroups(null, null, currentVerseId.value);
                     modified = false;
                 }
             }
@@ -743,9 +760,6 @@
             // FUNGSI SIMPAN AYAT
             // =============================
             function save() {
-                const surahId = document.getElementById('surah-id').value;
-                const verseNumber = document.getElementById('verse-number').value;
-
                 swal({
                     title: 'Konfirmasi',
                     text: 'Yakin ingin menyimpan ayat ini?',
@@ -780,16 +794,19 @@
                                         'content')
                             },
                             body: JSON.stringify({
-                                surah_id: surahId,
-                                verse_number: verseNumber,
+                                surah_id: currentSurahId.value,
+                                verse_number: currentVerseNumber.value,
+                                verse_id: currentVerseId.value,
                                 groups: groups
                             })
                         })
                         .then(response => response.json())
                         .then(data => {
                             if (data.success) {
+                                nextVerseId = parseInt(currentVerseId.value) + 1;
+                                console.log(`next verse id: ${nextVerseId}`)
                                 window.location.href =
-                                    `/grouping?surah_id=${surahId}&verse_number=${parseInt(verseNumber) + 1}`;
+                                    `/wordgroups/grouping?verse_id=${nextVerseId}`;
                             } else {
                                 swal('Gagal!', data.message || 'Terjadi kesalahan.', 'error');
                             }
@@ -835,8 +852,15 @@
 
             // Event listener untuk perubahan surah
             surahOption.addEventListener('change', function() {
-                updateVerseOptions();
-                verseOption.selectedIndex = 0;
+                updateVerseCount();
+                verseOption.value = 1;
+            });
+
+            // Event listener untuk batasi jumlah ayat
+            verseOption.addEventListener('change', function() {
+                if (parseInt(verseOption.value) > verseCount) {
+                    verseOption.value = verseCount;
+                }
             });
 
             // Event listener untuk simpan
@@ -877,7 +901,7 @@
             // =============================
 
             // Inisialisasi opsi ayat jika surah sudah dipilih
-            if (surahOption.value) updateVerseOptions();
+            if (surahOption.value) updateVerseCount();
 
             // Inisialisasi status tombol
             updatebtnMerge();

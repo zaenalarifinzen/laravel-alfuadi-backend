@@ -29,7 +29,7 @@
                 </div>
                 <h2 class="section-title">Surat</h2>
                 <p class="section-lead">
-                    Data Surat di dalam Al-Quran.
+                    Daftar semua surat di dalam Al-Quran.
                 </p>
 
 

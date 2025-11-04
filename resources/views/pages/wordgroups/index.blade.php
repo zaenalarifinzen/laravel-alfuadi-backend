@@ -29,7 +29,7 @@
                 </div>
                 <h2 class="section-title">Grup Kalimat</h2>
                 <p class="section-lead">
-                    Grup beberapa kalimat pada ayat Al-Quran.
+                    Daftar grup kalimat dalam ayat Al-Quran.
                 </p>
 
 

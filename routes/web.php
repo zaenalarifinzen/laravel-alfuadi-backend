@@ -17,14 +17,6 @@ Route::get('/404', function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/home', function () {
-        return view('pages.dashboard', ['type_menu' => 'dashboard']);
-    })->name('home');
-
-    Route::resource('surahs', SurahController::class);
-    Route::resource('verses', VerseController::class);
-    Route::resource('wordgroups', WordGroupController::class);
-    Route::resource('words', WordController::class);
 
     // Administrator Only
     Route::middleware(['roles:administrator'])->group(function () {
@@ -37,16 +29,23 @@ Route::middleware(['auth'])->group(function () {
 
     // Administrator & Operator Only
     Route::middleware(['roles:administrator,operator'])->group(function () {
-        Route::get('/grouping', [WordGroupController::class, 'indexByVerse'])->name('wordgroups.indexByVerse');
+        Route::get('/wordgroups/grouping', [WordGroupController::class, 'grouping'])->name('wordgroups.grouping');
         Route::post('/wordgroups/save', [WordGroupController::class, 'save'])->name('wordgroups.save');
-        Route::post('/wordgroups/merge', [WordGroupController::class, 'merge'])
-            ->name('wordgroups.merge');
-        Route::post('/wordgroups/split', [WordGroupController::class, 'split'])
-            ->name('wordgroups.split');
-        Route::post('/wordgroups/complete', [WordGroupController::class, 'completeOrderNumber'])
-            ->name('wordgroups.complete');
+        Route::post('/wordgroups/merge', [WordGroupController::class, 'merge'])->name('wordgroups.merge');
+        Route::post('/wordgroups/split', [WordGroupController::class, 'split'])->name('wordgroups.split');
+        Route::post('/wordgroups/complete', [WordGroupController::class, 'completeOrderNumber'])->name('wordgroups.complete');
 
         Route::get('/words/get/{id}', [WordController::class, 'getWord'])->name('words.get');
-        Route::get('/wordgroups/get/{id}', [WordGroupController::class, 'getWordGroup'])->name('wordgroups.get');
+        Route::get('/wordgroups/get/{id?}', [WordGroupController::class, 'getWordGroup'])->name('wordgroups.get');
     });
+
+    // All User
+    Route::get('/home', function () {
+        return view('pages.dashboard', ['type_menu' => 'dashboard']);
+    })->name('home');
+
+    Route::resource('surahs', SurahController::class);
+    Route::resource('verses', VerseController::class);
+    Route::resource('wordgroups', WordGroupController::class);
+    Route::resource('words', WordController::class);
 });

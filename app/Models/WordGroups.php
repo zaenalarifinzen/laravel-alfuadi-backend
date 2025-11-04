@@ -21,4 +21,9 @@ class WordGroups extends Model
         'updated_at',
         'editor',
     ];
+
+    public function editorInfo()
+    {
+        return $this->belongsTo(User::class, 'editor');
+    }
 }

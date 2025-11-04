@@ -127,6 +127,19 @@ a {
     color: #fff;
 }
 
+body.sidebar-mini .main-sidebar .sidebar-menu > li.active > a {
+  box-shadow: 0 4px 8px #d1f7f5;
+  background-color: #1d948e;
+  color: #fff;
+}
+
+body.sidebar-mini .main-sidebar .sidebar-menu > li ul.dropdown-menu li > a:focus,
+body.sidebar-mini .main-sidebar .sidebar-menu > li ul.dropdown-menu li.active > a,
+body.sidebar-mini .main-sidebar .sidebar-menu > li ul.dropdown-menu li.active > a:hover {
+  color: #fff;
+  background-color: #1d948e !important;
+}
+
 .card.card-primary {
     border-top: 2px solid #1d948e;
 }
@@ -155,6 +168,38 @@ a {
     border-color: #6dc2bc;
 }
 
+/* 3.20 Dropdown */
+.tab-content.no-padding > .tab-pane {
+  padding: 0;
+}
+.tab-content > .tab-pane {
+  line-height: 28px;
+}
+
+ul.nav-tabs li.nav-item a.nav-link i {
+  color: #1d948e;
+}
+ul.nav-tabs li.nav-item a.nav-link span {
+  display: block;
+  line-height: 60%;
+}
+ul.nav-tabs li.nav-item a.nav-link span i {
+  font-size: 16px !important;
+}
+
+ul.nav-tabs li.nav-item a.nav-link.active i {
+  color: #191d21;
+}
+
+.main-sidebar .sidebar-menu li ul.dropdown-menu li a:hover {
+  color: #1d948e;
+  background-color: inherit;
+}
+.main-sidebar .sidebar-menu li ul.dropdown-menu li.active > a {
+  color: #1d948e;
+  font-weight: 600;
+}
+
 .main-sidebar .sidebar-brand a {
     font-family: "Cinzel Decorative" !important;
     text-decoration: none;
@@ -165,13 +210,78 @@ a {
     color: #1d948e;
 }
 
+/* 4.2 Section */
+.section {
+  position: relative;
+  z-index: 1;
+}
+.section > *:first-child {
+  margin-top: -7px;
+}
+.section .section-header {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
+  background-color: #fff;
+  border-radius: 3px;
+  border: none;
+  position: relative;
+  margin-bottom: 30px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+}
 .section .section-header h1 {
-    margin-bottom: 0;
-    font-weight: 700;
-    display: inline-block;
-    font-size: 24px;
-    margin-top: 3px;
-    color: #138a84;
+  margin-bottom: 0;
+  font-weight: 700;
+  display: inline-block;
+  font-size: 24px;
+  margin-top: 3px;
+  color: #138a84;
+}
+.section .section-header .section-header-back {
+  margin-right: 15px;
+}
+.section .section-header .section-header-back .btn:hover {
+  background-color: #138a84;
+  color: #fff;
+}
+.section .section-header .section-header-button {
+  margin-left: 20px;
+}
+.section .section-header .section-header-breadcrumb {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+.section .section-header .section-header-breadcrumb .breadcrumb-item {
+  font-size: 12px;
+}
+.section .section-header .btn {
+  font-size: 12px;
+}
+.section .section-title {
+  font-size: 18px;
+  color: #191d21;
+  font-weight: 600;
+  position: relative;
+  margin: 30px 0 25px 0;
+}
+.section .section-title:before {
+  content: " ";
+  border-radius: 5px;
+  height: 8px;
+  width: 30px;
+  background-color: #138a84;
+  display: inline-block;
+  float: left;
+  margin-top: 6px;
+  margin-right: 15px;
+}
+.section .section-title + .section-lead {
+  margin-top: -20px;
+}
+.section .section-lead {
+  margin-left: 45px;
 }
 
 /* .swal-title {
@@ -285,4 +395,9 @@ body:not(.sidebar-mini) .sidebar-style-2 .sidebar-menu > li.active > a:before {
 }
 .owl-theme .owl-dots .owl-dot.active span {
     background-color: #008f85;
+}
+
+.table-hover tbody tr:hover {
+    color: #212529;
+    background-color: #138a8413;
 }

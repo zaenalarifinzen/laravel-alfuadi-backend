@@ -31,7 +31,7 @@
                 <h1>Input I'rob</h1>
 
                 <div class="float-right">
-                    <form method="GET" action="{{ route('wordgroups.indexByVerse') }}" id="filter-form" class="mb-0">
+                    <form method="GET" action="{{ route('wordgroups.grouping') }}" id="filter-form" class="mb-0">
                         <div class="input-group">
                             <select class="form-control {{-- select2 --}} form-control-sm" name="surah-option"
                                 id="surah-option"
@@ -343,15 +343,23 @@
             // =============================
 
             function fetchWordGroups(surah_id, verse_number, verse_id) {
-                const data = {};
-                if (surah_id !== undefined && surah_id !== null) data.surah_id = surah_id;
-                if (verse_number !== undefined && verse_number !== null) data.verse_number = verse_number;
-                if (verse_id !== undefined && verse_id !== null) data.verse_id = verse_id;
+                let url;
+
+                if (verse_id) {
+                    url = "{{ route('wordgroups.get', ['id' => ':id']) }}".replace(':id', verse_id);
+                } else if (surah_id && verse_number) {
+                    url = "{{ route('wordgroups.get', ['id' => ':id']) }}".replace('/:id', `?surah_id=${surah_id}&verse_number=${verse_number}`);
+                } else {
+                    alert('Parameter tidak lengkap')
+                    return;
+                }
+
+                console.log(url);
 
                 $.ajax({
-                    url: "{{ route('wordgroups.get', ['id' => ':id']) }}".replace(':id', verse_id),
+                    url: url,
                     type: "GET",
-                    data: data,
+                    // data: data,
                     success: function(response) {
                         console.log(`Hasil Fetch Word Group`);
                         console.log(response);
@@ -359,10 +367,10 @@
                         $slider.trigger('destroy.owl.carousel');
                         $slider.html('');
 
-                        $.each(response.data.wordgroups, function(i, wordgroup) {
+                        $.each(response.data.wordGroups, function(i, wordGroup) {
                             $slider.append(`
                                 <div>
-                                    <h4 class="arabic-text word-group" wg-id="${wordgroup.id}">${wordgroup.text}</h4>
+                                    <h4 class="arabic-text word-group" wg-id="${wordGroup.id}">${wordGroup.text}</h4>
                                 </div>
                             `);
                         });
@@ -379,8 +387,8 @@
                         });
 
                         // Update URL di address bar
-                        const params = new URLSearchParams(data);
-                        history.pushState({}, '', `?${params.toString()}`);
+                        // const params = new URLSearchParams(data);
+                        // history.pushState({}, '', `?${params.toString()}`);
 
                         currentSurahId.value = response.data.surah.id;
                         currentVerseNumber.value = response.data.verse.number;
@@ -394,7 +402,7 @@
                     },
                     error: function(xhr) {
                         console.error(xhr.responseText);
-                        alert('Pilih 1 kalimah untuk diedit');
+                        alert('Terjadi kesalahan');
                     }
                 });
             }

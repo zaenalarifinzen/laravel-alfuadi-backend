@@ -29,7 +29,6 @@ class WordController extends Controller
     {
         // Ambil semua word berdasarkan word_group_id
         $words = Word::where('word_group_id', $word_group_id)
-
             ->orderBy('order_number', 'asc')
             ->get();
 
