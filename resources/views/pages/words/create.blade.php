@@ -15,12 +15,20 @@
             direction: rtl;
         }
 
-        #slider-rtl .owl-item {
+        #slider-rtl .owl-item .owl-stage-outer {
             direction: rtl;
+            overflow: visible !important;
         }
 
         .td {
             align-items: center;
+        }
+
+        .arabic-text {
+            font-size: 48px;
+            line-height: 2.2;
+            padding: 10px 0;
+            display: block;
         }
     </style>
 @endpush

@@ -109,6 +109,7 @@ class WordGroupController extends Controller
         $currentSurah = $currentSurah = Surah::where('id', $currentVerse->surah_id)->first();
 
         $existing = WordGroups::where('verse_id', $currentVerse->id)
+            ->with(['editorInfo:id,name'])
             ->orderBy('order_number', 'asc')
             ->get();
 
@@ -126,6 +127,7 @@ class WordGroupController extends Controller
                     'verse_id' => $currentVerse->id,
                     'verse_number' => $currentVerse->number,
                     'text' => $word,
+                    'editorInfo' => null,
                 ];
             });
             $isPersisted = false;

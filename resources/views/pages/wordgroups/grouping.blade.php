@@ -172,7 +172,7 @@
                                 <input type="hidden" id="isPersisted" value="{{ $isPersisted ? 1 : 0 }}">
                                 <h4 id="result-verse" class="mb-0">{{ $currentSurah->name ?? 'Al-Fatihah' }} - Ayat
                                     {{ $currentVerse->number ?? 1 }}</h4>
-                                <div class="text-dark mb-2">Editor</div>
+
 
                             </div>
 
@@ -190,6 +190,10 @@
                                             <span class="selectgroup-button arabic-text">{{ $word->text }}</span>
                                         </label>
                                     @endforeach
+                                </div>
+                                <div class="editor" style="padding-top: 20px">
+                                    <span>Editor : </span>
+                                    <a href="#" class="font-weight-600">{{ $words->first()->editorInfo->name ?? '-' }}</a>
                                 </div>
 
                                 <div class="clearfix mb-3"></div>
@@ -230,10 +234,10 @@
 
                     <div class="col-12 d-flex justify-content-between align-items-center">
                         <div>
-                            <button type="button" class="btn btn-outline-primary btn-lg mr-2" id="btn-prev-verse"><i
-                                    class="ion-chevron-left" data-pack="default" data-tags="arrow, left"></i></button>
                             <button type="button" class="btn btn-outline-primary btn-lg" id="btn-next-verse">
-                                <i class="ion-chevron-right" data-pack="default" data-tags="arrow, right"></i></button>
+                                <i class="ion-chevron-left" data-pack="default" data-tags="arrow, right"></i></button>
+                            <button type="button" class="btn btn-outline-primary btn-lg mr-2" id="btn-prev-verse"><i
+                                    class="ion-chevron-right" data-pack="default" data-tags="arrow, left"></i></button>
                         </div>
                         <div>
                             <form id="complete-form" action="{{ route('wordgroups.save') }}" method="POST"
@@ -616,8 +620,8 @@
 
                             const firstGroup = wordGroups[0];
                             const editorName = firstGroup.editor_info ? firstGroup.editor_info.name :
-                                'Belum ada editor';
-                            $('.text-dark.mb-2').text(editorName);
+                                ' -';
+                            $('.editor a').contents().last()[0].textContent = ` ${editorName}`;
                         } else {
                             wordgroupList.innerHTML =
                                 '<p class="text-muted">Tidak ada data kata untuk ayat ini.</p>'
