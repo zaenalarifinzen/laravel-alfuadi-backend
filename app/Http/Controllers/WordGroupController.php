@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Surah;
 use App\Models\Verse;
+use App\Models\Word;
 use App\Models\WordGroups;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class WordGroupController extends Controller
 {
@@ -203,13 +203,87 @@ class WordGroupController extends Controller
                     ]);
                 }
             });
-            
+
             return response()->json(['success' => true, 'message' => 'Data tersimpan']);
         } catch (\Throwable $e) {
             \Log::error('WordGroup save error: '.$e->getMessage());
 
             return response()->json(['success' => false, 'message' => 'Server error'], 500);
         }
+    }
+
+    public function saveOrUpdate(Request $request)
+    {
+        $data = $request->all();
+
+        \Log::info('Received:', $data);
+
+        DB::transaction(function () use ($data) {
+            $verseId = $data['verse_id'] ?? null;
+            $mergedMap = $data['merged_map'] ?? [];
+            $editedGroups = $data['edited_groups'] ?? [];
+            $deletedIds = $data['deleted_ids'] ?? [];
+            $newGroups = $data['new_groups'] ?? [];
+
+            $verse = Verse::findOrFail($verseId);
+
+            // update foreign key in words
+            foreach ($mergedMap as $oldId => $newId) {
+                $validNew = WordGroups::where('id', $newId)
+                    ->where('verse_id', $verseId)
+                    ->exists();
+
+                if (! $validNew) {
+                    throw new Exception("Invalid merge target ID: $newId for verse $verseId");
+                }
+
+                Word::where('word_group_id', $oldId)
+                    ->update(['word_group_id' => $newId]);
+            }
+
+            // update edited wordgroups
+            foreach ($editedGroups as $index => $g) {
+                if (empty($g['id'])) {
+                    continue;
+                }
+
+                $group = WordGroups::where('id', $g['id'])
+                    ->where('verse_id', $verseId)
+                    ->first();
+
+                if ($group) {
+                    $group->update([
+                        'text' => $g['text'],
+                        'order_number' => $g['order_number'] ?? $group->oder_number,
+                        'editor' => auth()->id(),
+                    ]);
+                }
+            }
+
+            // create new wordgroups
+            foreach ($newGroups as $i => $ng) {
+                WordGroups::create([
+                    'surah_id' => $data['surah_id'],
+                    'verse_number' => $data['verse_number'],
+                    'verse_id' => $verse->id,
+                    'text' => $ng['text'] ?? '',
+                    'order_number' => $ng['order_number'] ?? ($i + 1),
+                    'editor' => auth()->id(),
+                ]);
+            }
+
+            // delete wordgroups
+            if (! empty($deletedIds)) {
+                $targetIds = array_values($mergedMap);
+                $safeToDelete = array_diff($deletedIds, $targetIds);
+
+                WordGroups::where('verse_id', $verseId)
+                    ->whereIn('id', $safeToDelete)
+                    ->delete();
+            }
+        });
+
+        return response()->json(['success' => true]);
     }
 
     /**
@@ -237,185 +311,6 @@ class WordGroupController extends Controller
     }
 
     /**
-     * Complete the order number of word groups in verse.
-     */
-    public function completeOrderNumber(Request $request)
-    {
-        $surahId = $request->input('surah_id');
-        $verseNumber = $request->input('verse_number');
-
-        if (! $surahId || ! $verseNumber) {
-            return redirect()->back()->with('error', 'Surah dan ayat harus diisi.');
-        }
-
-        // Ambil semua word group dalam ayat ini
-        $groups = WordGroups::where('surah_id', $surahId)
-            ->where('verse_number', $verseNumber)
-            ->orderBy('order_number', 'asc')
-            ->get();
-
-        if ($groups->isEmpty()) {
-            return redirect()->back()->with('error', 'Tidak ada data di ayat ini');
-        }
-
-        DB::transaction(function () use ($groups) {
-            foreach ($groups as $index => $wg) {
-                $wg->update([
-                    'order_number' => $index + 1,
-                    'updated_at' => now(),
-                    'editor' => auth()->id(),
-                ]);
-            }
-        });
-
-        $nextVerse = $request->verse_id + 1;
-
-        if ($nextVerse > 6236) {
-            return redirect()->back()->with('error', 'Sudah di ayat terakhir');
-        }
-
-        // Redirect ke ayat berikutnya
-        return redirect()->route('wordgroups.grouping', [
-            'surah_id' => $surahId,
-            'verse_number' => $nextVerse,
-        ])->with('success', 'Update berhasil');
-    }
-
-    /**
-     * Merge any word group in storage.
-     */
-    public function merge(Request $request)
-    {
-        // $ids = $request->input('ids');
-        $ids = explode(',', $request->input('ids'));
-
-        // Validate input
-        if (! is_array($ids) || count($ids) < 2) {
-            return redirect()->back()->with('error', 'Pilih minimal 2 baris untuk merge.');
-        }
-
-        // Sorting ID
-        sort($ids);
-
-        // Get word group by ID
-        $wordGroups = WordGroups::whereIn('id', $ids)
-            ->orderBy('id')
-            ->get();
-
-        // Make sure all IDs are found
-        if ($wordGroups->count() !== count($ids)) {
-            return redirect()->back()->with('error', 'Beberapa ID tidak ditemukan.');
-        }
-
-        // Get data reference (surah & verse)
-        $first = $wordGroups->first();
-
-        // Validate: all surah & verse must in same verse
-        $sameSurah = $wordGroups->every(fn ($wg) => $wg->surah_id === $first->surah_id);
-        $sameVerse = $wordGroups->every(fn ($wg) => $wg->verse_number === $first->verse_number);
-
-        if (! $sameSurah || ! $sameVerse) {
-            return redirect()->back()->with('error', 'Semua baris harus dari surah & ayat yang sama.');
-        }
-
-        // Merge text by ID sorting
-        $mergedText = $wordGroups
-            ->pluck('text')
-            ->map(fn ($t) => trim(str_replace(["\r", "\n"], '', $t)))
-            ->implode(' ');
-
-        // Run database transaction
-        DB::transaction(function () use ($first, $ids, $mergedText) {
-            // Update first row
-            WordGroups::where('id', $first->id)->update([
-                'text' => $mergedText,
-                'editor' => auth()->id(),
-            ]);
-
-            // delete another row
-            WordGroups::whereIn('id', array_slice($ids, 1))->delete();
-        });
-
-        $message = "$mergedText berhasil di gabungkan";
-
-        return redirect()->back()->with('success', $message);
-    }
-
-    /**
-     * Split the specified resource from storage.
-     */
-    public function split(Request $request)
-    {
-        $id = $request->input('id');
-        $delimiter = $request->input('delimiter', ' '); // default: spasi
-
-        if (! $id) {
-            return redirect()->back()->with('error', 'ID word group tidak boleh kosong.');
-        }
-
-        // Ambil data target
-        $wordGroup = WordGroups::find($id);
-        if (! $wordGroup) {
-            return redirect()->back()->with('error', 'Word group tidak ditemukan.');
-        }
-
-        // Pecah teks berdasarkan spasi (atau delimiter custom)
-        $parts = preg_split('/\s+/', trim($wordGroup->text));
-        if (count($parts) < 2) {
-            return redirect()->back()->with('error', 'Teks tidak bisa dipecah karena hanya satu kata.');
-        }
-
-        DB::transaction(function () use ($wordGroup, $parts) {
-            // Ambil semua baris dalam ayat yang sama
-            $groupsInVerse = WordGroups::where('surah_id', $wordGroup->surah_id)
-                ->where('verse_number', $wordGroup->verse_number)
-                ->orderBy('id', 'asc')
-                ->get();
-
-            // Inisialisasi order_number jika masih kosong
-            $needsInit = $groupsInVerse->contains(fn ($wg) => is_null($wg->order_number));
-            if ($needsInit) {
-                foreach ($groupsInVerse as $index => $wg) {
-                    $wg->update(['order_number' => $index + 1]);
-                }
-            }
-
-            // Refresh data setelah update order_number
-            $groupsInVerse = WordGroups::where('surah_id', $wordGroup->surah_id)
-                ->where('verse_number', $wordGroup->verse_number)
-                ->orderBy('order_number', 'asc')
-                ->get();
-
-            // Cari posisi baris yang akan dipecah
-            $currentIndex = $groupsInVerse->search(fn ($wg) => $wg->id === $wordGroup->id);
-
-            // Hapus baris lama
-            $wordGroup->delete();
-
-            // Geser order_number semua baris setelah posisi ini
-            $afterGroups = $groupsInVerse->slice($currentIndex + 1);
-            foreach ($afterGroups as $g) {
-                $g->update([
-                    'order_number' => $g->order_number + count($parts) - 1,
-                ]);
-            }
-
-            // Sisipkan potongan baru
-            foreach ($parts as $offset => $textPart) {
-                WordGroups::create([
-                    'surah_id' => $wordGroup->surah_id,
-                    'verse_number' => $wordGroup->verse_number,
-                    'verse_id' => $wordGroup->verse_id,
-                    'order_number' => $currentIndex + $offset + 1,
-                    'text' => trim($textPart),
-                ]);
-            }
-        });
-
-        return redirect()->back()->with('success', 'Teks berhasil dipecah menjadi '.count($parts).' bagian dan urutan diperbarui.');
-    }
-
-    /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
@@ -432,5 +327,23 @@ class WordGroupController extends Controller
         });
 
         return redirect()->back()->with('success', 'Word group berhasil dihapus.');
+    }
+
+    /**
+     * TEST FUNCTION
+     */
+    public function testSave(Request $request)
+    {
+        // Cek data yang dikirim dari frontend
+        $data = $request->all();
+
+        // Log untuk memastikan diterima dengan benar
+        \Log::info('Test Save Request:', $data);
+
+        // Balikkan response JSON untuk verifikasi
+        return response()->json([
+            'message' => 'Test data received successfully!',
+            'received' => $data,
+        ]);
     }
 }

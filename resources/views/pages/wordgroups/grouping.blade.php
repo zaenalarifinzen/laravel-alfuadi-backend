@@ -193,7 +193,8 @@
                                 </div>
                                 <div class="editor" style="padding-top: 20px">
                                     <span>Editor : </span>
-                                    <a href="#" class="font-weight-600">{{ $words->first()->editorInfo->name ?? '-' }}</a>
+                                    <a href="#"
+                                        class="font-weight-600">{{ $words->first()->editorInfo->name ?? '-' }}</a>
                                 </div>
 
                                 <div class="clearfix mb-3"></div>
@@ -239,6 +240,7 @@
                             <button type="button" class="btn btn-outline-primary btn-lg mr-2" id="btn-prev-verse"><i
                                     class="ion-chevron-right" data-pack="default" data-tags="arrow, left"></i></button>
                         </div>
+                        <button id="btn-test-save" class="btn btn-warning">Test Save JSON</button>
                         <div>
                             <form id="complete-form" action="{{ route('wordgroups.save') }}" method="POST"
                                 class="ml-auto">
@@ -250,6 +252,7 @@
                                 </button>
                             </form>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -280,6 +283,7 @@
             const btnPrev = document.getElementById('btn-prev-verse');
             const btnNext = document.getElementById('btn-next-verse');
             const btnComplete = document.getElementById('btn-complete');
+            const btnTestSave = document.getElementById('btn-test-save');
 
             const splitIdInput = document.getElementById('split-id');
 
@@ -822,6 +826,65 @@
                 });
             }
 
+            // TEST SAVE
+            function saveOrUpdate() {
+                swal({
+                    title: 'Konfirmasi',
+                    text: 'Yakin ingin menyimpan ayat ini?',
+                    buttons: {
+                        cancel: {
+                            text: 'Batal',
+                            visible: true,
+                        },
+                        confirm: {
+                            text: 'Simpan',
+                            visible: true,
+                            className: 'btn-success'
+                        },
+                    },
+                }).then((willSave) => {
+                    if (!willSave) return;
+
+                    const testPayload = {
+                        verse_id: 12,
+                        surah_id: 2,
+                        verse_number: 255,
+                        edited_groups: [{
+                            id: 1,
+                            order_number: 1,
+                            text: 'Grup 1 Grup 2 Grup 3',
+                            note: 'edited'
+                        }],
+                        merged_map: {
+                            2: 1,
+                            3: 1
+                        },
+                        deleted_ids: [2, 3],
+                        new_groups: [{
+                            text: 'New',
+                            note: 'added'
+                        }]
+                    };
+
+                    $.ajax({
+                        url: "{{ route('wordgroups.update') }}",
+                        method: "POST",
+                        data: JSON.stringify(testPayload),
+                        contentType: "application/json",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            console.log('✅ Success:', response);
+                            alert('Berhasil dikirim! Cek console/log untuk hasil.');
+                        },
+                        error: function(xhr) {
+                            console.error('❌ Error:', xhr.responseText);
+                            alert('Gagal kirim data, periksa console.');
+                        }
+                    });
+                });
+            }
 
             // =============================
             // INISIALISASI EVENT LISTENER
@@ -900,6 +963,9 @@
             btnPrev.addEventListener('click', goToPrevVerse);
             btnNext.addEventListener('click', goToNextVerse);
 
+            // Event listener untuk test button
+            btnTestSave.addEventListener('click', saveOrUpdate);
+
             // =============================
             // INISIALISASI AWAL
             // =============================
@@ -910,6 +976,7 @@
             // Inisialisasi status tombol
             updatebtnMerge();
             updatebtnEditAndSplit();
+
         });
     </script>
 @endpush

@@ -48,4 +48,6 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('verses', VerseController::class);
     Route::resource('wordgroups', WordGroupController::class);
     Route::resource('words', WordController::class);
+
+    Route::post('wordgroup/update', [WordGroupController::class, 'saveOrUpdate'])->name('wordgroups.update');
 });
