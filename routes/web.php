@@ -31,6 +31,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['roles:administrator,operator'])->group(function () {
         Route::get('/wordgroups/grouping', [WordGroupController::class, 'grouping'])->name('wordgroups.grouping');
         Route::post('/wordgroups/save', [WordGroupController::class, 'save'])->name('wordgroups.save');
+        Route::post('/wordgroups/multiple-update', [WordGroupController::class, 'multipleUpdate'])->name('wordgroups.multiple-update');
         Route::post('/wordgroups/merge', [WordGroupController::class, 'merge'])->name('wordgroups.merge');
         Route::post('/wordgroups/split', [WordGroupController::class, 'split'])->name('wordgroups.split');
         Route::post('/wordgroups/complete', [WordGroupController::class, 'completeOrderNumber'])->name('wordgroups.complete');
@@ -48,6 +49,4 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('verses', VerseController::class);
     Route::resource('wordgroups', WordGroupController::class);
     Route::resource('words', WordController::class);
-
-    Route::post('wordgroup/update', [WordGroupController::class, 'saveOrUpdate'])->name('wordgroups.update');
 });
