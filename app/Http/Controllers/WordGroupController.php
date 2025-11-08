@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SaveWordGroupsRequest;
 use App\Models\Surah;
 use App\Models\Verse;
 use App\Models\Word;
@@ -212,9 +213,9 @@ class WordGroupController extends Controller
         }
     }
 
-    public function saveOrUpdate(Request $request)
+    public function saveOrUpdate(SaveWordGroupsRequest $request)
     {
-        $data = $request->all();
+        $data = $request->validated();
 
         \Log::info('Received:', $data);
 

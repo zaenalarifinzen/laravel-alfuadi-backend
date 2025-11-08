@@ -958,7 +958,6 @@
                 observer.observe(sentinel);
             }
 
-
             // Event listener untuk navigasi ayat
             btnPrev.addEventListener('click', goToPrevVerse);
             btnNext.addEventListener('click', goToNextVerse);
