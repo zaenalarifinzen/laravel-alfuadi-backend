@@ -116,7 +116,7 @@
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center w-100">
                             <h4 class="mb-0">Data Kalimah</h4>
-                            <button class="btn btn-icon icon-left btn-primary" id="modal-add-word">
+                            <button class="btn btn-icon icon-left btn-primary" id="modal-word-part">
                                 <i class="fa-solid fa-plus"></i> Tambah
                             </button>
                         </div>
@@ -184,7 +184,7 @@
     </div>
 
     <!-- Modal -->
-    <form class="modal-part" id="modal-login-part">
+    <form class="modal-part" id="modal-add-word">
         <div class="card-body">
             <div class="form-row">
                 <div class="form-group col-md-6">
@@ -330,6 +330,8 @@
             const currentSurahId = document.getElementById('surah-id');
             const currentVerseNumber = document.getElementById('verse-number');
             const currentVerseId = document.getElementById('verse-id');
+
+            let activeWordGroupId;
             let modified = false;
             let verseCount;
 
@@ -540,6 +542,7 @@
                 const activeId = getActiveWgId(e);
                 if (activeId) {
                     console.log(`Initial Active Id : ${activeId}`);
+                    activeWordGroupId = activeId;
                     fetchWords(activeId);
                 }
             });
@@ -548,6 +551,7 @@
                 const activeId = getActiveWgId(e);
                 if (activeId) {
                     console.log('Slide translated, Active Id :', activeId);
+                    activeWordGroupId = activeId;
                     fetchWords(activeId);
                 } else {
                     console.log('No activeId found after translate');
@@ -610,5 +614,6 @@
             btnPrev.addEventListener('click', goToPrevVerse);
             btnNext.addEventListener('click', goToNextVerse);
         });
+
     </script>
 @endpush
