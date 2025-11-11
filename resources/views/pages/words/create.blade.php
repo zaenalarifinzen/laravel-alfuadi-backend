@@ -116,7 +116,7 @@
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center w-100">
                             <h4 class="mb-0">Data Kalimah</h4>
-                            <button class="btn btn-icon icon-left btn-primary" id="modal-word-part">
+                            <button class="btn btn-icon icon-left btn-primary" id="btn-add-word">
                                 <i class="fa-solid fa-plus"></i> Tambah
                             </button>
                         </div>
@@ -183,38 +183,47 @@
         </section>
     </div>
 
-    <!-- Modal -->
-    <form class="modal-part" id="modal-add-word">
-        <div class="card-body">
+    <!-- Form -->
+    <form id="form-add-word">
+        <div class="modal-body">
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="inputLafadz">Lafadz</label>
-                    <input type="text" class="form-control arabic-text" id="inputLafadz" placeholder="لفظ">
+                    <label for="input-lafadz">Lafadz</label>
+                    <input type="text" class="form-control arabic-text text-center" id="input-lafadz" placeholder="لفظ">
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="inputTranslation">Terjemah</label>
-                    <input type="text" class="form-control" id="inputTranslation" placeholder="Terjemah">
+                    <label for="input-translation">Terjemah</label>
+                    <input type="text" class="form-control text-center" id="input-translation" placeholder="Terjemah">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="inputKalimah">Kalimah</label>
-                    <select id="inputKalimah" class="form-control">
+                    <label for="input-kalimah">Kalimah</label>
+                    <select id="input-kalimah" class="form-control">
                         <option selected>اسم</option>
                         <option>فعل</option>
                         <option>حرف</option>
                     </select>
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="inputHukum">Hukum</label>
-                    <select id="inputHukum" class="form-control">
+                    <label for="input-variation">Jenis</label>
+                    <select id="input-variation" class="form-control">
+                        <option selected>Pilih</option>
+                        <option>...</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="input-hukum">Hukum</label>
+                    <select id="input-hukum" class="form-control">
                         <option selected>مبني</option>
                         <option>معرب</option>
                     </select>
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="inputMabniDetail">Mabni Detail</label>
-                    <select id="inputMabniDetail" class="form-control">
+                    <label for="input-mabni-detail">Detail Mabni</label>
+                    <select id="input-mabni-detail" class="form-control">
                         <option selected>Fathah</option>
                         <option>Dhommah</option>
                         <option>Kasroh</option>
@@ -224,16 +233,16 @@
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="inputCategory">Kategori</label>
-                    <select id="inputCategory" class="form-control">
+                    <label for="input-category">Kategori</label>
+                    <select id="input-category" class="form-control">
                         <option selected>Pilih...</option>
                         <option>...</option>
                         <option>...</option>
                     </select>
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="inputMahal">Kedudukan</label>
-                    <select id="inputMahal" class="form-control">
+                    <label for="input-mahal">Kedudukan</label>
+                    <select id="input-mahal" class="form-control">
                         <option selected>فاعل</option>
                         <option>مفعول</option>
                         <option>...</option>
@@ -242,8 +251,8 @@
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="inputIrob">Irob</label>
-                    <select id="inputIrob" class="form-control">
+                    <label for="input-irob">Irob</label>
+                    <select id="input-irob" class="form-control">
                         <option selected>رفع</option>
                         <option>نصب</option>
                         <option>جر</option>
@@ -251,8 +260,8 @@
                     </select>
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="inputAlamat">Tanda I'rob</label>
-                    <select id="inputAlamat" class="form-control">
+                    <label for="input-alamat">Tanda I'rob</label>
+                    <select id="input-alamat" class="form-control">
                         <option selected>Fathah</option>
                         <option>Dhommah</option>
                         <option>Kasroh</option>
@@ -266,20 +275,21 @@
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="inputCondition">Kondisi</label>
-                    <select id="inputCondition" class="form-control">
+                    <label for="input-condition">Kondisi</label>
+                    <select id="input-condition" class="form-control">
                         <option selected>Fi Mahal</option>
                         <option>Dzohiroh</option>
                         <option>Muqoddaroh</option>
                     </select>
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="inputMatbu">Yang Diikuti</label>
-                    <input type="text" class="form-control arabic-text" id="inputMatbu" placeholder="لفظ">
+                    <label for="input-matbu">Yang di ikuti</label>
+                    <input type="text" class="form-control arabic-text" id="input-matbu" placeholder="لفظ">
                 </div>
             </div>
         </div>
     </form>
+
 @endsection
 
 @push('scripts')
@@ -291,7 +301,8 @@
 
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/components-table.js') }}"></script>
-    <script src="{{ asset('js/page/bootstrap-modal.js') }}"></script>
+    {{-- <script src="{{ asset('js/page/bootstrap-modal.js') }}"></script> --}}
+    <script src="{{ asset('js/page/words/modal-add-word.js') }}"></script>
 
     <script>
         const $slider = $("#slider-rtl");
@@ -362,6 +373,7 @@
             function fetchWordGroups(surah_id, verse_number, verse_id) {
                 let url;
 
+                // create API
                 if (verse_id) {
                     url = "{{ route('wordgroups.get', ['id' => ':id']) }}".replace(':id', verse_id);
                 } else if (surah_id && verse_number) {
@@ -372,51 +384,42 @@
                     return;
                 }
 
-                console.log(url);
-
+                // Fetch Data
                 $.ajax({
                     url: url,
                     type: "GET",
                     // data: data,
                     success: function(response) {
-                        console.log(`Hasil Fetch Word Group`);
-                        console.log(response);
+                        console.log('Hasil Fetch Word Group', response);
+                        const verseId = response.data.verse.id;
+                        const storageKey = `wordgroups_${verseId}`;
 
-                        $slider.trigger('destroy.owl.carousel');
-                        $slider.html('');
+                        // local storage check
+                        // const cachedData = localStorage.getItem(storageKey);
+                        // if (cachedData) {
+                        //     console.log('Data diambil dari local storage');
+                        //     const response = JSON.parse(cachedData);
+                        //     renderWordGroups(response);
+                        //     return;
+                        // }
 
-                        $.each(response.data.wordGroups, function(i, wordGroup) {
-                            $slider.append(`
-                                <div>
-                                    <h4 class="arabic-text word-group" wg-id="${wordGroup.id}">${wordGroup.text}</h4>
-                                </div>
-                            `);
-                        });
+                        // clear cached wordgroups
+                        for (let key in localStorage) {
+                            if (key.startsWith("wordgroups_")) {
+                                localStorage.removeItem(key);
+                            }
+                        }
 
-                        $slider.owlCarousel({
-                            rtl: true,
-                            items: 1,
-                            dots: false,
-                            nav: false,
-                            navText: [
-                                '<i class="fa fa-chevron-right"></i>',
-                                '<i class="fa fa-chevron-left"></i>'
-                            ]
-                        });
+                        // save to local storage
+                        localStorage.setItem(storageKey, JSON.stringify(response))
+
+                        renderWordGroups(response);
+
+
 
                         // Update URL di address bar
                         // const params = new URLSearchParams(data);
                         // history.pushState({}, '', `?${params.toString()}`);
-
-                        currentSurahId.value = response.data.surah.id;
-                        currentVerseNumber.value = response.data.verse.number;
-                        currentVerseId.value = response.data.verse.id;
-                        maxVerse = response.data.surah.verse_count;
-                        surahOption.value = '';
-                        verseOption.value = '';
-
-                        currentVerseLabel.textContent =
-                            `${response.data.surah.id}. ${response.data.surah.name} - Ayat ${response.data.verse.number}`;
                     },
                     error: function(xhr) {
                         console.error(xhr.responseText);
@@ -425,12 +428,45 @@
                 });
             }
 
+            function renderWordGroups(response) {
+                $slider.trigger('destroy.owl.carousel');
+                $slider.html('');
+
+                $.each(response.data.wordGroups, function(i, wordGroup) {
+                    $slider.append(`
+                                <div>
+                                    <h4 class="arabic-text word-group" wg-id="${wordGroup.id}">${wordGroup.text}</h4>
+                                </div>
+                            `);
+                });
+
+                $slider.owlCarousel({
+                    rtl: true,
+                    items: 1,
+                    dots: false,
+                    nav: false,
+                    navText: [
+                        '<i class="fa fa-chevron-right"></i>',
+                        '<i class="fa fa-chevron-left"></i>'
+                    ]
+                });
+
+                currentSurahId.value = response.data.surah.id;
+                currentVerseNumber.value = response.data.verse.number;
+                currentVerseId.value = response.data.verse.id;
+                maxVerse = response.data.surah.verse_count;
+                surahOption.value = '';
+                verseOption.value = '';
+
+                currentVerseLabel.textContent =
+                    `${response.data.surah.id}. ${response.data.surah.name} - Ayat ${response.data.verse.number}`;
+            }
+
             // =============================
             // FUNGSI FETCH WORDS
             // =============================
 
             function fetchWords(word_group_id) {
-                // console.log(`Id WordGroup : ${word_group_id}`);
                 const tbody = $("#sortable-table tbody");
                 tbody.html(`
                     <tr>
@@ -440,6 +476,41 @@
                         </td>
                     </tr>
                 `);
+
+                const allKey = Object.keys(localStorage).filter(k => k.startsWith('wordgroups_'));
+                if (allKey.length === 0) {
+                    tbody.html(`
+                        <tr>
+                            <td colspan="5" class="text-center text-muted">
+                                Belum ada data.
+                            </td>
+                        </tr>
+                    `);
+                    return;
+                }
+
+                // get wordgroup object from local storage
+                const stored = JSON.parse(localStorage.getItem(allKey[0]));
+                const wordGroups = stored.data.wordGroups || [];
+
+                // check active wordgroup
+                const activeWordGroup = wordGroups.find(wg => wg.id == word_group_id);
+
+                tbody.empty();
+
+                if (!activeWordGroup || !activeWordGroup.words || activeWordGroup.words.length === 0) {
+                    tbody.append(`
+                         <tr>
+                            <td colspan="5" class="text-center text-muted">
+                                Belum ada data.
+                            </td>
+                        </tr>                   
+                    `);
+                    return;
+                }
+
+                // render all words
+
 
                 $.ajax({
                     url: "{{ route('words.get', ['id' => ':id']) }}".replace(':id', word_group_id),
@@ -461,7 +532,7 @@
                             return;
                         }
 
-                        response.data.forEach(function(word) {
+                        activeWordGroup.words.forEach(function(word) {
                             let badgeClass = 'badge-light';
                             if (word.kalimat === 'فعل') badgeClass = 'badge-success';
                             else if (word.kalimat === 'اسم') badgeClass = 'badge-info';
@@ -614,6 +685,5 @@
             btnPrev.addEventListener('click', goToPrevVerse);
             btnNext.addEventListener('click', goToNextVerse);
         });
-
     </script>
 @endpush

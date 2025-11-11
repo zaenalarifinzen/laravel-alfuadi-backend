@@ -31,4 +31,9 @@ class Word extends Model
         'updated_at',
         'author',
     ];
+
+    public function wordGroup()
+    {
+        return $this->belongsTo(WordGroups::class, 'word_group_id', 'id');
+    }
 }

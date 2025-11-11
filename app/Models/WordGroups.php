@@ -26,4 +26,9 @@ class WordGroups extends Model
     {
         return $this->belongsTo(User::class, 'editor');
     }
+
+    public function words()
+    {
+        return $this->hasMany(Word::class, 'word_group_id', 'id');
+    }
 }

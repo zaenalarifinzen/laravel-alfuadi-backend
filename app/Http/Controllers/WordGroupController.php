@@ -52,7 +52,12 @@ class WordGroupController extends Controller
         $currentSurah = Surah::find($currentVerse->surah_id);
 
         $existing = WordGroups::where('verse_id', $currentVerse->id)
-            ->with(['editorInfo:id,name'])
+            ->with([
+                'editorInfo:id,name',
+                'words' => function ($query) {
+                    $query->orderBy('order_number', 'asc');
+                },
+            ])
             ->orderBy('order_number', 'asc')
             ->get();
 
