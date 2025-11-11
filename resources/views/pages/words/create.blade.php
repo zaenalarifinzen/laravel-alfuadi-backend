@@ -30,6 +30,13 @@
             padding: 10px 0;
             display: block;
         }
+
+        @media (max-width: 1080px) {
+            .word-group {
+                font-size: 1.5rem !important;
+                text-align: center;
+            }
+        }
     </style>
 @endpush
 
@@ -356,7 +363,8 @@
                 if (verse_id) {
                     url = "{{ route('wordgroups.get', ['id' => ':id']) }}".replace(':id', verse_id);
                 } else if (surah_id && verse_number) {
-                    url = "{{ route('wordgroups.get', ['id' => ':id']) }}".replace('/:id', `?surah_id=${surah_id}&verse_number=${verse_number}`);
+                    url = "{{ route('wordgroups.get', ['id' => ':id']) }}".replace('/:id',
+                        `?surah_id=${surah_id}&verse_number=${verse_number}`);
                 } else {
                     alert('Parameter tidak lengkap')
                     return;
