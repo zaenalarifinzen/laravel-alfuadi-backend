@@ -144,7 +144,7 @@
                                                     <i class="fa-solid fa-grip"></i>
                                                 </div>
                                             </td>
-                                            <td class="text-center align-middle">
+                                            <td class="text-center align-middle" id="{{ $word->id }}">
                                                 <div class="arabic-text words">{{ $word->text }}</div>
                                                 <div class="table-links">
                                                     <a href="#">Detail</a>
@@ -189,11 +189,13 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="input-lafadz">Lafadz</label>
-                    <input type="text" class="form-control arabic-text text-center" id="input-lafadz" placeholder="لفظ">
+                    <input type="text" class="form-control arabic-text text-center" id="input-lafadz"
+                        placeholder="لفظ">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="input-translation">Terjemah</label>
-                    <input type="text" class="form-control text-center" id="input-translation" placeholder="Terjemah">
+                    <input type="text" class="form-control text-center" id="input-translation"
+                        placeholder="Terjemah">
                 </div>
             </div>
             <div class="form-row">
@@ -301,8 +303,8 @@
 
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/components-table.js') }}"></script>
-    {{-- <script src="{{ asset('js/page/bootstrap-modal.js') }}"></script> --}}
-    <script src="{{ asset('js/page/words/modal-add-word.js') }}"></script>
+    <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('js/page/words/word-crud.js') }}"></script>
 
     <script>
         const $slider = $("#slider-rtl");
@@ -415,8 +417,6 @@
 
                         renderWordGroups(response);
 
-
-
                         // Update URL di address bar
                         // const params = new URLSearchParams(data);
                         // history.pushState({}, '', `?${params.toString()}`);
@@ -510,65 +510,7 @@
                 }
 
                 // render all words
-
-
-                $.ajax({
-                    url: "{{ route('words.get', ['id' => ':id']) }}".replace(':id', word_group_id),
-                    type: "GET",
-                    success: function(response) {
-                        // console.log(response);
-
-                        const tbody = $("#sortable-table tbody");
-                        tbody.empty();
-
-                        if (response.length === 0) {
-                            tbody.append(`
-                                <tr>
-                                    <td colspan="5" class="text-center text-muted">
-                                        Tidak ada data kata.
-                                    </td>
-                                </tr>
-                            `);
-                            return;
-                        }
-
-                        activeWordGroup.words.forEach(function(word) {
-                            let badgeClass = 'badge-light';
-                            if (word.kalimat === 'فعل') badgeClass = 'badge-success';
-                            else if (word.kalimat === 'اسم') badgeClass = 'badge-info';
-                            else if (word.kalimat === 'حرف') badgeClass = 'badge-danger';
-
-                            const row = `
-                                <tr>
-                                    <td class="text-center align-middle w-5">
-                                        <div class="sort-handler align-middle">
-                                            <i class="fa-solid fa-grip"></i>
-                                        </div>
-                                    </td>
-                                    <td class="text-center align-middle w-25">
-                                        <div class="arabic-text words" id="${word.id}">${word.text}</div>
-                                        <div class="table-links">
-                                            <a href="#">Detail</a>
-                                            <div class="bullet"></div>
-                                            <a href="#">Edit</a>
-                                            <div class="bullet"></div>
-                                            <a href="#" class="text-danger">Hapus</a>
-                                        </div>
-                                    </td>
-                                    <td class="text-center align-middle">${word.translation ?? ''}</td>
-                                    <td class="text-center align-middle">
-                                        <div class="badge ${badgeClass}">${word.kalimat ?? ''}</div>
-                                    </td>
-                                    <td class="arabic-text words">${word.kedudukan ?? ''}</td>
-                                </tr>
-                            `;
-                            tbody.append(row);
-                        });
-                    },
-                    error: function(xhr) {
-                        console.error(xhr.responseText);
-                    }
-                });
+                renderWordsTable(activeWordGroup);
             }
 
             $(document).ready(function() {
