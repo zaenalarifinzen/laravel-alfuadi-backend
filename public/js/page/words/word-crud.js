@@ -4,8 +4,8 @@
 $('#btn-add-word').on('click', function () {
     $('#form-add-word')[0].reset();
     $('#input-id').val('');
-    // $('#form-add-word-label').text('Tambah Kalimat');
-    $('#submit-button').text('Tambahkan');
+    $('#form-add-word-label').text('Tambah Kalimat');
+    $('#btn-submit').text('Tambahkan');
 
     $('#modal-add-word').modal('show');
 });
@@ -285,9 +285,8 @@ $(document).on('click', '.table-links .word-edit', function (e) {
     $('#input-lafadz').val(word.text);
     $('#input-translation').val(word.translation);
 
-    // $('#form-add-word').data('edit-id', wordId);
-    console.log('hello first');
-
+    $('#form-add-word-label').text('Update Kalimat');
+    $('#btn-submit').text('Update');
     $('#modal-add-word').modal('show');
 });
 

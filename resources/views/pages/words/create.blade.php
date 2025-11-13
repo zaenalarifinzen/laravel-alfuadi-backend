@@ -306,7 +306,7 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary btn-lg">Simpan</button>
+                        <button type="submit" class="btn btn-primary btn-lg" id="btn-submit">Tambahkan</button>
                     </div>
                 </form>
             </div>
