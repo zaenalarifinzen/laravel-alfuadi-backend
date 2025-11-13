@@ -144,17 +144,17 @@
                                                     <i class="fa-solid fa-grip"></i>
                                                 </div>
                                             </td>
-                                            <td class="text-center align-middle" id="{{ $word->id }}">
+                                            <td class="text-center align-middle word" id="{{ $word->id }}">
                                                 <div class="arabic-text words">{{ $word->text }}</div>
                                                 <div class="table-links">
-                                                    <a href="#">Detail</a>
+                                                    <a href="#" class="word-detail">Detail</a>
                                                     <div class="bullet"></div>
-                                                    <a href="#">Edit</a>
+                                                    <a href="#" class="word-edit">Edit</a>
                                                     <div class="bullet"></div>
-                                                    <a href="#" class="text-danger">Hapus</a>
+                                                    <a href="#" class="text-danger word-delete">Hapus</a>
                                                 </div>
                                             </td>
-                                            <td>
+                                            <td class="translation">
                                                 {{ $word->translation }}
                                             </td>
                                             <td>
@@ -183,114 +183,135 @@
         </section>
     </div>
 
-    <!-- Form -->
-    <form id="form-add-word">
-        <div class="modal-body">
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="input-lafadz">Lafadz</label>
-                    <input type="text" class="form-control arabic-text text-center" id="input-lafadz"
-                        placeholder="لفظ">
+    <!-- Modal Add Word-->
+    <div class="modal fade" id="modal-add-word" tabindex="-1" role="dialog" aria-labelledby="modalAddWordLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="form-add-word-label">Tambah Kalimat</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <div class="form-group col-md-6">
-                    <label for="input-translation">Terjemah</label>
-                    <input type="text" class="form-control text-center" id="input-translation"
-                        placeholder="Terjemah">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="input-kalimah">Kalimah</label>
-                    <select id="input-kalimah" class="form-control">
-                        <option selected>اسم</option>
-                        <option>فعل</option>
-                        <option>حرف</option>
-                    </select>
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="input-variation">Jenis</label>
-                    <select id="input-variation" class="form-control">
-                        <option selected>Pilih</option>
-                        <option>...</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="input-hukum">Hukum</label>
-                    <select id="input-hukum" class="form-control">
-                        <option selected>مبني</option>
-                        <option>معرب</option>
-                    </select>
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="input-mabni-detail">Detail Mabni</label>
-                    <select id="input-mabni-detail" class="form-control">
-                        <option selected>Fathah</option>
-                        <option>Dhommah</option>
-                        <option>Kasroh</option>
-                        <option>Sukun</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="input-category">Kategori</label>
-                    <select id="input-category" class="form-control">
-                        <option selected>Pilih...</option>
-                        <option>...</option>
-                        <option>...</option>
-                    </select>
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="input-mahal">Kedudukan</label>
-                    <select id="input-mahal" class="form-control">
-                        <option selected>فاعل</option>
-                        <option>مفعول</option>
-                        <option>...</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="input-irob">Irob</label>
-                    <select id="input-irob" class="form-control">
-                        <option selected>رفع</option>
-                        <option>نصب</option>
-                        <option>جر</option>
-                        <option>جزم</option>
-                    </select>
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="input-alamat">Tanda I'rob</label>
-                    <select id="input-alamat" class="form-control">
-                        <option selected>Fathah</option>
-                        <option>Dhommah</option>
-                        <option>Kasroh</option>
-                        <option>Sukun</option>
-                        <option>Wawu</option>
-                        <option>Ya</option>
-                        <option>Fi Mahal</option>
-                        <option>...</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="input-condition">Kondisi</label>
-                    <select id="input-condition" class="form-control">
-                        <option selected>Fi Mahal</option>
-                        <option>Dzohiroh</option>
-                        <option>Muqoddaroh</option>
-                    </select>
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="input-matbu">Yang di ikuti</label>
-                    <input type="text" class="form-control arabic-text" id="input-matbu" placeholder="لفظ">
-                </div>
+
+                <form id="form-add-word">
+                    <div class="modal-body">
+                        <input type="hidden" id="input-id">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="input-lafadz">Lafadz</label>
+                                <input type="text" class="form-control arabic-text text-center" id="input-lafadz"
+                                    placeholder="لفظ">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="input-translation">Terjemah</label>
+                                <input type="text" class="form-control text-center" id="input-translation"
+                                    placeholder="Terjemah">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="input-kalimah">Kalimah</label>
+                                <select id="input-kalimah" class="form-control">
+                                    <option selected>اسم</option>
+                                    <option>فعل</option>
+                                    <option>حرف</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="input-variation">Jenis</label>
+                                <select id="input-variation" class="form-control">
+                                    <option selected>Pilih</option>
+                                    <option>...</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="input-hukum">Hukum</label>
+                                <select id="input-hukum" class="form-control">
+                                    <option selected>مبني</option>
+                                    <option>معرب</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="input-mabni-detail">Detail Mabni</label>
+                                <select id="input-mabni-detail" class="form-control">
+                                    <option selected>Fathah</option>
+                                    <option>Dhommah</option>
+                                    <option>Kasroh</option>
+                                    <option>Sukun</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="input-category">Kategori</label>
+                                <select id="input-category" class="form-control">
+                                    <option selected>Pilih...</option>
+                                    <option>...</option>
+                                    <option>...</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="input-mahal">Kedudukan</label>
+                                <select id="input-mahal" class="form-control">
+                                    <option selected>فاعل</option>
+                                    <option>مفعول</option>
+                                    <option>...</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="input-irob">Irob</label>
+                                <select id="input-irob" class="form-control">
+                                    <option selected>رفع</option>
+                                    <option>نصب</option>
+                                    <option>جر</option>
+                                    <option>جزم</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="input-alamat">Tanda I'rob</label>
+                                <select id="input-alamat" class="form-control">
+                                    <option selected>Fathah</option>
+                                    <option>Dhommah</option>
+                                    <option>Kasroh</option>
+                                    <option>Sukun</option>
+                                    <option>Wawu</option>
+                                    <option>Ya</option>
+                                    <option>Fi Mahal</option>
+                                    <option>...</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="input-condition">Kondisi</label>
+                                <select id="input-condition" class="form-control">
+                                    <option selected>Fi Mahal</option>
+                                    <option>Dzohiroh</option>
+                                    <option>Muqoddaroh</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="input-matbu">Yang di ikuti</label>
+                                <input type="text" class="form-control arabic-text" id="input-matbu"
+                                    placeholder="لفظ">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary btn-lg">Simpan</button>
+                    </div>
+                </form>
             </div>
         </div>
-    </form>
+    </div>
 
 @endsection
 
