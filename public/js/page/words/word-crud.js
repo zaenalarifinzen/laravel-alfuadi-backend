@@ -17,7 +17,6 @@ $('#form-add-word').on('submit', function (e) {
     const lafadz = $('#input-lafadz').val().trim();
     if (!lafadz) {
         alert('Lafadz tidak boleh kosong');
-        form.stopProgress();
         return;
     }
 
@@ -36,9 +35,12 @@ $('#form-add-word').on('submit', function (e) {
         return;
     }
 
+    const newOrder = (wordGroup.words?.length || 0) + 1;
+
     const newWord = {
-        id: wordId ?? Date.now(),
+        id: wordId || Date.now(),
         text: $('#input-lafadz').val(),
+        order_number: newOrder,
         translation: $('#input-translation').val(),
         kalimah: $('#input-kalimah').val(),
         jenis: $('#input-variation').val(),
@@ -51,8 +53,6 @@ $('#form-add-word').on('submit', function (e) {
         condition: $('#input-condition').val(),
         matbu: $('#input-matbu').val(),
     };
-
-    console.log('Word Id:', wordId);
 
     // get mode
     if (wordId) {
@@ -85,91 +85,6 @@ $('#form-add-word').on('submit', function (e) {
     $('#modal-add-word').modal('hide');
 });
 
-// $('#btn-add-word').fireModal({
-//     title: 'Tambah Kalimat',
-//     body: $('#form-add-word'),
-//     footerClass: 'bg-whitesmoke',
-//     autofocus: true,
-//     onFormSubmit: function (modal, e, form) {
-//         e.preventDefault();
-
-//         const lafadz = $('#input-lafadz').val().trim();
-//         if (!lafadz) {
-//             alert('Lafadz tidak boleh kosong');
-//             form.stopProgress();
-//             return;
-//         }
-
-//         // logic
-//         const newWord = {
-//             id: Date.now(),
-//             text: $('#input-lafadz').val(),
-//             translation: $('#input-translation').val(),
-//             kalimah: $('#input-kalimah').val(),
-//             jenis: $('#input-variation').val(),
-//             hukum: $('#input-hukum').val(),
-//             mabni_detail: $('#input-mabni-detail').val(),
-//             category: $('#input-kategori').val(),
-//             kedudukan: $('#input-mahal').val(),
-//             irob: $('#input-irob').val(),
-//             alamat: $('#input-alamat').val(),
-//             condition: $('#input-condition').val(),
-//             matbu: $('#input-matbu').val(),
-//         }
-
-//         console.log('Word baru:', newWord);
-
-//         // Logic
-//         // get key from local storage
-//         const currentKey = Object.keys(localStorage).find(k => k.startsWith('wordgroups_'));
-//         const stored = JSON.parse(localStorage.getItem(currentKey));
-
-//         // get active wordgroup
-//         const activeWordGroupId = $('.owl-item.active .word-group').attr('wg-id');
-//         const wordGroup = stored.data.wordGroups.find(g => g.id == activeWordGroupId);
-
-//         const groupIndex = stored.data.wordGroups.findIndex(g => g.id == activeWordGroupId);
-//         if (groupIndex === -1) {
-//             alert('WordGroup tidak ditemukan');
-//             return;
-//         }
-
-//         // add to words list
-//         if (!stored.data.wordGroups[groupIndex].words) {
-//             stored.data.wordGroups[groupIndex].words = [];
-//         }
-//         stored.data.wordGroups[groupIndex].words.push(newWord);
-
-//         // save to local storage
-//         localStorage.setItem(currentKey, JSON.stringify(stored));
-
-//         // re render word table
-//         renderWordsTable(wordGroup);
-
-//         form.stopProgress();
-//         $(this)[0].reset();
-//         modal.modal('hide');
-//     },
-//     shown: function (modal, form) {
-//         console.log(form)
-//     },
-//     buttons: [
-//         {
-//             text: 'Tambahkan',
-//             submit: true,
-//             class: 'btn btn-primary btn-shadow',
-//             handler: function (modal) {
-//             }
-//         }
-//     ]
-// });
-
-// $(document).on('hidden.bs.modal', '.modal', function () {
-//     if (document.activeElement) {
-//         document.activeElement.blur();
-//     }
-// });
-
 // Render Words Table
 function renderWordsTable(wordGroup) {
     const tbody = $('#sortable-table tbody');
@@ -183,6 +98,9 @@ function renderWordsTable(wordGroup) {
         `);
         return;
     }
+
+    // sort word based on order_number
+    wordGroup.words.sort((a, b) => (a.order_number || 0) - (b.order_number || 0));
 
     wordGroup.words.forEach(word => {
         let badgeClass = 'badge-light';
@@ -290,4 +208,58 @@ $(document).on('click', '.table-links .word-edit', function (e) {
     $('#modal-add-word').modal('show');
 });
 
-// TEST
+// Save All Word
+$('#btn-save-all').on('click', function (e) {
+    e.preventDefault();
+
+    const currentKey = Object.keys(localStorage).find(k => k.startsWith('wordgroups_'));
+    if (!currentKey) {
+        alert('Tidak ada data');
+        return;
+    }
+
+    const stored = JSON.parse(localStorage.getItem(currentKey));
+    if (!stored || !stored.data || !stored.data.wordGroups || stored.data.wordGroups.length === 0) {
+        alert('Data kosong');
+        return;
+    }
+
+    const emptyGroups = stored.data.wordGroups.filter(g => !g.words || g.words.length === 0);
+    if (emptyGroups.length > 0) {
+        let list = emptyGroups.map(g => `- ${g.text}`).join("\n");
+
+        alert("Ada grup yang kalimatnya masih kosong:\n\n" + list);
+        return;
+    }
+
+    if (!confirm('Apakah anda ingin menyimpan data ayat ini?')) return;
+
+    $.ajax({
+        url: WORDS_SYNC_URL,
+        type: "POST",
+        data: {
+            _token: CSRF_TOKEN,
+            verse_id: stored.data.verse.id,
+            groups: stored.data.wordGroups,
+        },
+        beforeSend: function () {
+            $('#btn-save-all').prop('disabled', true).text('Menyimpan...');                      
+        },
+        success: function (response) {
+            console.log('Save response: ', response);
+
+            alert('Data berhasil disimpan');
+            localStorage.removeItem(currentKey);
+
+            // load next verse
+            fetchWordGroups(null, null, stored.data.verse.id);
+        },
+        error: function (xhr) {
+            console.error('Save error: ', xhr.responseText);
+            alert('Terjadi kesalahan saat menyimpan data');
+        },
+        complete: function () {
+            $('#btn-save-all').prop('disabled', false).text('Simpan');
+        }
+    })
+});

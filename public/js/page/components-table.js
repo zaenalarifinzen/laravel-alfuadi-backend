@@ -29,5 +29,32 @@ $("[data-checkboxes]").each(function() {
 });
 
 $("#sortable-table tbody").sortable({
-  handle: '.sort-handler'
+  handle: '.sort-handler',
+  update: function (event, ui) {
+    // get key local storage
+    const currentKey = Object.keys(localStorage).find(k => k.startsWith('wordgroups_'));
+    const stored = JSON.parse(localStorage.getItem(currentKey));
+
+    // get active wordgroup id
+    const activeWordGroupId = $('.owl-item.active .word-group').attr('wg-id');
+
+    const groupIndex = stored.data.wordGroups.findIndex(g => g.id == activeWordGroupId);
+    if (groupIndex === -1) return;
+
+    const words = stored.data.wordGroups[groupIndex].words;
+
+    // loop each row to get word ID based new order
+    $('#sortable-table tbody tr').each(function (index) {
+      const wordId = $(this).find('.words').attr('id');
+
+      // update order number in local
+      const w = words.find(w => w.id == wordId);
+      if (w) {
+        w.order_number = index + 1;
+      }
+    });
+
+    // re save to local
+    localStorage.setItem(currentKey, JSON.stringify(stored));
+  }
 });

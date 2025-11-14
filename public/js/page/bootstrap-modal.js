@@ -1,96 +1,182 @@
-"use strict";
+// Refactored & cleaned script. Functions preserved.
 
-$("#modal-word-part").fireModal({
-  title: 'Tambah kalimah',
-  body: $("#modal-add-word"),
-  footerClass: 'bg-whitesmoke',
-  autoFocus: false,
-  onFormSubmit: function(modal, e, form) {
-    e.preventDefault();
+// =============================
+// CONSTANTS
+// =============================
+const WORDS_SYNC_URL = window.WORDS_SYNC_URL;
+const CSRF_TOKEN = window.CSRF_TOKEN;
 
-    const lafadz = $("#inputLafadz").val();
-    const translation = $("#inputTranslation").val();
-    const kalimah = $("#inputKalimah").val();
-    const hukum = $("#inputHukum").val();
-    const mabniDetail = $("#inputMabniDetail").val();
-    const category = $("#inputCategory").val();
-    const kedudukan = $("#inputMahal").val();
-    const irob = $("#inputIrob").val();
-    const alamat = $("#inputAlamat").val();
-    const condition = $("#inputCondition").val();
-    const matbu = $("#inputMatbu").val();
+// =============================
+// OWL CAROUSEL INIT
+// =============================
+const $slider = $("#slider-rtl").owlCarousel({
+  rtl: true,
+  items: 1,
+  dots: false,
+  nav: false,
+  loop: false,
+});
 
-    // Tambahkan ke tabel
-    const tbody = $("#sortable-table tbody");
-    const badgeClass =
-      kalimah === "فعل" ? "badge-success" :
-      kalimah === "اسم" ? "badge-info" :
-      kalimah === "حرف" ? "badge-danger" : "badge-light";
+$("#btn-next-slide").click(() => $slider.trigger("next.owl.carousel"));
+$("#btn-prev-slide").click(() => $slider.trigger("prev.owl.carousel"));
 
-    const newRow = `
-      <tr class="text-center align-middle">
-        <td><div class="sort-handler"><i class="fa-solid fa-grip"></i></div></td>
-        <td class="text-center">
-          <div class="arabic-text words">${lafadz}</div>
-          <div class="table-links">
-            <a href="#" class="detail">Detail</a>
-            <div class="bullet"></div>
-            <a href="#" class="edit">Edit</a>
-            <div class="bullet"></div>
-            <a href="#" class="text-danger remove">Hapus</a>
-          </div>
-        </td>
-        <td>${translation}</td>
-        <td><div class="badge ${badgeClass}">${kalimah}</div></td>
-        <td class="arabic-text words">${kedudukan}</td>
-        <td hidden class="extra-data"
-            data-hukum="${hukum}"
-            data-mabni="${mabniDetail}"
-            data-category="${category}"
-            data-irob="${irob}"
-            data-alamat="${alamat}"
-            data-condition="${condition}"
-            data-matbu="${matbu}">
-        </td>
-      </tr>
-    `;
-    tbody.append(newRow);
+// =============================
+// GLOBAL ELEMENTS
+// =============================
+const surahOption = document.getElementById('surah-option');
+const verseOption = document.getElementById('verse-option');
+const filterForm = document.getElementById('filter-form');
 
-    // saveTableToStorage();
+const btnPrev = document.getElementById('btn-prev-verse');
+const btnNext = document.getElementById('btn-next-verse');
+const currentVerseLabel = document.getElementById('current-verse-label');
 
-    form.stopProgress();
-    $(this)[0].reset();
-    modal.modal('hide');
-  },
-  shown: function(modal, form) {
-    console.log(form)
-  },
-  buttons: [
-    {
-      text: 'Tambahkan',
-      submit: true,
-      class: 'btn btn-primary btn-shadow',
-      handler: function(modal) {
-      }
+const currentSurahId = document.getElementById('surah-id');
+const currentVerseNumber = document.getElementById('verse-number');
+const currentVerseId = document.getElementById('verse-id');
+
+let activeWordGroupId = null;
+let modified = false;
+let verseCount = 0;
+
+// =============================
+// HELPERS
+// =============================
+function updateVerseCount() {
+  const selected = surahOption.options[surahOption.selectedIndex];
+  verseCount = selected ? selected.getAttribute('data-verse-count') : 0;
+}
+
+// =============================
+// FETCH WORDGROUPS
+// =============================
+function fetchWordGroups(surah_id, verse_number, verse_id) {
+  let url;
+
+  if (verse_id) {
+    url = window.WORDGROUP_GET_URL.replace(':id', verse_id);
+  } else if (surah_id && verse_number) {
+    url = window.WORDGROUP_GET_URL.replace('/:id', `?surah_id=${surah_id}&verse_number=${verse_number}`);
+  } else {
+    alert('Parameter tidak lengkap');
+    return;
+  }
+
+  $.ajax({
+    url,
+    type: "GET",
+    success: function (response) {
+      const verseId = response.data.verse.id;
+      const storageKey = `wordgroups_${verseId}`;
+
+      // Clear old cache
+      Object.keys(localStorage)
+        .filter(k => k.startsWith('wordgroups_'))
+        .forEach(k => localStorage.removeItem(k));
+
+      localStorage.setItem(storageKey, JSON.stringify(response));
+      renderWordGroups(response);
+    },
+    error: function () {
+      alert('Terjadi kesalahan');
     }
-  ],
+  });
+}
+
+// =============================
+// RENDER WORDGROUPS
+// =============================
+function renderWordGroups(response) {
+  $slider.trigger('destroy.owl.carousel');
+  $slider.html('');
+
+  response.data.wordGroups.forEach(wordGroup => {
+    $slider.append(`
+      <div>
+        <h4 class="arabic-text word-group" wg-id="${wordGroup.id}">${wordGroup.text}</h4>
+      </div>`);
+  });
+
+  $slider.owlCarousel({ rtl: true, items: 1, dots: false, nav: false });
+
+  currentSurahId.value = response.data.surah.id;
+  currentVerseNumber.value = response.data.verse.number;
+  currentVerseId.value = response.data.verse.id;
+
+  currentVerseLabel.textContent = `${response.data.surah.id}. ${response.data.surah.name} - Ayat ${response.data.verse.number}`;
+}
+
+// =============================
+// FETCH WORDS
+// =============================
+function fetchWords(word_group_id) {
+  const tbody = $("#sortable-table tbody");
+
+  const key = Object.keys(localStorage).find(k => k.startsWith('wordgroups_'));
+  if (!key) {
+    tbody.html('<tr><td colspan="5" class="text-center text-muted">Belum ada data.</td></tr>');
+    return;
+  }
+
+  const stored = JSON.parse(localStorage.getItem(key));
+  const activeGroup = stored.data.wordGroups.find(wg => wg.id == word_group_id);
+
+  if (!activeGroup || !activeGroup.words || activeGroup.words.length === 0) {
+    tbody.html('<tr><td colspan="5" class="text-center text-muted">Belum ada data.</td></tr>');
+    return;
+  }
+
+  renderWordsTable(activeGroup);
+}
+
+// =============================
+// GET ACTIVE OWL ITEM
+// =============================
+function getActiveWgId(event) {
+  const $active = $slider.find('.owl-item.active').first();
+  const id = $active.find('.word-group').attr('wg-id');
+  return id || null;
+}
+
+$slider.on('initialized.owl.carousel', e => {
+  const id = getActiveWgId(e);
+  if (id) fetchWords(id);
 });
 
-// Hapus baris
-$(document).on('click', '.remove', function(e) {
+$slider.on('translated.owl.carousel', e => {
+  const id = getActiveWgId(e);
+  if (id) fetchWords(id);
+});
+
+// =============================
+// NAVIGASI AYAT
+// =============================
+async function goToPrevVerse() {
+  let id = parseInt(currentVerseId.value);
+  if (id > 1) fetchWordGroups(null, null, id - 1);
+}
+
+async function goToNextVerse() {
+  let id = parseInt(currentVerseId.value);
+  if (id < 6236) fetchWordGroups(null, null, id + 1);
+}
+
+// =============================
+// EVENT LISTENERS
+// =============================
+filterForm.addEventListener('submit', e => {
   e.preventDefault();
-  $(this).closest('tr').remove();
+  fetchWordGroups(surahOption.value, verseOption.value);
 });
 
-// function saveTableToStorage() {
-//   const rows = [];
-//   $("#sortable-table tbody tr").each(function() {
-//     const lafadz = $(this).find(".arabic-text.words").text().trim();
-//     const translation = $(this).find("td:nth-child(3)").text().trim();
-//     const kalimah = $(this).find(".badge").text().trim();
-//     const kedudukan = $(this).find("td:nth-child(5)").text().trim();
-//     const extra = $(this).find(".extra-data").data();
-//     rows.push({ lafadz, translation, kalimah, kedudukan, ...extra });
-//   });
-//   localStorage.setItem("pendingWords", JSON.stringify(rows));
-// }
+surahOption.addEventListener('change', () => {
+  updateVerseCount();
+  verseOption.value = 1;
+});
+
+verseOption.addEventListener('change', () => {
+  if (parseInt(verseOption.value) > verseCount) verseOption.value = verseCount;
+});
+
+btnPrev.addEventListener('click', goToPrevVerse);
+btnNext.addEventListener('click', goToNextVerse);

@@ -84,6 +84,67 @@ class WordController extends Controller
     }
 
     /**
+     * Sync words data from local to storage.
+     */
+    public function sync(Request $request)
+    {
+        $validated = $request->validate([
+            'groups' => 'required|array',
+        ]);
+
+        try {
+            DB::transaction(function () use ($request) {
+                foreach ($request->groups as $group) {
+                    $words = $group['words'] ?? [];
+
+                    // get all word id from request
+                    $incomingWordIds = collect($words)->pluck('id')->filter()->toArray();
+
+                    Word::where('word_group_id', $group['id'])
+                        ->whereNotIn('id', $incomingWordIds)
+                        ->delete();
+
+                    // loop to insert or update
+                    foreach ($words as $word) {
+                        Word::updateOrCreate(
+                            [
+                                'id' => $word['id'] ?? null,
+                            ],
+                            [
+                                'word_group_id' => $group['id'],
+                                'order_number' => $word['order_number'] ?? 1,
+                                'text' => $word['text'],
+                                'translation' => $word['translation'] ?? null,
+                                'kalimat' => $word['kalimat'] ?? null,
+                                'jenis' => $word['jenis'] ?? null,
+                                'hukum' => $word['hukum'] ?? null,
+                                'mabni_detail' => $word['mabni_detail'] ?? null,
+                                'category' => $word['category'] ?? null,
+                                'kedudukan' => $word['kedudukan'] ?? null,
+                                'irab' => $word['irab'] ?? null,
+                                'alamat' => $word['alamat'] ?? null,
+                                'condition' => $word['condition'] ?? null,
+                                'matbu' => $word['matbu'] ?? null,
+                            ]
+                        );
+                    }
+                }
+            });
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data berhasil disimpan.',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal menyimpan data',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
      * Display the specified resource.
      */
     public function show(string $id)

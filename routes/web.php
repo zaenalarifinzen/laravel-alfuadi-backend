@@ -37,6 +37,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/wordgroups/complete', [WordGroupController::class, 'completeOrderNumber'])->name('wordgroups.complete');
 
         Route::get('/words/get/{id}', [WordController::class, 'getWord'])->name('words.get');
+        Route::post('words/sync', [WordController::class, 'sync'])->name('words.sync');
+
         Route::get('/wordgroups/get/{id?}', [WordGroupController::class, 'getWordGroup'])->name('wordgroups.get');
     });
 

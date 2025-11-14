@@ -174,11 +174,13 @@
                             </table>
                         </div>
                     </div>
-                    <div class="card-footer text-right">
-                        <button class="btn btn-icon icon-left btn-success"><i class="fa-solid fa-floppy-disk"></i>
-                            Simpan</button>
-                    </div>
                 </div>
+            </div>
+
+            <div class="text-right">
+                <button class="btn btn-icon icon-left btn-success" id="btn-save-all"><i
+                        class="fa-solid fa-floppy-disk"></i>
+                    Simpan</button>
             </div>
         </section>
     </div>
@@ -323,6 +325,10 @@
 
 
     <!-- Page Specific JS File -->
+    <script>
+        const WORDS_SYNC_URL = "{{ route('words.sync') }}";
+        const CSRF_TOKEN = "{{ csrf_token() }}";
+    </script>
     <script src="{{ asset('js/page/components-table.js') }}"></script>
     <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
     <script src="{{ asset('js/page/words/word-crud.js') }}"></script>
@@ -368,6 +374,9 @@
             let activeWordGroupId;
             let modified = false;
             let verseCount;
+
+            const WORDS_SYNC_URL = "{{ route('words.sync') }}";
+            const CSRF_TOKEN = "{{ csrf_token() }}";
 
             function updateVerseCount() {
                 const selected = surahOption.options[surahOption.selectedIndex];
