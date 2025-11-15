@@ -78,14 +78,14 @@
 
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center w-100">
-                            <button type="button" class="btn btn-outline-primary btn-lg" id="btn-next-verse">
-                                <i class="ion-chevron-left" data-pack="default" data-tags="arrow, right"></i></button>
+                            {{-- <button type="button" class="btn btn-outline-primary btn-lg" id="btn-next-verse">
+                                <i class="ion-chevron-left" data-pack="default" data-tags="arrow, right"></i></button> --}}
 
                             <h4 id="current-verse-label">{{ $surahId }}. {{ $surahName }} - Ayat
                                 {{ $verseNumber }}</h4>
 
-                            <button type="button" class="btn btn-outline-primary btn-lg mr-2" id="btn-prev-verse"><i
-                                    class="ion-chevron-right" data-pack="default" data-tags="arrow, left"></i></button>
+                            {{-- <button type="button" class="btn btn-outline-primary btn-lg mr-2" id="btn-prev-verse"><i
+                                    class="ion-chevron-right" data-pack="default" data-tags="arrow, left"></i></button> --}}
                         </div>
                     </div>
 
@@ -115,7 +115,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center w-100">
-                            <h4 class="mb-0">Data Kalimah</h4>
+                            <h4 class="mb-0">Data Kalimat</h4>
                             <button class="btn btn-icon icon-left btn-primary" id="btn-add-word">
                                 <i class="fa-solid fa-plus"></i> Tambah
                             </button>
@@ -132,10 +132,14 @@
                                         </th>
                                         <th>Lafadz</th>
                                         <th>Terjemah</th>
-                                        <th>Kalimah</th>
+                                        <th>Kalimat</th>
                                         <th>Kedudukan</th>
                                     </tr>
                                 </thead>
+                                @php
+                                    $firstGroup = $wordgroups->first();
+                                    $words = $firstGroup ? $firstGroup->words : collect();
+                                @endphp
                                 <tbody>
                                     @foreach ($words as $word)
                                         <tr class="text-center">
@@ -163,9 +167,9 @@
                                                 @elseif($word->kalimat == 'اسم') badge-info
                                                 @elseif($word->kalimat == 'حرف') badge-danger
                                                 @else badge-light @endif">
-                                                    {{ $word->kedudukan }}</div>
+                                                    {{ $word->kalimat }}</div>
                                             </td>
-                                            <td class="arabic-text words">
+                                            <td class="arabic-text">
                                                 {{ $word->jenis }}
                                             </td>
                                         </tr>
@@ -177,10 +181,23 @@
                 </div>
             </div>
 
-            <div class="text-right">
-                <button class="btn btn-icon icon-left btn-success" id="btn-save-all"><i
-                        class="fa-solid fa-floppy-disk"></i>
-                    Simpan</button>
+            <div class="col-12 d-flex justify-content-between align-items-center">
+                <div>
+                    <button type="button" class="btn btn-outline-primary btn-lg" id="btn-next-verse">
+                        <i class="ion-chevron-left" data-pack="default" data-tags="arrow, right"></i></button>
+                    <button type="button" class="btn btn-outline-primary btn-lg mr-2" id="btn-prev-verse"><i
+                            class="ion-chevron-right" data-pack="default" data-tags="arrow, left"></i></button>
+                </div>
+                <div>
+                    <form id="complete-form" action="{{ route('wordgroups.save') }}" method="POST" class="ml-auto">
+                        @csrf
+                        <input type="hidden" name="surah_id" value="{{ request('surah_id') }}">
+                        <input type="hidden" name="verse_number" value="{{ request('verse_number') }}">
+                        <button class="btn btn-icon icon-left btn-success btn-lg" id="btn-save-all"><i
+                        class="fa-solid fa-floppy-disk"></i> Simpan & lanjutkan</button>
+                    </form>
+                </div>
+
             </div>
         </section>
     </div>
@@ -214,8 +231,8 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <label for="input-kalimah">Kalimah</label>
-                                <select id="input-kalimah" class="form-control">
+                                <label for="input-kalimat">Kalimat</label>
+                                <select id="input-kalimat" class="form-control">
                                     <option selected>اسم</option>
                                     <option>فعل</option>
                                     <option>حرف</option>
@@ -323,339 +340,15 @@
     <script src="{{ asset('library/owl.carousel/dist/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('library/izitoast/dist/js/iziToast.min.js') }}"></script>
 
+    <script>
+        window.WORDS_SYNC_URL = "{{ route('words.sync') }}";
+        window.WORDGROUP_GET_URL = "{{ route('wordgroups.get', ['id' => ':id']) }}";
+        window.CSRF_TOKEN = "{{ csrf_token() }}";
+    </script>
 
     <!-- Page Specific JS File -->
-    <script>
-        const WORDS_SYNC_URL = "{{ route('words.sync') }}";
-        const CSRF_TOKEN = "{{ csrf_token() }}";
-    </script>
     <script src="{{ asset('js/page/components-table.js') }}"></script>
     <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
     <script src="{{ asset('js/page/words/word-crud.js') }}"></script>
-
-    <script>
-        const $slider = $("#slider-rtl");
-
-        // Inisialisasi awal Owl Carousel
-        $slider.owlCarousel({
-            rtl: true,
-            items: 1,
-            dots: false,
-            nav: false,
-            loop: false,
-            navText: [
-                '<i class="fa fa-chevron-right"></i>',
-                '<i class="fa fa-chevron-left"></i>'
-            ]
-        });
-
-        $("#btn-next-slide").click(function() {
-            $slider.trigger("next.owl.carousel");
-        });
-
-        $("#btn-prev-slide").click(function() {
-            $slider.trigger("prev.owl.carousel");
-        });
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const surahOption = document.getElementById('surah-option');
-            const verseOption = document.getElementById('verse-option');
-            const filterForm = document.getElementById('filter-form');
-
-            const btnPrev = document.getElementById('btn-prev-verse');
-            const btnNext = document.getElementById('btn-next-verse');
-
-            const currentVerseLabel = document.getElementById('current-verse-label');
-
-            const currentSurahId = document.getElementById('surah-id');
-            const currentVerseNumber = document.getElementById('verse-number');
-            const currentVerseId = document.getElementById('verse-id');
-
-            let activeWordGroupId;
-            let modified = false;
-            let verseCount;
-
-            const WORDS_SYNC_URL = "{{ route('words.sync') }}";
-            const CSRF_TOKEN = "{{ csrf_token() }}";
-
-            function updateVerseCount() {
-                const selected = surahOption.options[surahOption.selectedIndex];
-                verseCount = selected ? selected.getAttribute('data-verse-count') : 0;
-                console.log(`Jumlah Ayat: ${verseCount}`);
-
-            }
-
-            async function handleFilterSubmit(e) {
-                e.preventDefault();
-
-                // if (modified) {
-                //     const confirmed = await showEditConfirmation()
-                //     if (!confirmed) return;
-                // };
-
-                fetchWordGroups(surahOption.value, verseOption.value);
-                // modified = false;
-                // console.log(`Surah Id = ${surahOption.value} Verse = ${verseOption.value}`)
-            }
-
-            // =============================
-            // FUNGSI FETCH WORDGROUPS
-            // =============================
-
-            function fetchWordGroups(surah_id, verse_number, verse_id) {
-                let url;
-
-                // create API
-                if (verse_id) {
-                    url = "{{ route('wordgroups.get', ['id' => ':id']) }}".replace(':id', verse_id);
-                } else if (surah_id && verse_number) {
-                    url = "{{ route('wordgroups.get', ['id' => ':id']) }}".replace('/:id',
-                        `?surah_id=${surah_id}&verse_number=${verse_number}`);
-                } else {
-                    alert('Parameter tidak lengkap')
-                    return;
-                }
-
-                // Fetch Data
-                $.ajax({
-                    url: url,
-                    type: "GET",
-                    // data: data,
-                    success: function(response) {
-                        console.log('Hasil Fetch Word Group', response);
-                        const verseId = response.data.verse.id;
-                        const storageKey = `wordgroups_${verseId}`;
-
-                        // local storage check
-                        // const cachedData = localStorage.getItem(storageKey);
-                        // if (cachedData) {
-                        //     console.log('Data diambil dari local storage');
-                        //     const response = JSON.parse(cachedData);
-                        //     renderWordGroups(response);
-                        //     return;
-                        // }
-
-                        // clear cached wordgroups
-                        for (let key in localStorage) {
-                            if (key.startsWith("wordgroups_")) {
-                                localStorage.removeItem(key);
-                            }
-                        }
-
-                        // save to local storage
-                        localStorage.setItem(storageKey, JSON.stringify(response))
-
-                        renderWordGroups(response);
-
-                        // Update URL di address bar
-                        // const params = new URLSearchParams(data);
-                        // history.pushState({}, '', `?${params.toString()}`);
-                    },
-                    error: function(xhr) {
-                        console.error(xhr.responseText);
-                        alert('Terjadi kesalahan');
-                    }
-                });
-            }
-
-            function renderWordGroups(response) {
-                $slider.trigger('destroy.owl.carousel');
-                $slider.html('');
-
-                $.each(response.data.wordGroups, function(i, wordGroup) {
-                    $slider.append(`
-                                <div>
-                                    <h4 class="arabic-text word-group" wg-id="${wordGroup.id}">${wordGroup.text}</h4>
-                                </div>
-                            `);
-                });
-
-                $slider.owlCarousel({
-                    rtl: true,
-                    items: 1,
-                    dots: false,
-                    nav: false,
-                    navText: [
-                        '<i class="fa fa-chevron-right"></i>',
-                        '<i class="fa fa-chevron-left"></i>'
-                    ]
-                });
-
-                currentSurahId.value = response.data.surah.id;
-                currentVerseNumber.value = response.data.verse.number;
-                currentVerseId.value = response.data.verse.id;
-                maxVerse = response.data.surah.verse_count;
-                surahOption.value = '';
-                verseOption.value = '';
-
-                currentVerseLabel.textContent =
-                    `${response.data.surah.id}. ${response.data.surah.name} - Ayat ${response.data.verse.number}`;
-            }
-
-            // =============================
-            // FUNGSI FETCH WORDS
-            // =============================
-
-            function fetchWords(word_group_id) {
-                const tbody = $("#sortable-table tbody");
-                tbody.html(`
-                    <tr>
-                        <td colspan="5" class="text-center text-muted">
-                            <div class="spinner-border text-primary" role="status"></div>
-                            <span class="ml-2">Memuat...</span>
-                        </td>
-                    </tr>
-                `);
-
-                const allKey = Object.keys(localStorage).filter(k => k.startsWith('wordgroups_'));
-                if (allKey.length === 0) {
-                    tbody.html(`
-                        <tr>
-                            <td colspan="5" class="text-center text-muted">
-                                Belum ada data.
-                            </td>
-                        </tr>
-                    `);
-                    return;
-                }
-
-                // get wordgroup object from local storage
-                const stored = JSON.parse(localStorage.getItem(allKey[0]));
-                const wordGroups = stored.data.wordGroups || [];
-
-                // check active wordgroup
-                const activeWordGroup = wordGroups.find(wg => wg.id == word_group_id);
-
-                tbody.empty();
-
-                if (!activeWordGroup || !activeWordGroup.words || activeWordGroup.words.length === 0) {
-                    tbody.append(`
-                         <tr>
-                            <td colspan="5" class="text-center text-muted">
-                                Belum ada data.
-                            </td>
-                        </tr>                   
-                    `);
-                    return;
-                }
-
-                // render all words
-                renderWordsTable(activeWordGroup);
-            }
-
-            $(document).ready(function() {
-                const $slider = $("#slider-rtl").owlCarousel({
-                    rtl: true,
-                    items: 5,
-                    margin: 10,
-                    nav: false,
-                    dots: false,
-                });
-
-                // Ambil id wordgroup pertama yang aktif saat halaman pertama kali dimuat
-                const firstWgId = $("#slider-rtl .owl-item.active .word-group").attr("wg-id");
-                if (firstWgId) {
-                    fetchWords(firstWgId);
-                }
-            });
-
-            function getActiveWgId(event) {
-                let $active = $slider.find('.owl-item.active').first();
-                let id = $active.find('.word-group').attr('wg-id');
-
-                if (id) return id;
-
-                try {
-                    const $items = $slider.find('.owl-item').not('.cloned');
-                    if (event && event.item && typeof event.item.index === 'number' && $items.length) {
-                        let idx = event.item.index;
-
-                        // normalize index ke range 0..length-1
-                        idx = ((idx % $items.length) + $items.length) % $items.length;
-                        id = $items.eq(idx).find('.word-group').attr('wg-id');
-                        return id;
-                    }
-                } catch (err) {
-                    console.error(err);
-                }
-                return null;
-            }
-
-            $slider.on('initialized.owl.carousel', function(e) {
-                const activeId = getActiveWgId(e);
-                if (activeId) {
-                    console.log(`Initial Active Id : ${activeId}`);
-                    activeWordGroupId = activeId;
-                    fetchWords(activeId);
-                }
-            });
-
-            $slider.on('translated.owl.carousel', function(e) {
-                const activeId = getActiveWgId(e);
-                if (activeId) {
-                    console.log('Slide translated, Active Id :', activeId);
-                    activeWordGroupId = activeId;
-                    fetchWords(activeId);
-                } else {
-                    console.log('No activeId found after translate');
-                }
-            });
-
-            // =============================
-            // FUNGSI NAVIGASI AYAT
-            // =============================
-
-            async function goToPrevVerse() {
-                if (modified) {
-                    const confirmed = await showEditConfirmation()
-                    if (!confirmed) return;
-                };
-
-                let verseId = parseInt(currentVerseId.value);
-                if (verseId > 1) {
-                    currentVerseId.value = verseId - 1;
-                    fetchWordGroups(null, null, currentVerseId.value);
-                    modified = false;
-                }
-            }
-
-            async function goToNextVerse() {
-                if (modified) {
-                    const confirmed = await showEditConfirmation()
-                    if (!confirmed) return;
-                };
-
-                let verseId = parseInt(currentVerseId.value) || 1;
-                const max = 6236;
-
-                if (verseId < max) {
-                    currentVerseId.value = verseId + 1;
-                    fetchWordGroups(null, null, currentVerseId.value);
-                    modified = false;
-                }
-            }
-
-            filterForm.addEventListener('submit', handleFilterSubmit);
-
-            // Event listener untuk perubahan surah
-            surahOption.addEventListener('change', function() {
-                updateVerseCount();
-                verseOption.value = 1;
-            });
-
-            // Event listener untuk input nomor ayat
-            verseOption.addEventListener('change', function() {
-                if (parseInt(verseOption.value) > verseCount) {
-                    verseOption.value = verseCount;
-                }
-            });
-
-            // Inisialisasi opsi ayat jika surah sudah dipilih
-            if (surahOption.value) updateVerseOptions();
-
-            // Event listener untuk navigasi ayat
-            btnPrev.addEventListener('click', goToPrevVerse);
-            btnNext.addEventListener('click', goToNextVerse);
-        });
-    </script>
+    <script src="{{ asset('js/page/words/words-page.js') }}"></script>
 @endpush

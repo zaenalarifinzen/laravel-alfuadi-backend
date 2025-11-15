@@ -8,6 +8,8 @@ use App\Models\WordGroups;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+use function Illuminate\Log\log;
+
 class WordController extends Controller
 {
     /**
@@ -48,13 +50,15 @@ class WordController extends Controller
         $wordGroupId = $request->input('word_group_id', 1);
 
         $wordgroups = WordGroups::where('verse_id', $verseId)
+            ->with([
+                'editorInfo:id,name',
+                'words' => function ($query) {
+                    $query->orderBy('order_number', 'asc');
+                },
+            ])
             ->orderBy('order_number', 'asc')
             ->get();
         $first = $wordgroups->first();
-
-        $words = Word::where('word_group_id', $wordGroupId)
-            ->orderBy('order_number', 'asc')
-            ->get();
 
         $surahId = $first->surah_id ?? null;
         $surahName = null;
@@ -62,6 +66,8 @@ class WordController extends Controller
             $surahName = DB::table('surahs')->where('id', $first->surah_id)->value('name');
         }
         $verseNumber = $first->verse_number ?? null;
+        
+        log($first);
 
         return view('pages.words.create', compact(
             'surahs',
@@ -69,8 +75,7 @@ class WordController extends Controller
             'surahName',
             'verseNumber',
             'verseId',
-            'wordgroups',
-            'words',
+            'wordgroups'
         ),
             ['type_menu' => 'Tools']);
     }

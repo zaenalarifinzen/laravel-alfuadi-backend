@@ -42,7 +42,7 @@ $('#form-add-word').on('submit', function (e) {
         text: $('#input-lafadz').val(),
         order_number: newOrder,
         translation: $('#input-translation').val(),
-        kalimah: $('#input-kalimah').val(),
+        kalimat: $('#input-kalimat').val(),
         jenis: $('#input-variation').val(),
         hukum: $('#input-hukum').val(),
         mabni_detail: $('#input-mabni-detail').val(),
@@ -104,9 +104,9 @@ function renderWordsTable(wordGroup) {
 
     wordGroup.words.forEach(word => {
         let badgeClass = 'badge-light';
-        if (word.kalimah === 'فعل') badgeClass = 'badge-success';
-        else if (word.kalimah === 'اسم') badgeClass = 'badge-info';
-        else if (word.kalimah === 'حرف') badgeClass = 'badge-danger';
+        if (word.kalimat === 'فعل') badgeClass = 'badge-success';
+        else if (word.kalimat === 'اسم') badgeClass = 'badge-info';
+        else if (word.kalimat === 'حرف') badgeClass = 'badge-danger';
 
         const row = `
             <tr>
@@ -127,7 +127,7 @@ function renderWordsTable(wordGroup) {
                 </td>
                 <td class="text-center align-middle translation">${word.translation ?? ''}</td>
                 <td class="text-center align-middle">
-                    <div class="badge ${badgeClass}">${word.kalimah ?? ''}</div>
+                    <div class="badge ${badgeClass}">${word.kalimat ?? ''}</div>
                 </td>
                 <td class="arabic-text">${word.kedudukan ?? ''}</td>
             </tr>
@@ -252,7 +252,8 @@ $('#btn-save-all').on('click', function (e) {
             localStorage.removeItem(currentKey);
 
             // load next verse
-            fetchWordGroups(null, null, stored.data.verse.id);
+            const nextVerse = stored.data.verse.id + 1;
+            fetchWordGroups(null, null, nextVerse);
         },
         error: function (xhr) {
             console.error('Save error: ', xhr.responseText);
