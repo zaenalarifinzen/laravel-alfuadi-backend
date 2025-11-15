@@ -3,9 +3,19 @@
 // open modal
 $('#btn-add-word').on('click', function () {
     $('#form-add-word')[0].reset();
-    $('#input-id').val('');
     $('#form-add-word-label').text('Tambah Kalimat');
     $('#btn-submit').text('Tambahkan');
+
+    // get key from local storage
+    const currentKey = Object.keys(localStorage).find(k => k.startsWith('wordgroups_'));
+    const stored = JSON.parse(localStorage.getItem(currentKey));
+
+    // get active wordgroup
+    const activeWordGroupId = $('.owl-item.active .word-group').attr('wg-id');
+    const wordGroup = stored.data.wordGroups.find(g => g.id == activeWordGroupId);
+
+    $('#input-id').val('');
+    $('#input-lafadz').val(wordGroup.text);
 
     $('#modal-add-word').modal('show');
 });
@@ -16,7 +26,10 @@ $('#form-add-word').on('submit', function (e) {
     const wordId = $('#input-id').val();
     const lafadz = $('#input-lafadz').val().trim();
     if (!lafadz) {
-        alert('Lafadz tidak boleh kosong');
+        // iziToast.warning({
+        //     message: 'Harap masukkan lafadz',
+        //     position: 'topCenter'
+        // });
         return;
     }
 
@@ -42,16 +55,27 @@ $('#form-add-word').on('submit', function (e) {
         text: $('#input-lafadz').val(),
         order_number: newOrder,
         translation: $('#input-translation').val(),
-        kalimat: $('#input-kalimat').val(),
-        jenis: $('#input-variation').val(),
-        hukum: $('#input-hukum').val(),
-        mabni_detail: $('#input-mabni-detail').val(),
-        category: $('#input-kategori').val(),
-        kedudukan: $('#input-mahal').val(),
-        irob: $('#input-irob').val(),
-        alamat: $('#input-alamat').val(),
-        condition: $('#input-condition').val(),
-        matbu: $('#input-matbu').val(),
+        // kalimat: $('#input-kalimat').val(),
+        // jenis: $('#input-variation').val(),
+        // hukum: $('#input-hukum').val(),
+        // mabni_detail: $('#input-mabni-detail').val(),
+        // category: $('#input-kategori').val(),
+        // kedudukan: $('#input-mahal').val(),
+        // irob: $('#input-irob').val(),
+        // alamat: $('#input-alamat').val(),
+        // condition: $('#input-condition').val(),
+        // matbu: $('#input-matbu').val(),
+
+        kalimat: null,
+        jenis: null,
+        hukum: null,
+        mabni_detail: null,
+        category: null,
+        kedudukan: null,
+        irob: null,
+        alamat: null,
+        condition: null,
+        matbu: null,
     };
 
     // get mode
@@ -73,6 +97,9 @@ $('#form-add-word').on('submit', function (e) {
         }
         stored.data.wordGroups[groupIndex].words.push(newWord);
     }
+
+    // track modification
+    modified = true;
 
     // save to local storage
     localStorage.setItem(currentKey, JSON.stringify(stored));
@@ -175,6 +202,9 @@ $(document).on('click', '.table-links .word-delete', function (e) {
         // delete word base on Id
         stored.data.wordGroups[groupIndex].words = stored.data.wordGroups[groupIndex].words.filter(w => w.id != wordId);
 
+        // track modification
+        modified = true;
+
         // save again
         localStorage.setItem(currentKey, JSON.stringify(stored));
 
@@ -226,41 +256,66 @@ $('#btn-save-all').on('click', function (e) {
 
     const emptyGroups = stored.data.wordGroups.filter(g => !g.words || g.words.length === 0);
     if (emptyGroups.length > 0) {
-        let list = emptyGroups.map(g => `- ${g.text}`).join("\n");
+        let list = emptyGroups.map(g => `${g.text}`).join(" - ");
 
-        alert("Ada grup yang kalimatnya masih kosong:\n\n" + list);
+        swal({
+            icon: 'warning',
+            title: 'Data belum lengkap',
+            text: 'Grup yang kalimatnya masih kosong:\n\n' + list,
+        });
         return;
     }
 
-    if (!confirm('Apakah anda ingin menyimpan data ayat ini?')) return;
+    // confirmation
+    swal({
+        title: 'Konfirmasi',
+        text: 'Yakin ingin menyimpan ayat ini?',
+        buttons: {
+            cancel: {
+                text: 'Batal',
+                visible: true,
+            },
+            confirm: {
+                text: 'Simpan',
+                visible: true,
+                className: 'btn-success'
+            },
+        },
+    }).then((willSave) => {
+        if (!willSave) return;
 
-    $.ajax({
-        url: WORDS_SYNC_URL,
-        type: "POST",
-        data: {
-            _token: CSRF_TOKEN,
-            verse_id: stored.data.verse.id,
-            groups: stored.data.wordGroups,
-        },
-        beforeSend: function () {
-            $('#btn-save-all').prop('disabled', true).text('Menyimpan...');                      
-        },
-        success: function (response) {
-            console.log('Save response: ', response);
+        // Logic
+        $.ajax({
+            url: WORDS_SYNC_URL,
+            type: "POST",
+            data: {
+                _token: CSRF_TOKEN,
+                verse_id: stored.data.verse.id,
+                groups: stored.data.wordGroups,
+            },
+            beforeSend: function () {
+                $('#btn-save-all').prop('disabled', true).text('Menyimpan...');
+            },
+            success: function (response) {
+                console.log('Save response: ', response);
 
-            alert('Data berhasil disimpan');
-            localStorage.removeItem(currentKey);
+                alert('Data berhasil disimpan');
+                localStorage.removeItem(currentKey);
 
-            // load next verse
-            const nextVerse = stored.data.verse.id + 1;
-            fetchWordGroups(null, null, nextVerse);
-        },
-        error: function (xhr) {
-            console.error('Save error: ', xhr.responseText);
-            alert('Terjadi kesalahan saat menyimpan data');
-        },
-        complete: function () {
-            $('#btn-save-all').prop('disabled', false).text('Simpan');
-        }
-    })
+                // load next verse
+                const nextVerse = stored.data.verse.id + 1;
+                fetchWordGroups(null, null, nextVerse);
+
+                // track modification
+                modified = false;
+            },
+            error: function (xhr) {
+                console.error('Save error: ', xhr.responseText);
+                alert('Terjadi kesalahan saat menyimpan data');
+            },
+            complete: function () {
+                $('#btn-save-all').prop('disabled', false).text('Simpan');
+            }
+        })
+    });
 });

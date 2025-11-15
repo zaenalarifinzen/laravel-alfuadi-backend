@@ -51,6 +51,25 @@ function updateVerseCount() {
     verseCount = selected ? selected.getAttribute('data-verse-count') : 0;
 }
 
+function showEditConfirmation() {
+    return swal({
+        icon: 'warning',
+        title: 'Perubahan belum disimpan',
+        text: 'Abaikan perubahan yang sudah ada?',
+        buttons: {
+            cancel: {
+                text: 'Kembali',
+                visible: true,
+            },
+            confirm: {
+                text: 'Abaikan',
+                visible: true,
+                className: 'btn-success'
+            }
+        },
+    });
+}
+
 // =============================
 // FETCH WORDGROUPS
 // =============================
@@ -80,6 +99,12 @@ function fetchWordGroups(surah_id, verse_number, verse_id) {
 
             localStorage.setItem(storageKey, JSON.stringify(response));
             renderWordGroups(response);
+
+            // Update URL in address bar
+            history.pushState({}, '', `?verse_id=${verseId}`);
+
+            // track modification
+            modified = false;
         },
         error: function () {
             alert('Terjadi kesalahan');
@@ -136,7 +161,7 @@ function fetchWords(word_group_id) {
     if (!activeGroup || !activeGroup.words || activeGroup.words.length === 0) {
         tbody.html(`
             <tr>
-            <   td colspan="5" class="text-center text-muted">Belum ada data.</td>
+                <td colspan="5" class="text-center text-muted">Tidak ada data</td>
             </tr>
         `);
         return;
@@ -168,11 +193,21 @@ $slider.on('translated.owl.carousel', e => {
 // NAVIGASI AYAT
 // =============================
 async function goToPrevVerse() {
+    if (modified) {
+        const confirmed = await showEditConfirmation();
+        if (!confirmed) return;
+    };
+
     let id = parseInt(currentVerseId.value);
     if (id > 1) fetchWordGroups(null, null, id - 1);
 }
 
 async function goToNextVerse() {
+    if (modified) {
+        const confirmed = await showEditConfirmation();
+        if (!confirmed) return;
+    };
+
     let id = parseInt(currentVerseId.value);
     if (id < 6236) fetchWordGroups(null, null, id + 1);
 }
@@ -180,10 +215,16 @@ async function goToNextVerse() {
 // =============================
 // EVENT LISTENERS
 // =============================
-filterForm.addEventListener('submit', e => {
+async function searchVerse(e) {
     e.preventDefault();
+
+    if (modified) {
+        const confirmed = await showEditConfirmation();
+        if (!confirmed) return;
+    };
+
     fetchWordGroups(surahOption.value, verseOption.value);
-});
+}
 
 surahOption.addEventListener('change', () => {
     updateVerseCount();
@@ -194,6 +235,7 @@ verseOption.addEventListener('change', () => {
     if (parseInt(verseOption.value) > verseCount) verseOption.value = verseCount;
 });
 
+filterForm.addEventListener('submit', searchVerse);
 btnPrev.addEventListener('click', goToPrevVerse);
 btnNext.addEventListener('click', goToNextVerse);
 

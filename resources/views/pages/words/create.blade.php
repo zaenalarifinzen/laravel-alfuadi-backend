@@ -25,10 +25,22 @@
         }
 
         .arabic-text {
-            font-size: 48px;
             line-height: 2.2;
             padding: 10px 0;
             display: block;
+        }
+
+        .ar-title {
+            font-size: 48px;
+        }
+
+        .ar-subtitle {
+            font-size: 21px !important;
+        }
+
+        .input-big {
+            height: 80px !important;
+            padding-top: 10px;
         }
 
         @media (max-width: 1080px) {
@@ -116,7 +128,7 @@
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center w-100">
                             <h4 class="mb-0">Data Kalimat</h4>
-                            <button class="btn btn-icon icon-left btn-primary" id="btn-add-word">
+                            <button class="btn btn-icon icon-left btn-primary btn-lg" id="btn-add-word">
                                 <i class="fa-solid fa-plus"></i> Tambah
                             </button>
                         </div>
@@ -138,10 +150,10 @@
                                 </thead>
                                 @php
                                     $firstGroup = $wordgroups->first();
-                                    $words = $firstGroup ? $firstGroup->words : collect();
+                                    $words = $firstGroup && isset($firstGroup->words) ? $firstGroup->words : collect();
                                 @endphp
                                 <tbody>
-                                    @foreach ($words as $word)
+                                    @forelse ($words as $word)
                                         <tr class="text-center">
                                             <td>
                                                 <div class="sort-handler">
@@ -173,7 +185,11 @@
                                                 {{ $word->jenis }}
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="5" class="text-center text-muted">Tidak ada data</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
@@ -194,7 +210,7 @@
                         <input type="hidden" name="surah_id" value="{{ request('surah_id') }}">
                         <input type="hidden" name="verse_number" value="{{ request('verse_number') }}">
                         <button class="btn btn-icon icon-left btn-success btn-lg" id="btn-save-all"><i
-                        class="fa-solid fa-floppy-disk"></i> Simpan & lanjutkan</button>
+                                class="fa-solid fa-floppy-disk"></i> Simpan & lanjutkan</button>
                     </form>
                 </div>
 
@@ -220,8 +236,9 @@
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="input-lafadz">Lafadz</label>
-                                <input type="text" class="form-control arabic-text text-center" id="input-lafadz"
-                                    placeholder="لفظ">
+                                <input type="text" class="form-control arabic-text ar-subtitle input-big text-center"
+                                    id="input-lafadz" placeholder="لفظ" required="">
+
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="input-translation">Terjemah</label>
@@ -229,10 +246,10 @@
                                     placeholder="Terjemah">
                             </div>
                         </div>
-                        <div class="form-row">
+                        {{-- <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="input-kalimat">Kalimat</label>
-                                <select id="input-kalimat" class="form-control">
+                                <select id="input-kalimat" class="form-control" disabled>
                                     <option selected>اسم</option>
                                     <option>فعل</option>
                                     <option>حرف</option>
@@ -240,7 +257,7 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="input-variation">Jenis</label>
-                                <select id="input-variation" class="form-control">
+                                <select id="input-variation" class="form-control" disabled>
                                     <option selected>Pilih</option>
                                     <option>...</option>
                                 </select>
@@ -249,14 +266,14 @@
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="input-hukum">Hukum</label>
-                                <select id="input-hukum" class="form-control">
+                                <select id="input-hukum" class="form-control" disabled>
                                     <option selected>مبني</option>
                                     <option>معرب</option>
                                 </select>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="input-mabni-detail">Detail Mabni</label>
-                                <select id="input-mabni-detail" class="form-control">
+                                <select id="input-mabni-detail" class="form-control" disabled>
                                     <option selected>Fathah</option>
                                     <option>Dhommah</option>
                                     <option>Kasroh</option>
@@ -267,7 +284,7 @@
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="input-category">Kategori</label>
-                                <select id="input-category" class="form-control">
+                                <select id="input-category" class="form-control" disabled>
                                     <option selected>Pilih...</option>
                                     <option>...</option>
                                     <option>...</option>
@@ -275,7 +292,7 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="input-mahal">Kedudukan</label>
-                                <select id="input-mahal" class="form-control">
+                                <select id="input-mahal" class="form-control" disabled>
                                     <option selected>فاعل</option>
                                     <option>مفعول</option>
                                     <option>...</option>
@@ -285,7 +302,7 @@
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="input-irob">Irob</label>
-                                <select id="input-irob" class="form-control">
+                                <select id="input-irob" class="form-control" disabled>
                                     <option selected>رفع</option>
                                     <option>نصب</option>
                                     <option>جر</option>
@@ -294,7 +311,7 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="input-alamat">Tanda I'rob</label>
-                                <select id="input-alamat" class="form-control">
+                                <select id="input-alamat" class="form-control" disabled>
                                     <option selected>Fathah</option>
                                     <option>Dhommah</option>
                                     <option>Kasroh</option>
@@ -309,7 +326,7 @@
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="input-condition">Kondisi</label>
-                                <select id="input-condition" class="form-control">
+                                <select id="input-condition" class="form-control" disabled>
                                     <option selected>Fi Mahal</option>
                                     <option>Dzohiroh</option>
                                     <option>Muqoddaroh</option>
@@ -318,9 +335,9 @@
                             <div class="form-group col-md-6">
                                 <label for="input-matbu">Yang di ikuti</label>
                                 <input type="text" class="form-control arabic-text" id="input-matbu"
-                                    placeholder="لفظ">
+                                    placeholder="لفظ" disabled>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
 
                     <div class="modal-footer">
@@ -339,6 +356,7 @@
     <script src="{{ asset('library/jquery-ui-dist/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('library/owl.carousel/dist/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('library/izitoast/dist/js/iziToast.min.js') }}"></script>
+    <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
 
     <script>
         window.WORDS_SYNC_URL = "{{ route('words.sync') }}";
@@ -348,7 +366,6 @@
 
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/components-table.js') }}"></script>
-    <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
     <script src="{{ asset('js/page/words/word-crud.js') }}"></script>
     <script src="{{ asset('js/page/words/words-page.js') }}"></script>
 @endpush

@@ -158,8 +158,7 @@
                             </form>
                         </div>
                         <div class="card">
-                            <form class="needs-validation"
-                                novalidate="">
+                            <form class="needs-validation">
                                 <div class="card-header">
                                     <h4>JavaScript Validation (Horizontal Form)</h4>
                                 </div>

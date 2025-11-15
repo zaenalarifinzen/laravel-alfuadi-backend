@@ -1,182 +1,98 @@
-// Refactored & cleaned script. Functions preserved.
+"use strict";
 
-// =============================
-// CONSTANTS
-// =============================
-const WORDS_SYNC_URL = window.WORDS_SYNC_URL;
-const CSRF_TOKEN = window.CSRF_TOKEN;
+$("#modal-1").fireModal({body: 'Modal body text goes here.'});
+$("#modal-2").fireModal({body: 'Modal body text goes here.', center: true});
 
-// =============================
-// OWL CAROUSEL INIT
-// =============================
-const $slider = $("#slider-rtl").owlCarousel({
-  rtl: true,
-  items: 1,
-  dots: false,
-  nav: false,
-  loop: false,
-});
-
-$("#btn-next-slide").click(() => $slider.trigger("next.owl.carousel"));
-$("#btn-prev-slide").click(() => $slider.trigger("prev.owl.carousel"));
-
-// =============================
-// GLOBAL ELEMENTS
-// =============================
-const surahOption = document.getElementById('surah-option');
-const verseOption = document.getElementById('verse-option');
-const filterForm = document.getElementById('filter-form');
-
-const btnPrev = document.getElementById('btn-prev-verse');
-const btnNext = document.getElementById('btn-next-verse');
-const currentVerseLabel = document.getElementById('current-verse-label');
-
-const currentSurahId = document.getElementById('surah-id');
-const currentVerseNumber = document.getElementById('verse-number');
-const currentVerseId = document.getElementById('verse-id');
-
-let activeWordGroupId = null;
-let modified = false;
-let verseCount = 0;
-
-// =============================
-// HELPERS
-// =============================
-function updateVerseCount() {
-  const selected = surahOption.options[surahOption.selectedIndex];
-  verseCount = selected ? selected.getAttribute('data-verse-count') : 0;
-}
-
-// =============================
-// FETCH WORDGROUPS
-// =============================
-function fetchWordGroups(surah_id, verse_number, verse_id) {
-  let url;
-
-  if (verse_id) {
-    url = window.WORDGROUP_GET_URL.replace(':id', verse_id);
-  } else if (surah_id && verse_number) {
-    url = window.WORDGROUP_GET_URL.replace('/:id', `?surah_id=${surah_id}&verse_number=${verse_number}`);
-  } else {
-    alert('Parameter tidak lengkap');
-    return;
-  }
-
-  $.ajax({
-    url,
-    type: "GET",
-    success: function (response) {
-      const verseId = response.data.verse.id;
-      const storageKey = `wordgroups_${verseId}`;
-
-      // Clear old cache
-      Object.keys(localStorage)
-        .filter(k => k.startsWith('wordgroups_'))
-        .forEach(k => localStorage.removeItem(k));
-
-      localStorage.setItem(storageKey, JSON.stringify(response));
-      renderWordGroups(response);
-    },
-    error: function () {
-      alert('Terjadi kesalahan');
+let modal_3_body = '<p>Object to create a button on the modal.</p><pre class="language-javascript"><code>';
+modal_3_body += '[\n';
+modal_3_body += ' {\n';
+modal_3_body += "   text: 'Login',\n";
+modal_3_body += "   submit: true,\n";
+modal_3_body += "   class: 'btn btn-primary btn-shadow',\n";
+modal_3_body += "   handler: function(modal) {\n";
+modal_3_body += "     alert('Hello, you clicked me!');\n"
+modal_3_body += "   }\n"
+modal_3_body += ' }\n';
+modal_3_body += ']';
+modal_3_body += '</code></pre>';
+$("#modal-3").fireModal({
+  title: 'Modal with Buttons',
+  body: modal_3_body,
+  buttons: [
+    {
+      text: 'Click, me!',
+      class: 'btn btn-primary btn-shadow',
+      handler: function(modal) {
+        alert('Hello, you clicked me!');
+      }
     }
-  });
-}
-
-// =============================
-// RENDER WORDGROUPS
-// =============================
-function renderWordGroups(response) {
-  $slider.trigger('destroy.owl.carousel');
-  $slider.html('');
-
-  response.data.wordGroups.forEach(wordGroup => {
-    $slider.append(`
-      <div>
-        <h4 class="arabic-text word-group" wg-id="${wordGroup.id}">${wordGroup.text}</h4>
-      </div>`);
-  });
-
-  $slider.owlCarousel({ rtl: true, items: 1, dots: false, nav: false });
-
-  currentSurahId.value = response.data.surah.id;
-  currentVerseNumber.value = response.data.verse.number;
-  currentVerseId.value = response.data.verse.id;
-
-  currentVerseLabel.textContent = `${response.data.surah.id}. ${response.data.surah.name} - Ayat ${response.data.verse.number}`;
-}
-
-// =============================
-// FETCH WORDS
-// =============================
-function fetchWords(word_group_id) {
-  const tbody = $("#sortable-table tbody");
-
-  const key = Object.keys(localStorage).find(k => k.startsWith('wordgroups_'));
-  if (!key) {
-    tbody.html('<tr><td colspan="5" class="text-center text-muted">Belum ada data.</td></tr>');
-    return;
-  }
-
-  const stored = JSON.parse(localStorage.getItem(key));
-  const activeGroup = stored.data.wordGroups.find(wg => wg.id == word_group_id);
-
-  if (!activeGroup || !activeGroup.words || activeGroup.words.length === 0) {
-    tbody.html('<tr><td colspan="5" class="text-center text-muted">Belum ada data.</td></tr>');
-    return;
-  }
-
-  renderWordsTable(activeGroup);
-}
-
-// =============================
-// GET ACTIVE OWL ITEM
-// =============================
-function getActiveWgId(event) {
-  const $active = $slider.find('.owl-item.active').first();
-  const id = $active.find('.word-group').attr('wg-id');
-  return id || null;
-}
-
-$slider.on('initialized.owl.carousel', e => {
-  const id = getActiveWgId(e);
-  if (id) fetchWords(id);
+  ]
 });
 
-$slider.on('translated.owl.carousel', e => {
-  const id = getActiveWgId(e);
-  if (id) fetchWords(id);
+$("#modal-4").fireModal({
+  footerClass: 'bg-whitesmoke',
+  body: 'Add the <code>bg-whitesmoke</code> class to the <code>footerClass</code> option.',
+  buttons: [
+    {
+      text: 'No Action!',
+      class: 'btn btn-primary btn-shadow',
+      handler: function(modal) {
+      }
+    }
+  ]
 });
 
-// =============================
-// NAVIGASI AYAT
-// =============================
-async function goToPrevVerse() {
-  let id = parseInt(currentVerseId.value);
-  if (id > 1) fetchWordGroups(null, null, id - 1);
-}
+$("#modal-5").fireModal({
+  title: 'Login',
+  body: $("#modal-login-part"),
+  footerClass: 'bg-whitesmoke',
+  autoFocus: false,
+  onFormSubmit: function(modal, e, form) {
+    // Form Data
+    let form_data = $(e.target).serialize();
+    console.log(form_data)
 
-async function goToNextVerse() {
-  let id = parseInt(currentVerseId.value);
-  if (id < 6236) fetchWordGroups(null, null, id + 1);
-}
+    // DO AJAX HERE
+    let fake_ajax = setTimeout(function() {
+      form.stopProgress();
+      modal.find('.modal-body').prepend('<div class="alert alert-info">Please check your browser console</div>')
 
-// =============================
-// EVENT LISTENERS
-// =============================
-filterForm.addEventListener('submit', e => {
-  e.preventDefault();
-  fetchWordGroups(surahOption.value, verseOption.value);
+      clearInterval(fake_ajax);
+    }, 1500);
+
+    e.preventDefault();
+  },
+  shown: function(modal, form) {
+    console.log(form)
+  },
+  buttons: [
+    {
+      text: 'Login',
+      submit: true,
+      class: 'btn btn-primary btn-shadow',
+      handler: function(modal) {
+      }
+    }
+  ]
 });
 
-surahOption.addEventListener('change', () => {
-  updateVerseCount();
-  verseOption.value = 1;
+$("#modal-6").fireModal({
+  body: '<p>Now you can see something on the left side of the footer.</p>',
+  created: function(modal) {
+    modal.find('.modal-footer').prepend('<div class="mr-auto"><a href="#">I\'m a hyperlink!</a></div>');
+  },
+  buttons: [
+    {
+      text: 'No Action',
+      submit: true,
+      class: 'btn btn-primary btn-shadow',
+      handler: function(modal) {
+      }
+    }
+  ]
 });
 
-verseOption.addEventListener('change', () => {
-  if (parseInt(verseOption.value) > verseCount) verseOption.value = verseCount;
+$('.oh-my-modal').fireModal({
+  title: 'My Modal',
+  body: 'This is cool plugin!'
 });
-
-btnPrev.addEventListener('click', goToPrevVerse);
-btnNext.addEventListener('click', goToNextVerse);
