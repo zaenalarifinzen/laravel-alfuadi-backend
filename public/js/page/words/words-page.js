@@ -70,6 +70,20 @@ function showEditConfirmation() {
     });
 }
 
+function showLoading() {
+    $('#loading-overlay').css({
+        visibility: 'visible',
+        opacity: '1'
+    });
+}
+
+function hideLoading() {
+    $('#loading-overlay').css({
+        visibility: 'hidden',
+        opacity: '0'
+    });
+}
+
 // =============================
 // FETCH WORDGROUPS
 // =============================
@@ -251,3 +265,6 @@ document.addEventListener('DOMContentLoaded', () => {
         console.warn('No initial verse ID found')
     }
 });
+
+$(document).ajaxStart(showLoading);
+$(document).ajaxStop(hideLoading);

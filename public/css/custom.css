@@ -442,6 +442,27 @@ table tr:hover .table-links {
   background-color: rgba(0, 0, 0, 0.02);
 }
 
+/* Loading Overlay*/
+#loading-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.288);
+    z-index: 9999;
+
+    /* ready for fade animation */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .25s ease;
+}
+
+.text-primary, .text-primary-all *, .text-primary-all *:before, .text-primary-all *:after {
+  color: #008f85 !important;
+}
+
 @media (max-width: 575.98px) {
   .table-responsive table {
     min-width: 800px;

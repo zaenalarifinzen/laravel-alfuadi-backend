@@ -43,6 +43,50 @@
             padding-top: 10px;
         }
 
+        .slider-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 50;
+
+            background: rgba(255, 255, 255, 0.85);
+            color: #008f85;
+            border: none;
+            outline: none;
+
+            width: 50px;
+            height: 50px;
+
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+        .slider-nav-btn:hover {
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+        }
+
+        /* posisi tombol */
+        .slider-nav-btn.prev {
+            left: 10px;
+        }
+
+        .slider-nav-btn.next {
+            right: 10px;
+        }
+
+        /* hilangkan focus outline saat klik */
+        .slider-nav-btn:focus {
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
+
         @media (max-width: 1080px) {
             .word-group {
                 font-size: 1.5rem !important;
@@ -101,24 +145,22 @@
                         </div>
                     </div>
 
-                    <div class="card-body d-flex justify-content-between align-items-center" style="gap: 1rem;">
-                        <button id="btn-next-slide" class="btn btn-outline-primary btn-lg flex-shrink-0">
+                    <div class="card-body position-relative">
+                        <button id="btn-next-slide" class="slider-nav-btn prev">
                             <i class="fa fa-chevron-left"></i>
                         </button>
 
-                        <div class="flex-grow-1" style="max-width: 80%; overflow: hidden;">
-                            <div class="owl-carousel owl-theme slider" id="slider-rtl">
-                                @foreach ($wordgroups as $wordgroup)
-                                    <div>
-                                        <h4 class="arabic-text word-group" wg-id="{{ $wordgroup->id }}">
-                                            {{ $wordgroup->text }}
-                                        </h4>
-                                    </div>
-                                @endforeach
-                            </div>
+                        <div class="owl-carousel owl-theme slider" id="slider-rtl">
+                            @foreach ($wordgroups as $wordgroup)
+                                <div>
+                                    <h4 class="arabic-text word-group" wg-id="{{ $wordgroup->id }}">
+                                        {{ $wordgroup->text }}
+                                    </h4>
+                                </div>
+                            @endforeach
                         </div>
 
-                        <button id="btn-prev-slide" class="btn btn-outline-primary btn-lg flex-shrink-0">
+                        <button id="btn-prev-slide" class="slider-nav-btn next">
                             <i class="fa fa-chevron-right"></i>
                         </button>
                     </div>
@@ -195,25 +237,18 @@
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="col-12 d-flex justify-content-between align-items-center">
-                <div>
-                    <button type="button" class="btn btn-outline-primary btn-lg" id="btn-next-verse">
-                        <i class="ion-chevron-left" data-pack="default" data-tags="arrow, right"></i></button>
-                    <button type="button" class="btn btn-outline-primary btn-lg mr-2" id="btn-prev-verse"><i
-                            class="ion-chevron-right" data-pack="default" data-tags="arrow, left"></i></button>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <button type="button" class="btn btn-outline-primary btn-lg" id="btn-next-verse">
+                            <i class="ion-chevron-left" data-pack="default" data-tags="arrow, right"></i></button>
+                        <button type="button" class="btn btn-outline-primary btn-lg mr-2" id="btn-prev-verse"><i
+                                class="ion-chevron-right" data-pack="default" data-tags="arrow, left"></i></button>
+                    </div>
+                    <div>
+                        <button class="btn btn-icon icon-left btn-success btn-lg" id="btn-save-all">Simpan &
+                            lanjutkan</button>
+                    </div>
                 </div>
-                <div>
-                    <form id="complete-form" action="{{ route('wordgroups.save') }}" method="POST" class="ml-auto">
-                        @csrf
-                        <input type="hidden" name="surah_id" value="{{ request('surah_id') }}">
-                        <input type="hidden" name="verse_number" value="{{ request('verse_number') }}">
-                        <button class="btn btn-icon icon-left btn-success btn-lg" id="btn-save-all"><i
-                                class="fa-solid fa-floppy-disk"></i> Simpan & lanjutkan</button>
-                    </form>
-                </div>
-
             </div>
         </section>
     </div>
