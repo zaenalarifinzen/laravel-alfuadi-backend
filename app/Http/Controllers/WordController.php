@@ -66,7 +66,7 @@ class WordController extends Controller
             $surahName = DB::table('surahs')->where('id', $first->surah_id)->value('name');
         }
         $verseNumber = $first->verse_number ?? null;
-        
+
         log($first);
 
         return view('pages.words.create', compact(
@@ -130,6 +130,8 @@ class WordController extends Controller
                                 'alamat' => $word['alamat'] ?? null,
                                 'condition' => $word['condition'] ?? null,
                                 'matbu' => $word['matbu'] ?? null,
+
+                                'editor' => auth()->id(),
                             ]
                         );
                     }

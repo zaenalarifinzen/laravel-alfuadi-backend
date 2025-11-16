@@ -38,12 +38,10 @@
                     <a class="nav-link" href="{{ route('wordgroups.grouping') }}"><i
                             class="fas fa-object-group"></i>Grouping Ayat</a>
                 </li>
-                @if (auth()->check() && auth()->user()->roles === 'administrator')
-                    <li class="{{ Request::is('words/create') ? 'active' : '' }}">
-                        <a class="nav-link beep beep-sidebar" href="{{ route('words.create') }}"><i
-                                class="fas fa-keyboard"></i>Input Irob</a>
-                    </li>
-                @endif
+                <li class="{{ Request::is('words/create') ? 'active' : '' }}">
+                    <a class="nav-link beep beep-sidebar" href="{{ route('words.create') }}"><i
+                            class="fas fa-keyboard"></i>Input Irob</a>
+                </li>
             @endif
 
             @if (auth()->check() && auth()->user()->roles === 'administrator')

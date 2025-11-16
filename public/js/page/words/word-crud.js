@@ -299,7 +299,10 @@ $('#btn-save-all').on('click', function (e) {
             success: function (response) {
                 console.log('Save response: ', response);
 
-                alert('Data berhasil disimpan');
+                iziToast.success({
+                    message: 'Data berhasil disimpan',
+                    position: 'topRight'
+                });
                 localStorage.removeItem(currentKey);
 
                 // load next verse

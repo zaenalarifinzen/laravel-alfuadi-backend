@@ -22,14 +22,14 @@ class Word extends Model
         'mabni_detail',
         'kategori',
         'kedudukan',
-        'yang_diikuti',
+        'matbu',
         'irab',
         'tanda',
         'nampak',
 
         'created_at',
         'updated_at',
-        'author',
+        'editor',
     ];
 
     public function wordGroup()
