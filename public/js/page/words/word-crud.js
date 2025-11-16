@@ -52,9 +52,9 @@ $('#form-add-word').on('submit', function (e) {
 
     const newWord = {
         id: wordId || Date.now(),
-        text: $('#input-lafadz').val(),
+        text: $('#input-lafadz').val().trim(),
         order_number: newOrder,
-        translation: $('#input-translation').val(),
+        translation: $('#input-translation').val().trim(),
         // kalimat: $('#input-kalimat').val(),
         // jenis: $('#input-variation').val(),
         // hukum: $('#input-hukum').val(),
