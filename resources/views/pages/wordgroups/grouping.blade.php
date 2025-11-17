@@ -1002,6 +1002,10 @@
 
             // Event listener untuk batasi jumlah ayat
             verseOption.addEventListener('change', function() {
+                if (parseInt(verseOption.value) < 1) {
+                    verseOption.value = 1;
+                }
+
                 if (parseInt(verseOption.value) > verseCount) {
                     verseOption.value = verseCount;
                 }

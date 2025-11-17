@@ -246,7 +246,11 @@ surahOption.addEventListener('change', () => {
 });
 
 verseOption.addEventListener('change', () => {
-    if (parseInt(verseOption.value) > verseCount) verseOption.value = verseCount;
+    if (parseInt(verseOption.value) < 1) {
+        verseOption.value = 1;
+    }
+    if (parseInt(verseOption.value) > verseCount)
+        verseOption.value = verseCount;
 });
 
 filterForm.addEventListener('submit', searchVerse);
