@@ -53,7 +53,7 @@ $('#form-add-word').on('submit', function (e) {
     const newWord = {
         id: wordId || Date.now(),
         text: $('#input-lafadz').val().trim(),
-        order_number: newOrder,
+        order_number: wordId ? $('#input-order-number').val() : newOrder,
         translation: $('#input-translation').val().trim(),
         // kalimat: $('#input-kalimat').val(),
         // jenis: $('#input-variation').val(),
@@ -230,6 +230,7 @@ $(document).on('click', '.table-links .word-edit', function (e) {
 
     // fill modal form
     $('#input-id').val(word.id);
+    $('#input-order-number').val(word.order_number);
     $('#input-lafadz').val(word.text);
     $('#input-translation').val(word.translation);
 

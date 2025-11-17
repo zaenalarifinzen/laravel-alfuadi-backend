@@ -268,6 +268,7 @@
                 <form id="form-add-word">
                     <div class="modal-body">
                         <input type="hidden" id="input-id">
+                        <input type="hidden" id="input-order-number">
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="input-lafadz">Lafadz</label>
