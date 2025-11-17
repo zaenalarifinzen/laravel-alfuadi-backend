@@ -48,18 +48,53 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="password" class="d-block">Password</label>
-                    <input id="password" type="password" class="form-control pwstrength" data-indicator="pwindicator"
-                        name="password">
-                    <div id="pwindicator" class="pwindicator">
-                        <div class="bar"></div>
-                        <div class="label"></div>
+                <div class="form-group" style="position: relative">
+                    <div class="d-block">
+                        <label for="password" class="control-label">Password</label>
                     </div>
+                    <input id="password" type="password"
+                        class="form-control @error('password') is-invalid @enderror" name="password"
+                        tabindex="2" autocomplete="current-password" required>
+                    <span class="toggle-password-icon"
+                        style="
+                        position: absolute;
+                        right: 15px;
+                        top: 48px;
+                        transform: translateY(-50%);
+                        cursor: pointer;
+                        color: #888
+                    ">
+                        <i class="fas fa-eye"></i>
+                    </span>
+                    @error('password')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
-                <div class="form-group">
-                    <label for="password_confirmation" class="d-block">Konfirmasi Password</label>
-                    <input id="password_confirmation" type="password" class="form-control" name="password_confirmation">
+                <div class="form-group" style="position: relative">
+                    <div class="d-block">
+                        <label for="password_confirmation" class="control-label">Konfirmasi Password</label>
+                    </div>
+                    <input id="password_confirmation" type="password"
+                        class="form-control @error('password') is-invalid @enderror" name="password_confirmation"
+                        tabindex="2" autocomplete="current-password" required>
+                    <span class="toggle-password-icon"
+                        style="
+                        position: absolute;
+                        right: 15px;
+                        top: 48px;
+                        transform: translateY(-50%);
+                        cursor: pointer;
+                        color: #888
+                    ">
+                        <i class="fas fa-eye"></i>
+                    </span>
+                    @error('password')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
 
                 <div class="form-group">
@@ -89,4 +124,5 @@
 
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/auth-register.js') }}"></script>
+    <script src="{{ asset('js/page/auth/auth-form.js') }}"></script>
 @endpush

@@ -16,7 +16,7 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Advanced Forms</h1>
+                <h1>Edit User</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
                     <div class="breadcrumb-item"><a href="#">Forms</a></div>
@@ -25,14 +25,14 @@
             </div>
 
             <div class="section-body">
-                <h2 class="section-title">Create User</h2>
-                <p class="section-lead">Add new user to database.</p>
+                <h2 class="section-title">Account</h2>
+                <p class="section-lead">Update data akun pennguna</p>
 
                 <div class="row">
                     <div class="col-12 col-md-6 col-lg-6">
                         <div class="card">
                             <div class="card-header">
-                                <h4>Input Text</h4>
+                                <h4>Data akun</h4>
                             </div>
                             <div class="card-body">
 
@@ -51,7 +51,7 @@
                                     @csrf
                                     @method('PUT')
                                     <div class="form-group">
-                                        <label>Name</label>
+                                        <label>Nama Lengkap</label>
                                         <input type="text" class="form-control @error('name') is-invalid @enderror"
                                             name="name" value="{{ $user->name }}">
                                         @error('name')
@@ -67,7 +67,7 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label>Phone Number</label>
+                                        <label>No Handphone</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">

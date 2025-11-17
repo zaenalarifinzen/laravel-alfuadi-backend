@@ -74,18 +74,18 @@
                                         </tr>
                                         @foreach ($users as $user)
                                             <tr>
-                                                <td>{{$user->name}}
+                                                <td>{{ $user->name }}
                                                 </td>
                                                 <td>
-                                                    {{$user->email}}
+                                                    {{ $user->email }}
                                                 </td>
                                                 <td>
-                                                    {{$user->phone ?? ''}}
+                                                    {{ $user->phone ?? '' }}
                                                 </td>
                                                 <td>
-                                                    {{$user->roles}}
+                                                    {{ $user->roles }}
                                                 </td>
-                                                <td>{{$user->created_at}}</td>
+                                                <td>{{ $user->created_at }}</td>
                                                 <td>
                                                     <div class="d-flex justify-content-left">
                                                         <a href='{{ route('users.edit', $user->id) }}'
@@ -94,13 +94,14 @@
                                                             Edit
                                                         </a>
 
-                                                        <form action="{{ route('users.destroy', $user->id) }}" method="POST"
-                                                            class="ml-2">
+                                                        <form action="{{ route('users.destroy', $user->id) }}"
+                                                            method="POST" class="ml-2">
                                                             <input type="hidden" name="_method" value="DELETE" />
                                                             <input type="hidden" name="_token"
                                                                 value="{{ csrf_token() }}" />
-                                                            <button class="btn btn-sm btn-danger btn-icon confirm-delete">
-                                                                <i class="fas fa-times"></i> Delete
+                                                            <button type="button"
+                                                                class="btn btn-sm btn-danger btn-icon confirm-delete">
+                                                                <i class="fas fa-times"></i> Hapus
                                                             </button>
                                                         </form>
                                                     </div>
@@ -126,7 +127,41 @@
 @push('scripts')
     <!-- JS Libraies -->
     <script src="{{ asset('library/selectric/public/jquery.selectric.min.js') }}"></script>
+    <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
+
 
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/features-posts.js') }}"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll(".confirm-delete").forEach(btn => {
+                btn.addEventListener("click", function(e) {
+                    let form = this.closest("form");
+
+                    swal({
+                            title: "Hapus user?",
+                            text: "Data user akan dihapus dan mereka tidak bisa mengakses akunnya kembali",
+                            icon: "warning",
+                            buttons: {
+                                cancel: {
+                                    text: 'Batal',
+                                    visible: true,
+                                },
+                                confirm: {
+                                    text: 'Ya, hapus',
+                                    visible: true,
+                                    className: 'btn-danger'
+                                }
+                            },
+                            dangerMode: true,
+                        })
+                        .then((willDelete) => {
+                            if (willDelete) {
+                                form.submit();
+                            }
+                        });
+                });
+            })
+        });
+    </script>
 @endpush

@@ -19,7 +19,7 @@
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
-                        name="email" tabindex="1" required autofocus>
+                        name="email" tabindex="1" autocomplete="username" required autofocus>
                     @error('email')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -27,7 +27,7 @@
                     @enderror
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" style="position: relative">
                     <div class="d-block">
                         <label for="password" class="control-label">Password</label>
                         <div class="float-right">
@@ -37,7 +37,18 @@
                         </div>
                     </div>
                     <input id="password" type="password" class="form-control @error('password') is-invalid @enderror"
-                        name="password" tabindex="2" required>
+                        name="password" tabindex="2" autocomplete="current-password" required>
+                    <span class="toggle-password-icon"
+                        style="
+                        position: absolute;
+                        right: 15px;
+                        top: 48px;
+                        transform: translateY(-50%);
+                        cursor: pointer;
+                        color: #888
+                    ">
+                        <i class="fas fa-eye"></i>
+                    </span>
                     @error('password')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -70,4 +81,5 @@
     <!-- JS Libraies -->
 
     <!-- Page Specific JS File -->
+    <script src="{{ asset('js/page/auth/auth-form.js') }}"></script>
 @endpush
