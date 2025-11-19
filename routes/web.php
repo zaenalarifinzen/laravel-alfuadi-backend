@@ -9,11 +9,7 @@ use App\Http\Controllers\WordGroupController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('pages.auth.login');
-});
-
-Route::get('/404', function () {
-    return view('pages.error.404', ['type_menu' => 'error']);
+    return redirect()->route('home');
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -23,7 +19,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('users', UserController::class);
         Route::resource('products', ProductController::class);
         Route::get('/example', function () {
-            return view('pages.Template.modules-sweet-alert', ['type_menu' => '']);
+            return view('pages.Template.bootstrap-modal', ['type_menu' => '']);
         })->name('page.templatepage');; // Template Page
     });
 

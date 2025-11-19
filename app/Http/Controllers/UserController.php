@@ -25,7 +25,7 @@ class UserController extends Controller
 
     public function create()
     {
-        return view('pages.users.create');
+        return view('pages.users.create', ['type_menu' => '']);
     }
 
     public function store(StoreUserRequest $request)

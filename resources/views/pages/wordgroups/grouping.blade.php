@@ -187,7 +187,7 @@
                                         <label class="selectgroup-item arabic-pill">
                                             <input type="checkbox" name="ids[]" value="{{ $word->id }}"
                                                 class="selectgroup-input row-checkbox">
-                                            <span class="selectgroup-button arabic-text">{{ $word->text }}</span>
+                                            <span class="selectgroup-button arabic-text ar-title">{{ $word->text }}</span>
                                         </label>
                                     @endforeach
                                 </div>

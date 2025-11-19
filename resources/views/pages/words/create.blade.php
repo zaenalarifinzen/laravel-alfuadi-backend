@@ -24,18 +24,8 @@
             align-items: center;
         }
 
-        .arabic-text {
-            line-height: 2.2;
-            padding: 10px 0;
-            display: block;
-        }
-
-        .ar-title {
-            font-size: 48px;
-        }
-
         .ar-subtitle {
-            font-size: 21px !important;
+            font-size: 28px !important;
         }
 
         .input-big {
@@ -71,7 +61,6 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
         }
 
-        /* posisi tombol */
         .slider-nav-btn.prev {
             left: 10px;
         }
@@ -80,12 +69,14 @@
             right: 10px;
         }
 
-        /* hilangkan focus outline saat klik */
         .slider-nav-btn:focus {
             outline: none !important;
             box-shadow: none !important;
         }
 
+        .owl-item {
+            padding: 25px 0 !important;
+        }
 
         @media (max-width: 1080px) {
             .word-group {
@@ -153,7 +144,7 @@
                         <div class="owl-carousel owl-theme slider" id="slider-rtl">
                             @foreach ($wordgroups as $wordgroup)
                                 <div>
-                                    <h4 class="arabic-text word-group" wg-id="{{ $wordgroup->id }}">
+                                    <h4 class="arabic-text ar-title word-group text-center" wg-id="{{ $wordgroup->id }}">
                                         {{ $wordgroup->text }}
                                     </h4>
                                 </div>
@@ -259,7 +250,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="form-add-word-label">Tambah Kalimat</h5>
+                    <h5 class="modal-title " id="form-add-word-label">Tambah Kalimat</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -270,110 +261,120 @@
                         <input type="hidden" id="input-id">
                         <input type="hidden" id="input-order-number">
                         <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="input-lafadz">Lafadz</label>
-                                <input type="text" class="form-control arabic-text ar-subtitle input-big text-center"
+                            <div class="form-group col-12">
+                                {{-- <label for="input-lafadz">Lafadz</label> --}}
+                                <input type="text" class="form-control arabic-text ar-title input-big text-center"
                                     id="input-lafadz" placeholder="لفظ" required="">
-
                             </div>
-                            <div class="form-group col-md-6">
-                                <label for="input-translation">Terjemah</label>
+                            <div class="form-group col-12">
+                                {{-- <label for="input-translation">Terjemah</label> --}}
                                 <input type="text" class="form-control text-center" id="input-translation"
                                     placeholder="Terjemah">
                             </div>
                         </div>
-                        {{-- <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="input-kalimat">Kalimat</label>
-                                <select id="input-kalimat" class="form-control" disabled>
-                                    <option selected>اسم</option>
-                                    <option>فعل</option>
-                                    <option>حرف</option>
-                                </select>
+                        @if (auth()->check() && auth()->user()->roles === 'administrator')
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="input-kalimat">Kalimat</label>
+                                    <select id="input-kalimat" class="form-control form-control-ar arabic-text">
+                                        <option selected>اسم</option>
+                                        <option>فعل</option>
+                                        <option>حرف</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="input-variation">Jenis</label>
+                                    <select id="input-variation" class="form-control form-control-ar arabic-text">
+                                        <option selected></option>
+                                        <option>اسم ضمير</option>
+                                        <option>اسم اشارة</option>
+                                        <option>اسم موصول</option>
+                                        <option>اسم استفهام</option>
+                                        <option>اسم شرط</option>
+                                        <option>اسم فعل</option>
+                                        <option>منادى مفرد</option>
+                                        <option>مركب عدديّ</option>
+                                        <option>اسم لا لنفي الجنس</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="form-group col-md-6">
-                                <label for="input-variation">Jenis</label>
-                                <select id="input-variation" class="form-control" disabled>
-                                    <option selected>Pilih</option>
-                                    <option>...</option>
-                                </select>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="input-hukum">Hukum</label>
+                                    <select id="input-hukum" class="form-control form-control-ar arabic-text">
+                                        <option selected>مبني</option>
+                                        <option>معرب</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="input-mabni-detail">Detail mabni</label>
+                                    <select id="input-mabni-detail" class="form-control form-control-ar arabic-text">
+                                        <option selected></option>
+                                        <option>على الفتح</option>
+                                        <option>على الضمّ</option>
+                                        <option>على السكون</option>
+                                        <option>حذف النون</option>
+                                        <option>حذف حرف العلة</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="input-hukum">Hukum</label>
-                                <select id="input-hukum" class="form-control" disabled>
-                                    <option selected>مبني</option>
-                                    <option>معرب</option>
-                                </select>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="input-mahal">Kedudukan</label>
+                                    <select id="input-mahal" class="form-control form-control-ar arabic-text">
+                                        <option selected>فاعل</option>
+                                        <option>مفعول</option>
+                                        <option>...</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="input-matbu">Matbu</label>
+                                    <input type="text" class="form-control form-control-ar arabic-text"
+                                        id="input-matbu" placeholder="لفظ">
+                                </div>
                             </div>
-                            <div class="form-group col-md-6">
-                                <label for="input-mabni-detail">Detail Mabni</label>
-                                <select id="input-mabni-detail" class="form-control" disabled>
-                                    <option selected>Fathah</option>
-                                    <option>Dhommah</option>
-                                    <option>Kasroh</option>
-                                    <option>Sukun</option>
-                                </select>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="input-irob">I'rob</label>
+                                    <select id="input-irob" class="form-control form-control-ar arabic-text">
+                                        <option selected>رفع</option>
+                                        <option>نصب</option>
+                                        <option>جر</option>
+                                        <option>جزم</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="input-alamat">Tanda i'rob</label>
+                                    <select id="input-alamat" class="form-control form-control-ar arabic-text">
+                                        <option selected>فتحة</option>
+                                        <option>كسرة</option>
+                                        <option>ضمة</option>
+                                        <option>سكون</option>
+                                        <option>واو</option>
+                                        <option>يا</option>
+                                        <option>فى محل</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="input-category">Kategori</label>
-                                <select id="input-category" class="form-control" disabled>
-                                    <option selected>Pilih...</option>
-                                    <option>...</option>
-                                    <option>...</option>
-                                </select>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="input-condition">Kondisi tanda i'rob</label>
+                                    <select id="input-condition" class="form-control form-control-ar arabic-text">
+                                        <option selected></option>
+                                        <option selected>ظاهرة</option>
+                                        <option>مقدرة</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="input-category">Simbol</label>
+                                    <select id="input-category" class="form-control form-control-ar arabic-text" disabled>
+                                        <option selected></option>
+                                        <option></option>
+                                        <option></option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="form-group col-md-6">
-                                <label for="input-mahal">Kedudukan</label>
-                                <select id="input-mahal" class="form-control" disabled>
-                                    <option selected>فاعل</option>
-                                    <option>مفعول</option>
-                                    <option>...</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="input-irob">Irob</label>
-                                <select id="input-irob" class="form-control" disabled>
-                                    <option selected>رفع</option>
-                                    <option>نصب</option>
-                                    <option>جر</option>
-                                    <option>جزم</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="input-alamat">Tanda I'rob</label>
-                                <select id="input-alamat" class="form-control" disabled>
-                                    <option selected>Fathah</option>
-                                    <option>Dhommah</option>
-                                    <option>Kasroh</option>
-                                    <option>Sukun</option>
-                                    <option>Wawu</option>
-                                    <option>Ya</option>
-                                    <option>Fi Mahal</option>
-                                    <option>...</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="input-condition">Kondisi</label>
-                                <select id="input-condition" class="form-control" disabled>
-                                    <option selected>Fi Mahal</option>
-                                    <option>Dzohiroh</option>
-                                    <option>Muqoddaroh</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="input-matbu">Yang di ikuti</label>
-                                <input type="text" class="form-control arabic-text" id="input-matbu"
-                                    placeholder="لفظ" disabled>
-                            </div>
-                        </div> --}}
+                        @endif
                     </div>
 
                     <div class="modal-footer">
@@ -381,6 +382,27 @@
                         <button type="submit" class="btn btn-primary btn-lg" id="btn-submit">Tambahkan</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Restore Modal -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal-restore">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Lanjutkan progres sebelumnya?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="form-last-location"></p>
+                </div>
+                <div class="modal-footer bg-whitesmoke br">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-primary" id="btn-restore-continue">Lanjutkan</button>
+                </div>
             </div>
         </div>
     </div>
@@ -402,6 +424,7 @@
 
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/components-table.js') }}"></script>
+    <script src="{{ asset('js/page/words/storage-helper.js') }}"></script>
     <script src="{{ asset('js/page/words/word-crud.js') }}"></script>
     <script src="{{ asset('js/page/words/words-page.js') }}"></script>
 @endpush

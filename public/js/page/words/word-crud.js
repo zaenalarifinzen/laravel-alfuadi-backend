@@ -98,11 +98,12 @@ $('#form-add-word').on('submit', function (e) {
         stored.data.wordGroups[groupIndex].words.push(newWord);
     }
 
-    // track modification
-    modified = true;
-
     // save to local storage
     localStorage.setItem(currentKey, JSON.stringify(stored));
+
+    // track modification
+    // modified = true;
+    markModified();
 
     // re render word table
     renderWordsTable(wordGroup);
@@ -202,11 +203,12 @@ $(document).on('click', '.table-links .word-delete', function (e) {
         // delete word base on Id
         stored.data.wordGroups[groupIndex].words = stored.data.wordGroups[groupIndex].words.filter(w => w.id != wordId);
 
-        // track modification
-        modified = true;
-
         // save again
         localStorage.setItem(currentKey, JSON.stringify(stored));
+
+        // track modification
+        // modified = true;
+        markModified();
 
         // render table
         const updatedGroup = stored.data.wordGroups[groupIndex];
@@ -262,7 +264,7 @@ $('#btn-save-all').on('click', function (e) {
         swal({
             icon: 'warning',
             title: 'Data belum lengkap',
-            text: 'Grup yang kalimatnya masih kosong:\n\n' + list,
+            text: 'Grup dengan kalimat masih kosong :\n\n' + list,
         });
         return;
     }
@@ -309,13 +311,13 @@ $('#btn-save-all').on('click', function (e) {
                 // load next verse
                 const nextVerse = stored.data.verse.id + 1;
                 fetchWordGroups(null, null, nextVerse);
-
-                // track modification
-                modified = false;
             },
             error: function (xhr) {
                 console.error('Save error: ', xhr.responseText);
-                alert('Terjadi kesalahan saat menyimpan data');
+                iziToast.error({
+                    message: 'Terjadi kesalahan saat menyimpan data',
+                    position: 'topRight'
+                });
             },
             complete: function () {
                 $('#btn-save-all').prop('disabled', false).text('Simpan');

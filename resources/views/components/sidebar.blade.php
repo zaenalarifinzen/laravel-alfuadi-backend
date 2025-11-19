@@ -47,7 +47,7 @@
             @if (auth()->check() && auth()->user()->roles === 'administrator')
                 <li class="menu-header">Aplikasi Quran Al-Fuadi</li>
                 <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
-                    <a class="nav-link" href="404"><i class="fas fa-film"></i>
+                    <a class="nav-link" href="/not-found"><i class="fas fa-film"></i>
                         <span>Video Al-Fuadi</span></a>
                 </li>
 

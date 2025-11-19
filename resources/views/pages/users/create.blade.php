@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Create User')
+@section('title', 'Tambah User')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -16,7 +16,7 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Advanced Forms</h1>
+                <h1>Tambah User</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
                     <div class="breadcrumb-item"><a href="#">Forms</a></div>
@@ -25,8 +25,8 @@
             </div>
 
             <div class="section-body">
-                <h2 class="section-title">Create User</h2>
-                <p class="section-lead">Add new user to database.</p>
+                <h2 class="section-title">Tambah User</h2>
+                <p class="section-lead">Tambah user baru.</p>
 
                 <div class="row">
                     <div class="col-12 col-md-6 col-lg-6">
@@ -38,7 +38,7 @@
                                 <form action="{{ route('users.store') }}" method="POST">
                                     @csrf
                                     <div class="form-group">
-                                        <label>Name</label>
+                                        <label>Nama Lengkap</label>
                                         <input type="text" class="form-control @error('name') is-invalid @enderror"
                                             name="name">
                                         @error('name')
@@ -54,7 +54,7 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label>Phone Number</label>
+                                        <label>Nomer HP</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">

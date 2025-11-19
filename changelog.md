@@ -1,5 +1,10 @@
 # Change Log
 
+## Upcoming
+
+-   Update halaman error
+-   
+
 ## 1.0.1+1
 
 -   Pertahankan urutan kalimat saat edit

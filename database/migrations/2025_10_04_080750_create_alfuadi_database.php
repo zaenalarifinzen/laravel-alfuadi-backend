@@ -69,7 +69,7 @@ return new class extends Migration
             $table->foreign('word_group_id')->references('id')->on('word_groups')->onDelete('cascade');
 
             $table->integer('order_number');
-            $table->text('word');
+            $table->text('text');
             $table->text('translation')->nullable();
             $table->string('kalimat', 100)->nullable();
             $table->string('jenis', 100)->nullable();
@@ -77,7 +77,7 @@ return new class extends Migration
             $table->string('mabni_detail', 100)->nullable();
             $table->string('kategori', 100)->nullable();
             $table->string('kedudukan', 100)->nullable();
-            $table->string('yang_diikuti', 100)->nullable();
+            $table->string('matbu', 100)->nullable();
             $table->string('irab', 100)->nullable();
             $table->string('tanda', 100)->nullable();
             $table->string('nampak', 100)->nullable();
