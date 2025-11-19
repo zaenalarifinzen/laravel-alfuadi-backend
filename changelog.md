@@ -1,9 +1,10 @@
 # Change Log
 
-## Upcoming
+## 1.0.1+2
 
 -   Update halaman error
--   
+-   Penambahan fitur posisi terakhir pengerjaan
+-   Auto restore data di perangkat
 
 ## 1.0.1+1
 
