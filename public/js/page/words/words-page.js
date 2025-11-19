@@ -292,11 +292,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const restoreUrl = `/words/create?verse_id=${data.data.verse.id}`;
 
-        $('#form-last-location').text(lastProgressLabel);
+        $('#last-location-label').text(lastProgressLabel);
 
-        $('#btn-restore-continue').off('click').on('click', () => {
-            window.location.href = restoreUrl;
-        });
+        $('#btn-restore-continue')
+            .off('click')
+            .on('click', () => window.location.href = restoreUrl);
+
+        $('#btn-restore-cancel')
+            .off('click')
+            .on('click', () => {
+                $('#modal-restore').modal('hide');
+                fetchWordGroups(null, null, initialVerseId);
+            });
 
         $('#modal-restore').modal('show');
         return;

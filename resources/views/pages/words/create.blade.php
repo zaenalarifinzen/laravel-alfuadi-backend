@@ -397,10 +397,10 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p id="form-last-location"></p>
+                    <p id="last-location-label"></p>
                 </div>
                 <div class="modal-footer bg-whitesmoke br">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-secondary" id="btn-restore-cancel">Tutup</button>
                     <button type="button" class="btn btn-primary" id="btn-restore-continue">Lanjutkan</button>
                 </div>
             </div>
