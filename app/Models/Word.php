@@ -22,6 +22,7 @@ class Word extends Model
         'mabni_detail',
         'kategori',
         'kedudukan',
+        'simbol',
         'matbu',
         'irab',
         'tanda',

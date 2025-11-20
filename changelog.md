@@ -1,5 +1,10 @@
 # Change Log
 
+## Upcoming
+
+-   Input i'rob full
+-   Peningkatan fitur
+
 ## 1.0.1+2
 
 -   Update halaman error
@@ -14,10 +19,8 @@
 
 ## 1.0.1
 
-Here we would have the update steps for 1.2.4 for people to follow.
-
--   Halaman input I'rob
--   Input nomor di pencarian ayat diganti dengan menulis angka
+-   Halaman input I'rob (Lafadz & Terjemah)
+-   Opsi list nomor ayat di pencarian ayat diganti dengan input langsung
 
 ## 1.0.0
 

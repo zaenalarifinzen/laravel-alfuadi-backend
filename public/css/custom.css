@@ -315,23 +315,6 @@ ul.nav-tabs li.nav-item a.nav-link.active i {
     margin-left: 45px;
 }
 
-/* .swal-title {
-    margin: 0px;
-    font-family: "Scheherazade New", "Amiri", serif !important;
-    font-size: 30px;
-    color: black;
-    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.21);
-    margin-bottom: 28px;
-} */
-
-/* .swal-button {
-    padding: 7px 19px;
-    border-radius: 2px;
-    background-color: #2aa576 !important;
-    font-size: 12px;
-    border: 1px solid #138a84 !important;
-} */
-
 /* 1.25 Sweet Alert */
 .swal-button {
     border-radius: 3px;
