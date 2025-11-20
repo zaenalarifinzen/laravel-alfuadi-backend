@@ -392,12 +392,9 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Lanjutkan progres sebelumnya?</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
                 </div>
                 <div class="modal-body">
-                    <p id="last-location-label"></p>
+                    <p>Terakhir di edit : <span class="text-primary" id="last-location-label"></span></p>
                 </div>
                 <div class="modal-footer bg-whitesmoke br">
                     <button type="button" class="btn btn-secondary" id="btn-restore-cancel">Tutup</button>

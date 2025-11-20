@@ -312,13 +312,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // ------------------------------------------------------
     // 3. Jika ADA cache dan sesuai ayat → restore langsung
     // ------------------------------------------------------
-    iziToast.info({
-        message: 'Data sebelumnya berhasil dipulihkan',
-        position: 'bottomCenter'
-    });
-
     const data = JSON.parse(cached);
     renderWordGroups(data);
+    if (data.modified) {
+        iziToast.info({
+            message: 'Data sebelumnya berhasil dipulihkan',
+            position: 'bottomCenter'
+        });
+    }
 
     const firstGroup = data.data.wordGroups?.[0];
     if (firstGroup) fetchWords(firstGroup.id);
