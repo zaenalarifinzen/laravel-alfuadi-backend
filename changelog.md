@@ -5,6 +5,10 @@
 -   Input i'rob full
 -   Peningkatan fitur
 
+## 1.0.1+3
+
+-   Perbaikan bug saat merge & split grup kalimat
+
 ## 1.0.1+2
 
 -   Update halaman error
