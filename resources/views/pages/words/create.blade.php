@@ -421,7 +421,7 @@
 
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/components-table.js') }}"></script>
-    <script src="{{ asset('js/page/words/storage-helper.js') }}"></script>
-    <script src="{{ asset('js/page/words/word-crud.js') }}"></script>
-    <script src="{{ asset('js/page/words/words-page.js') }}"></script>
+    <script src="{{ asset('js/page/words/storage-helper.js') }}?v=1.0.1+3"></script>
+    <script src="{{ asset('js/page/words/word-crud.js') }}?v=1.0.1+3"></script>
+    <script src="{{ asset('js/page/words/words-page.js') }}?v=1.0.1+3"></script>
 @endpush
