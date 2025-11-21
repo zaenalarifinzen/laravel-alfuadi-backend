@@ -196,7 +196,7 @@ $(document).on('click', '.table-links .word-delete', function (e) {
 
         // get active wordgroup
         const activeWordGroupId = $('.owl-item.active .word-group').attr('wg-id');
-        console.log('activeWordGroupId: ', activeWordGroupId);
+        // console.log('activeWordGroupId: ', activeWordGroupId);
         const groupIndex = stored.data.wordGroups.findIndex(g => g.id == activeWordGroupId);
         if (groupIndex === -1) return;
 

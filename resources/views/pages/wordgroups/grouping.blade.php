@@ -169,7 +169,7 @@
                                 <input type="hidden" id="surah-id" value="{{ $currentSurah->id }}">
                                 <input type="hidden" id="verse-number" value="{{ $currentVerse->number }}">
                                 <input type="hidden" id="verse-id" value="{{ $currentVerse->id }}">
-                                <input type="hidden" id="isPersisted" value="{{ $isPersisted ? 1 : 0 }}">
+                                <input type="hidden" id="is-persisted" value="{{ $isPersisted }}">
                                 <h4 id="result-verse" class="mb-0">{{ $currentSurah->name ?? 'Al-Fatihah' }} - Ayat
                                     {{ $currentVerse->number ?? 1 }}</h4>
 
@@ -187,7 +187,8 @@
                                         <label class="selectgroup-item arabic-pill">
                                             <input type="checkbox" name="ids[]" value="{{ $word->id }}"
                                                 class="selectgroup-input row-checkbox">
-                                            <span class="selectgroup-button arabic-text ar-title">{{ $word->text }}</span>
+                                            <span
+                                                class="selectgroup-button arabic-text ar-title">{{ $word->text }}</span>
                                         </label>
                                     @endforeach
                                 </div>
@@ -301,7 +302,7 @@
             const resultLabel = document.getElementById('result-verse');
             const errorMsg = document.getElementById('merge-error');
             let modified = false;
-            let isPersisted;
+            let isPersisted = document.getElementById('is-persisted').value;
             let verseCount;
 
             // =============================
@@ -462,6 +463,7 @@
 
                 // Sisipkan hasil merge sebelum label pertama
                 wordgroupList.insertBefore(newLabel, firstLabel);
+                const newOrder = Array.from(wordgroupList.children).indexOf(newLabel) + 1;
 
                 // Hapus semua label yang tergabung
                 selectedCheckboxes.forEach(cb => cb.closest('.selectgroup-item').remove());
@@ -477,12 +479,13 @@
 
                 wordGroupsState.editedGroups.push({
                     id: targetId,
-                    order_number: Array.from(wordgroupList.children).indexOf(firstLabel) + 1,
+                    order_number: newOrder,
                     text: combinedText,
                     note: 'merged'
                 });
 
                 modified = true;
+
 
                 // Re-bind event ke elemen baru
                 bindCheckboxEvents();
@@ -529,8 +532,22 @@
                     return;
                 }
 
+                const firstWord = words[0];
+                textButton.textContent = firstWord;
+
+                wordGroupsState.editedGroups.push({
+                    id: selectedCheckbox.value,
+                    text: firstWord,
+                    order_number: Array.from(wordgroupList.children).indexOf(label) + 1,
+                    note: 'split-edit'
+                });
+
+                let insertAfter = label;
+
                 // Tambahkan elemen baru untuk setiap kata
-                words.forEach(word => {
+                for (let i = 1; i < words.length; i++) {
+                    const word = words[i];
+
                     const newLabel = label.cloneNode(true);
                     const newInput = newLabel.querySelector('.selectgroup-input');
                     const newButton = newLabel.querySelector('.selectgroup-button');
@@ -541,21 +558,16 @@
                     newButton.textContent = word;
 
                     // Sisipkan sebelum label lama agar urutan tetap benar
-                    wordgroupList.insertBefore(newLabel, label);
-                });
+                    wordgroupList.insertBefore(newLabel, insertAfter.nextSibling);
+                    insertAfter = newLabel;
 
-                // Hapus label lama
-                label.remove();
-
-                // Track kalimat yang di split
-                wordGroupsState.deletedIds.push(selectedCheckbox.value);
-                words.forEach((word, idx) => {
+                    // Tandai yang baru
                     wordGroupsState.newGroups.push({
                         text: word.trim(),
-                        order_number: Array.from(wordgroupList.children).indexOf(label) + idx + 1,
+                        order_number: Array.from(wordgroupList.children).indexOf(newLabel) + 1,
                         note: 'split-from' + selectedCheckbox.value
-                    })
-                })
+                    });
+                }
 
                 modified = true;
 
@@ -672,9 +684,6 @@
                                 '<p class="text-info text-center">Data tidak ditemukan</p>';
                         }
 
-                        console.log(response.data);
-
-
                         const data = response.data;
                         const wordGroups = data.wordGroups || [];
                         const surah = data.surah;
@@ -688,7 +697,7 @@
                                 html += `
                                     <label class="selectgroup-item arabic-pill">
                                         <input type="checkbox" name="ids[]" value="${wordGroup.id}" class="selectgroup-input row-checkbox">
-                                        <span class="selectgroup-button arabic-text">${wordGroup.text}</span>
+                                        <span class="selectgroup-button arabic-text ar-title">${wordGroup.text}</span>
                                     </label>
                                 `;
                             });
@@ -720,7 +729,6 @@
                         currentVerseId.value = verse.id;
                         currentSurahId.value = surah.id;
                         currentVerseNumber.value = verse.number;
-                        console.log('Verse ID saat ini: ', currentVerseId.value);
 
 
                         const completeForm = document.getElementById('complete-form');
@@ -802,7 +810,6 @@
 
                 fetchWordGroups(surahOption.value, verseOption.value);
                 modified = false;
-                // console.log(`Surah Id = ${surahOption.value} Verse = ${verseOption.value}`)
             }
 
             // =============================
@@ -816,7 +823,6 @@
                 };
 
                 let verseId = parseInt(currentVerseId.value);
-                // console.log(`Verse Id: ${verseId}`);
 
                 if (verseId > 1) {
                     currentVerseId.value = verseId - 1;
@@ -833,8 +839,6 @@
 
                 let verseId = parseInt(currentVerseId.value);
                 const max = 6236;
-
-                // console.log(`Max: ${max}`);
 
                 if (verseId < max) {
                     currentVerseId.value = verseId + 1;
@@ -891,7 +895,6 @@
                         .then(data => {
                             if (data.success) {
                                 nextVerseId = parseInt(currentVerseId.value) + 1;
-                                console.log(`next verse id: ${nextVerseId}`)
                                 window.location.href =
                                     `/wordgroups/grouping?verse_id=${nextVerseId}`;
                             } else {
@@ -911,14 +914,14 @@
             function update() {
                 swal({
                     title: 'Konfirmasi',
-                    text: 'Yakin ingin menyimpan ayat ini?',
+                    text: 'Yakin ingin mengupdate ayat ini?',
                     buttons: {
                         cancel: {
                             text: 'Batal',
                             visible: true,
                         },
                         confirm: {
-                            text: 'Simpan',
+                            text: 'Update',
                             visible: true,
                             className: 'btn-success'
                         },
@@ -935,8 +938,6 @@
                         deleted_ids: wordGroupsState.deletedIds,
                         new_groups: wordGroupsState.newGroups
                     };
-
-                    console.log(payload);
 
                     $.ajax({
                         url: "{{ route('wordgroups.multiple-update') }}",
@@ -1018,10 +1019,8 @@
                     e.preventDefault();
 
                     if (isPersisted) {
-                        console.log('Update');
                         update();
                     } else {
-                        console.log('Save');
                         save();
                     }
                 });
@@ -1062,5 +1061,22 @@
             updatebtnEditAndSplit();
 
         });
+
+        function showLoading() {
+            $('#loading-overlay').css({
+                visibility: 'visible',
+                opacity: '1'
+            });
+        }
+
+        function hideLoading() {
+            $('#loading-overlay').css({
+                visibility: 'hidden',
+                opacity: '0'
+            });
+        }
+
+        $(document).ajaxStart(showLoading);
+        $(document).ajaxStop(hideLoading);
     </script>
 @endpush
