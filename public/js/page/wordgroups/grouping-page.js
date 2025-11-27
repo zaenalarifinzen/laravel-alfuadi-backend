@@ -219,6 +219,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!stored || !stored.data) return;
 
         const items = Array.from(document.querySelectorAll('#wordgroup-list .selectgroup-item'));
+        stored.modified = true;
 
         stored.data.wordGroups = items.map((item, index) => {
             return {
@@ -336,7 +337,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         stored.deletedIds = wordGroupsState.deletedIds;
         stored.mergedMap = wordGroupsState.mergedMap;
-        stored.modified = true;
 
         localStorage.setItem(storageKey, JSON.stringify(stored));
         syncLocalStorageWordGroups();
@@ -383,13 +383,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const firstWord = words[0];
         textButton.textContent = firstWord;
 
-        // wordGroupsState.editedGroups.push({
-        //     id: selectedCheckbox.value,
-        //     text: firstWord,
-        //     order_number: Array.from(wordgroupList.children).indexOf(label) + 1,
-        //     note: 'split-edit'
-        // });
-
         let insertAfter = label;
 
         // Tambahkan elemen baru untuk setiap kata
@@ -401,7 +394,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const newButton = newLabel.querySelector('.selectgroup-button');
 
             newInput.checked = false;
-            newInput.value = Math.floor(Math.random() * 1000000);
+            newInput.value = `S-${Math.floor(Math.random(1) * 1000000)}`;
             newButton.textContent = word;
 
             // Sisipkan sebelum label lama agar urutan tetap benar
@@ -413,15 +406,6 @@ document.addEventListener('DOMContentLoaded', function () {
         wordGroupsState.modified = true;
 
         // Re save to local storage
-        const verseId = currentVerseId.value;
-        const storageKey = `grouping_${verseId}`;
-        let stored = JSON.parse(localStorage.getItem(storageKey));
-
-        console.log(stored);
-
-        stored.modified = true;
-
-        localStorage.setItem(storageKey, JSON.stringify(stored));
         syncLocalStorageWordGroups();
 
         // Re-bind event ke elemen baru
@@ -484,20 +468,10 @@ document.addEventListener('DOMContentLoaded', function () {
         // Set teks baru pada elemen yang sama
         textButton.textContent = newText.trim();
 
-        // Track perubahan
-        const existing = wordGroupsState.editedGroups.find(g => g.id === selectedCheckbox.value);
-        if (existing) {
-            existing.text = newText.trim();
-        } else {
-            wordGroupsState.editedGroups.push({
-                id: selectedCheckbox.value,
-                order_number: Array.from(wordgroupList.children).indexOf(label) + 1,
-                text: newText.trim(),
-                note: 'edited'
-            });
-        }
+        wordGroupsState.modified = true;
 
-        modified = true;
+        // Re save to local storage
+        syncLocalStorageWordGroups();
 
         // Re-bind / update state
         bindCheckboxEvents();
@@ -535,7 +509,7 @@ document.addEventListener('DOMContentLoaded', function () {
     async function handleFilterSubmit(e) {
         e.preventDefault();
 
-        if (modified) {
+        if (wordGroupsState.modified) {
             const confirmed = await showEditConfirmation()
             if (!confirmed) return;
         };
@@ -548,7 +522,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // FUNGSI NAVIGASI AYAT
     // =============================
     async function goToPrevVerse() {
-        if (modified) {
+        if (wordGroupsState.modified) {
             const confirmed = await showEditConfirmation()
             if (!confirmed) return;
         };
@@ -563,7 +537,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     async function goToNextVerse() {
-        if (modified) {
+        if (wordGroupsState.modified) {
             const confirmed = await showEditConfirmation()
             if (!confirmed) return;
         };
