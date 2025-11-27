@@ -220,9 +220,9 @@ class WordGroupController extends Controller
         }
     }
 
-    public function multipleUpdate(SaveWordGroupsRequest $request)
+    public function multipleUpdate(Request $request)
     {
-        $data = $request->validated();
+        $data = $request->all();
 
         DB::transaction(function () use ($data) {
             $verseId = $data['verse_id'] ?? null;

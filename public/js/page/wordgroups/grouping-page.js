@@ -1,6 +1,41 @@
+// =============================
+// GLOBAL STATE & NON-DOM UTIL
+// =============================
+
+// metadata untuk tracking perubahan
+let wordGroupsState = {
+    initialIds: [],
+    mergedMap: {},
+    deletedIds: [],
+    editedGroups: [],
+    modified: false,
+};
+
+// Global loading handlers
+function showLoading() {
+    $('#loading-overlay').css({
+        visibility: 'visible',
+        opacity: '1'
+    });
+}
+
+function hideLoading() {
+    $('#loading-overlay').css({
+        visibility: 'hidden',
+        opacity: '0'
+    });
+}
+
+// Hook ajax global
+$(document).ajaxStart(showLoading);
+$(document).ajaxStop(hideLoading);
+
+// =============================
+// MAIN: all DOM related code
+// =============================
 document.addEventListener('DOMContentLoaded', function () {
     // =============================
-    // VARIABEL GLOBAL
+    // VARIABEL GLOBAL (DOM)
     // =============================
     const btnUnselect = document.getElementById('btn-unselect');
     const btnEdit = document.getElementById('btn-edit');
@@ -9,7 +44,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const btnPrev = document.getElementById('btn-prev-verse');
     const btnNext = document.getElementById('btn-next-verse');
     const btnComplete = document.getElementById('btn-complete');
-    const btnTestSave = document.getElementById('btn-test-save');
 
     const splitIdInput = document.getElementById('split-id');
 
@@ -20,30 +54,16 @@ document.addEventListener('DOMContentLoaded', function () {
     const surahOption = document.getElementById('surah-option');
     const verseOption = document.getElementById('verse-option');
     const wordgroupList = document.getElementById('wordgroup-list');
-    const currentVerseId = document.getElementById('verse-id');
     const currentSurahId = document.getElementById('surah-id');
+    const currentVerseId = document.getElementById('verse-id');
     const currentVerseNumber = document.getElementById('verse-number');
+    const isPersisted = document.getElementById('is-persisted');
 
-    const resultLabel = document.getElementById('result-verse');
-    const errorMsg = document.getElementById('merge-error');
     let modified = false;
-    let isPersisted = document.getElementById('is-persisted').value;
     let verseCount;
 
     // =============================
-    // INISIALISASI TRACKING PERUBAHAN
-    // =============================
-
-    // metadata untuk tracking perubahan
-    let wordGroupsState = {
-        initialIds: [],
-        mergedMap: {},
-        deletedIds: [],
-        modified: false,
-    };
-
-    // =============================
-    // FUNGSI UTILITAS
+    // FUNGSI UTILITAS (DOM-dependent)
     // =============================
 
     // Ambil checkbox terbaru dari DOM
@@ -51,18 +71,9 @@ document.addEventListener('DOMContentLoaded', function () {
         return document.querySelectorAll('.row-checkbox');
     }
 
-    function showError(message) {
-        errorMsg.textContent = message;
-        errorMsg.style.display = 'block';
-        setTimeout(() => {
-            errorMsg.style.display = 'none';
-        }, 3000);
-    }
-
     // =============================
     // FUNGSI MANAJEMEN CHECKBOX
     // =============================
-
     function updatebtnMerge() {
         const checkboxes = getCheckboxes();
         const checkedCount = Array.from(checkboxes).filter(x => x.checked).length;
@@ -103,6 +114,20 @@ document.addEventListener('DOMContentLoaded', function () {
         }));
     }
 
+    // Update Label Ayat
+    function updateResultLabel(surah, verse) {
+        const resultLabel = document.getElementById('result-verse');
+        if (!resultLabel) return;
+
+        if (surah && verse) {
+            resultLabel.textContent = `${surah.id}. ${surah.name} - Ayat ${verse.number}`;
+        } else if (surah.name) {
+            resultLabel.textContent = surah.name;
+        } else {
+            resultLabel.textContent = 'Ayat Terpilih';
+        }
+    }
+
     // =============================
     // FUNGSI FETCH WORD GROUPS
     // =============================
@@ -125,6 +150,12 @@ document.addEventListener('DOMContentLoaded', function () {
             success: function (response) {
 
                 const verseId = response.data.verse.id;
+                currentVerseNumber.value = response.data.verse.number;
+                currentSurahId.value = response.data.surah.id;
+
+                currentVerseId.value = verseId;
+                // isPersisted.value = response.data.isPersisted;
+                const isPersisted = response.data.isPersisted;
                 const storageKey = `grouping_${verseId}`;
                 const wordGroupIds = response.data.wordGroups.map(wg => wg.id);
 
@@ -134,16 +165,16 @@ document.addEventListener('DOMContentLoaded', function () {
                     initialIds: wordGroupIds,
                     deletedIds: [],
                     mergedMap: {},
+                    editedGroups: [],
                     modified: false,
                 }
 
-                // Clear old chache
+                // Clear old cache
                 Object.keys(localStorage)
                     .filter(k => k.startsWith('grouping_'))
                     .forEach(k => localStorage.removeItem(k));
 
                 // Save to local storage
-                const initialIds = response.data.wordGroups.id;
                 localStorage.setItem(storageKey, JSON.stringify({
                     ...response,
                     initialIds: wordGroupIds,
@@ -153,7 +184,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 }));
 
                 // Show in html
+                updateResultLabel(response.data.surah, response.data.verse);
                 renderWordGroups(response.data)
+
+                // Update button complete
+                const btnLabel = isPersisted ? 'Update' : 'Simpan & Lanjutkan';
+                btnComplete.textContent = btnLabel;
 
                 // Update URL in address bar
                 history.pushState({}, '', `?verse_id=${verseId}`);
@@ -173,7 +209,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // =============================
-    // SYNC LOCAL STRORAGE WORDGROUP
+    // SYNC UI TO LOCAL STORAGE WORDGROUP
     // =============================
     function syncLocalStorageWordGroups() {
         const verseId = currentVerseId.value;
@@ -314,16 +350,11 @@ document.addEventListener('DOMContentLoaded', function () {
     // =============================
     // FUNGSI UNTUK SPLIT
     // =============================
-
     function handleSplitSubmit(e) {
         e.preventDefault();
 
         const checkboxes = getCheckboxes();
         const selectedCheckboxes = Array.from(checkboxes).filter(cb => cb.checked);
-
-        // Reset pesan error
-        errorMsg.style.display = 'none';
-        errorMsg.textContent = '';
 
         if (btnSplit.classList.contains('disabled')) {
             e.preventDefault();
@@ -352,12 +383,12 @@ document.addEventListener('DOMContentLoaded', function () {
         const firstWord = words[0];
         textButton.textContent = firstWord;
 
-        wordGroupsState.editedGroups.push({
-            id: selectedCheckbox.value,
-            text: firstWord,
-            order_number: Array.from(wordgroupList.children).indexOf(label) + 1,
-            note: 'split-edit'
-        });
+        // wordGroupsState.editedGroups.push({
+        //     id: selectedCheckbox.value,
+        //     text: firstWord,
+        //     order_number: Array.from(wordgroupList.children).indexOf(label) + 1,
+        //     note: 'split-edit'
+        // });
 
         let insertAfter = label;
 
@@ -370,23 +401,28 @@ document.addEventListener('DOMContentLoaded', function () {
             const newButton = newLabel.querySelector('.selectgroup-button');
 
             newInput.checked = false;
-            newInput.value =
-                `S${Math.random().toString(36)}`;
+            newInput.value = Math.floor(Math.random() * 1000000);
             newButton.textContent = word;
 
             // Sisipkan sebelum label lama agar urutan tetap benar
             wordgroupList.insertBefore(newLabel, insertAfter.nextSibling);
             insertAfter = newLabel;
 
-            // Tandai yang baru
-            wordGroupsState.newGroups.push({
-                text: word.trim(),
-                order_number: Array.from(wordgroupList.children).indexOf(newLabel) + 1,
-                note: 'split-from' + selectedCheckbox.value
-            });
         }
 
-        modified = true;
+        wordGroupsState.modified = true;
+
+        // Re save to local storage
+        const verseId = currentVerseId.value;
+        const storageKey = `grouping_${verseId}`;
+        let stored = JSON.parse(localStorage.getItem(storageKey));
+
+        console.log(stored);
+
+        stored.modified = true;
+
+        localStorage.setItem(storageKey, JSON.stringify(stored));
+        syncLocalStorageWordGroups();
 
         // Re-bind event ke elemen baru
         bindCheckboxEvents();
@@ -397,16 +433,11 @@ document.addEventListener('DOMContentLoaded', function () {
     // =============================
     // FUNGSI UNTUK EDIT KALIMAT
     // =============================
-
     async function handleEditSubmit(e) {
         e.preventDefault();
 
         const checkboxes = getCheckboxes();
         const selectedCheckboxes = Array.from(checkboxes).filter(cb => cb.checked);
-
-        // Reset pesan error
-        errorMsg.style.display = 'none';
-        errorMsg.textContent = '';
 
         if (btnEdit.classList.contains('disabled')) {
             e.preventDefault();
@@ -474,20 +505,9 @@ document.addEventListener('DOMContentLoaded', function () {
         updatebtnEditAndSplit();
     }
 
-    function updateResultText(surahName, verseNumber) {
-        const resultLabel = document.getElementById('result-verse');
-        if (!resultLabel) return;
-
-        if (surahName && verseNumber) {
-            resultLabel.textContent = `${surahName} - Ayat ${verseNumber}`;
-        } else if (surahName) {
-            resultLabel.textContent = surahName;
-        } else {
-            resultLabel.textContent = 'Ayat Terpilih';
-        }
-    }
-
-
+    // =============================
+    // CONFIRMATION DIALOG
+    // =============================
     function showEditConfirmation() {
         return swal({
             icon: 'warning',
@@ -510,7 +530,6 @@ document.addEventListener('DOMContentLoaded', function () {
     function updateVerseCount() {
         const selected = surahOption.options[surahOption.selectedIndex];
         verseCount = selected ? selected.getAttribute('data-verse-count') : 0;
-
     }
 
     async function handleFilterSubmit(e) {
@@ -528,7 +547,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // =============================
     // FUNGSI NAVIGASI AYAT
     // =============================
-
     async function goToPrevVerse() {
         if (modified) {
             const confirmed = await showEditConfirmation()
@@ -538,8 +556,8 @@ document.addEventListener('DOMContentLoaded', function () {
         let verseId = parseInt(currentVerseId.value);
 
         if (verseId > 1) {
-            currentVerseId.value = verseId - 1;
-            fetchWordGroups(null, null, currentVerseId.value);
+            prevVerseId = verseId - 1;
+            fetchWordGroups(null, null, prevVerseId);
             modified = false;
         }
     }
@@ -554,8 +572,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const max = 6236;
 
         if (verseId < max) {
-            currentVerseId.value = verseId + 1;
-            fetchWordGroups(null, null, currentVerseId.value);
+            const nextVerseId = verseId + 1;
+            fetchWordGroups(null, null, nextVerseId);
             modified = false;
         }
     }
@@ -608,8 +626,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 .then(data => {
                     if (data.success) {
                         nextVerseId = parseInt(currentVerseId.value) + 1;
-                        window.location.href =
-                            `/wordgroups/grouping?verse_id=${nextVerseId}`;
+                        fetchWordGroups(null, null, nextVerseId);
+
+                        iziToast.success({
+                            message: 'Data berhasil disimpan',
+                            position: 'topRight'
+                        });
                     } else {
                         swal('Gagal!', data.message || 'Terjadi kesalahan.', 'error');
                     }
@@ -647,16 +669,14 @@ document.addEventListener('DOMContentLoaded', function () {
             let stored = JSON.parse(localStorage.getItem(storageKey));
 
             const payload = {
-                verse_id: currentVerseId.value,
-                surah_id: currentSurahId.value,
-                verse_number: currentVerseNumber.value,
+                verse_id: stored.data.verse.id,
+                surah_id: stored.data.surah.id,
+                verse_number: stored.data.verse.number,
                 edited_groups: stored.data.wordGroups,
                 merged_map: stored.mergedMap,
                 deleted_ids: stored.deletedIds,
             };
 
-            console.log(payload);
-            
             $.ajax({
                 url: "/wordgroups/multiple-update",
                 method: "POST",
@@ -668,11 +688,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 success: function (response) {
                     nextVerseId = parseInt(currentVerseId.value) + 1;
 
-                    // resetWordGroupState();
-                    modified = false;
+                    fetchWordGroups(null, null, nextVerseId);
 
-                    window.location.href =
-                        `/wordgroups/grouping?verse_id=${nextVerseId}`;
+                    iziToast.success({
+                        message: 'Data berhasil diperbarui',
+                        position: 'topRight'
+                    });
                 },
                 error: function (xhr) {
                     console.error('❌ Error:', xhr.responseText);
@@ -694,11 +715,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const checkboxes = getCheckboxes();
         checkboxes.forEach(cb => cb.checked = false);
         updatebtnMerge();
-        updatebtnEditAndSplit(); // Update split button juga
-
-        // Reset pesan error
-        errorMsg.style.display = 'none';
-        errorMsg.textContent = '';
+        updatebtnEditAndSplit();
     });
 
     // Event listener untuk form merge
@@ -736,7 +753,11 @@ document.addEventListener('DOMContentLoaded', function () {
         completeForm.addEventListener('submit', function (e) {
             e.preventDefault();
 
-            if (isPersisted) {
+            const verseId = currentVerseId.value;
+            const storageKey = `grouping_${verseId}`;
+            let stored = JSON.parse(localStorage.getItem(storageKey));
+
+            if (stored.data.isPersisted) {
                 update();
             } else {
                 save();
@@ -774,25 +795,11 @@ document.addEventListener('DOMContentLoaded', function () {
     // Inisialisasi opsi ayat jika surah sudah dipilih
     if (surahOption.value) updateVerseCount();
 
+    if (currentVerseId && currentVerseId.value) {
+        fetchWordGroups(null, null, currentVerseId.value);
+    }
     // Inisialisasi status tombol
     updatebtnMerge();
     updatebtnEditAndSplit();
 
 });
-
-function showLoading() {
-    $('#loading-overlay').css({
-        visibility: 'visible',
-        opacity: '1'
-    });
-}
-
-function hideLoading() {
-    $('#loading-overlay').css({
-        visibility: 'hidden',
-        opacity: '0'
-    });
-}
-
-$(document).ajaxStart(showLoading);
-$(document).ajaxStop(hideLoading);

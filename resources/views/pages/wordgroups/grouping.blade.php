@@ -170,12 +170,11 @@
                                 <input type="hidden" id="verse-number" value="{{ $currentVerse->number }}">
                                 <input type="hidden" id="verse-id" value="{{ $currentVerse->id }}">
                                 <input type="hidden" id="is-persisted" value="{{ $isPersisted }}">
-                                <h4 id="result-verse" class="mb-0">{{ $currentSurah->name ?? 'Al-Fatihah' }} - Ayat
+                                <h4 id="result-verse" class="mb-0">
+                                    {{ $currentSurah->id ?? '1' }}.
+                                    {{ $currentSurah->name ?? 'Al-Fatihah' }} - Ayat
                                     {{ $currentVerse->number ?? 1 }}</h4>
-
-
                             </div>
-
 
                             <div class="card-body">
                                 <div class="selectgroup selectgroup-pills arabic-container " dir="rtl"
@@ -277,5 +276,4 @@
     <script src="{{ asset('js/page/features-posts.js') }}"></script>
     <script src="{{ asset('js/page/modules-sweetalert.js') }}"></script>
     <script src="{{ asset('js/page/wordgroups/grouping-page.js') }}"></script>
-
 @endpush
