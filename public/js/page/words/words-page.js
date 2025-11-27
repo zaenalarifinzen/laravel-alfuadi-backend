@@ -106,6 +106,7 @@ function fetchWordGroups(surah_id, verse_number, verse_id) {
             const storageKey = `wordgroups_${verseId}`;
 
             response.modified = false;
+            removeRefreshButton();
 
             // Clear old cache
             Object.keys(localStorage)
@@ -226,6 +227,45 @@ async function goToNextVerse() {
     if (id < 6236) fetchWordGroups(null, null, id + 1);
 }
 
+function addRefreshButton() {
+    const cardHeader = document.getElementById('word');
+    
+    // buat tombol refresh
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = `
+        <button class="btn btn-icon icon-left btn-info btn-lg" id="btn-reload-wordgroups">
+            <i class="fa-solid fa-rotate"></i> Refresh
+        </button>
+    `;
+
+    const refreshBtn = wrapper.querySelector('#btn-reload-wordgroups');
+
+    // tambahkan event listener
+    refreshBtn.addEventListener('click', async function (e) {
+        e.preventDefault();
+
+        const confirmed = await showEditConfirmation();
+        if (!confirmed) return;
+
+        fetchWordGroups(null, null, currentVerseId.value); 
+    });
+
+    const headerContainer = cardHeader.querySelector('.d-flex');
+    if (headerContainer) {
+        headerContainer.appendChild(wrapper);
+    } else {
+        cardHeader.appendChild(refreshBtn);
+    }
+}
+
+function removeRefreshButton() {
+    const btn = document.getElementById('btn-reload-wordgroups');
+
+    if (btn) {
+        btn.remove();
+    }
+}
+
 // =============================
 // EVENT LISTENERS
 // =============================
@@ -315,6 +355,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const data = JSON.parse(cached);
     renderWordGroups(data);
     if (data.modified) {
+        // add refresh button in card header
+        addRefreshButton();
+
         iziToast.info({
             message: 'Data sebelumnya berhasil dipulihkan',
             position: 'bottomCenter'

@@ -36,10 +36,6 @@ class SaveWordGroupsRequest extends FormRequest
 
             'deleted_ids' => ['nullable', 'array'],
             'deleted_ids.*' => ['integer', 'exists:word_groups,id'],
-
-            'new_groups' => ['nullable', 'array'],
-            'new_groups.*.text' => ['required', 'string'],
-            'new_groups.*.order_number' => ['nullable', 'integer'],
         ];
     }
 

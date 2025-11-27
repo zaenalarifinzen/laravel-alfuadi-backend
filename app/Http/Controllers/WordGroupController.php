@@ -10,6 +10,8 @@ use App\Models\WordGroups;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+use function Illuminate\Log\log;
+
 class WordGroupController extends Controller
 {
     /**
@@ -218,16 +220,15 @@ class WordGroupController extends Controller
         }
     }
 
-    public function multipleUpdate(SaveWordGroupsRequest $request)
+    public function multipleUpdate(Request $request)
     {
-        $data = $request->validated();
+        $data = $request->all();
 
         DB::transaction(function () use ($data) {
             $verseId = $data['verse_id'] ?? null;
             $mergedMap = $data['merged_map'] ?? [];
             $editedGroups = $data['edited_groups'] ?? [];
             $deletedIds = $data['deleted_ids'] ?? [];
-            $newGroups = $data['new_groups'] ?? [];
 
             $verse = Verse::findOrFail($verseId);
 
@@ -245,44 +246,26 @@ class WordGroupController extends Controller
                     ->update(['word_group_id' => $newId]);
             }
 
-            // update edited wordgroups
-            foreach ($editedGroups as $index => $g) {
-                if (empty($g['id'])) {
-                    continue;
-                }
-
-                $group = WordGroups::where('id', $g['id'])
-                    ->where('verse_id', $verseId)
-                    ->first();
-
-                if ($group) {
-                    $group->update([
-                        'text' => $g['text'],
-                        'order_number' => $g['order_number'] ?? $group->oder_number,
+            // create or edit wordgroups
+            foreach ($editedGroups as $i => $eg) {
+                WordGroups::updateOrCreate(
+                    [
+                        'id' => $eg['id'] ?? null,
+                    ],
+                    [
+                        'surah_id' => $data['surah_id'],
+                        'verse_number' => $data['verse_number'],
+                        'verse_id' => $verse->id,
+                        'text' => $eg['text'] ?? '',
+                        'order_number' => $eg['order_number'] ?? ($i + 1),
                         'editor' => auth()->id(),
                     ]);
-                }
             }
 
-            // create new wordgroups
-            foreach ($newGroups as $i => $ng) {
-                WordGroups::create([
-                    'surah_id' => $data['surah_id'],
-                    'verse_number' => $data['verse_number'],
-                    'verse_id' => $verse->id,
-                    'text' => $ng['text'] ?? '',
-                    'order_number' => $ng['order_number'] ?? ($i + 1),
-                    'editor' => auth()->id(),
-                ]);
-            }
-
-            // delete wordgroups
-            if (! empty($deletedIds)) {
-                $targetIds = array_values($mergedMap);
-                $safeToDelete = array_diff($deletedIds, $targetIds);
-
-                WordGroups::where('verse_id', $verseId)
-                    ->whereIn('id', $safeToDelete)
+            // delete wordgroups from deletedIds
+            if (!empty($deletedIds)) {
+                WordGroups::whereIn('id', $deletedIds)
+                    ->where('verse_id', $verseId)
                     ->delete();
             }
         });
