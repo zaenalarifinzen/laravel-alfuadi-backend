@@ -278,7 +278,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="input-variation">Jenis</label>
+                                    <label for="input-variation">Kategori</label>
                                     <select id="input-variation" class="form-control form-control-ar arabic-text">
                                         <option selected></option>
                                         <option>اسم ضمير</option>
