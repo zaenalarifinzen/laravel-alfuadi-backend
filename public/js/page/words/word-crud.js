@@ -16,6 +16,12 @@ $('#btn-add-word').on('click', function () {
 
     $('#input-id').val('');
     $('#input-lafadz').val(wordGroup.text);
+    $('#input-kategori').val('');
+    $('#input-hukum').val('');
+    $('#input-irob').val('');
+    $('#input-alamat').val('');
+    $('#input-kedudukan').val('');
+    $('#input-simbol').val('');
 
     $('#modal-add-word').modal('show');
 });

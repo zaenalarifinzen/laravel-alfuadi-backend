@@ -283,7 +283,6 @@
                                 <div class="form-group col-md-6">
                                     <label for="input-kategori">Kategori</label>
                                     <select id="input-kategori" class="form-control form-control-ar arabic-text">
-                                        {{-- <option selected disabled>Pilih Kategori</option> --}}
                                     </select>
                                 </div>
                             </div>
@@ -291,69 +290,34 @@
                                 <div class="form-group col-md-6">
                                     <label for="input-hukum">Hukum</label>
                                     <select id="input-hukum" class="form-control form-control-ar arabic-text">
-                                        <option selected disabled>Pilih Hukum</option>
-                                        {{-- <option selected>مَبْنِيٌّ</option>
-                                        <option>مُعْرَبٌ</option> --}}
                                     </select>
                                 </div>
-                                {{-- <div class="form-group col-md-6">
-                                    <label for="input-mabni-detail">Detail mabni</label>
-                                    <select id="input-mabni-detail" class="form-control form-control-ar arabic-text">
-                                        <option selected disabled>Pilih Detail Mabni</option>
-                                        <option>على الفتح</option>
-                                        <option>على الضمّ</option>
-                                        <option>على السكون</option>
-                                        <option>حذف النون</option>
-                                        <option>حذف حرف العلة</option>
-                                    </select>
-                                </div> --}}
-                            </div>
-                            <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="input-kedudukan">Kedudukan</label>
                                     <select id="input-kedudukan" class="form-control form-control-ar arabic-text">
-                                        <option selected disabled>Pilih Kedudukan</option>
                                     </select>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="input-matbu">Matbu</label>
-                                    <input type="text" class="form-control form-control-ar arabic-text"
-                                        id="input-matbu" placeholder="masukkan lafadz">
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="input-irob">I'rob</label>
                                     <select id="input-irob" class="form-control form-control-ar arabic-text">
-                                        <option selected disabled>Pilih I'rob</option>
-                                        <option>رَفْعٌ</option>
+                                        {{-- <option>رَفْعٌ</option>
                                         <option>نَصْبٌ</option>
                                         <option>جَرٌّ</option>
-                                        <option>جَزْمٌ</option>
+                                        <option>جَزْمٌ</option> --}}
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="input-alamat">Tanda i'rob</label>
                                     <select id="input-alamat" class="form-control form-control-ar arabic-text">
-                                        <option selected disabled>Pilih Tanda I'rob</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-row">
-                                {{-- <div class="form-group col-md-6">
-                                    <label for="input-condition">Kondisi tanda i'rob</label>
-                                    <select id="input-condition" class="form-control form-control-ar arabic-text">
-                                        <option selected disabled>Pilih Kondisi</option>
-                                        <option>ظاهرة</option>
-                                        <option>مقدرة</option>
-                                    </select>
-                                </div> --}}
                                 <div class="form-group col-md-6">
                                     <label for="input-simbol">Simbol</label>
-                                    <select id="input-simbol" class="form-control form-control-ar arabic-text" disabled>
-                                        <option selected disabled>Pilih Simbol</option>
-                                        <option></option>
-                                        <option></option>
+                                    <select id="input-simbol" class="form-control form-control-ar arabic-text">
                                     </select>
                                 </div>
                             </div>
