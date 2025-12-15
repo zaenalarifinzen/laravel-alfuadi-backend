@@ -278,6 +278,9 @@
                                         <option value="2.2">فِعْلٌ مُضَارِعٌ</option>
                                         <option value="2.3">فِعْلٌ أَمْرٍ</option>
                                         <option value="3.0">حَرْفٌ</option>
+                                        <option value="4.1">جُمْلَةٌ</option>
+                                        <option value="4.2">شِبْهُ الْجُمْلَةِ</option>
+                                        <option value="5.0">إِسْمٌ مُؤَوَّلٌ</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
@@ -302,15 +305,11 @@
                                 <div class="form-group col-md-6">
                                     <label for="input-irob">I'rob</label>
                                     <select id="input-irob" class="form-control form-control-ar arabic-text">
-                                        {{-- <option>رَفْعٌ</option>
-                                        <option>نَصْبٌ</option>
-                                        <option>جَرٌّ</option>
-                                        <option>جَزْمٌ</option> --}}
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="input-alamat">Tanda i'rob</label>
-                                    <select id="input-alamat" class="form-control form-control-ar arabic-text">
+                                    <label for="input-tanda">Tanda i'rob</label>
+                                    <select id="input-tanda" class="form-control form-control-ar arabic-text">
                                     </select>
                                 </div>
                             </div>

@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const kategoriSelect = document.getElementById("input-kategori");
     const hukumSelect = document.getElementById("input-hukum");
     const irobSelect = document.getElementById("input-irob");
-    const alamatSelect = document.getElementById("input-alamat");
+    const tandaSelect = document.getElementById("input-tanda");
     const kedudukanSelect = document.getElementById("input-kedudukan");
     const simbolSelect = document.getElementById("input-simbol");
 
@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const enableFields = (...fields) =>
         fields.forEach((f) => (f.disabled = false));
 
-    // disableFields(kategoriSelect, hukumSelect, irobSelect, alamatSelect, kedudukanSelect, simbolSelect);
+    // disableFields(kategoriSelect, hukumSelect, irobSelect, tandaSelect, kedudukanSelect, simbolSelect);
 
     // --- isi dropdown Kategori ---
     function populateCategory() {
@@ -74,65 +74,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    // --- isi Tanda I‘rob ---
-    function fillTanda() {
-        const kategori = data.kategori.find(
-            (k) => k.id == kategoriSelect.value
-        );
-        if (!kategori) return;
-
-        let tanda = "";
-        const irob = irobSelect.value.trim();
-        switch (irob) {
-            case "رَفْعٌ":
-                tanda = kategori.rofa;
-                break;
-            case "نَصْبٌ":
-                tanda = kategori.nashob;
-                break;
-            case "جَرٌّ":
-                tanda = kategori.jar;
-                break;
-            case "جَزْمٌ":
-                tanda = kategori["jazm "];
-                break;
-        }
-
-        alamatSelect.innerHTML = tanda
-            ? `<option selected>${tanda}</option>`
-            : "<option selected></option>";
-        // add too other unique tanda in dropdown based on kalimat without duplicating
-        const selectedKalimat = kalimatSelect.value.trim();
-        const filteredKategori = data.kategori.filter(
-            (k) => k.id_kalimat === selectedKalimat
-        );
-
-        const uniqueTanda = new Set();
-        filteredKategori.forEach((k) => {
-            let otherTanda = "";
-            switch (irob) {
-                case "رَفْعٌ":
-                    otherTanda = k.rofa;
-                    break;
-                case "نَصْبٌ":
-                    otherTanda = k.nashob;
-                    break;
-                case "جَرٌّ":
-                    otherTanda = k.jar;
-                    break;
-                case "جَزْمٌ":
-                    otherTanda = k["jazm "];
-                    break;
-            }
-            if (otherTanda && otherTanda !== tanda) {
-                uniqueTanda.add(otherTanda);
-            }
-        });
-        uniqueTanda.forEach((t) => {
-            alamatSelect.innerHTML += `<option>${t}</option>`;
-        });
-    }
-
     // --- isi i'rob ---
     function fillIrob() {
         const selectedKedudukan = kedudukanSelect.value;
@@ -156,14 +97,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    // --- isi simbol ---
-    function fillSimbol() {
-        const selectedKedudukan = kedudukanSelect.value;
-        const kd = data.kedudukan.find((k) => k.id == selectedKedudukan);
-        if (!kd) return;
-
-        simbolSelect.innerHTML = `<option selected>${kd.simbol}</option>`;
-
+    // --- isi Tanda I‘rob ---
+    function fillTanda() {
         const kategori = data.kategori.find(
             (k) => k.id == kategoriSelect.value
         );
@@ -172,35 +107,130 @@ document.addEventListener("DOMContentLoaded", async () => {
         let tanda = "";
         const irob = irobSelect.value.trim();
         switch (irob) {
-            case "رَفْعٌ":
+            case "مَرْفُوْعٌ":
                 tanda = kategori.rofa;
                 break;
-            case "نَصْبٌ":
+            case "مَنْصُوْبٌ":
                 tanda = kategori.nashob;
                 break;
-            case "جَرٌّ":
+            case "مَجْرُوْرٌ":
                 tanda = kategori.jar;
                 break;
-            case "جَزْمٌ":
-                tanda = kategori["jazm "];
+            case "مَجْزُوْمٌ":
+                tanda = kategori.jazm;
                 break;
         }
-        alamatSelect.innerHTML = tanda
+
+        tandaSelect.innerHTML = tanda
             ? `<option selected>${tanda}</option>`
             : "<option selected></option>";
+        // add too other unique tanda in dropdown based on kalimat without duplicating
+        const selectedKalimat = kalimatSelect.value.trim();
+        const filteredKategori = data.kategori.filter(
+            (k) => k.id_kalimat === selectedKalimat
+        );
+
+        const uniqueTanda = new Set();
+        filteredKategori.forEach((k) => {
+            let otherTanda = "";
+            switch (irob) {
+                case "مَرْفُوْعٌ":
+                    otherTanda = k.rofa;
+                    break;
+                case "مَنْصُوْبٌ":
+                    otherTanda = k.nashob;
+                    break;
+                case "مَجْرُوْرٌ":
+                    otherTanda = k.jar;
+                    break;
+                case "مَجْزُوْمٌ":
+                    otherTanda = k.jazm;
+                    break;
+            }
+            if (otherTanda && otherTanda !== tanda) {
+                uniqueTanda.add(otherTanda);
+            }
+        });
+        uniqueTanda.forEach((t) => {
+            tandaSelect.innerHTML += `<option>${t}</option>`;
+        });
     }
 
-    function getHukum() {
+    // --- isi simbol ---
+    function fillSimbol() {
+        const selectedKedudukan = kedudukanSelect.value;
+        const kd = data.kedudukan.find((k) => k.id == selectedKedudukan);
+        if (!kd) return;
+
+        simbolSelect.innerHTML = `<option selected>${kd.simbol}</option>`;
+    }
+
+    // --- Fields Controller ---
+    function fieldsController() {
         const currentKalimat = kalimatSelect.value;
 
-        if (currentKalimat === "1.0" || currentKalimat === "2.2") {
-            enableFields(kedudukanSelect, irobSelect, alamatSelect);
-        } else {
-            disableFields(kedudukanSelect, irobSelect, alamatSelect);
+        switch (currentKalimat) {
+            case "2.1":
+                enableFields(kategoriSelect, hukumSelect, simbolSelect);
+                disableFields(kedudukanSelect, irobSelect, tandaSelect);
+                break;
+            case "2.3":
+                enableFields(kategoriSelect, hukumSelect, simbolSelect);
+                disableFields(kedudukanSelect, irobSelect, tandaSelect);
+                break;
+            case "3.0":
+                enableFields(kategoriSelect, hukumSelect, simbolSelect);
+                disableFields(kedudukanSelect, irobSelect, tandaSelect);
+                break;
+            case "4.1":
+                enableFields(
+                    kedudukanSelect,
+                    irobSelect,
+                    tandaSelect,
+                    simbolSelect
+                );
+                disableFields(kategoriSelect, hukumSelect);
+                break;
+            case "4.2":
+                enableFields(
+                    kategoriSelect,
+                    kedudukanSelect,
+                    irobSelect,
+                    tandaSelect,
+                    simbolSelect
+                );
+                disableFields(hukumSelect);
+                break;
+            case "5.0":
+                enableFields(
+                    kedudukanSelect,
+                    irobSelect,
+                    tandaSelect,
+                    simbolSelect
+                );
+                disableFields(kategoriSelect, hukumSelect);
+                break;
+            default:
+                enableFields(
+                    kategoriSelect,
+                    hukumSelect,
+                    kedudukanSelect,
+                    irobSelect,
+                    tandaSelect,
+                    simbolSelect
+                );
+                break;
         }
     }
 
-    // --- 7. Validasi dasar sebelum submit ---
+    // --- reset many field ---
+    function resetFields(fields) {
+        fields.forEach((field) => {
+            field.value = "";
+        });
+    }
+
+    // --- Validate before submit ---
     const form = document.getElementById("form-add-word");
     form.addEventListener("submit", (e) => {
         const kalimat = kalimatSelect.value;
@@ -216,7 +246,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     // =============================
     kalimatSelect.addEventListener("change", () => {
         populateCategory();
-        getHukum();
+        fieldsController();
+        resetFields([
+            hukumSelect,
+            irobSelect,
+            tandaSelect,
+            kedudukanSelect,
+            simbolSelect,
+        ]);
     });
 
     kategoriSelect.addEventListener("change", () => {
@@ -226,16 +263,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (currentKalimat === "1.0" || currentKalimat === "2.2") {
             populateKedudukan();
         }
-    });
 
-    hukumSelect.addEventListener("change", () => {
-        console.log("Hukum diubah");
+        resetFields([irobSelect, tandaSelect, simbolSelect]);
     });
 
     irobSelect.addEventListener("change", fillTanda);
 
     kedudukanSelect.addEventListener("change", () => {
         fillIrob();
+        fillTanda();
         fillSimbol();
     });
 });

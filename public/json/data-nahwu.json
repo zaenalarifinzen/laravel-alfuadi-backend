@@ -3,343 +3,452 @@
         {
             "id": "1.0",
             "kalimat_ar": "اِسْمٌ",
-            "kalimat_in ": "Isim "
+            "kalimat_in": "Isim "
         },
         {
             "id": "2.1",
             "kalimat_ar": "فِعْلٌ مَاضٍ",
-            "kalimat_in ": "Fiil Madhi "
+            "kalimat_in": "Fiil Madhi "
         },
         {
             "id": "2.2",
             "kalimat_ar": "فِعْلٌ مُضَارِعٌ",
-            "kalimat_in ": "Fiil Mudhori "
+            "kalimat_in": "Fiil Mudhori "
         },
         {
             "id": "2.3",
             "kalimat_ar": "فِعْلٌ اَمْر",
-            "kalimat_in ": "Fiil Amr "
+            "kalimat_in": "Fiil Amr "
+        },
+        {
+            "id": "3.0",
+            "kalimat_ar": "حَرْفٌ",
+            "kalimat_in": "Huruf "
+        },
+        {
+            "id": "4.1",
+            "kalimat_ar": "جُمْلَةٌ",
+            "kalimat_in": "Jumlah "
+        },
+        {
+            "id": "4.2",
+            "kalimat_ar": "شِبْهُ الْجُمْلَةِ",
+            "kalimat_in": "Sibhul Jumlah "
+        },
+        {
+            "id": "5.0",
+            "kalimat_ar": "إِسْمٌ مُؤَوَّلٌ",
+            "kalimat_in": "Isim Muawwal"
         }
     ],
     "kategori": [
         {
             "id": "C1",
             "id_kalimat": "1.0",
+            "simbol": null,
             "kategori_ar": "اِسْمُ ضمِيْرٍ",
             "kategori_in": "Isim Dhomir",
             "hukum": "مَبْنِيٌ",
-            "rofa": "فِىْ مَحَلِّ",
-            "nashob": "فِىْ مَحَلِّ",
-            "jar": "فِىْ مَحَلِّ",
-            "jazm ": " "
+            "rofa": "فِىْ مَحَلِّ رَفْعٍ",
+            "nashob": "فِىْ مَحَلِّ نَصْبٍ",
+            "jar": "فِىْ مَحَلِّ جَرٍّ",
+            "jazm": " "
         },
         {
             "id": "C2",
             "id_kalimat": "1.0",
+            "simbol": null,
             "kategori_ar": "اِسْمُ اِشَارَةٍ",
             "kategori_in": "Isim Isyarah",
             "hukum": "مَبْنِيٌ",
-            "rofa": "فِىْ مَحَلِّ",
-            "nashob": "فِىْ مَحَلِّ",
-            "jar": "فِىْ مَحَلِّ",
-            "jazm ": " "
+            "rofa": "فِىْ مَحَلِّ رَفْعٍ",
+            "nashob": "فِىْ مَحَلِّ نَصْبٍ",
+            "jar": "فِىْ مَحَلِّ جَرٍّ",
+            "jazm": " "
         },
         {
             "id": "C3",
             "id_kalimat": "1.0",
+            "simbol": null,
             "kategori_ar": "اِسْمُ مَوْصُوْلٌ",
             "kategori_in": "Isim Maushul",
             "hukum": "مَبْنِيٌ",
-            "rofa": "فِىْ مَحَلِّ",
-            "nashob": "فِىْ مَحَلِّ",
-            "jar": "فِىْ مَحَلِّ",
-            "jazm ": " "
+            "rofa": "فِىْ مَحَلِّ رَفْعٍ",
+            "nashob": "فِىْ مَحَلِّ نَصْبٍ",
+            "jar": "فِىْ مَحَلِّ جَرٍّ",
+            "jazm": " "
         },
         {
             "id": "C4",
             "id_kalimat": "1.0",
+            "simbol": null,
             "kategori_ar": "اِسْمُ اِسْتِفْهَامٍ",
             "kategori_in": "Isim Istifham",
             "hukum": "مَبْنِيٌ",
-            "rofa": "فِىْ مَحَلِّ",
-            "nashob": "فِىْ مَحَلِّ",
-            "jar": "فِىْ مَحَلِّ",
-            "jazm ": " "
+            "rofa": "فِىْ مَحَلِّ رَفْعٍ",
+            "nashob": "فِىْ مَحَلِّ نَصْبٍ",
+            "jar": "فِىْ مَحَلِّ جَرٍّ",
+            "jazm": " "
         },
         {
             "id": "C5",
             "id_kalimat": "1.0",
+            "simbol": null,
             "kategori_ar": "اِسْمُ شَرْطٍ",
             "kategori_in": "Isim Syarat",
             "hukum": "مَبْنِيٌ",
-            "rofa": "فِىْ مَحَلِّ",
-            "nashob": "فِىْ مَحَلِّ",
-            "jar": "فِىْ مَحَلِّ",
-            "jazm ": " "
+            "rofa": "فِىْ مَحَلِّ رَفْعٍ",
+            "nashob": "فِىْ مَحَلِّ نَصْبٍ",
+            "jar": "فِىْ مَحَلِّ جَرٍّ",
+            "jazm": " "
         },
         {
             "id": "C6",
             "id_kalimat": "1.0",
+            "simbol": null,
             "kategori_ar": "اِسْمُ فِعْلٍ",
             "kategori_in": "Isim Fiil",
             "hukum": "مَبْنِيٌ",
-            "rofa": "فِىْ مَحَلِّ",
-            "nashob": "فِىْ مَحَلِّ",
-            "jar": "فِىْ مَحَلِّ",
-            "jazm ": " "
+            "rofa": "فِىْ مَحَلِّ رَفْعٍ",
+            "nashob": "فِىْ مَحَلِّ نَصْبٍ",
+            "jar": "فِىْ مَحَلِّ جَرٍّ",
+            "jazm": " "
         },
         {
             "id": "C7",
             "id_kalimat": "1.0",
+            "simbol": null,
             "kategori_ar": "المُنَادَى المُفْرَدُ",
             "kategori_in": "Munada Mufrod",
             "hukum": "مَبْنِيٌ",
-            "rofa": "فِىْ مَحَلِّ",
-            "nashob": "فِىْ مَحَلِّ",
-            "jar": "فِىْ مَحَلِّ",
-            "jazm ": " "
+            "rofa": "فِىْ مَحَلِّ رَفْعٍ",
+            "nashob": "فِىْ مَحَلِّ نَصْبٍ",
+            "jar": "فِىْ مَحَلِّ جَرٍّ",
+            "jazm": " "
         },
         {
             "id": "C8",
             "id_kalimat": "1.0",
+            "simbol": null,
             "kategori_ar": "المُرَكَّبْ العَدَدِىُّ",
             "kategori_in": "Murokab 'Adadi",
             "hukum": "مَبْنِيٌ",
-            "rofa": "فِىْ مَحَلِّ",
-            "nashob": "فِىْ مَحَلِّ",
-            "jar": "فِىْ مَحَلِّ",
-            "jazm ": " "
+            "rofa": "فِىْ مَحَلِّ رَفْعٍ",
+            "nashob": "فِىْ مَحَلِّ نَصْبٍ",
+            "jar": "فِىْ مَحَلِّ جَرٍّ",
+            "jazm": " "
         },
         {
             "id": "C9",
             "id_kalimat": "1.0",
+            "simbol": null,
             "kategori_ar": "اِسْمُ لَا لِنَفْى الْجِنْسِ",
             "kategori_in": "Isim La Linafsil Jinsi",
             "hukum": "مَبْنِيٌ",
-            "rofa": "فِىْ مَحَلِّ",
-            "nashob": "فِىْ مَحَلِّ",
-            "jar": "فِىْ مَحَلِّ",
-            "jazm ": " "
+            "rofa": "فِىْ مَحَلِّ رَفْعٍ",
+            "nashob": "فِىْ مَحَلِّ نَصْبٍ",
+            "jar": "فِىْ مَحَلِّ جَرٍّ",
+            "jazm": " "
         },
         {
             "id": "C10",
             "id_kalimat": "1.0",
+            "simbol": null,
             "kategori_ar": "اِسْمٌ مُفْرَدٌ",
             "kategori_in": "Isim Mufrod",
             "hukum": "مُعْرَبٌ",
             "rofa": "ضَمَّةٌ",
             "nashob": "فَتْحَةٌ",
             "jar": "كَسْرَةٌ",
-            "jazm ": " "
+            "jazm": " "
         },
         {
             "id": "C11",
             "id_kalimat": "1.0",
+            "simbol": null,
             "kategori_ar": "اِسْمٌ تَثْنِيَةٍ",
             "kategori_in": "Isim Tasniyah",
             "hukum": "مُعْرَبٌ",
             "rofa": "الاَلِفُ",
             "nashob": "اليَاءُ",
             "jar": "اليَاءُ",
-            "jazm ": " "
+            "jazm": " "
         },
         {
             "id": "C12",
             "id_kalimat": "1.0",
+            "simbol": null,
             "kategori_ar": "جَمْعُ تَكْسِيْرٍ",
             "kategori_in": "Jamak Taksir",
             "hukum": "مُعْرَبٌ",
             "rofa": "ضَمَّةٌ",
             "nashob": "فَتْحَةٌ",
             "jar": "كَسْرَةٌ",
-            "jazm ": " "
+            "jazm": " "
         },
         {
             "id": "C13",
             "id_kalimat": "1.0",
+            "simbol": null,
             "kategori_ar": "جََمْعُ مُذَكَّرٍ سَالِمٌ",
             "kategori_in": "Jamak Mudzakkar Salim",
             "hukum": "مُعْرَبٌ",
             "rofa": "الوَاوُ",
             "nashob": "اليَاءُ",
             "jar": "اليَاءُ",
-            "jazm ": " "
+            "jazm": " "
         },
         {
             "id": "C14",
             "id_kalimat": "1.0",
+            "simbol": null,
             "kategori_ar": "جَمْعُ مُؤَنَّثٍ سَالِمٌ",
             "kategori_in": "Jamak Muannas Salim",
             "hukum": "مُعْرَبٌ",
             "rofa": "ضَمَّةٌ",
             "nashob": "كَسْرَةٌ",
             "jar": "كَسْرَةٌ",
-            "jazm ": " "
+            "jazm": " "
         },
         {
             "id": "C15",
             "id_kalimat": "1.0",
+            "simbol": null,
             "kategori_ar": " مِنَ الْأَسْمَاءِ الْخَمْسَةِ",
             "kategori_in": "Asmaul Khomsah",
             "hukum": "مُعْرَبٌ",
             "rofa": "الوَاوُ",
             "nashob": "الاَلِفُ",
             "jar": "اليَاءُ",
-            "jazm ": " "
+            "jazm": " "
         },
         {
             "id": "C16",
             "id_kalimat": "1.0",
+            "simbol": null,
             "kategori_ar": "اِسْمٌ غَيْرُ مُنْصَرِفٍ",
             "kategori_in": "Isim Ghoiru Munshorif",
             "hukum": "مُعْرَبٌ",
             "rofa": "ضَمَّةٌ",
             "nashob": "فَتْحَةٌ",
             "jar": "فَتْحَةٌ",
-            "jazm ": " "
+            "jazm": " "
         },
         {
             "id": "C17",
             "id_kalimat": "2.1",
+            "simbol": "ماض",
             "kategori_ar": "لِعَدَمِ اتِّصَالِهِ بِضَمِيْرِ رَفْعٍ مُتَحَرِّكٍ وَوَاوِ جَمْعٍ",
             "kategori_in": "Tidak bersambung",
             "hukum": "مَبْنِيٌ عَلَى الْفَتْحِ",
             "rofa": null,
             "nashob": null,
             "jar": null,
-            "jazm ": " "
+            "jazm": " "
         },
         {
             "id": "C18",
             "id_kalimat": "2.1",
+            "simbol": "ماض",
             "kategori_ar": "لِاتِّصَالِهِ بِضَمِيْرِ رَفْعٍ مُتَحَرِّكٍ",
             "kategori_in": "Bersambung Dhomir Rofa Mutaharik",
             "hukum": "مَبْنِيٌ عَلَى السُّكُوْنِ",
             "rofa": null,
             "nashob": null,
             "jar": null,
-            "jazm ": " "
+            "jazm": " "
         },
         {
             "id": "C19",
             "id_kalimat": "2.1",
+            "simbol": "ماض",
             "kategori_ar": "لِاتِّصَالِهِ بِوَاوِ جَمْعٍ",
             "kategori_in": "Bersambung Wawu Jamak",
             "hukum": "مَبْنِيٌ عَلَى الضَّمِّ",
             "rofa": null,
             "nashob": null,
             "jar": null,
-            "jazm ": " "
+            "jazm": " "
         },
         {
             "id": "C20",
             "id_kalimat": "2.2",
+            "simbol": null,
             "kategori_ar": "لِاتِّصَالِهِ بِنُوْنِ الْإِنَاثِ",
             "kategori_in": "Bersambung Nun Inatsi",
             "hukum": "مَبْنِيٌ عَلَى السُّكُوْنِ",
-            "rofa": "فِىْ مَحَلِّ",
-            "nashob": "فِىْ مَحَلِّ",
+            "rofa": "فِىْ مَحَلِّ رَفْعٍ",
+            "nashob": "فِىْ مَحَلِّ نَصْبٍ",
             "jar": null,
-            "jazm ": "فِىْ مَحَلِّ "
+            "jazm": "فِىْ مَحَلِّ جَزْمٍ "
         },
         {
             "id": "C21",
             "id_kalimat": "2.2",
+            "simbol": null,
             "kategori_ar": "لِاتِّصَالِهِ بِنُوْنِ التَّوْكِيْدِ",
             "kategori_in": "Bersambung Nun Taukid",
             "hukum": "مَبْنِيٌ عَلَى الْفَتْحِ",
-            "rofa": "فِىْ مَحَلِّ",
-            "nashob": "فِىْ مَحَلِّ",
+            "rofa": "فِىْ مَحَلِّ رَفْعٍ",
+            "nashob": "فِىْ مَحَلِّ نَصْبٍ",
             "jar": null,
-            "jazm ": "فِىْ مَحَلِّ "
+            "jazm": "فِىْ مَحَلِّ جَزْمٍ "
         },
         {
             "id": "C22",
             "id_kalimat": "2.2",
+            "simbol": null,
             "kategori_ar": "صَحِيْحُ الْأَخِرِ",
             "kategori_in": "Sohihul Akhir",
             "hukum": "مُعْرَبٌ",
             "rofa": "ضَمَّةٌ",
             "nashob": "فَتْحَةٌ",
             "jar": null,
-            "jazm ": "سُكُوْنٌ "
+            "jazm": "سُكُوْنٌ "
         },
         {
             "id": "C23",
             "id_kalimat": "2.2",
+            "simbol": null,
             "kategori_ar": "مُعْتَلُّ الْأَخِرِ بِالْأَلِفِ",
             "kategori_in": "Mu'tal Akhir Alif",
             "hukum": "مُعْرَبٌ",
             "rofa": "ضَمَّةٌ مُقَدَّرَةٌ",
             "nashob": "فَتْحَةٌ مُقَدَّرَةٌ",
             "jar": null,
-            "jazm ": "حَذْفُ حَرْفِ الْعِلَّةِ "
+            "jazm": "حَذْفُ حَرْفِ الْعِلَّةِ "
         },
         {
             "id": "C24",
             "id_kalimat": "2.2",
+            "simbol": null,
             "kategori_ar": "مُعْتَلُّ الْأَخِرِ بِالْوَاوِ اَوِ الْيَاءِ",
             "kategori_in": "Mu'tal Akhir Wawu atau Ya",
             "hukum": "مُعْرَبٌ",
             "rofa": "ضَمَّةٌ مُقَدَّرَةٌ",
             "nashob": "فَتْحَةٌ",
             "jar": null,
-            "jazm ": "حَذْفُ حَرْفِ الْعِلَّةِ "
+            "jazm": "حَذْفُ حَرْفِ الْعِلَّةِ "
         },
         {
             "id": "C25",
             "id_kalimat": "2.2",
+            "simbol": null,
             "kategori_ar": "مِنَ الْأَفْعَالِ الْخَمْسَةِ",
             "kategori_in": "Af'alul Khomsah",
             "hukum": "مُعْرَبٌ",
             "rofa": "ثُبُوْتُ النُّوْنِ",
             "nashob": "حَذْفُ النُّوْنِ",
             "jar": null,
-            "jazm ": "حَذْفُ النُّوْنِ "
+            "jazm": "حَذْفُ النُّوْنِ "
         },
         {
             "id": "C26",
+            "id_kalimat": "2.3",
+            "simbol": null,
+            "kategori_ar": "صَحِيْحُ الْأَخِرِ",
+            "kategori_in": "Sohihul Akhir",
+            "hukum": "مَبْنِيٌ",
+            "rofa": null,
+            "nashob": null,
+            "jar": null,
+            "jazm": "سُكُوْنٌ "
+        },
+        {
+            "id": "C27",
+            "id_kalimat": "2.3",
+            "simbol": null,
+            "kategori_ar": "مُعْتَلُّ الْأَخِرِ",
+            "kategori_in": "Mu'tal Akhir",
+            "hukum": "مَبْنِيٌ",
+            "rofa": null,
+            "nashob": null,
+            "jar": null,
+            "jazm": "حَذْفُ حَرْفِ الْعِلَّةِ "
+        },
+        {
+            "id": "C28",
+            "id_kalimat": "2.3",
+            "simbol": null,
+            "kategori_ar": "مِنَ الْأَفْعَالِ الْخَمْسَةِ",
+            "kategori_in": "Af'alul Khomsah",
+            "hukum": "مَبْنِيٌ",
+            "rofa": null,
+            "nashob": null,
+            "jar": null,
+            "jazm": "حَذْفُ النُّوْنِ "
+        },
+        {
+            "id": "C29",
             "id_kalimat": "3.0",
-            "kategori_ar": "حَرْفُ جَارّ",
+            "simbol": "جار",
+            "kategori_ar": "حَرْفُ جَرّ",
             "kategori_in": "Huruf Jar",
             "hukum": "مَبْنِيٌ",
             "rofa": null,
             "nashob": null,
             "jar": null,
-            "jazm ": " "
+            "jazm": " "
         },
         {
-            "id": "C27",
+            "id": "C30",
             "id_kalimat": "3.0",
-            "kategori_ar": "حَرْفُ شَرْطٌ",
+            "simbol": "ش",
+            "kategori_ar": "حَرْفُ شَرْطٍ",
             "kategori_in": "Huruf Syarat",
             "hukum": "مَبْنِيٌ",
             "rofa": null,
             "nashob": null,
             "jar": null,
-            "jazm ": " "
+            "jazm": " "
         },
         {
-            "id": "C28",
+            "id": "C31",
             "id_kalimat": "3.0",
-            "kategori_ar": "حَرْفُ جَوَّبٌ",
+            "simbol": "ج",
+            "kategori_ar": "حَرْفُ جَوَابٍ",
             "kategori_in": "Huruf Jawab",
             "hukum": "مَبْنِيٌ",
             "rofa": null,
             "nashob": null,
             "jar": null,
-            "jazm ": " "
+            "jazm": " "
         },
         {
-            "id": "C29",
+            "id": "C32",
             "id_kalimat": "3.0",
-            "kategori_ar": "حَرْفُ حَالٌ",
+            "simbol": "حال",
+            "kategori_ar": "حَرْفُ حَالٍ",
             "kategori_in": "Huruf Hal",
             "hukum": "مَبْنِيٌ",
             "rofa": null,
             "nashob": null,
             "jar": null,
-            "jazm ": null
+            "jazm": " "
+        },
+        {
+            "id": "C33",
+            "id_kalimat": "4.2",
+            "simbol": "-",
+            "kategori_ar": "الجَارُ وَالمَجْرُوْرُ",
+            "kategori_in": "Jar Majrur",
+            "hukum": null,
+            "rofa": "فِىْ مَحَلِّ",
+            "nashob": "فِىْ مَحَلِّ",
+            "jar": "فِىْ مَحَلِّ",
+            "jazm": " "
+        },
+        {
+            "id": "C34",
+            "id_kalimat": "4.2",
+            "simbol": "-",
+            "kategori_ar": "ظَرْفٌ",
+            "kategori_in": "Dzorof",
+            "hukum": null,
+            "rofa": "فِىْ مَحَلِّ",
+            "nashob": "فِىْ مَحَلِّ",
+            "jar": "فِىْ مَحَلِّ",
+            "jazm": null
         }
     ],
     "kedudukan": [
@@ -348,400 +457,416 @@
             "id_kalimat": "1.0",
             "simbol": "مبتدأ",
             "kedudukan_ar": "مُبْتَدَأٌ",
-            "kedudukan_in ": "Mubtada ",
-            "irob": "رَفْعٌ "
+            "kedudukan_in": "Mubtada",
+            "irob": "مَرْفُوْعٌ "
         },
         {
             "id": "KD2",
             "id_kalimat": "1.0",
             "simbol": "خبر",
             "kedudukan_ar": "خَبَرُ الْمُبْتَدَإِ",
-            "kedudukan_in ": "Khobar ",
-            "irob": "رَفْعٌ "
+            "kedudukan_in": "Khobar",
+            "irob": "مَرْفُوْعٌ "
         },
         {
             "id": "KD3",
             "id_kalimat": "1.0",
             "simbol": "فاعل",
             "kedudukan_ar": "فَاعِلٌ",
-            "kedudukan_in ": "Fail ",
-            "irob": "رَفْعٌ "
+            "kedudukan_in": "Fail",
+            "irob": "مَرْفُوْعٌ "
         },
         {
             "id": "KD4",
             "id_kalimat": "1.0",
-            "simbol": "ن. فاعل",
-            "kedudukan_ar": "نَائِبُ الْفَاعِلِ",
-            "kedudukan_in ": "Naibul Fail ",
-            "irob": "رَفْعٌ "
+            "simbol": "فا.م",
+            "kedudukan_ar": "فَاعِلٌ مُسْتَتِرٌ",
+            "kedudukan_in": "Fail Mustatir",
+            "irob": "مَرْفُوْعٌ "
         },
         {
             "id": "KD5",
             "id_kalimat": "1.0",
-            "simbol": "اسم كان",
-            "kedudukan_ar": "اِسْمُ كَانَ",
-            "kedudukan_in ": "Isim Kaana ",
-            "irob": "رَفْعٌ "
+            "simbol": "ن. فاعل",
+            "kedudukan_ar": "نَائِبُ الْفَاعِلِ",
+            "kedudukan_in": "Naibul Fail",
+            "irob": "مَرْفُوْعٌ "
         },
         {
             "id": "KD6",
             "id_kalimat": "1.0",
-            "simbol": "اسم ليس",
-            "kedudukan_ar": "اِسْمُ لَيْسَ",
-            "kedudukan_in ": "Isim Laisa ",
-            "irob": "رَفْعٌ "
+            "simbol": "نفا.م",
+            "kedudukan_ar": "نَائِبُ الْفَاعِلِ مُسْتَتِرٌ",
+            "kedudukan_in": "Naibul Fail Mustatir",
+            "irob": "مَرْفُوْعٌ "
         },
         {
             "id": "KD7",
             "id_kalimat": "1.0",
-            "simbol": "اسم اصبح",
-            "kedudukan_ar": "اِسْمُ اَصْبَحَ",
-            "kedudukan_in ": "Isim Asbaha ",
-            "irob": "رَفْعٌ "
+            "simbol": "اسم كان",
+            "kedudukan_ar": "اِسْمُ كَانَ",
+            "kedudukan_in": "Isim Kaana",
+            "irob": "مَرْفُوْعٌ "
         },
         {
             "id": "KD8",
             "id_kalimat": "1.0",
-            "simbol": "اسم صار",
-            "kedudukan_ar": "اِسْمُ صَارَ",
-            "kedudukan_in ": "Isim Sooro ",
-            "irob": "رَفْعٌ "
+            "simbol": "اسم ليس",
+            "kedudukan_ar": "اِسْمُ لَيْسَ",
+            "kedudukan_in": "Isim Laisa",
+            "irob": "مَرْفُوْعٌ "
         },
         {
             "id": "KD9",
             "id_kalimat": "1.0",
-            "simbol": "اسم ما",
-            "kedudukan_ar": "اِسْمُ مَا",
-            "kedudukan_in ": "Isim Maa Al Hijaziah ",
-            "irob": "رَفْعٌ "
+            "simbol": "اسم اصبح",
+            "kedudukan_ar": "اِسْمُ اَصْبَحَ",
+            "kedudukan_in": "Isim Asbaha",
+            "irob": "مَرْفُوْعٌ "
         },
         {
             "id": "KD10",
             "id_kalimat": "1.0",
-            "simbol": "خ. انّ",
-            "kedudukan_ar": "خَبَرُ اِنَّ",
-            "kedudukan_in ": "Khobar inna ",
-            "irob": "رَفْعٌ "
+            "simbol": "اسم صار",
+            "kedudukan_ar": "اِسْمُ صَارَ",
+            "kedudukan_in": "Isim Sooro",
+            "irob": "مَرْفُوْعٌ "
         },
         {
             "id": "KD11",
             "id_kalimat": "1.0",
-            "simbol": "خ.لعل",
-            "kedudukan_ar": "خَبَرُ لَعَلَّ",
-            "kedudukan_in ": "Khobar La'alla ",
-            "irob": "رَفْعٌ "
+            "simbol": "اسم ما",
+            "kedudukan_ar": "اِسْمُ مَا",
+            "kedudukan_in": "Isim Maa Al Hijaziah",
+            "irob": "مَرْفُوْعٌ "
         },
         {
             "id": "KD12",
             "id_kalimat": "1.0",
-            "simbol": "خ.ليت",
-            "kedudukan_ar": "خَبَرُ لَيْتَ",
-            "kedudukan_in ": "Khobar Laita ",
-            "irob": "رَفْعٌ "
+            "simbol": "خ. انّ",
+            "kedudukan_ar": "خَبَرُ اِنَّ",
+            "kedudukan_in": "Khobar inna",
+            "irob": "مَرْفُوْعٌ "
         },
         {
             "id": "KD13",
             "id_kalimat": "1.0",
-            "simbol": "خ.لكنّ",
-            "kedudukan_ar": "خَبَرُ لَكِنَّ",
-            "kedudukan_in ": "Khobar Lakinna ",
-            "irob": "رَفْعٌ "
+            "simbol": "خ.لعل",
+            "kedudukan_ar": "خَبَرُ لَعَلَّ",
+            "kedudukan_in": "Khobar La'alla",
+            "irob": "مَرْفُوْعٌ "
         },
         {
             "id": "KD14",
             "id_kalimat": "1.0",
-            "simbol": "خ.كأنّ",
-            "kedudukan_ar": "خَبَرُكَأَنَّ",
-            "kedudukan_in ": "Khobar Kaanna ",
-            "irob": "رَفْعٌ "
+            "simbol": "خ.ليت",
+            "kedudukan_ar": "خَبَرُ لَيْتَ",
+            "kedudukan_in": "Khobar Laita",
+            "irob": "مَرْفُوْعٌ "
         },
         {
             "id": "KD15",
             "id_kalimat": "1.0",
-            "simbol": "نعت",
-            "kedudukan_ar": "نَعْتٌ لِلْمَرْفُوْعِ",
-            "kedudukan_in ": "Naat Lil Marfu ",
-            "irob": "رَفْعٌ "
+            "simbol": "خ.لكنّ",
+            "kedudukan_ar": "خَبَرُ لَكِنَّ",
+            "kedudukan_in": "Khobar Lakinna",
+            "irob": "مَرْفُوْعٌ "
         },
         {
             "id": "KD16",
             "id_kalimat": "1.0",
-            "simbol": "بدل",
-            "kedudukan_ar": "بَدَلٌ مِنَ الْمَرْفُوْعِ",
-            "kedudukan_in ": "Badal Minal Marfu ",
-            "irob": "رَفْعٌ "
+            "simbol": "خ.كأنّ",
+            "kedudukan_ar": "خَبَرُكَأَنَّ",
+            "kedudukan_in": "Khobar Kaanna",
+            "irob": "مَرْفُوْعٌ "
         },
         {
             "id": "KD17",
             "id_kalimat": "1.0",
-            "simbol": "توكيد",
-            "kedudukan_ar": "تَوْكِيْدٌ لِلْمَرْفُوْعِ",
-            "kedudukan_in ": "Taukid Lil Marfu ",
-            "irob": "رَفْعٌ "
+            "simbol": "نعت",
+            "kedudukan_ar": "نَعْتٌ لِلْمَرْفُوْعِ",
+            "kedudukan_in": "Naat Lil Marfu",
+            "irob": "مَرْفُوْعٌ "
         },
         {
             "id": "KD18",
             "id_kalimat": "1.0",
-            "simbol": "معطوف",
-            "kedudukan_ar": "مَعْطُوْفٌ عَلَى الْمَرْفُوْعِ",
-            "kedudukan_in ": "Matuf  Alal Marfu ",
-            "irob": "رَفْعٌ "
+            "simbol": "بدل",
+            "kedudukan_ar": "بَدَلٌ مِنَ الْمَرْفُوْعِ",
+            "kedudukan_in": "Badal Minal Marfu",
+            "irob": "مَرْفُوْعٌ "
         },
         {
             "id": "KD19",
             "id_kalimat": "1.0",
-            "simbol": "مف",
-            "kedudukan_ar": "مَفْعُوْلٌ بِهِ",
-            "kedudukan_in ": "Maf'ul Bih ",
-            "irob": "نَصْبٌ "
+            "simbol": "توكيد",
+            "kedudukan_ar": "تَوْكِيْدٌ لِلْمَرْفُوْعِ",
+            "kedudukan_in": "Taukid Lil Marfu",
+            "irob": "مَرْفُوْعٌ "
         },
         {
             "id": "KD20",
             "id_kalimat": "1.0",
-            "simbol": "حال",
-            "kedudukan_ar": "حَالٌ",
-            "kedudukan_in ": "Haal ",
-            "irob": "نَصْبٌ "
+            "simbol": "معطوف",
+            "kedudukan_ar": "مَعْطُوْفٌ عَلَى الْمَرْفُوْعِ",
+            "kedudukan_in": "Matuf  Alal Marfu",
+            "irob": "مَرْفُوْعٌ "
         },
         {
             "id": "KD21",
             "id_kalimat": "1.0",
-            "simbol": "ظرف",
-            "kedudukan_ar": "ظَرْفٌ",
-            "kedudukan_in ": "Dzorof ",
-            "irob": "نَصْبٌ "
+            "simbol": "مف",
+            "kedudukan_ar": "مَفْعُوْلٌ بِهِ",
+            "kedudukan_in": "Maf'ul Bih",
+            "irob": "مَنْصُوْبٌ "
         },
         {
             "id": "KD22",
             "id_kalimat": "1.0",
-            "simbol": "مط",
-            "kedudukan_ar": "مَفْعُوْلٌ مُطْلَقٌ",
-            "kedudukan_in ": "Maf'ul Mutlaq ",
-            "irob": "نَصْبٌ "
+            "simbol": "حال",
+            "kedudukan_ar": "حَالٌ",
+            "kedudukan_in": "Haal",
+            "irob": "مَنْصُوْبٌ "
         },
         {
             "id": "KD23",
             "id_kalimat": "1.0",
-            "simbol": "تمييز",
-            "kedudukan_ar": "تَمْيِيْزٌ",
-            "kedudukan_in ": "Tamyiz ",
-            "irob": "نَصْبٌ "
+            "simbol": "ظرف",
+            "kedudukan_ar": "ظَرْفٌ",
+            "kedudukan_in": "Dzorof",
+            "irob": "مَنْصُوْبٌ "
         },
         {
             "id": "KD24",
             "id_kalimat": "1.0",
-            "simbol": "مل",
-            "kedudukan_ar": "مَفْعُوْلٌ لِأَجْلِهِ",
-            "kedudukan_in ": "Maf'ul Liajlih ",
-            "irob": "نَصْبٌ "
+            "simbol": "مط",
+            "kedudukan_ar": "مَفْعُوْلٌ مُطْلَقٌ",
+            "kedudukan_in": "Maf'ul Mutlaq",
+            "irob": "مَنْصُوْبٌ "
         },
         {
             "id": "KD25",
             "id_kalimat": "1.0",
-            "simbol": "معه",
-            "kedudukan_ar": "مَفْعُوْلٌ مَعَهُ",
-            "kedudukan_in ": "Maf'ul Ma'ahu ",
-            "irob": "نَصْبٌ "
+            "simbol": "تمييز",
+            "kedudukan_ar": "تَمْيِيْزٌ",
+            "kedudukan_in": "Tamyiz",
+            "irob": "مَنْصُوْبٌ "
         },
         {
             "id": "KD26",
             "id_kalimat": "1.0",
-            "simbol": "مستثنى",
-            "kedudukan_ar": "المُسْتَثْنَى",
-            "kedudukan_in ": "Mustasna ",
-            "irob": "نَصْبٌ "
+            "simbol": "مل",
+            "kedudukan_ar": "مَفْعُوْلٌ لِأَجْلِهِ",
+            "kedudukan_in": "Maf'ul Liajlih",
+            "irob": "مَنْصُوْبٌ "
         },
         {
             "id": "KD27",
             "id_kalimat": "1.0",
-            "simbol": "اسم انّ",
-            "kedudukan_ar": "اِسْمُ اِنَّ",
-            "kedudukan_in ": "Isim Inna ",
-            "irob": "نَصْبٌ "
+            "simbol": "معه",
+            "kedudukan_ar": "مَفْعُوْلٌ مَعَهُ",
+            "kedudukan_in": "Maf'ul Ma'ahu",
+            "irob": "مَنْصُوْبٌ "
         },
         {
             "id": "KD28",
             "id_kalimat": "1.0",
-            "simbol": "اسم لعل",
-            "kedudukan_ar": "اِسْمُ لَعَلَّ",
-            "kedudukan_in ": "Isim La'alla ",
-            "irob": "نَصْبٌ "
+            "simbol": "مستثنى",
+            "kedudukan_ar": "المُسْتَثْنَى",
+            "kedudukan_in": "Mustasna",
+            "irob": "مَنْصُوْبٌ "
         },
         {
             "id": "KD29",
             "id_kalimat": "1.0",
-            "simbol": "اسم ليت",
-            "kedudukan_ar": "اِسْمُ لَيْتَ",
-            "kedudukan_in ": "Isim Laita ",
-            "irob": "نَصْبٌ "
+            "simbol": "اسم انّ",
+            "kedudukan_ar": "اِسْمُ اِنَّ",
+            "kedudukan_in": "Isim Inna",
+            "irob": "مَنْصُوْبٌ "
         },
         {
             "id": "KD30",
             "id_kalimat": "1.0",
-            "simbol": "اسم لكنّ",
-            "kedudukan_ar": "اِسْمُ لَكِنَّ",
-            "kedudukan_in ": "Isim Lakin ",
-            "irob": "نَصْبٌ "
+            "simbol": "اسم لعل",
+            "kedudukan_ar": "اِسْمُ لَعَلَّ",
+            "kedudukan_in": "Isim La'alla",
+            "irob": "مَنْصُوْبٌ "
         },
         {
             "id": "KD31",
             "id_kalimat": "1.0",
-            "simbol": "اسم كأنّ",
-            "kedudukan_ar": "اِسْمُ كَأَنَّ",
-            "kedudukan_in ": "Isim Kaanna ",
-            "irob": "نَصْبٌ "
+            "simbol": "اسم ليت",
+            "kedudukan_ar": "اِسْمُ لَيْتَ",
+            "kedudukan_in": "Isim Laita",
+            "irob": "مَنْصُوْبٌ "
         },
         {
             "id": "KD32",
             "id_kalimat": "1.0",
-            "simbol": "اسم لا",
-            "kedudukan_ar": "اِسْمُ لَا لِنَفْيِ الْجِنْسِ",
-            "kedudukan_in ": "Isim La Linafsil Jinsi ",
-            "irob": "نَصْبٌ "
+            "simbol": "اسم لكنّ",
+            "kedudukan_ar": "اِسْمُ لَكِنَّ",
+            "kedudukan_in": "Isim Lakin",
+            "irob": "مَنْصُوْبٌ "
         },
         {
             "id": "KD33",
             "id_kalimat": "1.0",
-            "simbol": "خ.كان",
-            "kedudukan_ar": "خَبَرُكَانَ",
-            "kedudukan_in ": "Khobar Kaana ",
-            "irob": "نَصْبٌ "
+            "simbol": "اسم كأنّ",
+            "kedudukan_ar": "اِسْمُ كَأَنَّ",
+            "kedudukan_in": "Isim Kaanna",
+            "irob": "مَنْصُوْبٌ "
         },
         {
             "id": "KD34",
             "id_kalimat": "1.0",
-            "simbol": "خ.ليس",
-            "kedudukan_ar": "خَبَرُ لَيْسَ",
-            "kedudukan_in ": "Khobar Laisa ",
-            "irob": "نَصْبٌ "
+            "simbol": "اسم لا",
+            "kedudukan_ar": "اِسْمُ لَا لِنَفْيِ الْجِنْسِ",
+            "kedudukan_in": "Isim La Linafsil Jinsi",
+            "irob": "مَنْصُوْبٌ "
         },
         {
             "id": "KD35",
             "id_kalimat": "1.0",
-            "simbol": "خ.اسبح",
-            "kedudukan_ar": "خَبَرُ اَسْبَحَ",
-            "kedudukan_in ": "Khobar Asbaha ",
-            "irob": "نَصْبٌ "
+            "simbol": "خ.كان",
+            "kedudukan_ar": "خَبَرُكَانَ",
+            "kedudukan_in": "Khobar Kaana",
+            "irob": "مَنْصُوْبٌ "
         },
         {
             "id": "KD36",
             "id_kalimat": "1.0",
-            "simbol": "خ.صار",
-            "kedudukan_ar": "خَبَرُ صَارَ",
-            "kedudukan_in ": "Khobar Soro ",
-            "irob": "نَصْبٌ "
+            "simbol": "خ.ليس",
+            "kedudukan_ar": "خَبَرُ لَيْسَ",
+            "kedudukan_in": "Khobar Laisa",
+            "irob": "مَنْصُوْبٌ "
         },
         {
             "id": "KD37",
             "id_kalimat": "1.0",
-            "simbol": "خ.ما",
-            "kedudukan_ar": "خَبَرُ مَا الحِجَازِيَة",
-            "kedudukan_in ": "Khobar Ma Al Hijaziyah ",
-            "irob": "نَصْبٌ "
+            "simbol": "خ.اسبح",
+            "kedudukan_ar": "خَبَرُ اَسْبَحَ",
+            "kedudukan_in": "Khobar Asbaha",
+            "irob": "مَنْصُوْبٌ "
         },
         {
             "id": "KD38",
             "id_kalimat": "1.0",
-            "simbol": "نعت",
-            "kedudukan_ar": "نَعْتٌ لِلْمَنْصُوْبِ",
-            "kedudukan_in ": "Naat Lil Mansub ",
-            "irob": "نَصْبٌ "
+            "simbol": "خ.صار",
+            "kedudukan_ar": "خَبَرُ صَارَ",
+            "kedudukan_in": "Khobar Soro",
+            "irob": "مَنْصُوْبٌ "
         },
         {
             "id": "KD39",
             "id_kalimat": "1.0",
-            "simbol": "بدل",
-            "kedudukan_ar": "بَدَلٌ مِنَ الْمَنْصُوْبِ",
-            "kedudukan_in ": "Badal Minal Mansub ",
-            "irob": "نَصْبٌ "
+            "simbol": "خ.ما",
+            "kedudukan_ar": "خَبَرُ مَا الحِجَازِيَة",
+            "kedudukan_in": "Khobar Ma Al Hijaziyah",
+            "irob": "مَنْصُوْبٌ "
         },
         {
             "id": "KD40",
             "id_kalimat": "1.0",
-            "simbol": "توكيد",
-            "kedudukan_ar": "تَوْكِيْدٌ لِلْمَنْصُوْبِ",
-            "kedudukan_in ": "Taukid Lil Mansub ",
-            "irob": "نَصْبٌ "
+            "simbol": "نعت",
+            "kedudukan_ar": "نَعْتٌ لِلْمَنْصُوْبِ",
+            "kedudukan_in": "Naat Lil Mansub",
+            "irob": "مَنْصُوْبٌ "
         },
         {
             "id": "KD41",
             "id_kalimat": "1.0",
-            "simbol": "معطوف",
-            "kedudukan_ar": "مَعْطُوْفٌ عَلَى الْمَنْصُوْبِ",
-            "kedudukan_in ": "Ma'tuf Alal Mansub ",
-            "irob": "نَصْبٌ "
+            "simbol": "بدل",
+            "kedudukan_ar": "بَدَلٌ مِنَ الْمَنْصُوْبِ",
+            "kedudukan_in": "Badal Minal Mansub",
+            "irob": "مَنْصُوْبٌ "
         },
         {
             "id": "KD42",
             "id_kalimat": "1.0",
-            "simbol": "مجرور",
-            "kedudukan_ar": "مَجْرُوْرٌ بِحَرْفِ الْجَرِّ",
-            "kedudukan_in ": "Majrur Bi Harfil Jar ",
-            "irob": "جَرٌّ "
+            "simbol": "توكيد",
+            "kedudukan_ar": "تَوْكِيْدٌ لِلْمَنْصُوْبِ",
+            "kedudukan_in": "Taukid Lil Mansub",
+            "irob": "مَنْصُوْبٌ "
         },
         {
             "id": "KD43",
             "id_kalimat": "1.0",
-            "simbol": "مض.إ",
-            "kedudukan_ar": "مُضَافٌ اِلَيْهِ",
-            "kedudukan_in ": "Mudhof Ilaih ",
-            "irob": "جَرٌّ "
+            "simbol": "معطوف",
+            "kedudukan_ar": "مَعْطُوْفٌ عَلَى الْمَنْصُوْبِ",
+            "kedudukan_in": "Ma'tuf Alal Mansub",
+            "irob": "مَنْصُوْبٌ "
         },
         {
             "id": "KD44",
             "id_kalimat": "1.0",
-            "simbol": "نعت",
-            "kedudukan_ar": "نَعْتٌ لِلْمَجْرُوْرِ",
-            "kedudukan_in ": "Naat Lil Majrur ",
-            "irob": "جَرٌّ "
+            "simbol": "مجرور",
+            "kedudukan_ar": "مَجْرُوْرٌ بِحَرْفِ الْجَرِّ",
+            "kedudukan_in": "Majrur Bi Harfil Jar",
+            "irob": "مَجْرُوْرٌ "
         },
         {
             "id": "KD45",
             "id_kalimat": "1.0",
-            "simbol": "بدل",
-            "kedudukan_ar": "بَدَلٌ مِنَ الْمَجْرُوْرِ",
-            "kedudukan_in ": "Badal Minal Majrur ",
-            "irob": "جَرٌّ "
+            "simbol": "مض.إ",
+            "kedudukan_ar": "مُضَافٌ اِلَيْهِ",
+            "kedudukan_in": "Mudhof Ilaih",
+            "irob": "مَجْرُوْرٌ "
         },
         {
             "id": "KD46",
             "id_kalimat": "1.0",
-            "simbol": "توكيد",
-            "kedudukan_ar": "تَوْكِيْدٌ لِلْمَجْرُوْرِ",
-            "kedudukan_in ": "Taukid Lil Majrur ",
-            "irob": "جَرٌّ "
+            "simbol": "نعت",
+            "kedudukan_ar": "نَعْتٌ لِلْمَجْرُوْرِ",
+            "kedudukan_in": "Naat Lil Majrur",
+            "irob": "مَجْرُوْرٌ "
         },
         {
             "id": "KD47",
             "id_kalimat": "1.0",
-            "simbol": "معطوف",
-            "kedudukan_ar": "مَعْطُوْفٌ عَلَى الْمَجْرُوْرِ",
-            "kedudukan_in ": "Ma'tuf Alal Majrur ",
-            "irob": "جَرٌّ "
+            "simbol": "بدل",
+            "kedudukan_ar": "بَدَلٌ مِنَ الْمَجْرُوْرِ",
+            "kedudukan_in": "Badal Minal Majrur",
+            "irob": "مَجْرُوْرٌ "
         },
         {
             "id": "KD48",
-            "id_kalimat": "2.2",
-            "simbol": "مضارع:ر",
-            "kedudukan_ar": "تَجَرَّدَ عَنِ النَّاصِبِ وَالْجَازِمِ",
-            "kedudukan_in ": "Sepi dari Nashob dan Jazm ",
-            "irob": "رَفْعٌ "
+            "id_kalimat": "1.0",
+            "simbol": "توكيد",
+            "kedudukan_ar": "تَوْكِيْدٌ لِلْمَجْرُوْرِ",
+            "kedudukan_in": "Taukid Lil Majrur",
+            "irob": "مَجْرُوْرٌ "
         },
         {
             "id": "KD49",
-            "id_kalimat": "2.2",
-            "simbol": "مضارع:ن",
-            "kedudukan_ar": "دَخَلَ عَلَيْهِ نَاصِبٌ",
-            "kedudukan_in ": "Bertemu Amil Nashob ",
-            "irob": "نَصْبٌ "
+            "id_kalimat": "1.0",
+            "simbol": "معطوف",
+            "kedudukan_ar": "مَعْطُوْفٌ عَلَى الْمَجْرُوْرِ",
+            "kedudukan_in": "Ma'tuf Alal Majrur",
+            "irob": "مَجْرُوْرٌ "
         },
         {
             "id": "KD50",
             "id_kalimat": "2.2",
+            "simbol": "مضارع:ر",
+            "kedudukan_ar": "تَجَرَّدَ عَنِ النَّاصِبِ وَالْجَازِمِ",
+            "kedudukan_in": "Sepi dari Nashob dan Jazm",
+            "irob": "مَرْفُوْعٌ "
+        },
+        {
+            "id": "KD51",
+            "id_kalimat": "2.2",
+            "simbol": "مضارع:ن",
+            "kedudukan_ar": "دَخَلَ عَلَيْهِ نَاصِبٌ",
+            "kedudukan_in": "Bertemu Amil Nashob",
+            "irob": "مَنْصُوْبٌ "
+        },
+        {
+            "id": "KD52",
+            "id_kalimat": "2.2",
             "simbol": "مضارع:ج",
             "kedudukan_ar": "دَخَلَ عَلَيْهِ جَازِمٌ",
-            "kedudukan_in ": "Bertemu Amil Jazm",
-            "irob": "جَزْمٌ"
+            "kedudukan_in": "Bertemu Amil Jazm",
+            "irob": "مَجْزُوْمٌ"
         }
     ]
 }
