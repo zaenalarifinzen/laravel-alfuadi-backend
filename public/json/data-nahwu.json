@@ -44,7 +44,7 @@
     "kategori": [
         {
             "id": "C1",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": null,
             "kategori_ar": "اِسْمُ ضمِيْرٍ",
             "kategori_in": "Isim Dhomir",
@@ -56,7 +56,7 @@
         },
         {
             "id": "C2",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": null,
             "kategori_ar": "اِسْمُ اِشَارَةٍ",
             "kategori_in": "Isim Isyarah",
@@ -68,7 +68,7 @@
         },
         {
             "id": "C3",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": null,
             "kategori_ar": "اِسْمُ مَوْصُوْلٌ",
             "kategori_in": "Isim Maushul",
@@ -80,7 +80,7 @@
         },
         {
             "id": "C4",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": null,
             "kategori_ar": "اِسْمُ اِسْتِفْهَامٍ",
             "kategori_in": "Isim Istifham",
@@ -92,7 +92,7 @@
         },
         {
             "id": "C5",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": null,
             "kategori_ar": "اِسْمُ شَرْطٍ",
             "kategori_in": "Isim Syarat",
@@ -104,7 +104,7 @@
         },
         {
             "id": "C6",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": null,
             "kategori_ar": "اِسْمُ فِعْلٍ",
             "kategori_in": "Isim Fiil",
@@ -116,7 +116,7 @@
         },
         {
             "id": "C7",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": null,
             "kategori_ar": "المُنَادَى المُفْرَدُ",
             "kategori_in": "Munada Mufrod",
@@ -128,7 +128,7 @@
         },
         {
             "id": "C8",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": null,
             "kategori_ar": "المُرَكَّبْ العَدَدِىُّ",
             "kategori_in": "Murokab 'Adadi",
@@ -140,7 +140,7 @@
         },
         {
             "id": "C9",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": null,
             "kategori_ar": "اِسْمُ لَا لِنَفْى الْجِنْسِ",
             "kategori_in": "Isim La Linafsil Jinsi",
@@ -152,7 +152,7 @@
         },
         {
             "id": "C10",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": null,
             "kategori_ar": "اِسْمٌ مُفْرَدٌ",
             "kategori_in": "Isim Mufrod",
@@ -164,7 +164,7 @@
         },
         {
             "id": "C11",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": null,
             "kategori_ar": "اِسْمٌ تَثْنِيَةٍ",
             "kategori_in": "Isim Tasniyah",
@@ -176,7 +176,7 @@
         },
         {
             "id": "C12",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": null,
             "kategori_ar": "جَمْعُ تَكْسِيْرٍ",
             "kategori_in": "Jamak Taksir",
@@ -188,7 +188,7 @@
         },
         {
             "id": "C13",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": null,
             "kategori_ar": "جََمْعُ مُذَكَّرٍ سَالِمٌ",
             "kategori_in": "Jamak Mudzakkar Salim",
@@ -200,7 +200,7 @@
         },
         {
             "id": "C14",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": null,
             "kategori_ar": "جَمْعُ مُؤَنَّثٍ سَالِمٌ",
             "kategori_in": "Jamak Muannas Salim",
@@ -212,7 +212,7 @@
         },
         {
             "id": "C15",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": null,
             "kategori_ar": " مِنَ الْأَسْمَاءِ الْخَمْسَةِ",
             "kategori_in": "Asmaul Khomsah",
@@ -224,7 +224,7 @@
         },
         {
             "id": "C16",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": null,
             "kategori_ar": "اِسْمٌ غَيْرُ مُنْصَرِفٍ",
             "kategori_in": "Isim Ghoiru Munshorif",
@@ -236,7 +236,7 @@
         },
         {
             "id": "C17",
-            "id_kalimat": "2.1",
+            "id_kalimat": "21",
             "simbol": "ماض",
             "kategori_ar": "لِعَدَمِ اتِّصَالِهِ بِضَمِيْرِ رَفْعٍ مُتَحَرِّكٍ وَوَاوِ جَمْعٍ",
             "kategori_in": "Tidak bersambung",
@@ -248,7 +248,7 @@
         },
         {
             "id": "C18",
-            "id_kalimat": "2.1",
+            "id_kalimat": "21",
             "simbol": "ماض",
             "kategori_ar": "لِاتِّصَالِهِ بِضَمِيْرِ رَفْعٍ مُتَحَرِّكٍ",
             "kategori_in": "Bersambung Dhomir Rofa Mutaharik",
@@ -260,7 +260,7 @@
         },
         {
             "id": "C19",
-            "id_kalimat": "2.1",
+            "id_kalimat": "21",
             "simbol": "ماض",
             "kategori_ar": "لِاتِّصَالِهِ بِوَاوِ جَمْعٍ",
             "kategori_in": "Bersambung Wawu Jamak",
@@ -272,7 +272,7 @@
         },
         {
             "id": "C20",
-            "id_kalimat": "2.2",
+            "id_kalimat": "22",
             "simbol": null,
             "kategori_ar": "لِاتِّصَالِهِ بِنُوْنِ الْإِنَاثِ",
             "kategori_in": "Bersambung Nun Inatsi",
@@ -284,7 +284,7 @@
         },
         {
             "id": "C21",
-            "id_kalimat": "2.2",
+            "id_kalimat": "22",
             "simbol": null,
             "kategori_ar": "لِاتِّصَالِهِ بِنُوْنِ التَّوْكِيْدِ",
             "kategori_in": "Bersambung Nun Taukid",
@@ -296,7 +296,7 @@
         },
         {
             "id": "C22",
-            "id_kalimat": "2.2",
+            "id_kalimat": "22",
             "simbol": null,
             "kategori_ar": "صَحِيْحُ الْأَخِرِ",
             "kategori_in": "Sohihul Akhir",
@@ -308,7 +308,7 @@
         },
         {
             "id": "C23",
-            "id_kalimat": "2.2",
+            "id_kalimat": "22",
             "simbol": null,
             "kategori_ar": "مُعْتَلُّ الْأَخِرِ بِالْأَلِفِ",
             "kategori_in": "Mu'tal Akhir Alif",
@@ -320,7 +320,7 @@
         },
         {
             "id": "C24",
-            "id_kalimat": "2.2",
+            "id_kalimat": "22",
             "simbol": null,
             "kategori_ar": "مُعْتَلُّ الْأَخِرِ بِالْوَاوِ اَوِ الْيَاءِ",
             "kategori_in": "Mu'tal Akhir Wawu atau Ya",
@@ -332,7 +332,7 @@
         },
         {
             "id": "C25",
-            "id_kalimat": "2.2",
+            "id_kalimat": "22",
             "simbol": null,
             "kategori_ar": "مِنَ الْأَفْعَالِ الْخَمْسَةِ",
             "kategori_in": "Af'alul Khomsah",
@@ -344,43 +344,127 @@
         },
         {
             "id": "C26",
-            "id_kalimat": "2.3",
-            "simbol": null,
+            "id_kalimat": "23",
+            "simbol": "امر",
             "kategori_ar": "صَحِيْحُ الْأَخِرِ",
             "kategori_in": "Sohihul Akhir",
-            "hukum": "مَبْنِيٌ",
+            "hukum": "مَبْنِيٌ عَلَى السُّكُوْنِ",
             "rofa": null,
             "nashob": null,
             "jar": null,
-            "jazm": "سُكُوْنٌ "
+            "jazm": " "
         },
         {
             "id": "C27",
-            "id_kalimat": "2.3",
-            "simbol": null,
+            "id_kalimat": "23",
+            "simbol": "امر",
             "kategori_ar": "مُعْتَلُّ الْأَخِرِ",
             "kategori_in": "Mu'tal Akhir",
-            "hukum": "مَبْنِيٌ",
+            "hukum": "مَبْنِيٌ عَلَى حَذْفِ حَرْفِ الْعِلَّةِ",
             "rofa": null,
             "nashob": null,
             "jar": null,
-            "jazm": "حَذْفُ حَرْفِ الْعِلَّةِ "
+            "jazm": " "
         },
         {
             "id": "C28",
-            "id_kalimat": "2.3",
-            "simbol": null,
+            "id_kalimat": "23",
+            "simbol": "امر",
             "kategori_ar": "مِنَ الْأَفْعَالِ الْخَمْسَةِ",
             "kategori_in": "Af'alul Khomsah",
+            "hukum": "مَبْنِيٌ عَلَى حَذْفِ النُّوْنِ",
+            "rofa": null,
+            "nashob": null,
+            "jar": null,
+            "jazm": " "
+        },
+        {
+            "id": "C29",
+            "id_kalimat": "30",
+            "simbol": "حرف",
+            "kategori_ar": "حَرْفُ",
+            "kategori_in": "Huruf",
             "hukum": "مَبْنِيٌ",
             "rofa": null,
             "nashob": null,
             "jar": null,
-            "jazm": "حَذْفُ النُّوْنِ "
+            "jazm": " "
         },
         {
-            "id": "C29",
-            "id_kalimat": "3.0",
+            "id": "C30",
+            "id_kalimat": "30",
+            "simbol": "حرف",
+            "kategori_ar": "حَرْفُ عَطْفٍ",
+            "kategori_in": "Huruf Athor",
+            "hukum": "مَبْنِيٌ",
+            "rofa": null,
+            "nashob": null,
+            "jar": null,
+            "jazm": " "
+        },
+        {
+            "id": "C31",
+            "id_kalimat": "30",
+            "simbol": "حرف",
+            "kategori_ar": "حَرْفُ اِسْتِئْنَافٍ",
+            "kategori_in": "Huruf Istinaf",
+            "hukum": "مَبْنِيٌ",
+            "rofa": null,
+            "nashob": null,
+            "jar": null,
+            "jazm": " "
+        },
+        {
+            "id": "C32",
+            "id_kalimat": "30",
+            "simbol": "حرف",
+            "kategori_ar": "حَرْفُ نَصْبٍ",
+            "kategori_in": "Huruf Nashob",
+            "hukum": "مَبْنِيٌ",
+            "rofa": null,
+            "nashob": null,
+            "jar": null,
+            "jazm": " "
+        },
+        {
+            "id": "C33",
+            "id_kalimat": "30",
+            "simbol": "حرف",
+            "kategori_ar": "حَرْفُ جَزْمٍ",
+            "kategori_in": "Huruf Jazm",
+            "hukum": "مَبْنِيٌ",
+            "rofa": null,
+            "nashob": null,
+            "jar": null,
+            "jazm": " "
+        },
+        {
+            "id": "C34",
+            "id_kalimat": "30",
+            "simbol": "حرف",
+            "kategori_ar": "حَرْفُ مَصْدَرٍ",
+            "kategori_in": "Huruf Masdar",
+            "hukum": "مَبْنِيٌ",
+            "rofa": null,
+            "nashob": null,
+            "jar": null,
+            "jazm": " "
+        },
+        {
+            "id": "C35",
+            "id_kalimat": "30",
+            "simbol": "حرف",
+            "kategori_ar": "حَرْفُ نَفْيٍ",
+            "kategori_in": "Huruf Nafi",
+            "hukum": "مَبْنِيٌ",
+            "rofa": null,
+            "nashob": null,
+            "jar": null,
+            "jazm": " "
+        },
+        {
+            "id": "C36",
+            "id_kalimat": "30",
             "simbol": "جار",
             "kategori_ar": "حَرْفُ جَرّ",
             "kategori_in": "Huruf Jar",
@@ -391,8 +475,8 @@
             "jazm": " "
         },
         {
-            "id": "C30",
-            "id_kalimat": "3.0",
+            "id": "C37",
+            "id_kalimat": "30",
             "simbol": "ش",
             "kategori_ar": "حَرْفُ شَرْطٍ",
             "kategori_in": "Huruf Syarat",
@@ -403,8 +487,8 @@
             "jazm": " "
         },
         {
-            "id": "C31",
-            "id_kalimat": "3.0",
+            "id": "C38",
+            "id_kalimat": "30",
             "simbol": "ج",
             "kategori_ar": "حَرْفُ جَوَابٍ",
             "kategori_in": "Huruf Jawab",
@@ -415,8 +499,8 @@
             "jazm": " "
         },
         {
-            "id": "C32",
-            "id_kalimat": "3.0",
+            "id": "C39",
+            "id_kalimat": "30",
             "simbol": "حال",
             "kategori_ar": "حَرْفُ حَالٍ",
             "kategori_in": "Huruf Hal",
@@ -427,34 +511,46 @@
             "jazm": " "
         },
         {
-            "id": "C33",
-            "id_kalimat": "4.2",
+            "id": "C40",
+            "id_kalimat": "30",
+            "simbol": "توكيد",
+            "kategori_ar": "حَرْفُ تَوْكِيْدٌ",
+            "kategori_in": "Huruf Taukid",
+            "hukum": "مَبْنِيٌ",
+            "rofa": null,
+            "nashob": null,
+            "jar": null,
+            "jazm": " "
+        },
+        {
+            "id": "C41",
+            "id_kalimat": "42",
             "simbol": "-",
             "kategori_ar": "الجَارُ وَالمَجْرُوْرُ",
             "kategori_in": "Jar Majrur",
             "hukum": null,
-            "rofa": "فِىْ مَحَلِّ",
-            "nashob": "فِىْ مَحَلِّ",
-            "jar": "فِىْ مَحَلِّ",
+            "rofa": "فِىْ مَحَلِّ رَفْعٍ",
+            "nashob": "فِىْ مَحَلِّ نَصْبٍ",
+            "jar": "فِىْ مَحَلِّ جَرٍّ",
             "jazm": " "
         },
         {
-            "id": "C34",
-            "id_kalimat": "4.2",
+            "id": "C42",
+            "id_kalimat": "42",
             "simbol": "-",
             "kategori_ar": "ظَرْفٌ",
             "kategori_in": "Dzorof",
             "hukum": null,
-            "rofa": "فِىْ مَحَلِّ",
-            "nashob": "فِىْ مَحَلِّ",
-            "jar": "فِىْ مَحَلِّ",
+            "rofa": "فِىْ مَحَلِّ رَفْعٍ",
+            "nashob": "فِىْ مَحَلِّ نَصْبٍ",
+            "jar": "فِىْ مَحَلِّ جَرٍّ",
             "jazm": null
         }
     ],
     "kedudukan": [
         {
             "id": "KD1",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "مبتدأ",
             "kedudukan_ar": "مُبْتَدَأٌ",
             "kedudukan_in": "Mubtada",
@@ -462,7 +558,7 @@
         },
         {
             "id": "KD2",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "خبر",
             "kedudukan_ar": "خَبَرُ الْمُبْتَدَإِ",
             "kedudukan_in": "Khobar",
@@ -470,7 +566,7 @@
         },
         {
             "id": "KD3",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "فاعل",
             "kedudukan_ar": "فَاعِلٌ",
             "kedudukan_in": "Fail",
@@ -478,7 +574,7 @@
         },
         {
             "id": "KD4",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "فا.م",
             "kedudukan_ar": "فَاعِلٌ مُسْتَتِرٌ",
             "kedudukan_in": "Fail Mustatir",
@@ -486,7 +582,7 @@
         },
         {
             "id": "KD5",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "ن. فاعل",
             "kedudukan_ar": "نَائِبُ الْفَاعِلِ",
             "kedudukan_in": "Naibul Fail",
@@ -494,7 +590,7 @@
         },
         {
             "id": "KD6",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "نفا.م",
             "kedudukan_ar": "نَائِبُ الْفَاعِلِ مُسْتَتِرٌ",
             "kedudukan_in": "Naibul Fail Mustatir",
@@ -502,7 +598,7 @@
         },
         {
             "id": "KD7",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "اسم كان",
             "kedudukan_ar": "اِسْمُ كَانَ",
             "kedudukan_in": "Isim Kaana",
@@ -510,7 +606,7 @@
         },
         {
             "id": "KD8",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "اسم ليس",
             "kedudukan_ar": "اِسْمُ لَيْسَ",
             "kedudukan_in": "Isim Laisa",
@@ -518,7 +614,7 @@
         },
         {
             "id": "KD9",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "اسم اصبح",
             "kedudukan_ar": "اِسْمُ اَصْبَحَ",
             "kedudukan_in": "Isim Asbaha",
@@ -526,7 +622,7 @@
         },
         {
             "id": "KD10",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "اسم صار",
             "kedudukan_ar": "اِسْمُ صَارَ",
             "kedudukan_in": "Isim Sooro",
@@ -534,7 +630,7 @@
         },
         {
             "id": "KD11",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "اسم ما",
             "kedudukan_ar": "اِسْمُ مَا",
             "kedudukan_in": "Isim Maa Al Hijaziah",
@@ -542,7 +638,7 @@
         },
         {
             "id": "KD12",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "خ. انّ",
             "kedudukan_ar": "خَبَرُ اِنَّ",
             "kedudukan_in": "Khobar inna",
@@ -550,7 +646,7 @@
         },
         {
             "id": "KD13",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "خ.لعل",
             "kedudukan_ar": "خَبَرُ لَعَلَّ",
             "kedudukan_in": "Khobar La'alla",
@@ -558,7 +654,7 @@
         },
         {
             "id": "KD14",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "خ.ليت",
             "kedudukan_ar": "خَبَرُ لَيْتَ",
             "kedudukan_in": "Khobar Laita",
@@ -566,7 +662,7 @@
         },
         {
             "id": "KD15",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "خ.لكنّ",
             "kedudukan_ar": "خَبَرُ لَكِنَّ",
             "kedudukan_in": "Khobar Lakinna",
@@ -574,7 +670,7 @@
         },
         {
             "id": "KD16",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "خ.كأنّ",
             "kedudukan_ar": "خَبَرُكَأَنَّ",
             "kedudukan_in": "Khobar Kaanna",
@@ -582,7 +678,7 @@
         },
         {
             "id": "KD17",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "نعت",
             "kedudukan_ar": "نَعْتٌ لِلْمَرْفُوْعِ",
             "kedudukan_in": "Naat Lil Marfu",
@@ -590,7 +686,7 @@
         },
         {
             "id": "KD18",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "بدل",
             "kedudukan_ar": "بَدَلٌ مِنَ الْمَرْفُوْعِ",
             "kedudukan_in": "Badal Minal Marfu",
@@ -598,7 +694,7 @@
         },
         {
             "id": "KD19",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "توكيد",
             "kedudukan_ar": "تَوْكِيْدٌ لِلْمَرْفُوْعِ",
             "kedudukan_in": "Taukid Lil Marfu",
@@ -606,7 +702,7 @@
         },
         {
             "id": "KD20",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "معطوف",
             "kedudukan_ar": "مَعْطُوْفٌ عَلَى الْمَرْفُوْعِ",
             "kedudukan_in": "Matuf  Alal Marfu",
@@ -614,7 +710,7 @@
         },
         {
             "id": "KD21",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "مف",
             "kedudukan_ar": "مَفْعُوْلٌ بِهِ",
             "kedudukan_in": "Maf'ul Bih",
@@ -622,7 +718,7 @@
         },
         {
             "id": "KD22",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "حال",
             "kedudukan_ar": "حَالٌ",
             "kedudukan_in": "Haal",
@@ -630,7 +726,7 @@
         },
         {
             "id": "KD23",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "ظرف",
             "kedudukan_ar": "ظَرْفٌ",
             "kedudukan_in": "Dzorof",
@@ -638,7 +734,7 @@
         },
         {
             "id": "KD24",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "مط",
             "kedudukan_ar": "مَفْعُوْلٌ مُطْلَقٌ",
             "kedudukan_in": "Maf'ul Mutlaq",
@@ -646,7 +742,7 @@
         },
         {
             "id": "KD25",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "تمييز",
             "kedudukan_ar": "تَمْيِيْزٌ",
             "kedudukan_in": "Tamyiz",
@@ -654,7 +750,7 @@
         },
         {
             "id": "KD26",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "مل",
             "kedudukan_ar": "مَفْعُوْلٌ لِأَجْلِهِ",
             "kedudukan_in": "Maf'ul Liajlih",
@@ -662,7 +758,7 @@
         },
         {
             "id": "KD27",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "معه",
             "kedudukan_ar": "مَفْعُوْلٌ مَعَهُ",
             "kedudukan_in": "Maf'ul Ma'ahu",
@@ -670,7 +766,7 @@
         },
         {
             "id": "KD28",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "مستثنى",
             "kedudukan_ar": "المُسْتَثْنَى",
             "kedudukan_in": "Mustasna",
@@ -678,7 +774,7 @@
         },
         {
             "id": "KD29",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "اسم انّ",
             "kedudukan_ar": "اِسْمُ اِنَّ",
             "kedudukan_in": "Isim Inna",
@@ -686,7 +782,7 @@
         },
         {
             "id": "KD30",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "اسم لعل",
             "kedudukan_ar": "اِسْمُ لَعَلَّ",
             "kedudukan_in": "Isim La'alla",
@@ -694,7 +790,7 @@
         },
         {
             "id": "KD31",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "اسم ليت",
             "kedudukan_ar": "اِسْمُ لَيْتَ",
             "kedudukan_in": "Isim Laita",
@@ -702,7 +798,7 @@
         },
         {
             "id": "KD32",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "اسم لكنّ",
             "kedudukan_ar": "اِسْمُ لَكِنَّ",
             "kedudukan_in": "Isim Lakin",
@@ -710,7 +806,7 @@
         },
         {
             "id": "KD33",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "اسم كأنّ",
             "kedudukan_ar": "اِسْمُ كَأَنَّ",
             "kedudukan_in": "Isim Kaanna",
@@ -718,7 +814,7 @@
         },
         {
             "id": "KD34",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "اسم لا",
             "kedudukan_ar": "اِسْمُ لَا لِنَفْيِ الْجِنْسِ",
             "kedudukan_in": "Isim La Linafsil Jinsi",
@@ -726,7 +822,7 @@
         },
         {
             "id": "KD35",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "خ.كان",
             "kedudukan_ar": "خَبَرُكَانَ",
             "kedudukan_in": "Khobar Kaana",
@@ -734,7 +830,7 @@
         },
         {
             "id": "KD36",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "خ.ليس",
             "kedudukan_ar": "خَبَرُ لَيْسَ",
             "kedudukan_in": "Khobar Laisa",
@@ -742,7 +838,7 @@
         },
         {
             "id": "KD37",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "خ.اسبح",
             "kedudukan_ar": "خَبَرُ اَسْبَحَ",
             "kedudukan_in": "Khobar Asbaha",
@@ -750,7 +846,7 @@
         },
         {
             "id": "KD38",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "خ.صار",
             "kedudukan_ar": "خَبَرُ صَارَ",
             "kedudukan_in": "Khobar Soro",
@@ -758,7 +854,7 @@
         },
         {
             "id": "KD39",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "خ.ما",
             "kedudukan_ar": "خَبَرُ مَا الحِجَازِيَة",
             "kedudukan_in": "Khobar Ma Al Hijaziyah",
@@ -766,7 +862,7 @@
         },
         {
             "id": "KD40",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "نعت",
             "kedudukan_ar": "نَعْتٌ لِلْمَنْصُوْبِ",
             "kedudukan_in": "Naat Lil Mansub",
@@ -774,7 +870,7 @@
         },
         {
             "id": "KD41",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "بدل",
             "kedudukan_ar": "بَدَلٌ مِنَ الْمَنْصُوْبِ",
             "kedudukan_in": "Badal Minal Mansub",
@@ -782,7 +878,7 @@
         },
         {
             "id": "KD42",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "توكيد",
             "kedudukan_ar": "تَوْكِيْدٌ لِلْمَنْصُوْبِ",
             "kedudukan_in": "Taukid Lil Mansub",
@@ -790,7 +886,7 @@
         },
         {
             "id": "KD43",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "معطوف",
             "kedudukan_ar": "مَعْطُوْفٌ عَلَى الْمَنْصُوْبِ",
             "kedudukan_in": "Ma'tuf Alal Mansub",
@@ -798,7 +894,7 @@
         },
         {
             "id": "KD44",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "مجرور",
             "kedudukan_ar": "مَجْرُوْرٌ بِحَرْفِ الْجَرِّ",
             "kedudukan_in": "Majrur Bi Harfil Jar",
@@ -806,7 +902,7 @@
         },
         {
             "id": "KD45",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "مض.إ",
             "kedudukan_ar": "مُضَافٌ اِلَيْهِ",
             "kedudukan_in": "Mudhof Ilaih",
@@ -814,7 +910,7 @@
         },
         {
             "id": "KD46",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "نعت",
             "kedudukan_ar": "نَعْتٌ لِلْمَجْرُوْرِ",
             "kedudukan_in": "Naat Lil Majrur",
@@ -822,7 +918,7 @@
         },
         {
             "id": "KD47",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "بدل",
             "kedudukan_ar": "بَدَلٌ مِنَ الْمَجْرُوْرِ",
             "kedudukan_in": "Badal Minal Majrur",
@@ -830,7 +926,7 @@
         },
         {
             "id": "KD48",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "توكيد",
             "kedudukan_ar": "تَوْكِيْدٌ لِلْمَجْرُوْرِ",
             "kedudukan_in": "Taukid Lil Majrur",
@@ -838,7 +934,7 @@
         },
         {
             "id": "KD49",
-            "id_kalimat": "1.0",
+            "id_kalimat": "10",
             "simbol": "معطوف",
             "kedudukan_ar": "مَعْطُوْفٌ عَلَى الْمَجْرُوْرِ",
             "kedudukan_in": "Ma'tuf Alal Majrur",
@@ -846,7 +942,7 @@
         },
         {
             "id": "KD50",
-            "id_kalimat": "2.2",
+            "id_kalimat": "22",
             "simbol": "مضارع:ر",
             "kedudukan_ar": "تَجَرَّدَ عَنِ النَّاصِبِ وَالْجَازِمِ",
             "kedudukan_in": "Sepi dari Nashob dan Jazm",
@@ -854,7 +950,7 @@
         },
         {
             "id": "KD51",
-            "id_kalimat": "2.2",
+            "id_kalimat": "22",
             "simbol": "مضارع:ن",
             "kedudukan_ar": "دَخَلَ عَلَيْهِ نَاصِبٌ",
             "kedudukan_in": "Bertemu Amil Nashob",
@@ -862,7 +958,7 @@
         },
         {
             "id": "KD52",
-            "id_kalimat": "2.2",
+            "id_kalimat": "22",
             "simbol": "مضارع:ج",
             "kedudukan_ar": "دَخَلَ عَلَيْهِ جَازِمٌ",
             "kedudukan_in": "Bertemu Amil Jazm",

@@ -19,7 +19,7 @@ $('#btn-add-word').on('click', function () {
     $('#input-kategori').val('');
     $('#input-hukum').val('');
     $('#input-irob').val('');
-    $('#input-alamat').val('');
+    $('#input-tanda').val('');
     $('#input-kedudukan').val('');
     $('#input-simbol').val('');
 
@@ -29,13 +29,18 @@ $('#btn-add-word').on('click', function () {
 $('#form-add-word').on('submit', function (e) {
     e.preventDefault();
 
+    // Validate Input
     const wordId = $('#input-id').val();
     const lafadz = $('#input-lafadz').val().trim();
+    const kalimat = $('#input-kalimat').val();
+
+    // validate required fields
     if (!lafadz) {
-        // iziToast.warning({
-        //     message: 'Harap masukkan lafadz',
-        //     position: 'topCenter'
-        // });
+        alert('Lafadz tidak boleh kosong');
+        return;
+    }
+    if (!kalimat || kalimat.startsWith('Pilih')) {
+        alert('Kalimat tidak boleh kosong');
         return;
     }
 
@@ -61,27 +66,13 @@ $('#form-add-word').on('submit', function (e) {
         text: $('#input-lafadz').val().trim(),
         order_number: wordId ? $('#input-order-number').val() : newOrder,
         translation: $('#input-translation').val().trim(),
-        // kalimat: $('#input-kalimat').val(),
-        // jenis: $('#input-variation').val(),
-        // hukum: $('#input-hukum').val(),
-        // mabni_detail: $('#input-mabni-detail').val(),
-        // category: $('#input-kategori').val(),
-        // kedudukan: $('#input-mahal').val(),
-        // irob: $('#input-irob').val(),
-        // alamat: $('#input-alamat').val(),
-        // condition: $('#input-condition').val(),
-        // matbu: $('#input-matbu').val(),
-
-        kalimat: null,
-        jenis: null,
-        hukum: null,
-        mabni_detail: null,
-        category: null,
-        kedudukan: null,
-        irob: null,
-        alamat: null,
-        condition: null,
-        matbu: null,
+        kalimat: $('#input-kalimat option:selected').text(),
+        kategori: $('#input-kategori option:selected').text() || null,
+        hukum: $('#input-hukum').val(),
+        kedudukan: $('#input-kedudukan option:selected').text() || null,
+        irob: $('#input-irob').val(),
+        tanda: $('#input-tanda').val(),
+        simbol: $('#input-simbol').val(),
     };
 
     // get mode

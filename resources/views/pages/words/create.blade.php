@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ asset('library/owl.carousel/dist/assets/owl.theme.default.min.css') }}">
     <link rel="stylesheet" href="{{ asset('library/ionicons201/css/ionicons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('library/izitoast/dist/css/iziToast.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('library/select2/dist/css/select2.min.css') }}">
 
 
     <style>
@@ -264,7 +265,7 @@
                             <div class="form-group col-12">
                                 {{-- <label for="input-translation">Terjemah</label> --}}
                                 <input type="text" class="form-control text-center" id="input-translation"
-                                    placeholder="Terjemah">
+                                    placeholder="Terjemah" required="">
                             </div>
                         </div>
                         @if (auth()->check() && auth()->user()->roles === 'administrator')
@@ -273,14 +274,14 @@
                                     <label for="input-kalimat">Kalimat</label>
                                     <select id="input-kalimat" class="form-control form-control-ar arabic-text">
                                         <option selected disabled>Pilih Kalimat</option>
-                                        <option value="1.0">اِسْمٌ</option>
-                                        <option value="2.1">فِعْلٌ مَاضٍ</option>
-                                        <option value="2.2">فِعْلٌ مُضَارِعٌ</option>
-                                        <option value="2.3">فِعْلٌ أَمْرٍ</option>
-                                        <option value="3.0">حَرْفٌ</option>
-                                        <option value="4.1">جُمْلَةٌ</option>
-                                        <option value="4.2">شِبْهُ الْجُمْلَةِ</option>
-                                        <option value="5.0">إِسْمٌ مُؤَوَّلٌ</option>
+                                        <option value="10">اِسْمٌ</option>
+                                        <option value="21">فِعْلٌ مَاضٍ</option>
+                                        <option value="22">فِعْلٌ مُضَارِعٌ</option>
+                                        <option value="23">فِعْلٌ أَمْرٍ</option>
+                                        <option value="30">حَرْفٌ</option>
+                                        <option value="41">جُمْلَةٌ</option>
+                                        <option value="42">شِبْهُ الْجُمْلَةِ</option>
+                                        <option value="11">اِسْمٌ مُؤَوَّلٌ</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
@@ -291,13 +292,13 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <label for="input-hukum">Hukum</label>
-                                    <select id="input-hukum" class="form-control form-control-ar arabic-text">
+                                    <label for="input-kedudukan">Kedudukan</label>
+                                    <select id="input-kedudukan" class="form-control form-control-ar arabic-text">
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="input-kedudukan">Kedudukan</label>
-                                    <select id="input-kedudukan" class="form-control form-control-ar arabic-text">
+                                    <label for="input-hukum">Hukum</label>
+                                    <select id="input-hukum" class="form-control form-control-ar arabic-text">
                                     </select>
                                 </div>
                             </div>
@@ -358,6 +359,7 @@
     <script src="{{ asset('library/owl.carousel/dist/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('library/izitoast/dist/js/iziToast.min.js') }}"></script>
     <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('library/select2/dist/js/select2.full.min.js') }}"></script>
 
     <script>
         window.WORDS_SYNC_URL = "{{ route('words.sync') }}";
