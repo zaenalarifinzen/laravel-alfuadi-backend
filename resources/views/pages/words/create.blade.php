@@ -172,9 +172,8 @@
                                             <i class="fa-solid fa-sort"></i>
                                         </th>
                                         <th>Lafadz</th>
+                                        <th>Simbol</th>
                                         <th>Terjemah</th>
-                                        <th>Kalimat</th>
-                                        <th>Kedudukan</th>
                                     </tr>
                                 </thead>
                                 @php
@@ -184,13 +183,18 @@
                                 <tbody>
                                     @forelse ($words as $word)
                                         <tr class="text-center">
-                                            <td>
+                                            <td style="width: 40px;">
                                                 <div class="sort-handler">
                                                     <i class="fa-solid fa-grip"></i>
                                                 </div>
                                             </td>
                                             <td class="text-center align-middle word" id="{{ $word->id }}">
-                                                <div class="arabic-text words">{{ $word->text }}</div>
+                                                <div
+                                                    class="@if ($word->color == 'red') text-danger
+                                                @elseif($word->color == 'green') text-success
+                                                @elseif($word->color == 'blue') text-info 
+                                                @else text-dark @endif arabic-text words">
+                                                    {{ $word->text }}</div>
                                                 <div class="table-links">
                                                     <a href="#" class="word-detail">Detail</a>
                                                     <div class="bullet"></div>
@@ -199,19 +203,16 @@
                                                     <a href="#" class="text-danger word-delete">Hapus</a>
                                                 </div>
                                             </td>
-                                            <td class="translation">
-                                                {{ $word->translation }}
-                                            </td>
                                             <td>
                                                 <div
-                                                    class="badge @if ($word->kalimat == 'فعل') badge-success
-                                                @elseif($word->kalimat == 'اسم') badge-info
-                                                @elseif($word->kalimat == 'حرف') badge-danger
-                                                @else badge-light @endif">
-                                                    {{ $word->kalimat }}</div>
+                                                    class="text-center @if ($word->color == 'red') text-danger
+                                                @elseif($word->color == 'green') text-success
+                                                @elseif($word->color == 'blue') text-info
+                                                @else text-dark mb-2 @endif mb-2 arabic-text ar-symbol">
+                                                    {{ $word->simbol }}</div>
                                             </td>
-                                            <td class="arabic-text">
-                                                {{ $word->jenis }}
+                                            <td class="translation">
+                                                {{ $word->translation }}
                                             </td>
                                         </tr>
                                     @empty

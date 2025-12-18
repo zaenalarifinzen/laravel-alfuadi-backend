@@ -40,6 +40,10 @@ a {
 .ar-subtitle {
     font-size: 1rem !important;
 }
+.ar-symbol {
+    font-size: 0.8rem !important;
+    font-weight: 600;
+}
 
 .word-group {
     font-size: 2rem;

@@ -119,6 +119,7 @@ class WordController extends Controller
                                 'text' => $word['text'],
                                 'translation' => $word['translation'] ?? null,
                                 'kalimat' => $word['kalimat'] ?? null,
+                                'color' => $word['color'] ?? null,
                                 'kategori' => $word['kategori'] ?? null,
                                 'hukum' => $word['hukum'] ?? null,
                                 'kedudukan' => $word['kedudukan'] ?? null,

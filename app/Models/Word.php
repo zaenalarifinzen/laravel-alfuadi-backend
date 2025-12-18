@@ -17,6 +17,7 @@ class Word extends Model
         'text',
         'translation',
         'kalimat',
+        'color',
         'kategori',
         'hukum',
         'kedudukan',

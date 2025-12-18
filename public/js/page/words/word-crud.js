@@ -1,90 +1,126 @@
 "use strict";
 
 // open modal
-$('#btn-add-word').on('click', function () {
-    $('#form-add-word')[0].reset();
-    $('#form-add-word-label').text('Tambah Kalimat');
-    $('#btn-submit').text('Tambahkan');
+$("#btn-add-word").on("click", function () {
+    $("#form-add-word")[0].reset();
+    $("#form-add-word-label").text("Tambah Kalimat");
+    $("#btn-submit").text("Tambahkan");
 
     // get key from local storage
-    const currentKey = Object.keys(localStorage).find(k => k.startsWith('wordgroups_'));
+    const currentKey = Object.keys(localStorage).find((k) =>
+        k.startsWith("wordgroups_")
+    );
     const stored = JSON.parse(localStorage.getItem(currentKey));
 
     // get active wordgroup
-    const activeWordGroupId = $('.owl-item.active .word-group').attr('wg-id');
-    const wordGroup = stored.data.wordGroups.find(g => g.id == activeWordGroupId);
+    const activeWordGroupId = $(".owl-item.active .word-group").attr("wg-id");
+    const wordGroup = stored.data.wordGroups.find(
+        (g) => g.id == activeWordGroupId
+    );
 
-    $('#input-id').val('');
-    $('#input-lafadz').val(wordGroup.text);
-    $('#input-kategori').val('');
-    $('#input-hukum').val('');
-    $('#input-irob').val('');
-    $('#input-tanda').val('');
-    $('#input-kedudukan').val('');
-    $('#input-simbol').val('');
+    $("#input-id").val("");
+    $("#input-lafadz").val(wordGroup.text);
+    $("#input-kategori").val("");
+    $("#input-hukum").val("");
+    $("#input-irob").val("");
+    $("#input-tanda").val("");
+    $("#input-kedudukan").val("");
+    $("#input-simbol").val("");
 
-    $('#modal-add-word').modal('show');
+    $("#modal-add-word").modal("show");
 });
 
-$('#form-add-word').on('submit', function (e) {
+$("#form-add-word").on("submit", function (e) {
     e.preventDefault();
 
     // Validate Input
-    const wordId = $('#input-id').val();
-    const lafadz = $('#input-lafadz').val().trim();
-    const kalimat = $('#input-kalimat').val();
+    const wordId = $("#input-id").val();
+    const lafadz = $("#input-lafadz").val().trim();
+    const kalimat = $("#input-kalimat").val();
 
     // validate required fields
     if (!lafadz) {
-        alert('Lafadz tidak boleh kosong');
+        alert("Lafadz tidak boleh kosong");
         return;
     }
-    if (!kalimat || kalimat.startsWith('Pilih')) {
-        alert('Kalimat tidak boleh kosong');
+    if (!kalimat || kalimat.startsWith("Pilih")) {
+        alert("Kalimat tidak boleh kosong");
         return;
     }
 
     // Logic
     // get key from local storage
-    const currentKey = Object.keys(localStorage).find(k => k.startsWith('wordgroups_'));
+    const currentKey = Object.keys(localStorage).find((k) =>
+        k.startsWith("wordgroups_")
+    );
     const stored = JSON.parse(localStorage.getItem(currentKey));
 
     // get active wordgroup
-    const activeWordGroupId = $('.owl-item.active .word-group').attr('wg-id');
-    const wordGroup = stored.data.wordGroups.find(g => g.id == activeWordGroupId);
+    const activeWordGroupId = $(".owl-item.active .word-group").attr("wg-id");
+    const wordGroup = stored.data.wordGroups.find(
+        (g) => g.id == activeWordGroupId
+    );
 
-    const groupIndex = stored.data.wordGroups.findIndex(g => g.id == activeWordGroupId);
+    const groupIndex = stored.data.wordGroups.findIndex(
+        (g) => g.id == activeWordGroupId
+    );
     if (groupIndex === -1) {
-        alert('WordGroup tidak ditemukan');
+        alert("WordGroup tidak ditemukan");
         return;
     }
 
     const newOrder = (wordGroup.words?.length || 0) + 1;
+    let color;
+    if (lafadz === "-") {
+        color = "black";
+    } else {
+        switch (kalimat) {
+            case "10":
+                color = "blue";
+                break;
+            case "21":
+                color = "green";
+                break;
+            case "22":
+                color = "green";
+                break;
+            case "23":
+                color = "green";
+                break;
+            case "30":
+                color = "red";
+                break;
+            default:
+                color = "black";
+                break;
+        }
+    }
 
     const newWord = {
         id: wordId || Date.now(),
-        text: $('#input-lafadz').val().trim(),
-        order_number: wordId ? $('#input-order-number').val() : newOrder,
-        translation: $('#input-translation').val().trim(),
-        kalimat: $('#input-kalimat option:selected').text(),
-        kategori: $('#input-kategori option:selected').text() || null,
-        hukum: $('#input-hukum').val(),
-        kedudukan: $('#input-kedudukan option:selected').text() || null,
-        irob: $('#input-irob').val(),
-        tanda: $('#input-tanda').val(),
-        simbol: $('#input-simbol').val(),
+        text: $("#input-lafadz").val().trim(),
+        order_number: wordId ? $("#input-order-number").val() : newOrder,
+        translation: $("#input-translation").val().trim(),
+        kalimat: $("#input-kalimat option:selected").text(),
+        color: color,
+        kategori: $("#input-kategori option:selected").text() || null,
+        hukum: $("#input-hukum").val(),
+        kedudukan: $("#input-kedudukan option:selected").text() || null,
+        irob: $("#input-irob").val(),
+        tanda: $("#input-tanda").val(),
+        simbol: $("#input-simbol").val(),
     };
 
     // get mode
     if (wordId) {
         // MODE EDIT
         const words = stored.data.wordGroups[groupIndex].words || [];
-        const wordIndex = words.findIndex(w => w.id == wordId);
+        const wordIndex = words.findIndex((w) => w.id == wordId);
 
         if (wordIndex !== -1) {
             stored.data.wordGroups[groupIndex].words[wordIndex] = newWord;
         } else {
-            console.warn('Word tidak ditemukan, menambahkan sebagai baru');
+            console.warn("Word tidak ditemukan, menambahkan sebagai baru");
             word.push(newWord);
         }
     } else {
@@ -106,13 +142,13 @@ $('#form-add-word').on('submit', function (e) {
     renderWordsTable(wordGroup);
 
     // form.stopProgress();
-    $('#form-add-word')[0].reset();
-    $('#modal-add-word').modal('hide');
+    $("#form-add-word")[0].reset();
+    $("#modal-add-word").modal("hide");
 });
 
 // Render Words Table
 function renderWordsTable(wordGroup) {
-    const tbody = $('#sortable-table tbody');
+    const tbody = $("#sortable-table tbody");
     tbody.empty();
 
     if (!wordGroup || !wordGroup.words || wordGroup.words.length === 0) {
@@ -125,23 +161,27 @@ function renderWordsTable(wordGroup) {
     }
 
     // sort word based on order_number
-    wordGroup.words.sort((a, b) => (a.order_number || 0) - (b.order_number || 0));
+    wordGroup.words.sort(
+        (a, b) => (a.order_number || 0) - (b.order_number || 0)
+    );
 
-    wordGroup.words.forEach(word => {
-        let badgeClass = 'badge-light';
-        if (word.kalimat === 'فعل') badgeClass = 'badge-success';
-        else if (word.kalimat === 'اسم') badgeClass = 'badge-info';
-        else if (word.kalimat === 'حرف') badgeClass = 'badge-danger';
+    wordGroup.words.forEach((word) => {
+        let simbolClass = "text-dark";
+        if (word.color === "red") simbolClass = "text-danger";
+        else if (word.color === "green") simbolClass = "text-success";
+        else if (word.color === "blue") simbolClass = "text-info";
 
         const row = `
             <tr>
-                <td class="text-center align-middle w-5">
+                <td class="text-center align-middle">
                     <div class="sort-handler align-middle">
                         <i class="fa-solid fa-grip"></i>
                     </div>
                 </td>
-                <td class="text-center align-middle w-5">
-                    <div class="arabic-text words" id="${word.id}">${word.text}</div>
+                <td class="text-center align-middle">
+                    <div class="${simbolClass} arabic-text words" id="${
+            word.id
+        }">${word.text}</div>
                     <div class="table-links">
                         <a href="#" class="word-detail">Detail</a>
                         <div class="bullet"></div>
@@ -150,11 +190,14 @@ function renderWordsTable(wordGroup) {
                         <a href="#" class="text-danger word-delete" id="btl-delete">Hapus</a>
                     </div>
                 </td>
-                <td class="text-center align-middle translation">${word.translation ?? ''}</td>
                 <td class="text-center align-middle">
-                    <div class="badge ${badgeClass}">${word.kalimat ?? ''}</div>
+                    <div class="text-center ${simbolClass} mb-2 arabic-text ar-symbol">${
+            word.simbol ?? ""
+        }</div>
                 </td>
-                <td class="arabic-text">${word.kedudukan ?? ''}</td>
+                <td class="text-center align-middle translation">${
+                    word.translation ?? ""
+                }</td>
             </tr>
         `;
         tbody.append(row);
@@ -162,43 +205,51 @@ function renderWordsTable(wordGroup) {
 }
 
 // Delete word row
-$(document).on('click', '.table-links .word-delete', function (e) {
+$(document).on("click", ".table-links .word-delete", function (e) {
     e.preventDefault();
 
     // confirm deletion
     swal({
-        title: 'Konfirmasi',
-        text: 'Yakin ingin menghapus kalimat ini?',
+        title: "Konfirmasi",
+        text: "Yakin ingin menghapus kalimat ini?",
         buttons: {
             cancel: {
-                text: 'Batal',
+                text: "Batal",
                 visible: true,
             },
             confirm: {
-                text: 'Hapus',
+                text: "Hapus",
                 visible: true,
-                className: 'btn-danger'
+                className: "btn-danger",
             },
         },
     }).then((willSave) => {
         if (!willSave) return;
 
-        const wordId = $(this).closest('tr').find('.words').attr('id');
+        const wordId = $(this).closest("tr").find(".words").attr("id");
 
         // get data from local storage
-        const currentKey = Object.keys(localStorage).find(k => k.startsWith('wordgroups_'));
+        const currentKey = Object.keys(localStorage).find((k) =>
+            k.startsWith("wordgroups_")
+        );
         if (!currentKey) return;
 
         const stored = JSON.parse(localStorage.getItem(currentKey));
 
         // get active wordgroup
-        const activeWordGroupId = $('.owl-item.active .word-group').attr('wg-id');
+        const activeWordGroupId = $(".owl-item.active .word-group").attr(
+            "wg-id"
+        );
         // console.log('activeWordGroupId: ', activeWordGroupId);
-        const groupIndex = stored.data.wordGroups.findIndex(g => g.id == activeWordGroupId);
+        const groupIndex = stored.data.wordGroups.findIndex(
+            (g) => g.id == activeWordGroupId
+        );
         if (groupIndex === -1) return;
 
         // delete word base on Id
-        stored.data.wordGroups[groupIndex].words = stored.data.wordGroups[groupIndex].words.filter(w => w.id != wordId);
+        stored.data.wordGroups[groupIndex].words = stored.data.wordGroups[
+            groupIndex
+        ].words.filter((w) => w.id != wordId);
 
         // save again
         localStorage.setItem(currentKey, JSON.stringify(stored));
@@ -214,71 +265,94 @@ $(document).on('click', '.table-links .word-delete', function (e) {
 });
 
 // Edit Word Row
-$(document).on('click', '.table-links .word-edit', function (e) {
+$(document).on("click", ".table-links .word-edit", function (e) {
     e.preventDefault();
 
-    const tr = $(this).closest('tr');
-    const wordId = tr.find('.words').attr('id');
+    const tr = $(this).closest("tr");
+    const wordId = tr.find(".words").attr("id");
 
     // get data from local storage
-    const currentKey = Object.keys(localStorage).find(k => k.startsWith('wordgroups_'));
+    const currentKey = Object.keys(localStorage).find((k) =>
+        k.startsWith("wordgroups_")
+    );
     const stored = JSON.parse(localStorage.getItem(currentKey));
-    const activeWordGroupId = $('.owl-item.active .word-group').attr('wg-id');
-    const groupIndex = stored.data.wordGroups.findIndex(g => g.id == activeWordGroupId);
-    const word = stored.data.wordGroups[groupIndex].words.find(w => w.id == wordId);
+    const activeWordGroupId = $(".owl-item.active .word-group").attr("wg-id");
+    const groupIndex = stored.data.wordGroups.findIndex(
+        (g) => g.id == activeWordGroupId
+    );
+    const word = stored.data.wordGroups[groupIndex].words.find(
+        (w) => w.id == wordId
+    );
 
     // fill modal form
-    $('#input-id').val(word.id);
-    $('#input-order-number').val(word.order_number);
-    $('#input-lafadz').val(word.text);
-    $('#input-translation').val(word.translation);
+    $("#input-id").val(word.id);
+    $("#input-order-number").val(word.order_number);
+    $("#input-lafadz").val(word.text);
+    $("#input-translation").val(word.translation);
 
-    $('#form-add-word-label').text('Update Kalimat');
-    $('#btn-submit').text('Update');
-    $('#modal-add-word').modal('show');
+    $("#input-kalimat").val(word.kalimat).change();
+    $("#input-kategori").val(word.kategori).change();
+    $("#input-hukum").val(word.hukum).change();
+    $("#input-irob").val(word.irob).change();
+    $("#input-tanda").val(word.tanda).change();
+    $("#input-kedudukan").val(word.kedudukan).change();
+    $("#input-simbol").val(word.simbol).change();
+
+    $("#form-add-word-label").text("Update Kalimat");
+    $("#btn-submit").text("Update");
+    $("#modal-add-word").modal("show");
 });
 
 // Save All Word
-$('#btn-save-all').on('click', function (e) {
+$("#btn-save-all").on("click", function (e) {
     e.preventDefault();
 
-    const currentKey = Object.keys(localStorage).find(k => k.startsWith('wordgroups_'));
+    const currentKey = Object.keys(localStorage).find((k) =>
+        k.startsWith("wordgroups_")
+    );
     if (!currentKey) {
-        alert('Tidak ada data');
+        alert("Tidak ada data");
         return;
     }
 
     const stored = JSON.parse(localStorage.getItem(currentKey));
-    if (!stored || !stored.data || !stored.data.wordGroups || stored.data.wordGroups.length === 0) {
-        alert('Data kosong');
+    if (
+        !stored ||
+        !stored.data ||
+        !stored.data.wordGroups ||
+        stored.data.wordGroups.length === 0
+    ) {
+        alert("Data kosong");
         return;
     }
 
-    const emptyGroups = stored.data.wordGroups.filter(g => !g.words || g.words.length === 0);
+    const emptyGroups = stored.data.wordGroups.filter(
+        (g) => !g.words || g.words.length === 0
+    );
     if (emptyGroups.length > 0) {
-        let list = emptyGroups.map(g => `${g.text}`).join(" - ");
+        let list = emptyGroups.map((g) => `${g.text}`).join(" - ");
 
         swal({
-            icon: 'warning',
-            title: 'Data belum lengkap',
-            text: 'Grup dengan kalimat masih kosong :\n\n' + list,
+            icon: "warning",
+            title: "Data belum lengkap",
+            text: "Grup dengan kalimat masih kosong :\n\n" + list,
         });
         return;
     }
 
     // confirmation
     swal({
-        title: 'Konfirmasi',
-        text: 'Yakin ingin menyimpan ayat ini?',
+        title: "Konfirmasi",
+        text: "Yakin ingin menyimpan ayat ini?",
         buttons: {
             cancel: {
-                text: 'Batal',
+                text: "Batal",
                 visible: true,
             },
             confirm: {
-                text: 'Simpan',
+                text: "Simpan",
                 visible: true,
-                className: 'btn-success'
+                className: "btn-success",
             },
         },
     }).then((willSave) => {
@@ -294,14 +368,14 @@ $('#btn-save-all').on('click', function (e) {
                 groups: stored.data.wordGroups,
             },
             beforeSend: function () {
-                $('#btn-save-all').prop('disabled', true).text('Menyimpan...');
+                $("#btn-save-all").prop("disabled", true).text("Menyimpan...");
             },
             success: function (response) {
-                console.log('Save response: ', response);
+                console.log("Save response: ", response);
 
                 iziToast.success({
-                    message: 'Data berhasil disimpan',
-                    position: 'topRight'
+                    message: "Data berhasil disimpan",
+                    position: "topRight",
                 });
                 localStorage.removeItem(currentKey);
 
@@ -310,15 +384,15 @@ $('#btn-save-all').on('click', function (e) {
                 fetchWordGroups(null, null, nextVerse);
             },
             error: function (xhr) {
-                console.error('Save error: ', xhr.responseText);
+                console.error("Save error: ", xhr.responseText);
                 iziToast.error({
-                    message: 'Terjadi kesalahan saat menyimpan data',
-                    position: 'topRight'
+                    message: "Terjadi kesalahan saat menyimpan data",
+                    position: "topRight",
                 });
             },
             complete: function () {
-                $('#btn-save-all').prop('disabled', false).text('Simpan');
-            }
-        })
+                $("#btn-save-all").prop("disabled", false).text("Simpan");
+            },
+        });
     });
 });
