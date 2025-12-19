@@ -207,9 +207,9 @@
                                             </td>
                                             <td>
                                                 <div
-                                                    class="text-center @if ($word->color == 'red') text-danger
-                                                @elseif($word->color == 'green') text-success
-                                                @elseif($word->color == 'blue') text-info
+                                                    class="text-center @if ($word->color == 'red') text-huruf
+                                                @elseif($word->color == 'green') text-fiil
+                                                @elseif($word->color == 'blue') text-isim
                                                 @else text-dark mb-2 @endif mb-2 arabic-text ar-symbol">
                                                     {{ $word->simbol }}</div>
                                             </td>
