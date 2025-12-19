@@ -165,10 +165,11 @@
 
                     <div class="card-body p-0">
                         <div class="table-sm">
-                            <table class="table-striped table" id="sortable-table">
+                            <div class="table-responsive">
+                                <table class="table-striped table" id="sortable-table">
                                 <thead>
                                     <tr class="text-center">
-                                        <th>
+                                        <th style="width:28px;">
                                             <i class="fa-solid fa-sort"></i>
                                         </th>
                                         <th>Lafadz</th>
@@ -183,7 +184,7 @@
                                 <tbody>
                                     @forelse ($words as $word)
                                         <tr class="text-center">
-                                            <td style="width: 40px;">
+                                            <td style="width: 28px;">
                                                 <div class="sort-handler">
                                                     <i class="fa-solid fa-grip"></i>
                                                 </div>
@@ -224,6 +225,7 @@
                                     @endforelse
                                 </tbody>
                             </table>
+                            </div>
                         </div>
                     </div>
                 </div>

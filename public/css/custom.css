@@ -569,7 +569,7 @@ table tr:hover .table-links {
 
 @media (max-width: 575.98px) {
     .table-responsive table {
-        min-width: 800px;
+        min-width: 400px;
     }
 }
 
