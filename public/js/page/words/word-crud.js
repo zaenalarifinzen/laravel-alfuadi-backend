@@ -167,9 +167,9 @@ function renderWordsTable(wordGroup) {
 
     wordGroup.words.forEach((word) => {
         let simbolClass = "text-dark";
-        if (word.color === "red") simbolClass = "text-danger";
-        else if (word.color === "green") simbolClass = "text-success";
-        else if (word.color === "blue") simbolClass = "text-info";
+        if (word.color === "red") simbolClass = "text-huruf";
+        else if (word.color === "green") simbolClass = "text-fiil";
+        else if (word.color === "blue") simbolClass = "text-isim";
 
         const row = `
             <tr>
@@ -179,15 +179,12 @@ function renderWordsTable(wordGroup) {
                     </div>
                 </td>
                 <td class="text-center align-middle">
-                    <div class="${simbolClass} arabic-text words" id="${
+                    <div class="${simbolClass} dropdown d-inline arabic-text words" id="${
             word.id
-        }">${word.text}</div>
-                    <div class="table-links">
-                        <a href="#" class="word-detail">Detail</a>
-                        <div class="bullet"></div>
-                        <a href="#" class="word-edit">Edit</a>
-                        <div class="bullet"></div>
-                        <a href="#" class="text-danger word-delete" id="btl-delete">Hapus</a>
+        }" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${word.text}</div>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item has-icon word-edit"><i class="far fa-edit"></i> Edit</a>
+                        <a href="#" class="dropdown-item has-icon text-danger word-delete" id="btl-delete"><i class="far fa-trash-can"></i> Hapus</a>
                     </div>
                 </td>
                 <td class="text-center align-middle">
@@ -195,7 +192,7 @@ function renderWordsTable(wordGroup) {
             word.simbol ?? ""
         }</div>
                 </td>
-                <td class="text-center align-middle translation">${
+                <td class="align-middle translation">${
                     word.translation ?? ""
                 }</td>
             </tr>
@@ -205,7 +202,7 @@ function renderWordsTable(wordGroup) {
 }
 
 // Delete word row
-$(document).on("click", ".table-links .word-delete", function (e) {
+$(document).on("click", ".dropdown-menu .word-delete", function (e) {
     e.preventDefault();
 
     // confirm deletion
@@ -265,7 +262,7 @@ $(document).on("click", ".table-links .word-delete", function (e) {
 });
 
 // Edit Word Row
-$(document).on("click", ".table-links .word-edit", function (e) {
+$(document).on("click", ".dropdown-menu .word-edit", function (e) {
     e.preventDefault();
 
     const tr = $(this).closest("tr");

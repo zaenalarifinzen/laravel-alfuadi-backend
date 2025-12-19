@@ -41,18 +41,32 @@ a {
     font-size: 1rem !important;
 }
 .ar-symbol {
-    font-size: 0.8rem !important;
-    font-weight: 600;
+    font-size: 0.85rem !important;
+    font-weight: 500;
 }
-
 .word-group {
     font-size: 2rem;
     text-align: center;
 }
 .words {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     text-align: center;
 }
+
+/* Alfuadi Color */
+.text-huruf {
+    color: #e62e2e !important;
+}
+
+.text-isim {
+    color: #066fc5 !important;
+}
+
+.text-fiil {
+    color: #00a329 !important;
+}
+
+/* Background */
 .bg-primary {
     background-color: #1d948e !important;
 }
@@ -486,6 +500,71 @@ table tr:hover .table-links {
 .text-primary-all *:before,
 .text-primary-all *:after {
     color: #008f85 !important;
+}
+
+@media (max-width: 1024px) {
+    .sidebar-gone-hide {
+        display: none !important;
+    }
+    .sidebar-gone-show {
+        display: block !important;
+    }
+    .main-sidebar {
+        position: fixed !important;
+        margin-top: 0 !important;
+        z-index: 891;
+    }
+    body.layout-2 .main-wrapper,
+    body.layout-3 .main-wrapper {
+        width: 100%;
+        padding: 0;
+        display: block;
+    }
+    .main-content {
+        padding-left: 15px;
+        padding-right: 15px;
+        width: 100% !important;
+    }
+    .main-footer {
+        padding-left: 15px;
+    }
+    body.search-show {
+        overflow: hidden;
+    }
+    body.search-show .navbar {
+        z-index: 892;
+    }
+    body.sidebar-show {
+        overflow: hidden;
+    }
+    body.search-show:before,
+    body.sidebar-show:before {
+        content: "";
+        position: fixed;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #000;
+        opacity: 0;
+        z-index: 891;
+        -webkit-animation-name: fadeinbackdrop;
+        animation-name: fadeinbackdrop;
+        -webkit-animation-duration: 1s;
+        animation-duration: 1s;
+        -webkit-animation-fill-mode: forwards;
+        animation-fill-mode: forwards;
+    }
+    @-webkit-keyframes fadeinbackdrop {
+        to {
+            opacity: 0.6;
+        }
+    }
+    @keyframes fadeinbackdrop {
+        to {
+            opacity: 0.6;
+        }
+    }
 }
 
 @media (max-width: 575.98px) {

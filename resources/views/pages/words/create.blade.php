@@ -164,7 +164,7 @@
                     </div>
 
                     <div class="card-body p-0">
-                        <div class="table-responsive">
+                        <div class="table-sm">
                             <table class="table-striped table" id="sortable-table">
                                 <thead>
                                     <tr class="text-center">
@@ -189,18 +189,20 @@
                                                 </div>
                                             </td>
                                             <td class="text-center align-middle word" id="{{ $word->id }}">
-                                                <div
-                                                    class="@if ($word->color == 'red') text-danger
-                                                @elseif($word->color == 'green') text-success
-                                                @elseif($word->color == 'blue') text-info 
-                                                @else text-dark @endif arabic-text words">
+                                                <div class="dropdown
+                                                            @if ($word->color == 'red') text-huruf
+                                                            @elseif($word->color == 'green') text-fiil
+                                                            @elseif($word->color == 'blue') text-isim 
+                                                            @else text-dark
+                                                            @endif arabic-text words"
+                                                                type="button" id="dropdownMenuButton2" data-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false">
                                                     {{ $word->text }}</div>
-                                                <div class="table-links">
-                                                    <a href="#" class="word-detail">Detail</a>
-                                                    <div class="bullet"></div>
-                                                    <a href="#" class="word-edit">Edit</a>
-                                                    <div class="bullet"></div>
-                                                    <a href="#" class="text-danger word-delete">Hapus</a>
+                                                <div class="dropdown-menu">
+                                                    <a href="#" class="dropdown-item has-icon word-edit"><i
+                                                            class="far fa-edit"></i> Edit</a>
+                                                    <a href="#" class="dropdown-item has-icon text-danger word-delete"
+                                                        id="btl-delete"><i class="far fa-trash-can"></i> Hapus</a>
                                                 </div>
                                             </td>
                                             <td>
