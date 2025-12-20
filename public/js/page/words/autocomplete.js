@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 (k) => k.id_kalimat === id
             );
             filteredKedudukan = filteredKedudukan.concat(kedudukanForKalimat);
-        });
+        });      
 
         kedudukanSelect.innerHTML =
             "<option selected disabled>Pilih Kedudukan</option>";
@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     function fillIrob() {
         const selectedKedudukan = kedudukanSelect.value;
         const kd = data.kedudukan.find((k) => k.id == selectedKedudukan);
-        if (!kd) return;
+        if (!kd) return;      
 
         irobSelect.innerHTML = `<option selected>${kd.irob}</option>`;
         // add too other unique irob in dropdown based on kalimat without duplicating
