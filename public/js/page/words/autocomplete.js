@@ -15,12 +15,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     const disableFields = (...fields) =>
         fields.forEach((f) => {
             f.disabled = true;
-            f.removeAttribute('required');
+            f.removeAttribute("required");
         });
     const enableFields = (...fields) =>
         fields.forEach((f) => {
             f.disabled = false;
-            f.setAttribute('required', 'required');
+            f.setAttribute("required", "required");
         });
 
     // --- isi dropdown Kategori ---
@@ -38,10 +38,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // --- isi dropdown Kedudukan ---
+    // change parameter to 1 or more kalimat ids
     function populateKedudukan(kalimat) {
-        const filteredKedudukan = data.kedudukan.filter(
-            (k) => k.id_kalimat === kalimat
-        );
+        const kalimatIds = Array.isArray(kalimat) ? kalimat : [kalimat];
+
+        let filteredKedudukan = [];
+        kalimatIds.forEach((id) => {
+            const kedudukanForKalimat = data.kedudukan.filter(
+                (k) => k.id_kalimat === id
+            );
+            filteredKedudukan = filteredKedudukan.concat(kedudukanForKalimat);
+        });
+
         kedudukanSelect.innerHTML =
             "<option selected disabled>Pilih Kedudukan</option>";
         filteredKedudukan.forEach((k) => {
@@ -259,7 +267,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 kedudukanSelect,
                 simbolSelect,
             ]);
-            populateKedudukan("10");
+            populateKedudukan(["10", "41"]);
             fillIrob();
             return;
         }
@@ -297,8 +305,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // --- Kedudukan Changed ---
     kedudukanSelect.addEventListener("change", () => {
-        fillIrob();
-        fillTanda();
+        const currentKedudukan = kedudukanSelect.value;
+        if (currentKedudukan === "KD53") {
+            disableFields(irobSelect, tandaSelect);
+            
+        } else {
+            fillIrob();
+            fillTanda();
+        }
         fillSimbol();
     });
 });
