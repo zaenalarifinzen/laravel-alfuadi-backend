@@ -273,7 +273,6 @@
                                     placeholder="Terjemah" required="">
                             </div>
                         </div>
-                        @if (auth()->check() && auth()->user()->roles === 'administrator')
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="input-kalimat">Kalimat</label>
@@ -326,7 +325,6 @@
                                     </select>
                                 </div>
                             </div>
-                        @endif
                     </div>
 
                     <div class="modal-footer">
