@@ -2,8 +2,17 @@
 
 ## Upcoming
 
--   Input i'rob full
--   Peningkatan fitur
+-   Penamabahan menu view detail pada kalimat
+
+## 1.1.1
+
+-   Penambahan munada, khobar muqodam, mubtada muakhor, khobar laa, dhomir fashl, huruf nida, kaada (isim & khobarnya)
+-   Perbaikan validasi front end
+
+## 1.1.0
+
+-   Penambahan kolom input irob di modal tambah kalimat
+-   Pewarnaan kalimat sesuai dengan jenisnya
 
 ## 1.0.1+4
 
