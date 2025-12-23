@@ -294,7 +294,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             populateKedudukan(currentKalimat);
         }
         if (currentKalimat === "42") {
-            populateKedudukan("10");
+            populateKedudukan(["10", "41"]);
         }
 
         resetFields([irobSelect, tandaSelect, simbolSelect]);
