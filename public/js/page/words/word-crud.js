@@ -5,6 +5,7 @@ $("#btn-add-word").on("click", function () {
     $("#form-add-word")[0].reset();
     $("#form-add-word-label").text("Tambah Kalimat");
     $("#btn-submit").text("Tambahkan");
+    $("#additional-fields").hide();
 
     // get key from local storage
     const currentKey = Object.keys(localStorage).find((k) =>
@@ -43,7 +44,9 @@ $("#form-add-word").on("submit", function (e) {
         alert("Lafadz tidak boleh kosong");
         return;
     }
-    if (!kalimat || kalimat.startsWith("Pilih")) {
+
+    // if wordId is not empty, it's in edit mode, so kalimat is required
+    if (wordId && (!kalimat || kalimat.startsWith("Pilih"))) {
         alert("Kalimat tidak boleh kosong");
         return;
     }
@@ -297,6 +300,7 @@ $(document).on("click", ".dropdown-menu .word-edit", function (e) {
 
     $("#form-add-word-label").text("Update Kalimat");
     $("#btn-submit").text("Update");
+    $("#additional-fields").show();
     $("#modal-add-word").modal("show");
 });
 
