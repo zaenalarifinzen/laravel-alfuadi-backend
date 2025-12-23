@@ -367,9 +367,7 @@ $("#btn-save-all").on("click", function (e) {
             beforeSend: function () {
                 $("#btn-save-all").prop("disabled", true).text("Menyimpan...");
             },
-            success: function (response) {
-                console.log("Save response: ", response);
-
+            success: function () {
                 iziToast.success({
                     message: "Data berhasil disimpan",
                     position: "topRight",

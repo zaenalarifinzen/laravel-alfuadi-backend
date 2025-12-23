@@ -544,6 +544,42 @@
             "rofa": "فِىْ مَحَلِّ رَفْعٍ",
             "nashob": "فِىْ مَحَلِّ نَصْبٍ",
             "jar": "فِىْ مَحَلِّ جَرٍّ",
+            "jazm": " "
+        },
+        {
+            "id": "C43",
+            "id_kalimat": "30",
+            "simbol": "حرف",
+            "kategori_ar": "حَرْفُ نِدَاءٍ",
+            "kategori_in": "Huruf Nida",
+            "hukum": "مَبْنِيٌ",
+            "rofa": null,
+            "nashob": null,
+            "jar": null,
+            "jazm": null
+        },
+        {
+            "id": "C44",
+            "id_kalimat": "10",
+            "simbol": "",
+            "kategori_ar": "اِسْمُ الظَّرْفِ",
+            "kategori_in": "Isim Dzorof",
+            "hukum": "مَبْنِيٌ",
+            "rofa": "فِىْ مَحَلِّ رَفْعٍ",
+            "nashob": "فِىْ مَحَلِّ نَصْبٍ",
+            "jar": "فِىْ مَحَلِّ جَرٍّ",
+            "jazm": null
+        },
+        {
+            "id": "C45",
+            "id_kalimat": "30",
+            "simbol": "حرف",
+            "kategori_ar": "حَرْفُ اسْتِفْهَامٍ",
+            "kategori_in": "Huruf Istifham",
+            "hukum": "مَبْنِيٌ",
+            "rofa": null,
+            "nashob": null,
+            "jar": null,
             "jazm": null
         }
     ],
@@ -970,7 +1006,71 @@
             "simbol": "ص",
             "kedudukan_ar": "صِلَةٌ",
             "kedudukan_in": "Shilah",
-            "irob": ""
+            "irob": " "
+        },
+        {
+            "id": "KD54",
+            "id_kalimat": "10",
+            "simbol": "م.مؤخر",
+            "kedudukan_ar": "مُبْتَدَأٌ مُؤَخَّرٌ",
+            "kedudukan_in": "Mubtada Muakhor",
+            "irob": "مَرْفُوْعٌ "
+        },
+        {
+            "id": "KD55",
+            "id_kalimat": "10",
+            "simbol": "خ.مق",
+            "kedudukan_ar": "خَبَرٌ مُقَدَّمٌ",
+            "kedudukan_in": "Khobar Muqodam",
+            "irob": "مَرْفُوْعٌ "
+        },
+        {
+            "id": "KD56",
+            "id_kalimat": "10",
+            "simbol": "منادى",
+            "kedudukan_ar": "مُنَادَى",
+            "kedudukan_in": "Munada",
+            "irob": "مَنْصُوْبٌ "
+        },
+        {
+            "id": "KD57",
+            "id_kalimat": "10",
+            "simbol": "خ.لا",
+            "kedudukan_ar": "خَبَرُ لَا لِنَفْيِ الْجِنْسِ",
+            "kedudukan_in": "Khobar La Linafyil Jinsi",
+            "irob": "مَرْفُوْعٌ"
+        },
+        {
+            "id": "KD58",
+            "id_kalimat": "41",
+            "simbol": "ج",
+            "kedudukan_ar": "جَوَابٌ",
+            "kedudukan_in": "Jawab",
+            "irob": "مَجْزُوْمٌ "
+        },
+        {
+            "id": "KD59",
+            "id_kalimat": "10",
+            "simbol": "فصل",
+            "kedudukan_ar": "ضَمِيْرُ فَصْلٍ",
+            "kedudukan_in": "Dhomir Fashl",
+            "irob": null
+        },
+        {
+            "id": "KD60",
+            "id_kalimat": "10",
+            "simbol": "اسم كاد",
+            "kedudukan_ar": "اِسْمُ كَادَ",
+            "kedudukan_in": "Isim Kaada",
+            "irob": "مَرْفُوْعٌ "
+        },
+        {
+            "id": "KD61",
+            "id_kalimat": "10",
+            "simbol": "خ.كاد",
+            "kedudukan_ar": "خَبَرُكَادَ",
+            "kedudukan_in": "Khobar Kaana",
+            "irob": "مَنْصُوْبٌ"
         }
     ]
 }

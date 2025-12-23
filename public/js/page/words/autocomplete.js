@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const disableFields = (...fields) =>
         fields.forEach((f) => {
+            f.value = "";
             f.disabled = true;
             f.removeAttribute("required");
         });
@@ -48,7 +49,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 (k) => k.id_kalimat === id
             );
             filteredKedudukan = filteredKedudukan.concat(kedudukanForKalimat);
-        });      
+        });
 
         kedudukanSelect.innerHTML =
             "<option selected disabled>Pilih Kedudukan</option>";
@@ -91,7 +92,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     function fillIrob() {
         const selectedKedudukan = kedudukanSelect.value;
         const kd = data.kedudukan.find((k) => k.id == selectedKedudukan);
-        if (!kd) return;      
+        if (!kd) return;
 
         irobSelect.innerHTML = `<option selected>${kd.irob}</option>`;
         // add too other unique irob in dropdown based on kalimat without duplicating
@@ -306,10 +307,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     // --- Kedudukan Changed ---
     kedudukanSelect.addEventListener("change", () => {
         const currentKedudukan = kedudukanSelect.value;
-        if (currentKedudukan === "KD53") {
+        if (currentKedudukan === "KD53" || currentKedudukan === "KD58") {
             disableFields(irobSelect, tandaSelect);
-            
+        } else if (currentKedudukan === "KD4" || currentKedudukan === "KD6") {
+            disableFields(hukumSelect, irobSelect, tandaSelect);
         } else {
+            enableFields(irobSelect, tandaSelect);
             fillIrob();
             fillTanda();
         }
