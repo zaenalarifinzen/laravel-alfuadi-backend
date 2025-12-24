@@ -141,8 +141,9 @@ $("#form-add-word").on("submit", function (e) {
     // modified = true;
     markModified();
 
-    // re render word table
+    // re render word table & details
     renderWordsTable(wordGroup);
+    renderWordsDetails(wordGroup);
 
     // form.stopProgress();
     $("#form-add-word")[0].reset();
@@ -184,7 +185,9 @@ function renderWordsTable(wordGroup) {
                 <td class="text-center align-middle">
                     <div class="${simbolClass} dropdown d-inline arabic-text words" id="${
             word.id
-        }" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${word.text}</div>
+        }" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${
+            word.text
+        }</div>
                     <div class="dropdown-menu">
                         <a href="#" class="dropdown-item has-icon word-edit"><i class="far fa-edit"></i> Edit</a>
                         <a href="#" class="dropdown-item has-icon text-danger word-delete" id="btl-delete"><i class="far fa-trash-can"></i> Hapus</a>
@@ -199,6 +202,52 @@ function renderWordsTable(wordGroup) {
                     word.translation ?? ""
                 }</td>
             </tr>
+        `;
+        tbody.append(row);
+    });
+}
+
+// Render Words Table
+function renderWordsDetails(wordGroup) {
+    const tbody = $("#detail-kalimat-table tbody");
+    tbody.empty();
+
+    if (!wordGroup || !wordGroup.words || wordGroup.words.length === 0) {
+        tbody.append(`
+            <tr>
+                <td colspan="5" class="text-center text-muted">Tidak ada data</td>
+            </tr>
+        `);
+        return;
+    }
+
+    // sort word based on order_number
+    wordGroup.words.sort(
+        (a, b) => (a.order_number || 0) - (b.order_number || 0)
+    );
+
+    wordGroup.words.forEach((word) => {
+        let simbolClass = "text-dark";
+        if (word.color === "red") simbolClass = "text-huruf";
+        else if (word.color === "green") simbolClass = "text-fiil";
+        else if (word.color === "blue") simbolClass = "text-isim";
+
+        const row = `
+            <tr class="text-center">
+                <td>
+                    <div class="arabic-text ar-symbol">
+                        ${word.kalimat} - ${word.hukum} -
+                        ${word.kategori} - ${word.kedudukan} -
+                        ${word.irob} - ${word.tanda}
+                       </div>
+                   </td>
+                   <td class="text-center align-middle word" id="${word.id}">
+                       <div class="${simbolClass} arabic-text words" >
+                           ${word.text}
+                       </div>
+                   </td>
+             </tr>
+             
         `;
         tbody.append(row);
     });
@@ -261,6 +310,7 @@ $(document).on("click", ".dropdown-menu .word-delete", function (e) {
         // render table
         const updatedGroup = stored.data.wordGroups[groupIndex];
         renderWordsTable(updatedGroup);
+        renderWordsDetails(updatedGroup);
     });
 });
 

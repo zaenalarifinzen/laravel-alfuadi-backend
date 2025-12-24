@@ -153,79 +153,162 @@
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-header">
-                        <div class="d-flex justify-content-between align-items-center w-100">
-                            <h4 class="mb-0">Data Kalimat</h4>
-                            <button class="btn btn-icon icon-left btn-primary btn-lg" id="btn-add-word">
-                                <i class="fa-solid fa-plus"></i> Tambah
-                            </button>
-                        </div>
-                    </div>
 
-                    <div class="card-body p-0">
-                        <div class="table-sm">
-                            <div class="table-responsive">
-                                <table class="table-striped table" id="sortable-table">
-                                    <thead>
-                                        <tr class="text-center">
-                                            <th style="width:28px;">
-                                                <i class="fa-solid fa-sort"></i>
-                                            </th>
-                                            <th>Lafadz</th>
-                                            <th>Simbol</th>
-                                            <th>Terjemah</th>
-                                        </tr>
-                                    </thead>
-                                    @php
-                                        $firstGroup = $wordgroups->first();
-                                        $words =
-                                            $firstGroup && isset($firstGroup->words) ? $firstGroup->words : collect();
-                                    @endphp
-                                    <tbody>
-                                        @forelse ($words as $word)
-                                            <tr class="text-center">
-                                                <td style="width: 28px;">
-                                                    <div class="sort-handler">
-                                                        <i class="fa-solid fa-grip"></i>
-                                                    </div>
-                                                </td>
-                                                <td class="text-center align-middle word" id="{{ $word->id }}">
-                                                    <div class="dropdown
+
+                <div class="card">
+                    <div class="card-body">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
+                                    aria-controls="home" aria-selected="true">Input</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                                    aria-controls="profile" aria-selected="false">Detail</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="home" role="tabpanel"
+                                aria-labelledby="home-tab">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="d-flex justify-content-between align-items-center w-100">
+                                            <h4 class="mb-0">Input Kalimat</h4>
+                                            <button class="btn btn-icon icon-left btn-primary btn-lg" id="btn-add-word">
+                                                <i class="fa-solid fa-plus"></i> Tambah
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="table-sm">
+                                        <div class="table-responsive">
+                                            <table class="table-striped table" id="sortable-table">
+                                                <thead>
+                                                    <tr class="text-center">
+                                                        <th style="width:28px;">
+                                                            <i class="fa-solid fa-sort"></i>
+                                                        </th>
+                                                        <th>Lafadz</th>
+                                                        <th>Simbol</th>
+                                                        <th>Terjemah</th>
+                                                    </tr>
+                                                </thead>
+                                                @php
+                                                    $firstGroup = $wordgroups->first();
+                                                    $words =
+                                                        $firstGroup && isset($firstGroup->words)
+                                                            ? $firstGroup->words
+                                                            : collect();
+                                                @endphp
+                                                <tbody>
+                                                    @forelse ($words as $word)
+                                                        <tr class="text-center">
+                                                            <td style="width: 28px;">
+                                                                <div class="sort-handler">
+                                                                    <i class="fa-solid fa-grip"></i>
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-center align-middle word"
+                                                                id="{{ $word->id }}">
+                                                                <div class="dropdown
                                                             @if ($word->color == 'red') text-huruf
                                                             @elseif($word->color == 'green') text-fiil
                                                             @elseif($word->color == 'blue') text-isim 
                                                             @else text-dark @endif arabic-text words"
-                                                        type="button" id="dropdownMenuButton2" data-toggle="dropdown"
-                                                        aria-haspopup="true" aria-expanded="false">
-                                                        {{ $word->text }}</div>
-                                                    <div class="dropdown-menu">
-                                                        <a href="#" class="dropdown-item has-icon word-edit"><i
-                                                                class="far fa-edit"></i> Edit</a>
-                                                        <a href="#"
-                                                            class="dropdown-item has-icon text-danger word-delete"
-                                                            id="btl-delete"><i class="far fa-trash-can"></i> Hapus</a>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div
-                                                        class="text-center @if ($word->color == 'red') text-huruf
+                                                                    type="button" id="dropdownMenuButton2"
+                                                                    data-toggle="dropdown" aria-haspopup="true"
+                                                                    aria-expanded="false">
+                                                                    {{ $word->text }}</div>
+                                                                <div class="dropdown-menu">
+                                                                    <a href="#"
+                                                                        class="dropdown-item has-icon word-edit"><i
+                                                                            class="far fa-edit"></i> Edit</a>
+                                                                    <a href="#"
+                                                                        class="dropdown-item has-icon text-danger word-delete"
+                                                                        id="btl-delete"><i class="far fa-trash-can"></i>
+                                                                        Hapus</a>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div
+                                                                    class="text-center @if ($word->color == 'red') text-huruf
                                                 @elseif($word->color == 'green') text-fiil
                                                 @elseif($word->color == 'blue') text-isim
                                                 @else text-dark mb-2 @endif mb-2 arabic-text ar-symbol">
-                                                        {{ $word->simbol }}</div>
-                                                </td>
-                                                <td class="translation">
-                                                    {{ $word->translation }}
-                                                </td>
-                                            </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="5" class="text-center text-muted">Tidak ada data</td>
-                                            </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
+                                                                    {{ $word->simbol }}</div>
+                                                            </td>
+                                                            <td class="translation">
+                                                                {{ $word->translation }}
+                                                            </td>
+                                                        </tr>
+                                                    @empty
+                                                        <tr>
+                                                            <td colspan="5" class="text-center text-muted">Tidak
+                                                                ada
+                                                                data</td>
+                                                        </tr>
+                                                    @endforelse
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="d-flex justify-content-between align-items-center w-100">
+                                            <h4 class="mb-0">Detail Kalimat</h4>
+                                        </div>
+                                    </div>
+                                    <div class="table-sm">
+                                        <table class="table-striped table" id="detail-kalimat-table">
+                                            @php
+                                                $firstGroup = $wordgroups->first();
+                                                $words =
+                                                    $firstGroup && isset($firstGroup->words)
+                                                        ? $firstGroup->words
+                                                        : collect();
+                                            @endphp
+                                            <tbody>
+                                                @forelse ($words as $word)
+                                                    <tr class="text-center">
+                                                        <td>
+                                                            <div class="arabic-text ar-symbol">
+                                                                {{ $word->kalimat }} - {{ $word->hukum }} -
+                                                                {{ $word->kategori }} - {{ $word->kedudukan }} -
+                                                                {{ $word->irob }} - {{ $word->tanda }}
+                                                            </div>
+                                                        </td>
+                                                        <td class="text-center align-middle word"
+                                                            id="{{ $word->id }}">
+                                                            <div class="
+                                                                @if ($word->color == 'red') text-huruf
+                                                                @elseif($word->color == 'green') text-fiil
+                                                                @elseif($word->color == 'blue') text-isim 
+                                                                @else text-dark @endif arabic-text words">
+                                                                {{ $word->text }}
+                                                            </div>
+                                                        </td>
+                                                        <div class="">
+                                                            <tr>
+                                                                <td>{{ $word->simbol }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>{{ $word->translation }}</td>
+                                                            </tr>
+                                                        </div>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="5" class="text-center text-muted">Tidak
+                                                            ada
+                                                            data</td>
+                                                    </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -276,58 +359,58 @@
                         </div>
                         {{-- additional fields --}}
                         <div id="additional-fields" style="display: none;">
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="input-kalimat">Kalimat</label>
-                                <select id="input-kalimat" class="form-control form-control-ar arabic-text">
-                                    <option selected disabled>Pilih Kalimat</option>
-                                    <option value="10">اِسْمٌ</option>
-                                    <option value="21">فِعْلٌ مَاضٍ</option>
-                                    <option value="22">فِعْلٌ مُضَارِعٌ</option>
-                                    <option value="23">فِعْلٌ أَمْرٍ</option>
-                                    <option value="30">حَرْفٌ</option>
-                                    <option value="41">جُمْلَةٌ</option>
-                                    <option value="42">شِبْهُ الْجُمْلَةِ</option>
-                                    <option value="11">اِسْمٌ مُؤَوَّلٌ</option>
-                                </select>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="input-kalimat">Kalimat</label>
+                                    <select id="input-kalimat" class="form-control form-control-ar arabic-text">
+                                        <option selected disabled>Pilih Kalimat</option>
+                                        <option value="10">اِسْمٌ</option>
+                                        <option value="21">فِعْلٌ مَاضٍ</option>
+                                        <option value="22">فِعْلٌ مُضَارِعٌ</option>
+                                        <option value="23">فِعْلٌ أَمْرٍ</option>
+                                        <option value="30">حَرْفٌ</option>
+                                        <option value="41">جُمْلَةٌ</option>
+                                        <option value="42">شِبْهُ الْجُمْلَةِ</option>
+                                        <option value="11">اِسْمٌ مُؤَوَّلٌ</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="input-kategori">Kategori</label>
+                                    <select id="input-kategori" class="form-control form-control-ar arabic-text">
+                                    </select>
+                                </div>
                             </div>
-                            <div class="form-group col-md-6">
-                                <label for="input-kategori">Kategori</label>
-                                <select id="input-kategori" class="form-control form-control-ar arabic-text">
-                                </select>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="input-kedudukan">Kedudukan</label>
+                                    <select id="input-kedudukan" class="form-control form-control-ar arabic-text">
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="input-hukum">Hukum</label>
+                                    <select id="input-hukum" class="form-control form-control-ar arabic-text">
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="input-kedudukan">Kedudukan</label>
-                                <select id="input-kedudukan" class="form-control form-control-ar arabic-text">
-                                </select>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="input-irob">I'rob</label>
+                                    <select id="input-irob" class="form-control form-control-ar arabic-text">
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="input-tanda">Tanda i'rob</label>
+                                    <select id="input-tanda" class="form-control form-control-ar arabic-text">
+                                    </select>
+                                </div>
                             </div>
-                            <div class="form-group col-md-6">
-                                <label for="input-hukum">Hukum</label>
-                                <select id="input-hukum" class="form-control form-control-ar arabic-text">
-                                </select>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="input-simbol">Simbol</label>
+                                    <select id="input-simbol" class="form-control form-control-ar arabic-text">
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="input-irob">I'rob</label>
-                                <select id="input-irob" class="form-control form-control-ar arabic-text">
-                                </select>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="input-tanda">Tanda i'rob</label>
-                                <select id="input-tanda" class="form-control form-control-ar arabic-text">
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="input-simbol">Simbol</label>
-                                <select id="input-simbol" class="form-control form-control-ar arabic-text">
-                                </select>
-                            </div>
-                        </div>
                         </div>
                     </div>
 

@@ -181,6 +181,7 @@ function fetchWords(word_group_id) {
     }
 
     renderWordsTable(activeGroup);
+    renderWordsDetails(activeGroup);
 }
 
 // =============================
