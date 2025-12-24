@@ -44,12 +44,20 @@ a {
     font-size: 0.85rem !important;
     font-weight: 500;
 }
+.ar-symbol-mini {
+    font-size: 0.70rem !important;
+    font-weight: 500;
+}
 .word-group {
     font-size: 2rem;
     text-align: center;
 }
 .words {
     font-size: 1.2rem;
+    text-align: center;
+}
+.translation {
+    font-size: 0.70rem;
     text-align: center;
 }
 
@@ -522,6 +530,11 @@ table tr:hover .table-links {
 
 .table-striped tbody tr:nth-of-type(odd) {
     background-color: rgba(0, 0, 0, 0.02);
+}
+
+.kalimat-detail-row td {
+    padding: 10px 25px !important;
+    vertical-align: top !important;
 }
 
 /* Loading Overlay*/

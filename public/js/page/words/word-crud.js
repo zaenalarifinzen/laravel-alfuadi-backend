@@ -198,7 +198,7 @@ function renderWordsTable(wordGroup) {
             word.simbol ?? ""
         }</div>
                 </td>
-                <td class="align-middle translation">${
+                <td class="align-middle">${
                     word.translation ?? ""
                 }</td>
             </tr>
@@ -233,17 +233,23 @@ function renderWordsDetails(wordGroup) {
         else if (word.color === "blue") simbolClass = "text-isim";
 
         const row = `
-            <tr class="text-center">
+            <tr class="text-center kalimat-detail-row">
                 <td>
-                    <div class="arabic-text ar-symbol">
+                    <div class="text-right arabic-text words">
                         ${word.kalimat} - ${word.hukum} -
                         ${word.kategori} - ${word.kedudukan} -
                         ${word.irob} - ${word.tanda}
-                       </div>
-                   </td>
-                   <td class="text-center align-middle word" id="${word.id}">
-                       <div class="${simbolClass} arabic-text words" >
+                    </div>
+                </td>
+                <td class="text-center align-middle word" id="${word.id}">
+                       <div class="${simbolClass} arabic-text words">
                            ${word.text}
+                       </div>
+                          <div class="text-center ${simbolClass} mb-2 arabic-text ar-symbol-mini">
+                            ${word.simbol ?? ""}
+                        </div>
+                       <div class="translation">
+                           ${word.translation ?? ""}
                        </div>
                    </td>
              </tr>
