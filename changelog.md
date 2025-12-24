@@ -4,6 +4,10 @@
 
 -   Penamabahan menu view detail pada kalimat
 
+## 1.1.1+1
+
+-   Perbaikan field terjemah menjadi tidak required (wajib diisi) saat tambah kalimat baru
+
 ## 1.1.1
 
 -   Penambahan munada, khobar muqodam, mubtada muakhor, khobar laa, dhomir fashl, huruf nida, kaada (isim & khobarnya)

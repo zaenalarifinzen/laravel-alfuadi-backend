@@ -354,7 +354,7 @@
                             <div class="form-group col-12">
                                 {{-- <label for="input-translation">Terjemah</label> --}}
                                 <input type="text" class="form-control text-center" id="input-translation"
-                                    placeholder="Terjemah" required="">
+                                    placeholder="Terjemah">
                             </div>
                         </div>
                         {{-- additional fields --}}
@@ -459,8 +459,8 @@
 
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/components-table.js') }}"></script>
-    <script src="{{ asset('js/page/words/storage-helper.js') }}?v=1.1.1"></script>
-    <script src="{{ asset('js/page/words/word-crud.js') }}?v=1.1.1"></script>
-    <script src="{{ asset('js/page/words/words-page.js') }}?v=1.1.1"></script>
-    <script src="{{ asset('js/page/words/autocomplete.js') }}?v=1.1.1"></script>
+    <script src="{{ asset('js/page/words/storage-helper.js') }}?v=1.1.1+1"></script>
+    <script src="{{ asset('js/page/words/word-crud.js') }}?v=1.1.1+1"></script>
+    <script src="{{ asset('js/page/words/words-page.js') }}?v=1.1.1+1"></script>
+    <script src="{{ asset('js/page/words/autocomplete.js') }}?v=1.1.1+1"></script>
 @endpush
