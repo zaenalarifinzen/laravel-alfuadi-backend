@@ -271,7 +271,7 @@
                             <div class="form-group col-12">
                                 {{-- <label for="input-translation">Terjemah</label> --}}
                                 <input type="text" class="form-control text-center" id="input-translation"
-                                    placeholder="Terjemah" required="">
+                                    placeholder="Terjemah">
                             </div>
                         </div>
                         {{-- additional fields --}}

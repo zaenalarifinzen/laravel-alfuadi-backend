@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const data = await response.json();
 
     // --- Get Form Element ---
+    const translation = document.getElementById("input-translation");
     const kalimatSelect = document.getElementById("input-kalimat");
     const kategoriSelect = document.getElementById("input-kategori");
     const hukumSelect = document.getElementById("input-hukum");
@@ -257,6 +258,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // --- Kalimat Changed ---
     kalimatSelect.addEventListener("change", () => {
+        // set translation to required
+        translation.setAttribute("required", "required");
         const currentKalimat = kalimatSelect.value.trim();
         if (currentKalimat === "11" || currentKalimat === "41") {
             fieldsController();

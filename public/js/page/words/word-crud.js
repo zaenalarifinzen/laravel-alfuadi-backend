@@ -285,6 +285,7 @@ $(document).on("click", ".dropdown-menu .word-edit", function (e) {
     );
 
     // fill modal form
+    $("#input-translation").required = true;
     $("#input-id").val(word.id);
     $("#input-order-number").val(word.order_number);
     $("#input-lafadz").val(word.text);
