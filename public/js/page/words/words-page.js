@@ -172,9 +172,6 @@ function fetchWords(word_group_id) {
                 <span class="ml-2">Memuat...</span>
             </tr>
         `
-        tbodyWords.html(row);
-        tbodyWordsDetail.html(row);
-        return;
     }
 
     const stored = JSON.parse(localStorage.getItem(key));
@@ -186,6 +183,8 @@ function fetchWords(word_group_id) {
                 <td colspan="5" class="text-center text-muted">Tidak ada data</td>
             </tr>
         `;
+
+        $('.editor-kalimat a').contents().last()[0].textContent = ' -';
 
         tbodyWords.html(row);
         tbodyWordsDetail.html(row);

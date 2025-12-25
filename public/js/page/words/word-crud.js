@@ -174,6 +174,10 @@ function renderWordsTable(wordGroup) {
                 <td colspan="5" class="text-center text-muted">Tidak ada data</td>
             </tr>
         `);
+
+        $(".editor-kalimat a")
+            .contents()
+            .last()[0].textContent = ` -`;
         return;
     }
 
@@ -218,9 +222,10 @@ function renderWordsTable(wordGroup) {
     });
 
     const firstWord = wordGroup.words[0];
-    const editorName = firstWord.editor_info ? firstWord.editor_info.name : ' -';
-    $('.editor-kalimat a').contents().last()[0].textContent = ` ${editorName}`;
-    
+    const editorName = firstWord.editor_info
+        ? firstWord.editor_info.name
+        : " -";
+    $(".editor-kalimat a").contents().last()[0].textContent = ` ${editorName}`;
 }
 
 // Render Words Table
