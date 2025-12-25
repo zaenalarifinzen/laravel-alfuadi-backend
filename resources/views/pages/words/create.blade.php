@@ -150,7 +150,14 @@
                         <button id="btn-prev-slide" class="slider-nav-btn next">
                             <i class="fa fa-chevron-right"></i>
                         </button>
+
+                        <div class="editor-wordgroup" style="padding-top: 20px">
+                            <span>Editor grouping : </span>
+                            <a href="#"
+                                class="font-weight-600">{{ $wordgroups->first()->editorInfo->name ?? '-' }}</a>
+                        </div>
                     </div>
+
                 </div>
 
 
@@ -263,11 +270,11 @@
                                     <div class="table-sm">
                                         <table class="table-striped table" id="detail-kalimat-table">
                                             <thead>
-                                                    <tr class="text-center">
-                                                        <th>Irob</th>
-                                                        <th style="width:110px;">Lafadz</th>
-                                                    </tr>
-                                                </thead>
+                                                <tr class="text-center">
+                                                    <th>Irob</th>
+                                                    <th style="width:110px;">Lafadz</th>
+                                                </tr>
+                                            </thead>
                                             @php
                                                 $firstGroup = $wordgroups->first();
                                                 $words =
@@ -284,6 +291,11 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="editor-kalimat" style="padding-top: 20px">
+                            <span>Editor Kalimat : </span>
+                            {{-- show editor name based on this words --}}
+                            <a href="#" class="font-weight-600" id="word-editor-info">-</a>
                         </div>
                     </div>
                 </div>

@@ -149,6 +149,12 @@ function renderWordGroups(response) {
     verseOption.value = '';
 
     currentVerseLabel.textContent = `${response.data.surah.id}. ${response.data.surah.name} - Ayat ${response.data.verse.number}`;
+
+    // update wordgroup editor info
+    const firstWordGroup = response.data.wordGroups[0];
+    const editorName = firstWordGroup.editor_info ? firstWordGroup.editor_info.name : " -"
+    $('.editor-wordgroup a').contents().last()[0].textContent = ` ${editorName}`;
+    
 }
 
 // =============================

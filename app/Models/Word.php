@@ -30,6 +30,12 @@ class Word extends Model
         'editor',
     ];
 
+    // get editor info
+    public function editorInfo()
+    {
+        return $this->belongsTo(User::class, 'editor');
+    }
+
     public function wordGroup()
     {
         return $this->belongsTo(WordGroups::class, 'word_group_id', 'id');

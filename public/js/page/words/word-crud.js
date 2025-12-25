@@ -168,14 +168,14 @@ function renderWordsTable(wordGroup) {
     const tbody = $("#sortable-table tbody");
     tbody.empty();
 
-    if (!wordGroup || !wordGroup.words || wordGroup.words.length === 0) {        
+    if (!wordGroup || !wordGroup.words || wordGroup.words.length === 0) {
         tbody.append(`
             <tr>
                 <td colspan="5" class="text-center text-muted">Tidak ada data</td>
             </tr>
         `);
         return;
-    }    
+    }
 
     // sort word based on order_number
     wordGroup.words.sort(
@@ -211,13 +211,16 @@ function renderWordsTable(wordGroup) {
             word.simbol ?? ""
         }</div>
                 </td>
-                <td class="align-middle">${
-                    word.translation ?? ""
-                }</td>
+                <td class="align-middle">${word.translation ?? ""}</td>
             </tr>
         `;
         tbody.append(row);
     });
+
+    const firstWord = wordGroup.words[0];
+    const editorName = firstWord.editor_info ? firstWord.editor_info.name : ' -';
+    $('.editor-kalimat a').contents().last()[0].textContent = ` ${editorName}`;
+    
 }
 
 // Render Words Table
@@ -253,7 +256,11 @@ function renderWordsDetails(wordGroup) {
             word.kedudukan,
             word.irob,
             word.tanda,
-        ].filter(p => p !== null && p !== undefined && String(p).trim() !== '').join(' - ');
+        ]
+            .filter(
+                (p) => p !== null && p !== undefined && String(p).trim() !== ""
+            )
+            .join(" - ");
 
         const row = `
             <tr class="text-center kalimat-detail-row">

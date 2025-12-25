@@ -57,7 +57,7 @@ class WordGroupController extends Controller
             ->with([
                 'editorInfo:id,name',
                 'words' => function ($query) {
-                    $query->orderBy('order_number', 'asc');
+                    $query->with(['editorInfo:id,name'])->orderBy('order_number', 'asc');
                 },
             ])
             ->orderBy('order_number', 'asc')

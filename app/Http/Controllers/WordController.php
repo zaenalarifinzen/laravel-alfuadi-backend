@@ -31,6 +31,7 @@ class WordController extends Controller
     {
         // Ambil semua word berdasarkan word_group_id
         $words = Word::where('word_group_id', $word_group_id)
+            ->with(['editorInfo:id,name'])
             ->orderBy('order_number', 'asc')
             ->get();
 
@@ -53,7 +54,7 @@ class WordController extends Controller
             ->with([
                 'editorInfo:id,name',
                 'words' => function ($query) {
-                    $query->orderBy('order_number', 'asc');
+                    $query->with(['editorInfo:id,name'])->orderBy('order_number', 'asc');
                 },
             ])
             ->orderBy('order_number', 'asc')
