@@ -262,6 +262,12 @@
                                     </div>
                                     <div class="table-sm">
                                         <table class="table-striped table" id="detail-kalimat-table">
+                                            <thead>
+                                                    <tr class="text-center">
+                                                        <th>Irob</th>
+                                                        <th style="width:110px;">Lafadz</th>
+                                                    </tr>
+                                                </thead>
                                             @php
                                                 $firstGroup = $wordgroups->first();
                                                 $words =
@@ -270,41 +276,9 @@
                                                         : collect();
                                             @endphp
                                             <tbody>
-                                                @forelse ($words as $word)
-                                                    <tr class="text-center">
-                                                        <td>
-                                                            <div class="arabic-text ar-symbol">
-                                                                {{ $word->kalimat }} - {{ $word->hukum }} -
-                                                                {{ $word->kategori }} - {{ $word->kedudukan }} -
-                                                                {{ $word->irob }} - {{ $word->tanda }}
-                                                            </div>
-                                                        </td>
-                                                        <td class="text-center align-middle word"
-                                                            id="{{ $word->id }}">
-                                                            <div class="
-                                                                @if ($word->color == 'red') text-huruf
-                                                                @elseif($word->color == 'green') text-fiil
-                                                                @elseif($word->color == 'blue') text-isim 
-                                                                @else text-dark @endif arabic-text words">
-                                                                {{ $word->text }}
-                                                            </div>
-                                                        </td>
-                                                        <div class="">
-                                                            <tr>
-                                                                <td>{{ $word->simbol }}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>{{ $word->translation }}</td>
-                                                            </tr>
-                                                        </div>
-                                                    </tr>
-                                                @empty
-                                                    <tr>
-                                                        <td colspan="5" class="text-center text-muted">Tidak
-                                                            ada
-                                                            data</td>
-                                                    </tr>
-                                                @endforelse
+                                                <tr>
+                                                    <td colspan="5" class="text-center text-muted">Tidak ada data</td>
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>

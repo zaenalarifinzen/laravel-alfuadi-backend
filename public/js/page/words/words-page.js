@@ -155,16 +155,19 @@ function renderWordGroups(response) {
 // FETCH WORDS
 // =============================
 function fetchWords(word_group_id) {
-    const tbody = $("#sortable-table tbody");
+    const tbodyWords = $("#sortable-table tbody");
+    const tbodyWordsDetail = $("#detail-kalimat-table tbody");
 
     const key = Object.keys(localStorage).find(k => k.startsWith('wordgroups_'));
     if (!key) {
-        tbody.html(`
+        const row = `
             <tr>
                 <div class="spinner-border text-primary" role="status"></div>
                 <span class="ml-2">Memuat...</span>
             </tr>
-        `);
+        `
+        tbodyWords.html(row);
+        tbodyWordsDetail.html(row);
         return;
     }
 
@@ -172,11 +175,14 @@ function fetchWords(word_group_id) {
     const activeGroup = stored.data.wordGroups.find(wg => wg.id == word_group_id);
 
     if (!activeGroup || !activeGroup.words || activeGroup.words.length === 0) {
-        tbody.html(`
+        const row = `
             <tr>
                 <td colspan="5" class="text-center text-muted">Tidak ada data</td>
             </tr>
-        `);
+        `;
+
+        tbodyWords.html(row);
+        tbodyWordsDetail.html(row);
         return;
     }
 

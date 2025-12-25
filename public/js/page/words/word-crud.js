@@ -6,8 +6,7 @@ $("#btn-add-word").on("click", function () {
     $("#form-add-word-label").text("Tambah Kalimat");
     $("#btn-submit").text("Tambahkan");
 
-    // reset form
-    $("#form-add-word")[0].reset();
+    // remove required attribute
     document
         .getElementById("form-add-word")
         .querySelectorAll("[required]")
@@ -47,6 +46,12 @@ $("#form-add-word").on("submit", function (e) {
     const wordId = $("#input-id").val();
     const lafadz = $("#input-lafadz").val().trim();
     const kalimat = $("#input-kalimat").val();
+    let kalimatText = $("#input-kalimat option:selected").text();
+
+    // if kalimat text starts with "Pilih", set to empty
+    if (kalimat && kalimatText.startsWith("Pilih")) {
+        kalimatText = "";
+    }
 
     // validate required fields
     if (!lafadz) {
@@ -55,7 +60,7 @@ $("#form-add-word").on("submit", function (e) {
     }
 
     // if wordId is not empty, it's in edit mode, so kalimat is required
-    if (wordId && (!kalimat || kalimat.startsWith("Pilih"))) {
+    if (wordId && !kalimat) {
         alert("Kalimat tidak boleh kosong");
         return;
     }
@@ -113,7 +118,7 @@ $("#form-add-word").on("submit", function (e) {
         text: $("#input-lafadz").val().trim(),
         order_number: wordId ? $("#input-order-number").val() : newOrder,
         translation: $("#input-translation").val().trim(),
-        kalimat: $("#input-kalimat option:selected").text(),
+        kalimat: kalimatText,
         color: color,
         kategori: $("#input-kategori option:selected").text() || null,
         hukum: $("#input-hukum").val(),
@@ -163,14 +168,14 @@ function renderWordsTable(wordGroup) {
     const tbody = $("#sortable-table tbody");
     tbody.empty();
 
-    if (!wordGroup || !wordGroup.words || wordGroup.words.length === 0) {
+    if (!wordGroup || !wordGroup.words || wordGroup.words.length === 0) {        
         tbody.append(`
             <tr>
                 <td colspan="5" class="text-center text-muted">Tidak ada data</td>
             </tr>
         `);
         return;
-    }
+    }    
 
     // sort word based on order_number
     wordGroup.words.sort(
@@ -221,6 +226,7 @@ function renderWordsDetails(wordGroup) {
     tbody.empty();
 
     if (!wordGroup || !wordGroup.words || wordGroup.words.length === 0) {
+        console.log("Data tidak tersedia");
         tbody.append(`
             <tr>
                 <td colspan="5" class="text-center text-muted">Tidak ada data</td>
@@ -240,20 +246,27 @@ function renderWordsDetails(wordGroup) {
         else if (word.color === "green") simbolClass = "text-fiil";
         else if (word.color === "blue") simbolClass = "text-isim";
 
+        const parts = [
+            word.kalimat,
+            word.hukum,
+            word.kategori,
+            word.kedudukan,
+            word.irob,
+            word.tanda,
+        ].filter(p => p !== null && p !== undefined && String(p).trim() !== '').join(' - ');
+
         const row = `
             <tr class="text-center kalimat-detail-row">
                 <td>
-                    <div class="text-right arabic-text words">
-                        ${word.kalimat} - ${word.hukum} -
-                        ${word.kategori} - ${word.kedudukan} -
-                        ${word.irob} - ${word.tanda}
+                    <div class="text-right arabic-text ar-subtitle">
+                        ${parts}
                     </div>
                 </td>
                 <td class="text-center align-middle word" id="${word.id}">
                        <div class="${simbolClass} arabic-text words">
                            ${word.text}
                        </div>
-                          <div class="text-center ${simbolClass} mb-2 arabic-text ar-symbol-mini">
+                          <div class="text-center ${simbolClass} arabic-text ar-symbol-mini">
                             ${word.simbol ?? ""}
                         </div>
                        <div class="translation">
