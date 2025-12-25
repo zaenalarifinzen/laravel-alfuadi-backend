@@ -1,12 +1,10 @@
 # Change Log
 
-## Upcoming
-
--   Penamabahan menu view detail pada kalimat
-
 ## 1.1.2
 
 -   Perbaikan error (tidak bisa menyimpan) saat menambahkan kalimat baru
+-   Penamabahan tab view detail pada kalimat
+-   Informasi editor untuk group dan kalimat
 
 ## 1.1.1+1
 
