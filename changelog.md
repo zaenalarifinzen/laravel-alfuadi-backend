@@ -4,6 +4,10 @@
 
 -   Penamabahan menu view detail pada kalimat
 
+## 1.1.2
+
+-   Perbaikan error (tidak bisa menyimpan) saat menambahkan kalimat baru
+
 ## 1.1.1+1
 
 -   Perbaikan field terjemah menjadi tidak required (wajib diisi) saat tambah kalimat baru

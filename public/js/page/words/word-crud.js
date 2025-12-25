@@ -5,6 +5,15 @@ $("#btn-add-word").on("click", function () {
     $("#form-add-word")[0].reset();
     $("#form-add-word-label").text("Tambah Kalimat");
     $("#btn-submit").text("Tambahkan");
+
+    // reset form
+    $("#form-add-word")[0].reset();
+    document
+        .getElementById("form-add-word")
+        .querySelectorAll("[required]")
+        .forEach((el) => {
+            el.removeAttribute("required");
+        });
     $("#additional-fields").hide();
 
     // get key from local storage
@@ -146,7 +155,6 @@ $("#form-add-word").on("submit", function (e) {
     renderWordsDetails(wordGroup);
 
     // form.stopProgress();
-    $("#form-add-word")[0].reset();
     $("#modal-add-word").modal("hide");
 });
 
