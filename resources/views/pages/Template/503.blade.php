@@ -9,7 +9,7 @@
 @section('main')
     <div class="page-error">
         <div class="page-inner">
-            <img src="{{ asset('img/alfuadi_splash_icon.svg') }}" alt="logo" height="70">
+            <img src="{{ asset('img/maintenance.svg') }}" alt="logo" width="300" class="mb-4">
             <h1>503</h1>
             <div class="page-description">
                 Aplikasi sedang dalam pemeliharaan.
