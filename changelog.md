@@ -3,6 +3,7 @@
 ## 1.1.3
 
 -   Perbaikan error untuk dhomir fashl (ضَمِيْرُ الْفَصْلِ)
+-   Urutan kategori dimulai dari yang mu'rob terlebih dahulu
 
 ## 1.1.2
 
