@@ -310,11 +310,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     // --- Kedudukan Changed ---
     kedudukanSelect.addEventListener("change", () => {
         const currentKedudukan = kedudukanSelect.value;
-        if (currentKedudukan === "KD53" || currentKedudukan === "KD58") {
+
+        if (currentKedudukan === "KD4101" || currentKedudukan === "KD4102") {
+            // jika jumlah atau sibhul jumlah
             disableFields(irobSelect, tandaSelect);
-        } else if (currentKedudukan === "KD4" || currentKedudukan === "KD6") {
+        } else if (currentKedudukan === "KD1006" || currentKedudukan === "KD1006") {
+            // jika fail mustatir
             disableFields(hukumSelect, irobSelect, tandaSelect);
-        } else if (currentKedudukan === "KD59") {
+        } else if (currentKedudukan === "KD1056") {
+            // jika dhomir fashl
             disableFields(irobSelect, tandaSelect);
         } else {
             enableFields(irobSelect, tandaSelect);
