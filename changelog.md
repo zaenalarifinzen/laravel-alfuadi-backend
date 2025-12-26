@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.1.3
+
+-   Perbaikan error untuk dhomir fashl (ضَمِيْرُ الْفَصْلِ)
+
 ## 1.1.2
 
 -   Perbaikan error (tidak bisa menyimpan) saat menambahkan kalimat baru

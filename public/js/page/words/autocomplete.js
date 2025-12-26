@@ -314,6 +314,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             disableFields(irobSelect, tandaSelect);
         } else if (currentKedudukan === "KD4" || currentKedudukan === "KD6") {
             disableFields(hukumSelect, irobSelect, tandaSelect);
+        } else if (currentKedudukan === "KD59") {
+            disableFields(irobSelect, tandaSelect);
         } else {
             enableFields(irobSelect, tandaSelect);
             fillIrob();
