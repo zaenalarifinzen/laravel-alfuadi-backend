@@ -15,12 +15,28 @@
 
         <div class="card-body">
             {{-- Form for resetting password --}}
-            <form method="POST" action="{{ route('reset-password') }}" class="needs-validation" novalidate="">
+            <form method="POST" action="{{ route('password.update') }}" class="needs-validation" novalidate="">
                 @csrf
+                <input type="hidden" name="token" value="{{ $request->token }}"> 
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
+                        name="email" autocomplete="current-password" value="{{ $request->email }}" readonly>
+                    @error('email')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                    @error('token')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
                 <div class="form-group" style="position: relative">
                     <div class="form-group" style="position: relative">
                         <div class="d-block">
-                            <label for="password" class="control-label">Password</label>
+                            <label for="password" class="control-label">Password baru</label>
                         </div>
                         <input id="password" type="password" class="form-control @error('password') is-invalid @enderror"
                             name="password" tabindex="2" autocomplete="current-password" required>
@@ -41,15 +57,16 @@
                             </div>
                         @enderror
                     </div>
-                    <div class="form-group" style="position: relative">
-                        <div class="d-block">
-                            <label for="password_confirmation" class="control-label">Konfirmasi Password</label>
-                        </div>
-                        <input id="password_confirmation" type="password"
-                            class="form-control @error('password') is-invalid @enderror" name="password_confirmation"
-                            tabindex="2" autocomplete="current-password" required>
-                        <span class="toggle-password-icon"
-                            style="
+                </div>
+                <div class="form-group" style="position: relative">
+                    <div class="d-block">
+                        <label for="password_confirmation" class="control-label">Konfirmasi password</label>
+                    </div>
+                    <input id="password_confirmation" type="password"
+                        class="form-control @error('password') is-invalid @enderror" name="password_confirmation"
+                        tabindex="2" autocomplete="current-password" required>
+                    <span class="toggle-password-icon"
+                        style="
                         position: absolute;
                         right: 15px;
                         top: 48px;
@@ -57,14 +74,13 @@
                         cursor: pointer;
                         color: #888
                         ">
-                            <i class="fas fa-eye"></i>
-                        </span>
-                        @error('password')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
+                        <i class="fas fa-eye"></i>
+                    </span>
+                    @error('password')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
 
                 <div class="form-group">

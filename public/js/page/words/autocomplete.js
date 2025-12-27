@@ -169,9 +169,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     function fillSimbol() {
         const currentKalimat = kalimatSelect.value;
         if (
+            // jika fiil madhi, mudhori yang mabni, amr atau huruf
             currentKalimat === "21" ||
             currentKalimat === "23" ||
-            currentKalimat === "30"
+            currentKalimat === "30" ||
+            (currentKalimat === "22" && hukumSelect.value.trim() !== "مُعْرَبٌ")
         ) {
             const kategori = data.kategori.find(
                 (k) => k.id == kategoriSelect.value
@@ -314,7 +316,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (currentKedudukan === "KD4101" || currentKedudukan === "KD4102") {
             // jika jumlah atau sibhul jumlah
             disableFields(irobSelect, tandaSelect);
-        } else if (currentKedudukan === "KD1006" || currentKedudukan === "KD1006") {
+        } else if (
+            currentKedudukan === "KD1006" ||
+            currentKedudukan === "KD1006"
+        ) {
             // jika fail mustatir
             disableFields(hukumSelect, irobSelect, tandaSelect);
         } else if (currentKedudukan === "KD1056") {

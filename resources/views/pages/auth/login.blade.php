@@ -14,6 +14,11 @@
         </div>
 
         <div class="card-body">
+            @session('status')
+                <div class="alert alert-success" role="alert">
+                    {{ $value }}
+                </div>
+            @endsession
             <form method="POST" action="{{ route('login') }}" class="needs-validation" novalidate="">
                 @csrf
                 <div class="form-group">

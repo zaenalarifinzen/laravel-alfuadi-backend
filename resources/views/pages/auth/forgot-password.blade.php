@@ -14,22 +14,26 @@
 
         <div class="card-body">
             <p class="text-muted">Kami akan mengirim link untuk mengatur ulang password</p>
-            <form method="POST" action="{{ route('forgot-password') }}" class="needs-validation" novalidate="">
+            @session('status')
+                <div class="alert alert-success" role="alert">
+                    {{ $value }}
+                </div>
+            @endsession
+            <form method="POST" action="{{ route('password.email') }}" class="needs-validation" novalidate="">
+                @csrf
                 <div class="form-group">
                     <label for="email">Masukkan email</label>
-                    <input id="email"
-                        type="email"
-                        class="form-control"
-                        name="email"
-                        tabindex="1"
-                        required
-                        autofocus>
+                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
+                        name="email" tabindex="1" required autofocus>
+                    @error('email')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
 
                 <div class="form-group">
-                    <button type="submit"
-                        class="btn btn-primary btn-lg btn-block"
-                        tabindex="4">
+                    <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
                         Kirim link
                     </button>
                 </div>
