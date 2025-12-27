@@ -1,6 +1,11 @@
 # Change Log
 
-## 1.1.3
+## 1.1.5
+
+-   Penambahan simbol untuk fiil mudhori mabni
+-   Penambahan menu reset password saat login
+
+## 1.1.4
 
 -   Perbaikan error untuk kedudukan yang berupa jumlah
 -   Perbaikan typo pada simbol khobar asbaha
