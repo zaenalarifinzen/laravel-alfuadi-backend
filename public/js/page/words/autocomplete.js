@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         // jika kalimat adalah isim muawal atau jumlah, maka fii mahal
         if (currentKalimat === "11" || currentKalimat === "41") {
             // ambil tanda irob yang mabni
-            const kategoriMabni = data.kategori.find((k) => k.id === "C1");
+            const kategoriMabni = data.kategori.find((k) => k.id === "C1008");
 
             let tanda = "";
             const irob = irobSelect.value.trim();

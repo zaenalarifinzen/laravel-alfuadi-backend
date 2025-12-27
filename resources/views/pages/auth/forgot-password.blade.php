@@ -9,14 +9,14 @@
 @section('main')
     <div class="card card-primary">
         <div class="card-header">
-            <h4>Forgot Password</h4>
+            <h4>Lupa Password</h4>
         </div>
 
         <div class="card-body">
-            <p class="text-muted">We will send a link to reset your password</p>
-            <form method="POST">
+            <p class="text-muted">Kami akan mengirim link untuk mengatur ulang password</p>
+            <form method="POST" action="{{ route('forgot-password') }}" class="needs-validation" novalidate="">
                 <div class="form-group">
-                    <label for="email">Email</label>
+                    <label for="email">Masukkan email</label>
                     <input id="email"
                         type="email"
                         class="form-control"
@@ -30,7 +30,7 @@
                     <button type="submit"
                         class="btn btn-primary btn-lg btn-block"
                         tabindex="4">
-                        Forgot Password
+                        Kirim link
                     </button>
                 </div>
             </form>
