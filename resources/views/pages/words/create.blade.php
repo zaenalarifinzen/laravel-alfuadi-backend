@@ -293,7 +293,7 @@
                             </div>
                         </div>
                         <div class="editor-kalimat" style="padding-top: 20px">
-                            <span>Editor Kalimat : </span>
+                            <span>Editor kalimat : </span>
                             {{-- show editor name based on this words --}}
                             <a href="#" class="font-weight-600" id="word-editor-info">-</a>
                         </div>
@@ -445,8 +445,8 @@
 
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/components-table.js') }}"></script>
-    <script src="{{ asset('js/page/words/storage-helper.js') }}?v=1.1.3"></script>
-    <script src="{{ asset('js/page/words/word-crud.js') }}?v=1.1.3"></script>
-    <script src="{{ asset('js/page/words/words-page.js') }}?v=1.1.3"></script>
-    <script src="{{ asset('js/page/words/autocomplete.js') }}?v=1.1.3"></script>
+    <script src="{{ asset('js/page/words/storage-helper.js') }}?v=1.1.4"></script>
+    <script src="{{ asset('js/page/words/word-crud.js') }}?v=1.1.4"></script>
+    <script src="{{ asset('js/page/words/words-page.js') }}?v=1.1.4"></script>
+    <script src="{{ asset('js/page/words/autocomplete.js') }}?v=1.1.4"></script>
 @endpush
