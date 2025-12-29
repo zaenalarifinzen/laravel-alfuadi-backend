@@ -525,7 +525,7 @@
         {
             "id": "C3012",
             "id_kalimat": "30",
-            "simbol": "توكيد",
+            "simbol": "حرف",
             "kategori_ar": "حَرْفُ تَوْكِيْدٌ",
             "kategori_in": "Huruf Taukid",
             "hukum": "مَبْنِيٌ",
@@ -694,6 +694,14 @@
             "simbol": "اسم ما",
             "kedudukan_ar": "اِسْمُ مَا",
             "kedudukan_in": "Isim Maa Al Hijaziah",
+            "irob": "مَرْفُوْعٌ "
+        },
+        {
+            "id": "KD1057",
+            "id_kalimat": "10",
+            "simbol": "اسم ما دام",
+            "kedudukan_ar": "اِسْمُ مَا دَامَ",
+            "kedudukan_in": "Isim Maa Daama",
             "irob": "مَرْفُوْعٌ "
         },
         {
@@ -926,6 +934,14 @@
             "simbol": "خ.ما",
             "kedudukan_ar": "خَبَرُ مَا الحِجَازِيَة",
             "kedudukan_in": "Khobar Ma Al Hijaziyah",
+            "irob": "مَنْصُوْبٌ "
+        },
+        {
+            "id": "KD1058",
+            "id_kalimat": "10",
+            "simbol": "خ.ما دام",
+            "kedudukan_ar": "خَبَرُ مَا دَامَ",
+            "kedudukan_in": "Khobar Ma Daama",
             "irob": "مَنْصُوْبٌ "
         },
         {
