@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.1.6
+
+-   Penambahan isim & khobar maa daama
+-   Perubahan simbol nun taukid dari توكيد menjadi حؤف
+
 ## 1.1.5
 
 -   Penambahan simbol untuk fiil mudhori mabni
