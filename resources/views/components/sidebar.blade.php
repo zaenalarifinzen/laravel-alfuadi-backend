@@ -67,7 +67,7 @@
                 </li> --}}
                 <li class="{{ Request::is('example') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('page.templatepage') }}"><i class="fas fa-file-lines"></i>
-                        <span>Template</span></a>
+                        <span>Develop Page</span></a>
                 </li>
             @endif
     </aside>

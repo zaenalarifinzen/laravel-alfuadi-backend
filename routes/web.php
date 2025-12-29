@@ -19,7 +19,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('users', UserController::class);
         Route::resource('products', ProductController::class);
         Route::get('/example', function () {
-            return view('pages.Template.503', ['type_menu' => '']);
+            return view('pages.Template.develop.dropdown', ['type_menu' => '']);
         })->name('page.templatepage');; // Template Page
     });
 
