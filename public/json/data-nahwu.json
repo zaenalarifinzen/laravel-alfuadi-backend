@@ -55,6 +55,30 @@
             "jazm": " "
         },
         {
+            "id": "C1018",
+            "id_kalimat": "10",
+            "simbol": null,
+            "kategori_ar": "اِسْمٌ مُفْرَدٌ مَقْصُوْرٌ",
+            "kategori_in": "Isim Mufrod Maqshur",
+            "hukum": "مُعْرَبٌ",
+            "rofa": "ضَمَّةٌ مُقَدَّرَةٌ",
+            "nashob": "فَتْحَةٌ مُقَدَّرَةٌ",
+            "jar": "كَسْرَةٌ مُقَدَّرَةٌ",
+            "jazm": " "
+        },
+        {
+            "id": "C1019",
+            "id_kalimat": "10",
+            "simbol": null,
+            "kategori_ar": "اِسْمٌ مُفْرَدٌ مَنْقُوْصٌ",
+            "kategori_in": "Isim Mufrod Manqush",
+            "hukum": "مُعْرَبٌ",
+            "rofa": "ضَمَّةٌ مُقَدَّرَةٌ",
+            "nashob": "فَتْحَةٌ",
+            "jar": "كَسْرَةٌ مُقَدَّرَةٌ",
+            "jazm": " "
+        },
+        {
             "id": "C1002",
             "id_kalimat": "10",
             "simbol": null,
@@ -77,6 +101,30 @@
             "nashob": "فَتْحَةٌ",
             "jar": "كَسْرَةٌ",
             "jazm": " "
+        },
+        {
+            "id": "C1020",
+            "id_kalimat": "10",
+            "simbol": null,
+            "kategori_ar": "جَمْعُ تَكْسِيْرٍ مَقْصُوْرٌ",
+            "kategori_in": "Jamak Taksir Maqshur",
+            "hukum": "مُعْرَبٌ",
+            "rofa": "ضَمَّةٌ مُقَدَّرَةٌ",
+            "nashob": "فَتْحَةٌ مُقَدَّرَةٌ",
+            "jar": "كَسْرَةٌ مُقَدَّرَةٌ",
+            "jazm": " "
+        },
+        {
+            "id": "C1021",
+            "id_kalimat": "10",
+            "simbol": null,
+            "kategori_ar": "جَمْعُ تَكْسِيْرٍ مَنْقُوْصٌ",
+            "kategori_in": "Jamak Taksir Manqush",
+            "hukum": "مُعْرَبٌ",
+            "rofa": "ضَمَّةٌ مُقَدَّرَةٌ",
+            "nashob": "فَتْحَةٌ",
+            "jar": "كَسْرَةٌ مُقَدَّرَةٌ",
+            "jazm": null
         },
         {
             "id": "C1004",
