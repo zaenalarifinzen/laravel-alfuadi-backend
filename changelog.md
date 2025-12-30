@@ -1,9 +1,13 @@
 # Change Log
 
+## 1.1.7
+
+-   Penambahan kategori maqshur dan manqush pada isim mufrod dan jamak taksir
+
 ## 1.1.6
 
 -   Penambahan isim & khobar maa daama
--   Perubahan simbol nun taukid dari توكيد menjadi حؤف
+-   Perubahan simbol nun taukid dari توكيد menjadi حرف
 
 ## 1.1.5
 
