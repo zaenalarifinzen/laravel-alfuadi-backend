@@ -103,7 +103,7 @@
             border-radius: 5px;
         }
 
-        .options li:hover {
+        .options li:hover, li.selected {
             background: #f2f2f2;
         }
     </style>
