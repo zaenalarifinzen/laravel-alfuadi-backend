@@ -5,6 +5,9 @@
 @push('style')
     <!-- CSS Libraries -->
     {{-- <link rel="stylesheet" href="{{ asset('library/bootstrap-social/bootstrap-social.css') }}"> --}}
+    <link
+        href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Cinzel+Decorative:wght@400;700;900&family=Scheherazade+New:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
 
     <style>
         body {
@@ -103,8 +106,14 @@
             border-radius: 5px;
         }
 
-        .options li:hover, li.selected {
+        .options li:hover,
+        li.selected {
             background: #f2f2f2;
+        }
+
+        .ar {
+            direction: rtl;
+            font-family: "Amiri Quran", serif;
         }
     </style>
 @endpush
@@ -112,7 +121,7 @@
 @section('main')
     <div class="wrapper">
         <div class="select-btn">
-            <span>Pilih provinsi</span>
+            <span class="ar">Pilih daftar</span>
             <i class="fa-solid fa-angle-down"></i>
         </div>
         <div class="content">
@@ -136,23 +145,21 @@
         searchInput = wrapper.querySelector("input");
         options = wrapper.querySelector(".options");
 
-        let provinces = ["Jawa Timur", "Jawa Tengah", "Jawa Barat", "Yogyakarta", "DKI Jakarta", "Palembang", "Aceh",
-            "Samarinda", "Pontianak", "Jayapura"
-        ];
+        let array = ["مفعول به", "فاعل", "اسم كان", "خبر كان", "ظرف", "منادى", "معطوف"];
 
-        function addProvinces(selectedProvince) {
+        function addarray(selecteditem) {
             options.innerHTML = "";
-            provinces.forEach(province => {
-                let isSelected = province== selectedProvince ? "selected" : "";
-                let li = `<li onClick="updateName(this)" class="${isSelected}">${province}</li>`;
+            array.forEach(item => {
+                let isSelected = item == selecteditem ? "selected" : "";
+                let li = `<li onClick="updateName(this)" class="ar ${isSelected}">${item}</li>`;
                 options.insertAdjacentHTML("beforeend", li);
             });
         }
-        addProvinces()
+        addarray()
 
         function updateName(selectedLi) {
             searchInput.value = "";
-            addProvinces(selectedLi.innerText)
+            addarray(selectedLi.innerText)
             wrapper.classList.remove("active");
             selectBtn.firstElementChild.innerText = selectedLi.innerText;
         }
@@ -160,11 +167,11 @@
         searchInput.addEventListener("keyup", () => {
             let filtered = [];
             let searchedValue = searchInput.value.toLowerCase();
-            filtered = provinces.filter(data => {
-                return data.toLowerCase().startsWith(searchedValue);
-            }).map(data => `<li onClick="updateName(this)">${data}</li>`).join("");
-            options.innerHTML = filtered ? filtered :  `<li">Data tidak ditemukan</li>`;
-                   
+            filtered = array.filter(data => {
+                return data.toLowerCase().includes(searchedValue);
+            }).map(data => `<li onClick="updateName(this)" class="ar">${data}</li>`).join("");
+            options.innerHTML = filtered ? filtered : `<li">Data tidak ditemukan</li>`;
+
         })
 
         selectBtn.addEventListener("click", () => {
