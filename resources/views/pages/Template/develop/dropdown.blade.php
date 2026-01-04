@@ -12,7 +12,7 @@
         }
 
         .wrapper {
-            width: 370px;
+            position: relative;
             margin: 130px auto 0;
         }
 
@@ -24,8 +24,7 @@
         }
 
         .select-btn {
-            height: 65px;
-            font-size: 22px;
+            height: 50px;
             padding: 0 20px;
             border-radius: 7px;
             background: #fff;
@@ -33,7 +32,6 @@
         }
 
         .select-btn i {
-            font-size: 31px;
             transition: transform 0.2s linear;
         }
 
@@ -49,8 +47,14 @@
             border-radius: 7px;
         }
 
+        .wrapper .content {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
         .wrapper.active .content {
             display: block;
+            position: absolute;
         }
 
         .content .search {
@@ -77,8 +81,9 @@
 
         .content .options {
             margin-top: 10px;
-            max-height: 250px;
+            max-height: 200px;
             overflow-y: auto;
+            padding-left: 0;
             padding-right: 7px;
         }
 
@@ -103,7 +108,8 @@
             border-radius: 5px;
         }
 
-        .options li:hover {
+        .options li:hover,
+        .options li.selected {
             background: #f2f2f2;
         }
     </style>
@@ -118,7 +124,7 @@
         <div class="content">
             <div class="search">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" placeholder="Cari">
+                <input type="text" placeholder="Cari" autofocus>
             </div>
             <ul class="options"></ul>
         </div>
@@ -143,7 +149,7 @@
         function addProvinces(selectedProvince) {
             options.innerHTML = "";
             provinces.forEach(province => {
-                let isSelected = province== selectedProvince ? "selected" : "";
+                let isSelected = province == selectedProvince ? "selected" : "";
                 let li = `<li onClick="updateName(this)" class="${isSelected}">${province}</li>`;
                 options.insertAdjacentHTML("beforeend", li);
             });
@@ -161,10 +167,10 @@
             let filtered = [];
             let searchedValue = searchInput.value.toLowerCase();
             filtered = provinces.filter(data => {
-                return data.toLowerCase().startsWith(searchedValue);
+                return data.toLowerCase().includes(searchedValue);
             }).map(data => `<li onClick="updateName(this)">${data}</li>`).join("");
-            options.innerHTML = filtered ? filtered :  `<li">Data tidak ditemukan</li>`;
-                   
+            options.innerHTML = filtered ? filtered : `<li">Data tidak ditemukan</li>`;
+
         })
 
         selectBtn.addEventListener("click", () => {
