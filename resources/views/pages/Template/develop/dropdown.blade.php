@@ -11,11 +11,11 @@
 
     <style>
         body {
-            background: #a3c7c4 !important;
+            background: #f1f1f1 !important;
         }
 
         .wrapper {
-            width: 370px;
+            position: relative;
             margin: 130px auto 0;
         }
 
@@ -27,8 +27,7 @@
         }
 
         .select-btn {
-            height: 65px;
-            font-size: 22px;
+            height: 50px;
             padding: 0 20px;
             border-radius: 7px;
             background: #fff;
@@ -36,7 +35,6 @@
         }
 
         .select-btn i {
-            font-size: 31px;
             transition: transform 0.2s linear;
         }
 
@@ -52,8 +50,14 @@
             border-radius: 7px;
         }
 
+        .wrapper .content {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
         .wrapper.active .content {
             display: block;
+            position: absolute;
         }
 
         .content .search {
@@ -80,8 +84,9 @@
 
         .content .options {
             margin-top: 10px;
-            max-height: 250px;
+            max-height: 200px;
             overflow-y: auto;
+            padding-left: 0;
             padding-right: 7px;
         }
 
@@ -107,13 +112,14 @@
         }
 
         .options li:hover,
-        li.selected {
+        .options li.selected {
             background: #f2f2f2;
         }
 
         .ar {
             direction: rtl;
-            font-family: "Amiri Quran", serif;
+            font-family: "Scheherazade New", "Amiri Quran", serif;
+            /* font-size: 12px; */
         }
     </style>
 @endpush
@@ -127,7 +133,7 @@
         <div class="content">
             <div class="search">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" placeholder="Cari">
+                <input type="text" placeholder="Cari" autofocus>
             </div>
             <ul class="options"></ul>
         </div>
@@ -145,21 +151,28 @@
         searchInput = wrapper.querySelector("input");
         options = wrapper.querySelector(".options");
 
-        let array = ["مفعول به", "فاعل", "اسم كان", "خبر كان", "ظرف", "منادى", "معطوف"];
+        let dataIrob = {};
+        fetch("{{ asset('json/data-nahwu.json') }}")
+            .then(response => response.json())
+            .then(jsonData => {
+                dataIrob = jsonData;
+                addCollection()
+            });
 
-        function addarray(selecteditem) {
+
+        function addCollection(selectedItem) {
             options.innerHTML = "";
-            array.forEach(item => {
-                let isSelected = item == selecteditem ? "selected" : "";
-                let li = `<li onClick="updateName(this)" class="ar ${isSelected}">${item}</li>`;
+                       
+            dataIrob.kedudukan.forEach(data => {
+                let isSelected = data.kedudukan_ar_musyakal == selectedItem ? "selected" : "";
+                let li = `<li onClick="updateName(this)" class="ar ${isSelected}">${data.kedudukan_ar_musyakal}</li>`;
                 options.insertAdjacentHTML("beforeend", li);
             });
         }
-        addarray()
 
         function updateName(selectedLi) {
             searchInput.value = "";
-            addarray(selectedLi.innerText)
+            addCollection(selectedLi.innerText)
             wrapper.classList.remove("active");
             selectBtn.firstElementChild.innerText = selectedLi.innerText;
         }
@@ -167,9 +180,12 @@
         searchInput.addEventListener("keyup", () => {
             let filtered = [];
             let searchedValue = searchInput.value.toLowerCase();
-            filtered = array.filter(data => {
-                return data.toLowerCase().includes(searchedValue);
-            }).map(data => `<li onClick="updateName(this)" class="ar">${data}</li>`).join("");
+            filtered = dataIrob.kedudukan.filter(data => {
+                // kedudukan_ar or kedudukan_in includes searched value
+                return data.kedudukan_ar_musyakal.includes(searchedValue) ||
+                    data.kedudukan_in.toLowerCase().includes(searchedValue) ||
+                    data.kedudukan_ar.includes(searchedValue);
+            }).map(data => `<li onClick="updateName(this)" class="ar">${data.kedudukan_ar_musyakal}</li>`).join("");
             options.innerHTML = filtered ? filtered : `<li">Data tidak ditemukan</li>`;
 
         })
