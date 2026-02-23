@@ -50,7 +50,7 @@ return new class extends Migration
             $table->foreign('id_kalimat')->references('id')->on('kalimat')->onDelete('cascade');
 
             $table->integer('order');
-            $table->string('simbol')->nullable();;
+            $table->string('simbol')->nullable();
             $table->string('kedudukan_ar');
             $table->string('kedudukan_ar_musyakal');
             $table->string('kedudukan_in');

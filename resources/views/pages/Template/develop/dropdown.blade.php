@@ -31,6 +31,7 @@
             padding: 0 20px;
             border-radius: 7px;
             background: #fff;
+            font-size: 18px;
             justify-content: space-between;
         }
 
@@ -55,9 +56,15 @@
             box-sizing: border-box;
         }
 
+        .wrapper.active .select-btn {
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+
         .wrapper.active .content {
             display: block;
             position: absolute;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+
         }
 
         .content .search {
@@ -107,7 +114,7 @@
         .options li {
             height: 40px;
             padding: 0 13px;
-            font-size: 15px;
+            font-size: 18px;
             border-radius: 5px;
         }
 
@@ -133,7 +140,7 @@
         <div class="content">
             <div class="search">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" placeholder="Cari" autofocus>
+                <input type="text" placeholder="Cari" autofocus="true">
             </div>
             <ul class="options"></ul>
         </div>
@@ -162,10 +169,11 @@
 
         function addCollection(selectedItem) {
             options.innerHTML = "";
-                       
+
             dataIrob.kedudukan.forEach(data => {
                 let isSelected = data.kedudukan_ar_musyakal == selectedItem ? "selected" : "";
-                let li = `<li onClick="updateName(this)" class="ar ${isSelected}">${data.kedudukan_ar_musyakal}</li>`;
+                let li =
+                    `<li onClick="updateName(this)" class="ar ${isSelected}">${data.kedudukan_ar_musyakal}</li>`;
                 options.insertAdjacentHTML("beforeend", li);
             });
         }
@@ -185,7 +193,8 @@
                 return data.kedudukan_ar_musyakal.includes(searchedValue) ||
                     data.kedudukan_in.toLowerCase().includes(searchedValue) ||
                     data.kedudukan_ar.includes(searchedValue);
-            }).map(data => `<li onClick="updateName(this)" class="ar">${data.kedudukan_ar_musyakal}</li>`).join("");
+            }).map(data => `<li onClick="updateName(this)" class="ar">${data.kedudukan_ar_musyakal}</li>`).join(
+                "");
             options.innerHTML = filtered ? filtered : `<li">Data tidak ditemukan</li>`;
 
         })
@@ -193,5 +202,12 @@
         selectBtn.addEventListener("click", () => {
             wrapper.classList.toggle("active");
         })
+
+        // Close the dropdown if the user clicks outside
+        window.addEventListener("click", function (event) {
+            if (!wrapper.contains(event.target)) {
+                wrapper.classList.remove("active");
+            }
+        });
     </script>
 @endpush
