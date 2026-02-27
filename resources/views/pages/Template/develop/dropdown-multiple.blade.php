@@ -133,33 +133,9 @@
 @endpush
 
 @section('main')
-    <div class="wrapper">
-        <div class="custom-dropdown" data-url="{{ asset('json/data-nahwu.json') }}">
-            <div class="select-btn">
-                <span>Pilih 1</span>
-                <i class="fa-solid fa-angle-down"></i>
-            </div>
-            <div class="content">
-                <div class="search">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" placeholder="Cari">
-                </div>
-                <ul class="options"></ul>
-            </div>
-        </div>
-        <div class="custom-dropdown" data-url="{{ asset('json/data-nahwu.json') }}">
-            <div class="select-btn">
-                <span>Pilih 2</span>
-                <i class="fa-solid fa-angle-down"></i>
-            </div>
-            <div class="content">
-                <div class="search">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" placeholder="Cari">
-                </div>
-                <ul class="options"></ul>
-            </div>
-        </div>
+    <div class="form">
+        <div class="custom-dropdown" data-placeholder="Kategori" data-url="{{ asset('json/data-nahwu.json') }}"></div>
+        <div class="custom-dropdown" data-placeholder="Kedudukan" data-url="{{ asset('json/data-nahwu.json') }}"></div>
     </div>
 @endsection
 
@@ -172,13 +148,39 @@
         class CustomDropdown {
             constructor(wrapper) {
                 this.wrapper = wrapper;
-                this.selectBtn = wrapper.querySelector(".select-btn");
-                this.searchInput = wrapper.querySelector("input");
-                this.optionsContainer = wrapper.querySelector(".options");
                 this.dataUrl = wrapper.dataset.url;
-                this.data = [];
+                this.placeholder = wrapper.dataset.placeholder || "Pilih";
 
+                this.data = [];
+                this.selectedValue = null;
+
+                this.buildHTML();
+                this.cacheElements();
                 this.init();
+            }
+
+            buildHTML() {
+                this.wrapper.classList.add("custom-dropdown");
+
+                this.wrapper.innerHTML = `
+                    <div class="select-btn">
+                        <span>${this.placeholder}</span>
+                        <i class="fa-solid fa-angle-down"></i>
+                    </div>
+                    <div class="content">
+                        <div class="search">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" placeholder="Cari">
+                        </div>
+                        <ul class="options"></ul>
+                    </div>
+                `;
+            }
+
+            cacheElements() {
+                this.selectBtn = this.wrapper.querySelector(".select-btn");
+                this.searchInput = this.wrapper.querySelector("input");
+                this.optionsContainer = this.wrapper.querySelector(".options");
             }
 
             async init() {
@@ -204,8 +206,9 @@
                     const li = document.createElement("li");
                     li.classList.add("ar");
                     li.textContent = item.kedudukan_ar_musyakal;
+                    li.dataset.value = item.id;
 
-                    if (item.kedudukan_ar_musyakal === selectedItem) {
+                    if (item.id === this.selectedValue) {
                         li.classList.add("selected");
                     }
 
@@ -220,6 +223,8 @@
             selectItem(li) {
                 this.searchInput.value = "";
                 this.renderOptions(li.textContent);
+                this.selectedValue = li.dataset.value;
+
                 this.wrapper.classList.remove("active");
                 this.selectBtn.querySelector("span").innerText = li.textContent;
                 this.selectBtn.querySelector("span").classList.add("ar");
@@ -245,6 +250,11 @@
                     const li = document.createElement("li");
                     li.classList.add("ar");
                     li.textContent = item.kedudukan_ar_musyakal;
+                    li.dataset.value = item.id;
+
+                    if (item.id === this.selectedValue) {
+                        li.classList.add("selected");
+                    }
 
                     li.addEventListener("click", () => {
                         this.selectItem(li);
