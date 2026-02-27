@@ -16,7 +16,6 @@
 
         .custom-dropdown {
             position: relative;
-            margin: 130px auto 0;
         }
 
         .select-btn,
@@ -31,8 +30,11 @@
             padding: 0 20px;
             border-radius: 7px;
             background: #fff;
-            font-size: 18px;
             justify-content: space-between;
+        }
+
+        .select-btn .ar {
+            font-size: 18px;
         }
 
         .select-btn i {
@@ -134,9 +136,28 @@
 
 @section('main')
     <div class="form">
-        <div class="custom-dropdown" data-placeholder="Kategori" data-url="{{ asset('json/data-nahwu.json') }}"></div>
-        <div class="custom-dropdown" data-placeholder="Kedudukan" data-url="{{ asset('json/data-nahwu.json') }}"></div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="input-kalimat">Kalimat</label>
+                <select id="input-kalimat" class="custom-dropdown" data-url="/json/data-nahwu.json" name="kalimat"></select>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="input-kategori">Kategori</label>
+                <select id="input-kategori" class="custom-dropdown" data-url="/json/data-nahwu.json" name="kategori"></select>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="input-hukum">Hukum</label>
+                <select id="input-hukum" class="custom-dropdown" data-url="/json/data-nahwu.json" name="hukum"></select>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="input-kedudukan">Kedudukan</label>
+                <select id="input-kedudukan" class="custom-dropdown" data-url="/json/data-nahwu.json" name="kedudukan"></select>
+            </div>
+        </div>
     </div>
+
 @endsection
 
 @push('scripts')
@@ -146,13 +167,13 @@
     <script src="{{ asset('js/page/auth/auth-form.js') }}"></script>
     <script>
         class CustomDropdown {
-            constructor(wrapper) {
-                this.wrapper = wrapper;
-                this.dataUrl = wrapper.dataset.url;
-                this.placeholder = wrapper.dataset.placeholder || "Pilih";
+            constructor(selectElement) {
+                this.select = selectElement;
+                this.dataUrl = selectElement.dataset.url;
+                this.placeholder = selectElement.getAttribute("placeholder") ||
+                    `Pilih ${selectElement.getAttribute("name")}`;
 
                 this.data = [];
-                this.selectedValue = null;
 
                 this.buildHTML();
                 this.cacheElements();
@@ -160,7 +181,26 @@
             }
 
             buildHTML() {
+                // hide original select
+                this.select.style.display = "none";
+
+                this.wrapper = document.createElement("div");
                 this.wrapper.classList.add("custom-dropdown");
+
+                if (this.select.disabled) {
+                    this.wrapper.classList.add("disabled");
+                }
+
+                // if disabled, remove icon dropdown and set placeholder to blank
+                if (this.select.disabled) {
+                    this.wrapper.innerHTML = `
+                        <div class="select-btn">
+                            <span></span>
+                        </div>
+                    `;
+                    this.select.after(this.wrapper);
+                    return;
+                }
 
                 this.wrapper.innerHTML = `
                     <div class="select-btn">
@@ -175,21 +215,28 @@
                         <ul class="options"></ul>
                     </div>
                 `;
+
+                this.select.after(this.wrapper);
             }
 
             cacheElements() {
                 this.selectBtn = this.wrapper.querySelector(".select-btn");
-                this.searchInput = this.wrapper.querySelector("input");
+                this.searchInput = this.wrapper.querySelector(".search input");
                 this.optionsContainer = this.wrapper.querySelector(".options");
+                this.displaySpan = this.selectBtn.querySelector("span");
             }
 
             async init() {
                 await this.loadData();
+                this.populateSelect();
                 this.renderOptions();
                 this.bindEvents();
+                this.setDefaultFromSelect();
             }
 
             async loadData() {
+                if (!this.dataUrl) return;
+
                 try {
                     const response = await fetch(this.dataUrl);
                     const json = await response.json();
@@ -199,35 +246,59 @@
                 }
             }
 
-            renderOptions(selectedItem = null) {
-                this.optionsContainer.innerHTML = "";
+            populateSelect() {
+                this.select.innerHTML = `<option value="">${this.placeholder}</option>`;
 
                 this.data.forEach(item => {
+                    const option = document.createElement("option");
+                    option.value = item.id;
+                    option.textContent = item.kedudukan_ar_musyakal;
+                    this.select.appendChild(option);
+                });
+            }
+
+            renderOptions(filteredData = null) {
+                const dataset = filteredData || this.data;
+                this.optionsContainer.innerHTML = "";
+
+                if (!dataset || dataset.length === 0) {
+                    this.optionsContainer.innerHTML = "<span>Data tidak ditemukan</span>";
+                    return;
+                }
+
+                dataset.forEach(item => {
                     const li = document.createElement("li");
                     li.classList.add("ar");
                     li.textContent = item.kedudukan_ar_musyakal;
                     li.dataset.value = item.id;
 
-                    if (item.id === this.selectedValue) {
+                    if (item.id === this.select.value) {
                         li.classList.add("selected");
                     }
 
                     li.addEventListener("click", () => {
-                        this.selectItem(li);
+                        if (this.select.disabled) return;
+                        this.selectItem(item.id, item.kedudukan_ar_musyakal);
                     });
 
                     this.optionsContainer.appendChild(li);
                 });
             }
 
-            selectItem(li) {
-                this.searchInput.value = "";
-                this.renderOptions(li.textContent);
-                this.selectedValue = li.dataset.value;
+            selectItem(value, text) {
+                this.select.value = value;
+                this.displaySpan.innerHTML = text;
+                this.displaySpan.classList.add("ar");
 
                 this.wrapper.classList.remove("active");
-                this.selectBtn.querySelector("span").innerText = li.textContent;
-                this.selectBtn.querySelector("span").classList.add("ar");
+                this.renderOptions();
+            }
+
+            setDefaultFromSelect() {
+                if (!this.select.value) return;
+
+                const selectOption = this.select.option[this.select.selectedIndex];
+                this.displaySpan.innerHTML = selectOption.textContent;
             }
 
             filterOptions() {
@@ -239,29 +310,7 @@
                         item.kedudukan_in.toLowerCase().includes(searched);
                 });
 
-                this.optionsContainer.innerHTML = "";
-
-                if (filtered.length === 0) {
-                    this.optionsContainer.innerHTML = `<li">Data tidak ditemukan</li>`;
-                    return;
-                }
-
-                filtered.forEach(item => {
-                    const li = document.createElement("li");
-                    li.classList.add("ar");
-                    li.textContent = item.kedudukan_ar_musyakal;
-                    li.dataset.value = item.id;
-
-                    if (item.id === this.selectedValue) {
-                        li.classList.add("selected");
-                    }
-
-                    li.addEventListener("click", () => {
-                        this.selectItem(li);
-                    });
-
-                    this.optionsContainer.appendChild(li);
-                });
+                this.renderOptions(filtered);
             }
 
             bindEvents() {
@@ -284,8 +333,7 @@
         }
 
         // auto initiate all dropdown
-        document.querySelectorAll(".custom-dropdown").forEach(dropdown => {
-            new CustomDropdown(dropdown);
-        });
+        document.querySelectorAll("select.custom-dropdown")
+            .forEach(select => new CustomDropdown(select));
     </script>
 @endpush
