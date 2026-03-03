@@ -11,7 +11,7 @@
 
     <style>
         body {
-            background: #f1f1f1 !important;
+            background: #fff !important;
         }
 
         .custom-dropdown {
@@ -29,7 +29,8 @@
             height: 50px;
             padding: 0 20px;
             border-radius: 7px;
-            background: #fff;
+            border: 1px solid #EAECFC;
+            background: #ffffff;
             justify-content: space-between;
         }
 
@@ -39,6 +40,10 @@
 
         .select-btn i {
             transition: transform 0.2s linear;
+        }
+
+        .custom-dropdown.active .select-btn {
+            border-color: #b7d8d5;
         }
 
         .custom-dropdown.active .select-btn i {
@@ -71,8 +76,23 @@
         }
 
         .custom-dropdown.disabled .select-btn {
-            background: #e9e9e9;
+            background: #f5f5f5;
+            border: 1px solid #fff;
             cursor: not-allowed;
+        }
+
+        .custom-dropdown.invalid .select-btn {
+            border: 1px solid #e74c3c;
+        }
+
+        .custom-dropdown.invalid .select-btn span {
+            color: #e74c3c;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 12px;
+            margin-top: 4px;
         }
 
         .content .search {
@@ -93,7 +113,7 @@
             outline: none;
             font-size: 15px;
             padding: 0 15px 0 32px;
-            border: 1px solid #b7d8d5;
+            border: 1px solid #f1f1f1;
             border-radius: 5px;
         }
 
@@ -140,11 +160,11 @@
 @endpush
 
 @section('main')
-    <div class="form">
+    <form class="form" novalidate>
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="input-kalimat">Kalimat</label>
-                <select id="input-kalimat" class="custom-dropdown" name="kalimat"></select>
+                <select id="input-kalimat" class="custom-dropdown" name="kalimat" required></select>
             </div>
             <div class="form-group col-md-6">
                 <label for="input-kategori">Kategori</label>
@@ -177,7 +197,12 @@
                 <select id="input-simbol" class="custom-dropdown" name="simbol"></select>
             </div>
         </div>
-    </div>
+
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary btn-lg" id="#">Tambahkan</button>
+        </div>
+    </form>
+
 
 @endsection
 
@@ -283,6 +308,8 @@
 
             constructor(selectElement) {
                 this.select = selectElement;
+                this.isRequired = this.select.hasAttribute("required");
+                this.select.removeAttribute("required");
                 this.dataName = selectElement.name;
                 this.placeholder = selectElement.getAttribute("placeholder") ||
                     `Pilih ${selectElement.getAttribute("name")}`;
@@ -326,6 +353,7 @@
                         </div>
                         <ul class="options"></ul>
                     </div>
+                    <small class="error-message"></small>
                 `;
 
                 this.select.after(this.wrapper);
@@ -336,13 +364,12 @@
                 this.searchInput = this.wrapper.querySelector(".search input");
                 this.optionsContainer = this.wrapper.querySelector(".options");
                 this.displaySpan = this.selectBtn.querySelector("span");
+                this.errorMessage = this.wrapper.querySelector(".error-message");
             }
 
             async init() {
                 await MasterData.load();
                 this.data = MasterData.getDataSet(this.dataName);
-                console.log(this.dataName, this.data);
-
                 this.populateSelect();
                 this.renderOptions();
                 this.bindEvents();
@@ -381,7 +408,7 @@
 
                     li.addEventListener("click", () => {
                         if (this.select.disabled) return;
-                        this.selectItem(item.id, item.label);
+                        this.selectItem(item.value, item.label_ar_musyakal);
                     });
 
                     this.optionsContainer.appendChild(li);
@@ -392,8 +419,8 @@
                 this.select.value = value;
                 this.displaySpan.innerHTML = text;
                 this.displaySpan.classList.add("ar");
-
                 this.wrapper.classList.remove("active");
+                this.validate();
                 this.renderOptions();
             }
 
@@ -416,6 +443,20 @@
                 this.renderOptions(filtered);
             }
 
+            validate() {
+                if (!this.isRequired) return true;
+
+                if (!this.select.value) {
+                    this.wrapper.classList.add("invalid");
+                    this.errorMessage.textContent = "Wajib diisi";
+                    return false;
+                }
+
+                this.wrapper.classList.remove("invalid");
+                this.errorMessage.textContent = "";
+                return true;
+            }
+
             bindEvents() {
                 this.selectBtn.addEventListener("click", () => {
                     this.wrapper.classList.toggle("active");
@@ -435,8 +476,24 @@
             }
         }
 
+        document.querySelector("form").addEventListener("submit", function(e) {
+            let valid = true;
+
+            document.querySelectorAll("select.custom-dropdown").forEach(select => {
+                const instance = select._customInstance;
+                if (instance && !instance.validate()) {
+                    valid = false;
+                }
+            });
+
+            if (!valid) e.preventDefault();
+        })
+
         // auto initiate all dropdown
         document.querySelectorAll("select.custom-dropdown")
-            .forEach(select => new CustomDropdown(select));
+            .forEach(select => {
+                const instance = new CustomDropdown(select);
+                select._customInstance = instance;
+            });
     </script>
 @endpush
