@@ -72,21 +72,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         } else {
             hukumSelect.innerHTML = `<option selected>${kategori.hukum}</option>`;
         }
-
-        // add too other unique hukum in dropdown based on kalimat without duplicating
-        // const filteredKategori = data.kategori.filter(
-        //     (k) => k.id_kalimat === selectedKalimat
-        // );
-
-        // const uniqueHukum = new Set();
-        // filteredKategori.forEach((k) => {
-        //     if (k.hukum !== kategori.hukum) {
-        //         uniqueHukum.add(k.hukum);
-        //     }
-        // });
-        // uniqueHukum.forEach((h) => {
-        //     hukumSelect.innerHTML += `<option>${h}</option>`;
-        // });
     }
 
     // --- isi i'rob ---
@@ -96,20 +81,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (!kd) return;
 
         irobSelect.innerHTML = `<option selected>${kd.irob}</option>`;
-        // add too other unique irob in dropdown based on kalimat without duplicating
-        // const selectedKalimat = kalimatSelect.value.trim();
-        // const filteredKedudukan = data.kedudukan.filter(
-        //     (k) => k.id_kalimat === selectedKalimat
-        // );
-        // const uniqueIrob = new Set();
-        // filteredKedudukan.forEach((k) => {
-        //     if (k.irob !== kd.irob) {
-        //         uniqueIrob.add(k.irob);
-        //     }
-        // });
-        // uniqueIrob.forEach((i) => {
-        //     irobSelect.innerHTML += `<option>${i}</option>`;
-        // });
     }
 
     // --- isi Tanda I‘rob ---
@@ -293,6 +264,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     // --- Kategori Changed ---
     kategoriSelect.addEventListener("change", () => {
         fillHukum();
+
+        console.log("Kategori berubah");
+        
 
         const currentKalimat = kalimatSelect.value.trim();
         if (currentKalimat === "10" || currentKalimat === "22") {

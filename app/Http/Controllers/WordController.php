@@ -68,7 +68,7 @@ class WordController extends Controller
         }
         $verseNumber = $first->verse_number ?? null;
 
-        return view('pages.words.create', compact(
+        return view('pages.words.create-new', compact(
             'surahs',
             'surahId',
             'surahName',

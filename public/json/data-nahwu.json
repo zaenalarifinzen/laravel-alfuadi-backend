@@ -1,42 +1,42 @@
 {
     "kalimat": [
         {
-            "id": "1.0",
+            "id": "10",
             "kalimat_ar": "اِسْمٌ",
             "kalimat_in": "Isim "
         },
         {
-            "id": "2.1",
+            "id": "21",
             "kalimat_ar": "فِعْلٌ مَاضٍ",
             "kalimat_in": "Fiil Madhi "
         },
         {
-            "id": "2.2",
+            "id": "22",
             "kalimat_ar": "فِعْلٌ مُضَارِعٌ",
             "kalimat_in": "Fiil Mudhori "
         },
         {
-            "id": "2.3",
+            "id": "23",
             "kalimat_ar": "فِعْلٌ اَمْر",
             "kalimat_in": "Fiil Amr "
         },
         {
-            "id": "3.0",
+            "id": "30",
             "kalimat_ar": "حَرْفٌ",
             "kalimat_in": "Huruf "
         },
         {
-            "id": "4.1",
+            "id": "41",
             "kalimat_ar": "جُمْلَةٌ",
             "kalimat_in": "Jumlah "
         },
         {
-            "id": "4.2",
+            "id": "42",
             "kalimat_ar": "شِبْهُ الْجُمْلَةِ",
             "kalimat_in": "Sibhul Jumlah "
         },
         {
-            "id": "5.0",
+            "id": "50",
             "kalimat_ar": "إِسْمٌ مُؤَوَّلٌ",
             "kalimat_in": "Isim Muawwal"
         }
