@@ -67,7 +67,7 @@
             display: block;
             position: absolute;
             box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-            padding: 10px;
+            padding: 15px;
         }
 
         .custom-dropdown.disabled .select-btn {
@@ -153,12 +153,28 @@
         </div>
         <div class="form-row">
             <div class="form-group col-md-6">
+                <label for="input-kedudukan">Kedudukan</label>
+                <select id="input-kedudukan" class="custom-dropdown" name="kedudukan"></select>
+            </div>
+            <div class="form-group col-md-6">
                 <label for="input-hukum">Hukum</label>
                 <select id="input-hukum" class="custom-dropdown" name="hukum"></select>
             </div>
+        </div>
+        <div class="form-row">
             <div class="form-group col-md-6">
-                <label for="input-kedudukan">Kedudukan</label>
-                <select id="input-kedudukan" class="custom-dropdown" name="kedudukan"></select>
+                <label for="input-irob">Irob</label>
+                <select id="input-irob" class="custom-dropdown" name="irob"></select>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="input-tanda">Tanda irob</label>
+                <select id="input-tanda" class="custom-dropdown" name="tanda"></select>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="input-simbol">Simbol</label>
+                <select id="input-simbol" class="custom-dropdown" name="simbol"></select>
             </div>
         </div>
     </div>
@@ -171,10 +187,99 @@
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/auth/auth-form.js') }}"></script>
     <script>
+        const MasterData = {
+            raw: null,
+
+            async load() {
+                if (this.raw) return this.raw;
+                const res = await fetch("/json/data-nahwu.json");
+                this.raw = await res.json();
+                return this.raw;
+            },
+
+            getDataSet(name) {
+                if (!this.raw) return [];
+
+                switch (name) {
+                    case "kalimat":
+                        return this.raw.kalimat.map(item => ({
+                            value: item.id,
+                            label_in: item.kalimat_in,
+                            label_ar: item.kalimat_ar,
+                            label_ar_musyakal: item.kalimat_ar
+                        }));
+
+                    case "kategori":
+                        return this.raw.kategori.map(item => ({
+                            value: item.id,
+                            label_in: item.kategori_in,
+                            label_ar: item.kategori_ar,
+                            label_ar_musyakal: item.kategori_ar_musyakal
+                        }));
+
+                    case "kedudukan":
+                        return this.raw.kedudukan.map(item => ({
+                            value: item.id,
+                            label_in: item.kedudukan_in,
+                            label_ar: item.kedudukan_ar,
+                            label_ar_musyakal: item.kedudukan_ar_musyakal
+                        }));
+
+                    case "hukum":
+                        // get unique from category
+                        return [...new Set(this.raw.kategori.map(k => k.hukum))]
+                            .filter(Boolean)
+                            .map(hukum => ({
+                                value: hukum,
+                                label_in: "",
+                                label_ar: hukum,
+                                label_ar_musyakal: hukum
+                            }));
+
+                    case "irob":
+                        return [...new Set(this.raw.kedudukan.map(k => k.irob))]
+                            .filter(Boolean)
+                            .map(irob => ({
+                                value: irob,
+                                label_in: irob,
+                                label_ar: irob,
+                                label_ar_musyakal: irob
+                            }));
+
+                    case "tanda":
+                        const tandaSet = new Set();
+
+                        this.raw.kategori.forEach(k => {
+                            [k.rofa, k.nashob, k.jar, k.jazm]
+                            .map(val => val ? val.trim() : "")
+                                .filter(val => val !== "")
+                                .forEach(val => tandaSet.add(val));
+                        });
+
+                        return Array.from(tandaSet).map(tanda => ({
+                            value: tanda,
+                            label_in: tanda,
+                            label_ar: tanda,
+                            label_ar_musyakal: tanda
+                        }));
+
+                    case "simbol":
+                        return [...new Set(this.raw.kedudukan.map(k => k.simbol))]
+                            .filter(Boolean)
+                            .map(simbol => ({
+                                value: simbol,
+                                label_in: simbol,
+                                label_ar: simbol,
+                                label_ar_musyakal: simbol
+                            }));
+
+                    default:
+                        return [];
+                }
+            }
+        }
+
         class CustomDropdown {
-            static dataStore = null;
-            static dataUrl = "/json/data-nahwu.json";
-            static isLoading = false;
 
             constructor(selectElement) {
                 this.select = selectElement;
@@ -234,36 +339,14 @@
             }
 
             async init() {
-                await this.loadMasterData();
-                this.prepareDataset();
+                await MasterData.load();
+                this.data = MasterData.getDataSet(this.dataName);
+                console.log(this.dataName, this.data);
+
                 this.populateSelect();
                 this.renderOptions();
                 this.bindEvents();
                 this.setDefaultFromSelect();
-            }
-
-            async loadMasterData() {
-                if (CustomDropdown.dataStore) return;
-
-                if (CustomDropdown.isLoading) {
-                    while (!CustomDropdown.dataStore) {
-                        await new Promise(r => setTimeout(r, 50));
-                    }
-                    return;
-                }
-
-                CustomDropdown.isLoading = true;
-
-                try {
-                    const response = await fetch(CustomDropdown.dataUrl);
-                    CustomDropdown.dataStore = await response.json();
-                } catch (error) {
-                    console.error("Error loading data: ", error);
-                }
-            }
-
-            prepareDataset() {
-                this.data = CustomDropdown.dataStore[this.dataName] || [];
             }
 
             populateSelect() {
@@ -271,8 +354,8 @@
 
                 this.data.forEach(item => {
                     const option = document.createElement("option");
-                    option.value = item.id;
-                    option.textContent = item.kedudukan_ar_musyakal;
+                    option.value = item.value;
+                    option.textContent = item.label_ar_musyakal;
                     this.select.appendChild(option);
                 });
             }
@@ -289,8 +372,8 @@
                 dataset.forEach(item => {
                     const li = document.createElement("li");
                     li.classList.add("ar");
-                    li.textContent = item.kedudukan_ar_musyakal;
-                    li.dataset.value = item.id;
+                    li.textContent = item.label_ar_musyakal;
+                    li.dataset.value = item.value;
 
                     if (item.id === this.select.value) {
                         li.classList.add("selected");
@@ -298,7 +381,7 @@
 
                     li.addEventListener("click", () => {
                         if (this.select.disabled) return;
-                        this.selectItem(item.id, item.kedudukan_ar_musyakal);
+                        this.selectItem(item.id, item.label);
                     });
 
                     this.optionsContainer.appendChild(li);
@@ -317,7 +400,7 @@
             setDefaultFromSelect() {
                 if (!this.select.value) return;
 
-                const selectOption = this.select.option[this.select.selectedIndex];
+                const selectOption = this.select.options[this.select.selectedIndex];
                 this.displaySpan.innerHTML = selectOption.textContent;
             }
 
@@ -325,9 +408,9 @@
                 const searched = this.searchInput.value.toLowerCase();
 
                 const filtered = this.data.filter(item => {
-                    return item.kedudukan_ar_musyakal.includes(searched) ||
-                        item.kedudukan_ar.includes(searched) ||
-                        item.kedudukan_in.toLowerCase().includes(searched);
+                    return item.label_ar_musyakal.includes(searched) ||
+                        item.label_ar.includes(searched) ||
+                        item.label_in.toLowerCase().includes(searched);
                 });
 
                 this.renderOptions(filtered);

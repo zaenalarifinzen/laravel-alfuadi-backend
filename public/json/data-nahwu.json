@@ -688,7 +688,7 @@
             "kedudukan_ar": "مبتدأ",
             "kedudukan_ar_musyakal": "مُبْتَدَأٌ",
             "kedudukan_in": "Mubtada",
-            "irob": "مَرْفُوْعٌ "
+            "irob": "مَرْفُوْعٌ"
         },
         {
             "id": "KD1002",
@@ -697,7 +697,7 @@
             "kedudukan_ar": "مبتدأ مؤخر",
             "kedudukan_ar_musyakal": "مُبْتَدَأٌ مُؤَخَّرٌ",
             "kedudukan_in": "Mubtada Muakhor",
-            "irob": "مَرْفُوْعٌ "
+            "irob": "مَرْفُوْعٌ"
         },
         {
             "id": "KD1003",
@@ -706,7 +706,7 @@
             "kedudukan_ar": "خبر المبتدإ",
             "kedudukan_ar_musyakal": "خَبَرُ الْمُبْتَدَإِ",
             "kedudukan_in": "Khobar",
-            "irob": "مَرْفُوْعٌ "
+            "irob": "مَرْفُوْعٌ"
         },
         {
             "id": "KD1004",
@@ -715,7 +715,7 @@
             "kedudukan_ar": "خبر مقدم",
             "kedudukan_ar_musyakal": "خَبَرٌ مُقَدَّمٌ",
             "kedudukan_in": "Khobar Muqodam",
-            "irob": "مَرْفُوْعٌ "
+            "irob": "مَرْفُوْعٌ"
         },
         {
             "id": "KD1005",
@@ -724,7 +724,7 @@
             "kedudukan_ar": "فاعل",
             "kedudukan_ar_musyakal": "فَاعِلٌ",
             "kedudukan_in": "Fail",
-            "irob": "مَرْفُوْعٌ "
+            "irob": "مَرْفُوْعٌ"
         },
         {
             "id": "KD1006",
@@ -733,7 +733,7 @@
             "kedudukan_ar": "فاعل مستتر",
             "kedudukan_ar_musyakal": "فَاعِلٌ مُسْتَتِرٌ",
             "kedudukan_in": "Fail Mustatir",
-            "irob": "مَرْفُوْعٌ "
+            "irob": "مَرْفُوْعٌ"
         },
         {
             "id": "KD1007",
@@ -742,7 +742,7 @@
             "kedudukan_ar": "نائب الفاعل",
             "kedudukan_ar_musyakal": "نَائِبُ الْفَاعِلِ",
             "kedudukan_in": "Naibul Fail",
-            "irob": "مَرْفُوْعٌ "
+            "irob": "مَرْفُوْعٌ"
         },
         {
             "id": "KD1008",
@@ -751,7 +751,7 @@
             "kedudukan_ar": "نائب الفاعل مستتر",
             "kedudukan_ar_musyakal": "نَائِبُ الْفَاعِلِ مُسْتَتِرٌ",
             "kedudukan_in": "Naibul Fail Mustatir",
-            "irob": "مَرْفُوْعٌ "
+            "irob": "مَرْفُوْعٌ"
         },
         {
             "id": "KD1009",
@@ -760,7 +760,7 @@
             "kedudukan_ar": "اسم كان",
             "kedudukan_ar_musyakal": "اِسْمُ كَانَ",
             "kedudukan_in": "Isim Kaana",
-            "irob": "مَرْفُوْعٌ "
+            "irob": "مَرْفُوْعٌ"
         },
         {
             "id": "KD1010",
@@ -769,7 +769,7 @@
             "kedudukan_ar": "اسم كاد",
             "kedudukan_ar_musyakal": "اِسْمُ كَادَ",
             "kedudukan_in": "Isim Kaada",
-            "irob": "مَرْفُوْعٌ "
+            "irob": "مَرْفُوْعٌ"
         },
         {
             "id": "KD1011",
@@ -778,7 +778,7 @@
             "kedudukan_ar": "اسم ليس",
             "kedudukan_ar_musyakal": "اِسْمُ لَيْسَ",
             "kedudukan_in": "Isim Laisa",
-            "irob": "مَرْفُوْعٌ "
+            "irob": "مَرْفُوْعٌ"
         },
         {
             "id": "KD1012",
@@ -787,7 +787,7 @@
             "kedudukan_ar": "اسم اصبح",
             "kedudukan_ar_musyakal": "اِسْمُ اَصْبَحَ",
             "kedudukan_in": "Isim Asbaha",
-            "irob": "مَرْفُوْعٌ "
+            "irob": "مَرْفُوْعٌ"
         },
         {
             "id": "KD1013",
@@ -796,7 +796,7 @@
             "kedudukan_ar": "اسم صار",
             "kedudukan_ar_musyakal": "اِسْمُ صَارَ",
             "kedudukan_in": "Isim Sooro",
-            "irob": "مَرْفُوْعٌ "
+            "irob": "مَرْفُوْعٌ"
         },
         {
             "id": "KD1014",
@@ -805,7 +805,7 @@
             "kedudukan_ar": "اسم ما الحجازية",
             "kedudukan_ar_musyakal": "اِسْمُ مَا الحِجَازِيَة",
             "kedudukan_in": "Isim Maa Al Hijaziah",
-            "irob": "مَرْفُوْعٌ "
+            "irob": "مَرْفُوْعٌ"
         },
         {
             "id": "KD1057",
@@ -814,7 +814,7 @@
             "kedudukan_ar": "اسم ما دام",
             "kedudukan_ar_musyakal": "اِسْمُ مَا دَامَ",
             "kedudukan_in": "Isim Maa Daama",
-            "irob": "مَرْفُوْعٌ "
+            "irob": "مَرْفُوْعٌ"
         },
         {
             "id": "KD1015",
@@ -823,7 +823,7 @@
             "kedudukan_ar": "خبر ان",
             "kedudukan_ar_musyakal": "خَبَرُ انَّ",
             "kedudukan_in": "Khobar inna",
-            "irob": "مَرْفُوْعٌ "
+            "irob": "مَرْفُوْعٌ"
         },
         {
             "id": "KD1016",
@@ -832,7 +832,7 @@
             "kedudukan_ar": "خبر لعل",
             "kedudukan_ar_musyakal": "خَبَرُ لَعَلَّ",
             "kedudukan_in": "Khobar La'alla",
-            "irob": "مَرْفُوْعٌ "
+            "irob": "مَرْفُوْعٌ"
         },
         {
             "id": "KD1017",
@@ -841,7 +841,7 @@
             "kedudukan_ar": "خبر ليت",
             "kedudukan_ar_musyakal": "خَبَرُ لَيْتَ",
             "kedudukan_in": "Khobar Laita",
-            "irob": "مَرْفُوْعٌ "
+            "irob": "مَرْفُوْعٌ"
         },
         {
             "id": "KD1018",
@@ -850,7 +850,7 @@
             "kedudukan_ar": "خبر لكن",
             "kedudukan_ar_musyakal": "خَبَرُ لَكِنَّ",
             "kedudukan_in": "Khobar Lakinna",
-            "irob": "مَرْفُوْعٌ "
+            "irob": "مَرْفُوْعٌ"
         },
         {
             "id": "KD1019",
@@ -859,7 +859,7 @@
             "kedudukan_ar": "خبركأن",
             "kedudukan_ar_musyakal": "خَبَرُكَأَنَّ",
             "kedudukan_in": "Khobar Kaanna",
-            "irob": "مَرْفُوْعٌ "
+            "irob": "مَرْفُوْعٌ"
         },
         {
             "id": "KD1020",
@@ -868,7 +868,7 @@
             "kedudukan_ar": "نعت للمرفوع",
             "kedudukan_ar_musyakal": "نَعْتٌ لِلْمَرْفُوْعِ",
             "kedudukan_in": "Naat Lil Marfu",
-            "irob": "مَرْفُوْعٌ "
+            "irob": "مَرْفُوْعٌ"
         },
         {
             "id": "KD1021",
@@ -877,7 +877,7 @@
             "kedudukan_ar": "بدل من المرفوع",
             "kedudukan_ar_musyakal": "بَدَلٌ مِنَ الْمَرْفُوْعِ",
             "kedudukan_in": "Badal Minal Marfu",
-            "irob": "مَرْفُوْعٌ "
+            "irob": "مَرْفُوْعٌ"
         },
         {
             "id": "KD1022",
@@ -886,7 +886,7 @@
             "kedudukan_ar": "توكيد للمرفوع",
             "kedudukan_ar_musyakal": "تَوْكِيْدٌ لِلْمَرْفُوْعِ",
             "kedudukan_in": "Taukid Lil Marfu",
-            "irob": "مَرْفُوْعٌ "
+            "irob": "مَرْفُوْعٌ"
         },
         {
             "id": "KD1023",
@@ -895,7 +895,7 @@
             "kedudukan_ar": "معطوف على المرفوع",
             "kedudukan_ar_musyakal": "مَعْطُوْفٌ عَلَى الْمَرْفُوْعِ",
             "kedudukan_in": "Matuf  Alal Marfu",
-            "irob": "مَرْفُوْعٌ "
+            "irob": "مَرْفُوْعٌ"
         },
         {
             "id": "KD1024",
@@ -904,7 +904,7 @@
             "kedudukan_ar": "مفعول به",
             "kedudukan_ar_musyakal": "مَفْعُوْلٌ بِهِ",
             "kedudukan_in": "Maf'ul Bih",
-            "irob": "مَنْصُوْبٌ "
+            "irob": "مَنْصُوْبٌ"
         },
         {
             "id": "KD1025",
@@ -913,7 +913,7 @@
             "kedudukan_ar": "حال",
             "kedudukan_ar_musyakal": "حَالٌ",
             "kedudukan_in": "Haal",
-            "irob": "مَنْصُوْبٌ "
+            "irob": "مَنْصُوْبٌ"
         },
         {
             "id": "KD1026",
@@ -922,7 +922,7 @@
             "kedudukan_ar": "ظرف",
             "kedudukan_ar_musyakal": "ظَرْفٌ",
             "kedudukan_in": "Dzorof",
-            "irob": "مَنْصُوْبٌ "
+            "irob": "مَنْصُوْبٌ"
         },
         {
             "id": "KD1027",
@@ -931,7 +931,7 @@
             "kedudukan_ar": "مفعول مطلق",
             "kedudukan_ar_musyakal": "مَفْعُوْلٌ مُطْلَقٌ",
             "kedudukan_in": "Maf'ul Mutlaq",
-            "irob": "مَنْصُوْبٌ "
+            "irob": "مَنْصُوْبٌ"
         },
         {
             "id": "KD1028",
@@ -940,7 +940,7 @@
             "kedudukan_ar": "تمييز",
             "kedudukan_ar_musyakal": "تَمْيِيْزٌ",
             "kedudukan_in": "Tamyiz",
-            "irob": "مَنْصُوْبٌ "
+            "irob": "مَنْصُوْبٌ"
         },
         {
             "id": "KD1029",
@@ -949,7 +949,7 @@
             "kedudukan_ar": "مفعول لأجله",
             "kedudukan_ar_musyakal": "مَفْعُوْلٌ لِأَجْلِهِ",
             "kedudukan_in": "Maf'ul Liajlih",
-            "irob": "مَنْصُوْبٌ "
+            "irob": "مَنْصُوْبٌ"
         },
         {
             "id": "KD1030",
@@ -958,7 +958,7 @@
             "kedudukan_ar": "مفعول معه",
             "kedudukan_ar_musyakal": "مَفْعُوْلٌ مَعَهُ",
             "kedudukan_in": "Maf'ul Ma'ahu",
-            "irob": "مَنْصُوْبٌ "
+            "irob": "مَنْصُوْبٌ"
         },
         {
             "id": "KD1031",
@@ -967,7 +967,7 @@
             "kedudukan_ar": "المستثنى",
             "kedudukan_ar_musyakal": "المُسْتَثْنَى",
             "kedudukan_in": "Mustasna",
-            "irob": "مَنْصُوْبٌ "
+            "irob": "مَنْصُوْبٌ"
         },
         {
             "id": "KD1032",
@@ -976,7 +976,7 @@
             "kedudukan_ar": "اسم ان",
             "kedudukan_ar_musyakal": "اِسْمُ انَّ",
             "kedudukan_in": "Isim Inna",
-            "irob": "مَنْصُوْبٌ "
+            "irob": "مَنْصُوْبٌ"
         },
         {
             "id": "KD1033",
@@ -985,7 +985,7 @@
             "kedudukan_ar": "اسم لعل",
             "kedudukan_ar_musyakal": "اِسْمُ لَعَلَّ",
             "kedudukan_in": "Isim La'alla",
-            "irob": "مَنْصُوْبٌ "
+            "irob": "مَنْصُوْبٌ"
         },
         {
             "id": "KD1034",
@@ -994,7 +994,7 @@
             "kedudukan_ar": "اسم ليت",
             "kedudukan_ar_musyakal": "اِسْمُ لَيْتَ",
             "kedudukan_in": "Isim Laita",
-            "irob": "مَنْصُوْبٌ "
+            "irob": "مَنْصُوْبٌ"
         },
         {
             "id": "KD1035",
@@ -1003,7 +1003,7 @@
             "kedudukan_ar": "اسم لكن",
             "kedudukan_ar_musyakal": "اِسْمُ لَكِنَّ",
             "kedudukan_in": "Isim Lakin",
-            "irob": "مَنْصُوْبٌ "
+            "irob": "مَنْصُوْبٌ"
         },
         {
             "id": "KD1036",
@@ -1012,7 +1012,7 @@
             "kedudukan_ar": "اسم كأن",
             "kedudukan_ar_musyakal": "اِسْمُ كَأَنَّ",
             "kedudukan_in": "Isim Kaanna",
-            "irob": "مَنْصُوْبٌ "
+            "irob": "مَنْصُوْبٌ"
         },
         {
             "id": "KD1037",
@@ -1021,7 +1021,7 @@
             "kedudukan_ar": "اسم لا لنفي الجنس",
             "kedudukan_ar_musyakal": "اِسْمُ لَا لِنَفْيِ الْجِنْسِ",
             "kedudukan_in": "Isim La Linafsil Jinsi",
-            "irob": "مَنْصُوْبٌ "
+            "irob": "مَنْصُوْبٌ"
         },
         {
             "id": "KD1038",
@@ -1030,7 +1030,7 @@
             "kedudukan_ar": "خبركان",
             "kedudukan_ar_musyakal": "خَبَرُكَانَ",
             "kedudukan_in": "Khobar Kaana",
-            "irob": "مَنْصُوْبٌ "
+            "irob": "مَنْصُوْبٌ"
         },
         {
             "id": "KD1039",
@@ -1039,7 +1039,7 @@
             "kedudukan_ar": "خبركَادَ",
             "kedudukan_ar_musyakal": "خَبَرُكَادَ",
             "kedudukan_in": "Khobar Kaana",
-            "irob": "مَنْصُوْبٌ "
+            "irob": "مَنْصُوْبٌ"
         },
         {
             "id": "KD1040",
@@ -1048,7 +1048,7 @@
             "kedudukan_ar": "خبر ليس",
             "kedudukan_ar_musyakal": "خَبَرُ لَيْسَ",
             "kedudukan_in": "Khobar Laisa",
-            "irob": "مَنْصُوْبٌ "
+            "irob": "مَنْصُوْبٌ"
         },
         {
             "id": "KD1041",
@@ -1057,7 +1057,7 @@
             "kedudukan_ar": "خبر اصبح",
             "kedudukan_ar_musyakal": "خَبَرُ اَصْبَحَ",
             "kedudukan_in": "Khobar Asbaha",
-            "irob": "مَنْصُوْبٌ "
+            "irob": "مَنْصُوْبٌ"
         },
         {
             "id": "KD1042",
@@ -1066,7 +1066,7 @@
             "kedudukan_ar": "خبر صار",
             "kedudukan_ar_musyakal": "خَبَرُ صَارَ",
             "kedudukan_in": "Khobar Soro",
-            "irob": "مَنْصُوْبٌ "
+            "irob": "مَنْصُوْبٌ"
         },
         {
             "id": "KD1043",
@@ -1075,7 +1075,7 @@
             "kedudukan_ar": "خبر ما الحجازية",
             "kedudukan_ar_musyakal": "خَبَرُ مَا الحِجَازِيَة",
             "kedudukan_in": "Khobar Ma Al Hijaziyah",
-            "irob": "مَنْصُوْبٌ "
+            "irob": "مَنْصُوْبٌ"
         },
         {
             "id": "KD1058",
@@ -1084,7 +1084,7 @@
             "kedudukan_ar": "خبر ما دام",
             "kedudukan_ar_musyakal": "خَبَرُ مَا دَامَ",
             "kedudukan_in": "Khobar Maa Dama",
-            "irob": "مَنْصُوْبٌ "
+            "irob": "مَنْصُوْبٌ"
         },
         {
             "id": "KD1044",
@@ -1093,7 +1093,7 @@
             "kedudukan_ar": "خبر لا لنفي الجنس",
             "kedudukan_ar_musyakal": "خَبَرُ لَا لِنَفْيِ الْجِنْسِ",
             "kedudukan_in": "Khobar La Linafyil Jinsi",
-            "irob": "مَرْفُوْعٌ "
+            "irob": "مَرْفُوْعٌ"
         },
         {
             "id": "KD1045",
@@ -1102,7 +1102,7 @@
             "kedudukan_ar": "منادى",
             "kedudukan_ar_musyakal": "مُنَادَى",
             "kedudukan_in": "Munada",
-            "irob": "مَنْصُوْبٌ "
+            "irob": "مَنْصُوْبٌ"
         },
         {
             "id": "KD1046",
@@ -1111,7 +1111,7 @@
             "kedudukan_ar": "نعت للمنصوب",
             "kedudukan_ar_musyakal": "نَعْتٌ لِلْمَنْصُوْبِ",
             "kedudukan_in": "Naat Lil Mansub",
-            "irob": "مَنْصُوْبٌ "
+            "irob": "مَنْصُوْبٌ"
         },
         {
             "id": "KD1047",
@@ -1120,7 +1120,7 @@
             "kedudukan_ar": "بدل من المنصوب",
             "kedudukan_ar_musyakal": "بَدَلٌ مِنَ الْمَنْصُوْبِ",
             "kedudukan_in": "Badal Minal Mansub",
-            "irob": "مَنْصُوْبٌ "
+            "irob": "مَنْصُوْبٌ"
         },
         {
             "id": "KD1048",
@@ -1129,7 +1129,7 @@
             "kedudukan_ar": "توكيد للمنصوب",
             "kedudukan_ar_musyakal": "تَوْكِيْدٌ لِلْمَنْصُوْبِ",
             "kedudukan_in": "Taukid Lil Mansub",
-            "irob": "مَنْصُوْبٌ "
+            "irob": "مَنْصُوْبٌ"
         },
         {
             "id": "KD1049",
@@ -1138,7 +1138,7 @@
             "kedudukan_ar": "معطوف على المنصوب",
             "kedudukan_ar_musyakal": "مَعْطُوْفٌ عَلَى الْمَنْصُوْبِ",
             "kedudukan_in": "Ma'tuf Alal Mansub",
-            "irob": "مَنْصُوْبٌ "
+            "irob": "مَنْصُوْبٌ"
         },
         {
             "id": "KD1050",
@@ -1147,7 +1147,7 @@
             "kedudukan_ar": "مجرور بحرف الجر",
             "kedudukan_ar_musyakal": "مَجْرُوْرٌ بِحَرْفِ الْجَرِّ",
             "kedudukan_in": "Majrur Bi Harfil Jar",
-            "irob": "مَجْرُوْرٌ "
+            "irob": "مَجْرُوْرٌ"
         },
         {
             "id": "KD1051",
@@ -1156,7 +1156,7 @@
             "kedudukan_ar": "مضاف اليه",
             "kedudukan_ar_musyakal": "مُضَافٌ اِلَيْهِ",
             "kedudukan_in": "Mudhof Ilaih",
-            "irob": "مَجْرُوْرٌ "
+            "irob": "مَجْرُوْرٌ"
         },
         {
             "id": "KD1052",
@@ -1165,7 +1165,7 @@
             "kedudukan_ar": "نعت للمجرور",
             "kedudukan_ar_musyakal": "نَعْتٌ لِلْمَجْرُوْرِ",
             "kedudukan_in": "Naat Lil Majrur",
-            "irob": "مَجْرُوْرٌ "
+            "irob": "مَجْرُوْرٌ"
         },
         {
             "id": "KD1053",
@@ -1174,7 +1174,7 @@
             "kedudukan_ar": "بدل من المجرور",
             "kedudukan_ar_musyakal": "بَدَلٌ مِنَ الْمَجْرُوْرِ",
             "kedudukan_in": "Badal Minal Majrur",
-            "irob": "مَجْرُوْرٌ "
+            "irob": "مَجْرُوْرٌ"
         },
         {
             "id": "KD1054",
@@ -1183,7 +1183,7 @@
             "kedudukan_ar": "توكيد للمجرور",
             "kedudukan_ar_musyakal": "تَوْكِيْدٌ لِلْمَجْرُوْرِ",
             "kedudukan_in": "Taukid Lil Majrur",
-            "irob": "مَجْرُوْرٌ "
+            "irob": "مَجْرُوْرٌ"
         },
         {
             "id": "KD1055",
@@ -1192,7 +1192,7 @@
             "kedudukan_ar": "معطوف على المجرور",
             "kedudukan_ar_musyakal": "مَعْطُوْفٌ عَلَى الْمَجْرُوْرِ",
             "kedudukan_in": "Ma'tuf Alal Majrur",
-            "irob": "مَجْرُوْرٌ "
+            "irob": "مَجْرُوْرٌ"
         },
         {
             "id": "KD1056",
@@ -1201,7 +1201,7 @@
             "kedudukan_ar": "ضمير الفصل",
             "kedudukan_ar_musyakal": "ضَمِيْرُ الْفَصْلِ",
             "kedudukan_in": "Dhomir Fashl",
-            "irob": " "
+            "irob": ""
         },
         {
             "id": "KD2201",
@@ -1210,7 +1210,7 @@
             "kedudukan_ar": "تجرد عن الناصب والجازم",
             "kedudukan_ar_musyakal": "تَجَرَّدَ عَنِ النَّاصِبِ وَالْجَازِمِ",
             "kedudukan_in": "Sepi dari Nashob dan Jazm",
-            "irob": "مَرْفُوْعٌ "
+            "irob": "مَرْفُوْعٌ"
         },
         {
             "id": "KD2202",
@@ -1219,7 +1219,7 @@
             "kedudukan_ar": "دخل عليه ناصب",
             "kedudukan_ar_musyakal": "دَخَلَ عَلَيْهِ نَاصِبٌ",
             "kedudukan_in": "Bertemu Amil Nashob",
-            "irob": "مَنْصُوْبٌ "
+            "irob": "مَنْصُوْبٌ"
         },
         {
             "id": "KD2203",
@@ -1228,7 +1228,7 @@
             "kedudukan_ar": "دخل عليه جازم",
             "kedudukan_ar_musyakal": "دَخَلَ عَلَيْهِ جَازِمٌ",
             "kedudukan_in": "Bertemu Amil Jazm",
-            "irob": "مَجْزُوْمٌ "
+            "irob": "مَجْزُوْمٌ"
         },
         {
             "id": "KD4101",
@@ -1237,7 +1237,7 @@
             "kedudukan_ar": "صلة",
             "kedudukan_ar_musyakal": "صِلَةٌ",
             "kedudukan_in": "Shilah",
-            "irob": " "
+            "irob": ""
         },
         {
             "id": "KD4102",
