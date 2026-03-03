@@ -67,7 +67,12 @@
             display: block;
             position: absolute;
             box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+        }
 
+        .custom-dropdown.disabled .select-btn {
+            background: #e9e9e9;
+            cursor: not-allowed;
         }
 
         .content .search {
@@ -76,7 +81,7 @@
 
         .search i {
             position: absolute;
-            left: 15px;
+            left: 10px;
             font-size: 15px;
             color: #999;
             line-height: 40px;
@@ -87,7 +92,7 @@
             width: 100%;
             outline: none;
             font-size: 15px;
-            padding: 0 15px 0 43px;
+            padding: 0 15px 0 32px;
             border: 1px solid #b7d8d5;
             border-radius: 5px;
         }
@@ -139,21 +144,21 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="input-kalimat">Kalimat</label>
-                <select id="input-kalimat" class="custom-dropdown" data-url="/json/data-nahwu.json" name="kalimat"></select>
+                <select id="input-kalimat" class="custom-dropdown" name="kalimat"></select>
             </div>
             <div class="form-group col-md-6">
                 <label for="input-kategori">Kategori</label>
-                <select id="input-kategori" class="custom-dropdown" data-url="/json/data-nahwu.json" name="kategori"></select>
+                <select id="input-kategori" class="custom-dropdown" name="kategori"></select>
             </div>
         </div>
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="input-hukum">Hukum</label>
-                <select id="input-hukum" class="custom-dropdown" data-url="/json/data-nahwu.json" name="hukum"></select>
+                <select id="input-hukum" class="custom-dropdown" name="hukum"></select>
             </div>
             <div class="form-group col-md-6">
                 <label for="input-kedudukan">Kedudukan</label>
-                <select id="input-kedudukan" class="custom-dropdown" data-url="/json/data-nahwu.json" name="kedudukan"></select>
+                <select id="input-kedudukan" class="custom-dropdown" name="kedudukan"></select>
             </div>
         </div>
     </div>
@@ -167,13 +172,15 @@
     <script src="{{ asset('js/page/auth/auth-form.js') }}"></script>
     <script>
         class CustomDropdown {
+            static dataStore = null;
+            static dataUrl = "/json/data-nahwu.json";
+            static isLoading = false;
+
             constructor(selectElement) {
                 this.select = selectElement;
-                this.dataUrl = selectElement.dataset.url;
+                this.dataName = selectElement.name;
                 this.placeholder = selectElement.getAttribute("placeholder") ||
                     `Pilih ${selectElement.getAttribute("name")}`;
-
-                this.data = [];
 
                 this.buildHTML();
                 this.cacheElements();
@@ -227,23 +234,36 @@
             }
 
             async init() {
-                await this.loadData();
+                await this.loadMasterData();
+                this.prepareDataset();
                 this.populateSelect();
                 this.renderOptions();
                 this.bindEvents();
                 this.setDefaultFromSelect();
             }
 
-            async loadData() {
-                if (!this.dataUrl) return;
+            async loadMasterData() {
+                if (CustomDropdown.dataStore) return;
+
+                if (CustomDropdown.isLoading) {
+                    while (!CustomDropdown.dataStore) {
+                        await new Promise(r => setTimeout(r, 50));
+                    }
+                    return;
+                }
+
+                CustomDropdown.isLoading = true;
 
                 try {
-                    const response = await fetch(this.dataUrl);
-                    const json = await response.json();
-                    this.data = json.kedudukan || [];
+                    const response = await fetch(CustomDropdown.dataUrl);
+                    CustomDropdown.dataStore = await response.json();
                 } catch (error) {
                     console.error("Error loading data: ", error);
                 }
+            }
+
+            prepareDataset() {
+                this.data = CustomDropdown.dataStore[this.dataName] || [];
             }
 
             populateSelect() {
@@ -262,7 +282,7 @@
                 this.optionsContainer.innerHTML = "";
 
                 if (!dataset || dataset.length === 0) {
-                    this.optionsContainer.innerHTML = "<span>Data tidak ditemukan</span>";
+                    this.optionsContainer.innerHTML = `<span>Data tidak ditemukan</span>`;
                     return;
                 }
 
