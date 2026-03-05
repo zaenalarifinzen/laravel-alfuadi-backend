@@ -582,6 +582,7 @@
     <script src="{{ asset('js/page/words/storage-helper.js') }}?v=1.1.6"></script>
     <script src="{{ asset('js/page/words/word-crud.js') }}?v=1.1.6"></script>
     <script src="{{ asset('js/page/words/words-page.js') }}?v=1.1.6"></script>
-    <script src="{{ asset('js/page/words/autocomplete.js') }}?v=1.1.6"></script>
-    <script src="{{ asset('js/page/words/custom-dropdown.js') }}?v=1.1.6"></script>
+    {{-- <script src="{{ asset('js/page/words/autocomplete.js') }}?v=1.1.6"></script>
+    <script src="{{ asset('js/page/words/custom-dropdown.js') }}?v=1.1.6"></script> --}}
+    <script src="{{ asset('js/page/words/nahwu-form.js') }}?v=1.1.6"></script>
 @endpush

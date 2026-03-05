@@ -201,6 +201,12 @@ class CustomDropdown {
         });
     }
 
+    refresh() {
+        this.data = MasterData.getDataSet(this.dataName);
+        this.populateSelect();
+        this.renderOptions;
+    }
+
     selectItem(value, text) {
         this.select.value = value;
         this.displaySpan.innerHTML = text;
@@ -208,6 +214,12 @@ class CustomDropdown {
         this.wrapper.classList.remove("active");
         this.validate();
         this.renderOptions();
+
+        this.triggerChange();
+    }
+
+    triggerChange() {
+        this.select.dispatchEvent(new Event("Change"));
     }
 
     setDefaultFromSelect() {
