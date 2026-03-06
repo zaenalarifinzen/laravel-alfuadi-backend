@@ -49,7 +49,7 @@ class CustomDropdown {
 
         if (this.select.disabled) {
             this.wrapper.classList.add("disabled");
-        }
+        }      
 
         this.wrapper.innerHTML = `
             <div class="select-btn">
@@ -227,11 +227,28 @@ class CustomDropdown {
     disable() {
         this.select.disabled = true;
         this.wrapper.classList.add("disabled");
+        this.select.value = "";
+        this.displaySpan.textContent = "";
+
+        this.wrapper.classList.remove("invalid");
+        this.displaySpan.classList.remove("ar");
+
+        // remove arrow icon
+        const icon = this.selectBtn.querySelector("i");
+        if (icon) icon.style.display = "none";
     }
 
     enable() {
         this.select.disabled = false;
         this.wrapper.classList.remove("disabled");
+
+        if (!this.select.value) {
+            this.displaySpan.textContent = this.placeholder;
+        }
+
+        // show arrow icon
+        const icon = this.selectBtn.querySelector("i");
+        if (icon) icon.style.display = "block";
     }
 
     validate() {
@@ -372,7 +389,7 @@ class NahwuFormController {
             this.instances.tanda?.enable();
             this.instances.simbol?.enable();
 
-            // Rule Config
+            // Rule Config (disable fields based on selected kalimat)
             const FIELD_RULES = {
                 21: ["kedudukan", "irob", "tanda"],
                 23: ["kedudukan", "irob", "tanda"],
