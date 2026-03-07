@@ -357,8 +357,8 @@ class NahwuFormController {
 
             kategori?.setData(filteredKategori);
 
-            // Special case for id_kalimat 41 and 50 (jumlah & isim muawwal)
-            if (selected === "41" || selected === "50") {
+            // Special case for id_kalimat 41,42 and 50 (jumlah, shibhul jumlah & isim muawwal)
+            if (selected === "41" || selected === "42" || selected === "50") {
                 const filteredKedudukan = data.kedudukan
                     .filter((k) => ["10", "41"].includes(k.id_kalimat))
                     .map((k) => ({
@@ -400,7 +400,7 @@ class NahwuFormController {
                 30: ["kedudukan", "irob", "tanda"],
                 41: ["kategori", "hukum"],
                 42: ["hukum"],
-                11: ["kategori", "hukum"],
+                50: ["kategori", "hukum"],
             };
 
             const fieldToDisable = FIELD_RULES[selected] || [];
@@ -467,6 +467,7 @@ class NahwuFormController {
         // ==========================
 
         kedudukan?.select.addEventListener("change", () => {
+            const kalimatId = this.instances.kalimat?.select.value;
             const selectedKedudukan = data.kedudukan.find(
                 (k) => k.id == kedudukan.select.value,
             );
@@ -504,7 +505,6 @@ class NahwuFormController {
                 }
 
                 // Tanda
-                const kalimatId = this.instances.kalimat?.select.value;
                 const kategoriInstance = this.instances.kategori;
                 let selectedKategori = null;
 
@@ -556,6 +556,9 @@ class NahwuFormController {
             }
 
             // Simbol
+
+            if (kalimatId === "22" && hukum?.select.value.trim() !== "مُعْرَبٌ" ) return;            
+
             if (simbol && selectedKedudukan.simbol) {
                 simbol.setData([
                     {
