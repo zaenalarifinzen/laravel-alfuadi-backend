@@ -101,7 +101,7 @@ class CustomDropdown {
                 return data.kategori.map((i) => ({
                     value: i.id,
                     label_in: i.kategori_in,
-                    label_ar: i.kategpri_ar,
+                    label_ar: i.kategori_ar,
                     label: i.kategori_ar_musyakal,
                 }));
 
@@ -351,6 +351,8 @@ class NahwuFormController {
                 .map((k) => ({
                     value: k.id,
                     label: k.kategori_ar_musyakal,
+                    label_ar: k.kategori_ar,
+                    label_in: k. kategori_in,
                 }));
 
             kategori?.setData(filteredKategori);
@@ -362,6 +364,8 @@ class NahwuFormController {
                     .map((k) => ({
                         value: k.id,
                         label: k.kedudukan_ar_musyakal,
+                        label_ar: k.kedudukan_ar,
+                        label_in: k.kedudukan_in,
                     }));
                 kedudukan?.setData(filteredKedudukan);
             } else {
@@ -370,6 +374,8 @@ class NahwuFormController {
                     .map((k) => ({
                         value: k.id,
                         label: k.kedudukan_ar_musyakal,
+                        label_ar: k.kedudukan_ar,
+                        label_in: k.kedudukan_in,
                     }));
 
                 kedudukan?.setData(filteredKedudukan);
