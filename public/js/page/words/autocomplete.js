@@ -296,10 +296,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (currentKedudukan === "KD4101" || currentKedudukan === "KD4102") {
             // jika jumlah atau sibhul jumlah
             disableFields(irobSelect, tandaSelect);
-        } else if (
-            currentKedudukan === "KD1006" ||
-            currentKedudukan === "KD1006"
-        ) {
+        } else if (currentKedudukan === "KD1006" || currentKedudukan === "KD1006") {
             // jika fail mustatir
             disableFields(hukumSelect, irobSelect, tandaSelect);
         } else if (currentKedudukan === "KD1056") {

@@ -49,7 +49,7 @@ class CustomDropdown {
 
         if (this.select.disabled) {
             this.wrapper.classList.add("disabled");
-        }      
+        }
 
         this.wrapper.innerHTML = `
             <div class="select-btn">
@@ -364,8 +364,6 @@ class NahwuFormController {
                         label: k.kedudukan_ar_musyakal,
                     }));
                 kedudukan?.setData(filteredKedudukan);
-                console.log("Data kedudukan: ",filteredKedudukan);
-                
             } else {
                 const filteredKedudukan = data.kedudukan
                     .filter((k) => k.id_kalimat === selected)
@@ -437,6 +435,24 @@ class NahwuFormController {
                     },
                 ]);
                 hukum.setValue(selectedKategori.hukum);
+
+                // if kalimat is fiil madhi (21) or fiil amr (23) or 30 (huruf) or mudhori mabni, set simbol
+                const kalimatId = selectedKategori.id_kalimat;
+                if (
+                    kalimatId === "21" ||
+                    kalimatId === "23" ||
+                    kalimatId === "30" ||
+                    (kalimatId === "22" &&
+                        hukum.data?.[0]?.value !== "مُعْرَبٌ")
+                ) {
+                    simbol.setData([
+                        {
+                            value: selectedKategori.simbol,
+                            label: selectedKategori.simbol,
+                        },
+                    ]);
+                    simbol.setValue(selectedKategori.simbol);
+                }
             }
         });
 
@@ -451,15 +467,86 @@ class NahwuFormController {
 
             if (!selectedKedudukan) return;
 
-            // Irob
-            if (irob && selectedKedudukan.irob) {
-                irob.setData([
-                    {
-                        value: selectedKedudukan.irob,
-                        label: selectedKedudukan.irob,
-                    },
-                ]);
-                irob.setValue(selectedKedudukan.irob);
+            if (
+                selectedKedudukan.id === "KD4101" ||
+                selectedKedudukan.id === "KD4102"
+            ) {
+                // if jumlah or sibhul jumlah, disable irob dan tanda
+                this.instances.irob?.disable();
+                this.instances.tanda?.disable();
+            } else if (selectedKedudukan.id === "KD1006") {
+                // if fail mustatir, disable hukum, irob and tanda
+                this.instances.hukum?.disable();
+                this.instances.irob?.disable();
+                this.instances.tanda?.disable();
+            } else if (selectedKedudukan.id === "KD1056") {
+                // if dhomir fashl, disable irob and tanda
+                this.instances.irob?.disable();
+                this.instances.tanda?.disable();
+            } else {
+                this.instances.irob?.enable();
+                this.instances.tanda?.enable();
+
+                if (irob && selectedKedudukan.irob) {
+                    irob.setData([
+                        {
+                            value: selectedKedudukan.irob,
+                            label: selectedKedudukan.irob,
+                        },
+                    ]);
+                    irob.setValue(selectedKedudukan.irob);
+                }
+
+                // Tanda
+                const kalimatId = this.instances.kalimat?.select.value;
+                const kategoriInstance = this.instances.kategori;
+                let selectedKategori = null;
+
+                if (kalimatId !== "50" && kalimatId !== "41") {
+                    selectedKategori = data.kategori.find(
+                        (k) => k.id == kategoriInstance.select.value,
+                    );
+                } else {
+                    selectedKategori = data.kategori.find(
+                        (k) => k.id === "C1008",
+                    );
+                }
+
+                if (tanda) {
+                    const tandaList = [
+                        selectedKategori.rofa,
+                        selectedKategori.nashob,
+                        selectedKategori.jar,
+                        selectedKategori.jazm,
+                    ]
+                        .filter(Boolean)
+                        .map((val) => ({
+                            value: val,
+                            label: val,
+                        }));
+
+                    tanda.setData(tandaList);
+
+                    let tandaIrob = "";
+                    const currentIrob = irob?.data?.[0]?.value || "";
+
+                    switch (currentIrob) {
+                        case "مَرْفُوْعٌ":
+                            tandaIrob = selectedKategori.rofa;
+                            break;
+                        case "مَنْصُوْبٌ":
+                            tandaIrob = selectedKategori.nashob;
+                            break;
+                        case "مَجْرُوْرٌ":
+                            tandaIrob = selectedKategori.jar;
+                            break;
+                        case "مَجْزُوْمٌ":
+                            tandaIrob = selectedKategori.jazm;
+                            break;
+                    }
+
+                    tanda.setValue(tandaIrob);
+                }
             }
 
             // Simbol
@@ -471,48 +558,6 @@ class NahwuFormController {
                     },
                 ]);
                 simbol.setValue(selectedKedudukan.simbol);
-            }
-
-            // Tanda
-            const kategoriInstance = this.instances.kategori;
-            const selectedKategori = data.kategori.find(
-                (k) => k.id == kategoriInstance.select.value,
-            );
-
-            if (tanda) {
-                const tandaList = [
-                    selectedKategori.rofa,
-                    selectedKategori.nashob,
-                    selectedKategori.jar,
-                    selectedKategori.jazm,
-                ]
-                    .filter(Boolean)
-                    .map((val) => ({
-                        value: val,
-                        label: val,
-                    }));
-
-                tanda.setData(tandaList);
-
-                let tandaIrob = "";
-                const currentIrob = irob?.data?.[0]?.value || "";
-
-                switch (currentIrob) {
-                    case "مَرْفُوْعٌ":
-                        tandaIrob = selectedKategori.rofa;
-                        break;
-                    case "مَنْصُوْبٌ":
-                        tandaIrob = selectedKategori.nashob;
-                        break;
-                    case "مَجْرُوْرٌ":
-                        tandaIrob = selectedKategori.jar;
-                        break;
-                    case "مَجْزُوْمٌ":
-                        tandaIrob = selectedKategori.jazm;
-                        break;
-                }
-
-                tanda.setValue(tandaIrob);
             }
         });
     }
