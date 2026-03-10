@@ -223,6 +223,11 @@
             /* font-size: 12px; */
         }
 
+        input.invalid,
+        textarea.invalid {
+            border-color: #e74c3c !important;
+        }
+
         @media (max-width: 1080px) {
             .word-group {
                 font-size: 1.5rem !important;
@@ -479,7 +484,7 @@
                             <div class="form-group col-12">
                                 {{-- <label for="input-lafadz">Lafadz</label> --}}
                                 <input type="text" class="form-control arabic-text ar-title input-big text-center"
-                                    id="input-lafadz" placeholder="لفظ" required="">
+                                    id="input-lafadz" placeholder="لفظ">
                             </div>
                             <div class="form-group col-12">
                                 {{-- <label for="input-translation">Terjemah</label> --}}

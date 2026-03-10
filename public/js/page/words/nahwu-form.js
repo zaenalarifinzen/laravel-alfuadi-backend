@@ -219,6 +219,20 @@ class CustomDropdown {
         this.select.dispatchEvent(new Event("change"));
     }
 
+    setValueById (value) {
+        this.select.value = value;
+        const selectedOption = this.select.options[this.select.selectedIndex];
+        if (selectedOption && selectedOption.value) {
+            this.displaySpan.textContent = selectedOption.textContent;
+            this.displaySpan.classList.add("ar");
+        } else {
+            this.displaySpan.textContent = this.placeholder;
+            this.displaySpan.classList.remove("ar");
+        }
+        this.wrapper.classList.remove("invalid");
+        this.renderOptions();
+    }
+
     setData(newData) {
         this.data = newData;
         this.populateSelect();
@@ -620,6 +634,53 @@ class NahwuFormController {
         
         instance.wrapper.classList.remove("invalid");
         instance.displaySpan.classList.remove("ar");
+    }
+
+    // =============================================================
+    // - Helper to search kalimat_id, kategori_id and kedudukan_id
+    // - This method to fix data in older submitted
+    // =============================================================
+
+    resolveIds(word) {
+        const data = MasterData.raw;        
+
+        // If ID is already
+        if (word.kalimat_id && word.kategori_id && word.kedudukan_id) {
+            return {
+                kalimat_id: word.kalimat_id,
+                kategori_id: word.kategori_id,
+                kedudukan_id: word.kedudukan_id,
+            };
+        }
+
+        // Lookup kalimat_id from text
+        let kalimat_id = word.kalimat_id || null;
+        if (!kalimat_id && word.kalimat) {
+            const found = data.kalimat.find(
+                (k) => k.kalimat_ar === word.kalimat
+            );
+            kalimat_id = found?.id || null;
+        }
+
+        // Lookup kategori_id from text
+        let kategori_id = word.kategori_id || null;
+        if (!kategori_id && word.kategori) {
+            const found = data.kategori.find(
+                (k) => k.kategori_ar_musyakal === word.kategori
+            );
+            kategori_id = found?.id || null;
+        }
+
+        // Lookup kedudukan_id from text
+        let kedudukan_id = word.kedudukan_id || null;
+        if (!kedudukan_id && word.kedudukan) {
+            const found = data.kedudukan.find(
+                (k) => k.kedudukan_ar_musyakal === word.kedudukan
+            );
+            kedudukan_id = found?.id || null;
+        }
+        
+        return { kalimat_id, kategori_id, kedudukan_id };
     }
 }
 

@@ -36,15 +36,21 @@ $("#btn-add-word").on("click", function () {
     $("#input-kedudukan").val("");
     $("#input-simbol").val("");
 
+    $("#input-lafadz").attr("required", true);
     $("#modal-add-word").modal("show");
 });
 
 $("#form-add-word").on("submit", function (e) {
     e.preventDefault();
+    let valid = true;
 
+    const editMode = $("#additional-fields").is(":visible");
+    
     const controller = window.nahwuFormController;
-    if (controller) {
-        let valid = true;
+    if (editMode && controller) {
+        if (!validateInput("#input-lafadz")) valid = false;
+        if (!validateInput("#input-translation")) valid = false;
+
         Object.values(controller.instances).forEach((instance) => {
             if (!instance.validate()) valid = false;
         });
@@ -120,6 +126,12 @@ $("#form-add-word").on("submit", function (e) {
         text: $("#input-lafadz").val().trim(),
         order_number: wordId ? $("#input-order-number").val() : newOrder,
         translation: $("#input-translation").val().trim(),
+
+        // save id
+        kalimat_id: $("#input-kalimat").val(),
+        kategori_id: $("#input-kategori").val(),
+        kedudukan_id: $("#input-kedudukan").val(),
+
         kalimat: getSelectText("#input-kalimat"),
         color: color,
         kategori: getSelectText("#input-kategori"),
@@ -373,23 +385,40 @@ $(document).on("click", ".dropdown-menu .word-edit", function (e) {
         (w) => w.id == wordId,
     );
 
-    // fill modal form
+    // fill input biasa
     $("#input-translation").required = true;
     $("#input-id").val(word.id);
     $("#input-order-number").val(word.order_number);
     $("#input-lafadz").val(word.text);
     $("#input-translation").val(word.translation);
 
-    const kalimatSelect = document.getElementById("input-kalimat");
-    kalimatSelect.value = word.kalimat_id;
-    kalimatSelect.dispatchEvent(new Event("change"));
+    const ctrl = window.nahwuFormController;
+    if (ctrl) {
+        const { kalimat_id, kategori_id, kedudukan_id } = ctrl.resolveIds(word);
 
-    $("#input-kategori").val(word.kategori).change();
-    $("#input-hukum").val(word.hukum).change();
-    $("#input-irob").val(word.irob).change();
-    $("#input-tanda").val(word.tanda).change();
-    $("#input-kedudukan").val(word.kedudukan).change();
-    $("#input-simbol").val(word.simbol).change();
+        // 1. Set kalimat dulu
+        ctrl.instances.kalimat?.setValueById(kalimat_id);        
+        ctrl.instances.kalimat?.select.dispatchEvent(new Event("change"));
+
+        // 2. Set child field
+        setTimeout(() => {
+            ctrl.instances.kategori?.setValueById(kategori_id);
+            ctrl.instances.kategori?.select.dispatchEvent(new Event("change"));
+
+            setTimeout(() => {
+                ctrl.instances.kedudukan?.setValueById(kedudukan_id);
+                ctrl.instances.kedudukan?.select.dispatchEvent(new Event("change"));
+
+                ctrl.instances.hukum?.setValueById(word.hukum);
+                ctrl.instances.irob?.setValueById(word.irob);
+                ctrl.instances.tanda?.setValueById(word.tanda);
+                ctrl.instances.simbol?.setValueById(word.simbol);
+            }, 50);
+        }, 50);
+    }
+
+    // set lafadz & transtalion required
+    $("#input-lafadz").attr("required", true);
 
     $("#form-add-word-label").text("Update Kalimat");
     $("#btn-submit").text("Update");
@@ -488,3 +517,37 @@ $("#btn-save-all").on("click", function (e) {
         });
     });
 });
+
+// ========================
+// HELPER
+// ========================
+
+function validateInput(selector, message = "Wajib diisi") {
+    const input = $(selector);
+    const wrapper = input.closest(".form-group");
+    let errorElement = wrapper.find(".error-message");
+
+    console.log("element: ", errorElement);
+
+    if (!errorElement.length) {
+        input.after(`<small class="error-message"></small>`);
+        errorElement = wrapper.find(".error-message");
+    }
+
+    if (!input.val().trim()) {
+        input.addClass("invalid");
+        errorElement.text(message);
+        return false;
+    }
+
+    input.removeClass("invalid");
+    errorElement.text("");
+    return true;
+}
+
+function clearInputError(selector) {
+    const input = $(selector);
+    const wrapper = input.closest(".form-group");
+    input.removeClass("invalid");
+    wrapper.find(".error-message").text("");
+}
