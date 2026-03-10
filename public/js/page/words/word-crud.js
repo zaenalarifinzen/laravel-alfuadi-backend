@@ -17,14 +17,14 @@ $("#btn-add-word").on("click", function () {
 
     // get key from local storage
     const currentKey = Object.keys(localStorage).find((k) =>
-        k.startsWith("wordgroups_")
+        k.startsWith("wordgroups_"),
     );
     const stored = JSON.parse(localStorage.getItem(currentKey));
 
     // get active wordgroup
     const activeWordGroupId = $(".owl-item.active .word-group").attr("wg-id");
     const wordGroup = stored.data.wordGroups.find(
-        (g) => g.id == activeWordGroupId
+        (g) => g.id == activeWordGroupId,
     );
 
     $("#input-id").val("");
@@ -42,44 +42,34 @@ $("#btn-add-word").on("click", function () {
 $("#form-add-word").on("submit", function (e) {
     e.preventDefault();
 
-    // Validate Input
+    const controller = window.nahwuFormController;
+    if (controller) {
+        let valid = true;
+        Object.values(controller.instances).forEach((instance) => {
+            if (!instance.validate()) valid = false;
+        });
+        if (!valid) return;
+    }
+
     const wordId = $("#input-id").val();
     const lafadz = $("#input-lafadz").val().trim();
     const kalimat = $("#input-kalimat").val();
-    let kalimatText = $("#input-kalimat option:selected").text();
-
-    // if kalimat text starts with "Pilih", set to empty
-    if (kalimat && kalimatText.startsWith("Pilih")) {
-        kalimatText = "";
-    }
-
-    // validate required fields
-    if (!lafadz) {
-        alert("Lafadz tidak boleh kosong");
-        return;
-    }
-
-    // if wordId is not empty, it's in edit mode, so kalimat is required
-    if (wordId && !kalimat) {
-        alert("Kalimat tidak boleh kosong");
-        return;
-    }
 
     // Logic
     // get key from local storage
     const currentKey = Object.keys(localStorage).find((k) =>
-        k.startsWith("wordgroups_")
+        k.startsWith("wordgroups_"),
     );
     const stored = JSON.parse(localStorage.getItem(currentKey));
 
     // get active wordgroup
     const activeWordGroupId = $(".owl-item.active .word-group").attr("wg-id");
     const wordGroup = stored.data.wordGroups.find(
-        (g) => g.id == activeWordGroupId
+        (g) => g.id == activeWordGroupId,
     );
 
     const groupIndex = stored.data.wordGroups.findIndex(
-        (g) => g.id == activeWordGroupId
+        (g) => g.id == activeWordGroupId,
     );
     if (groupIndex === -1) {
         alert("WordGroup tidak ditemukan");
@@ -113,19 +103,31 @@ $("#form-add-word").on("submit", function (e) {
         }
     }
 
+    function getSelectVal(id) {
+        const val = $(id).val();
+        return val ? val : null;
+    }
+
+    function getSelectText(id) {
+        const val = $(id).val();
+        if (!val) return null;
+        const text = $(`${id} option:selected`).text().trim();
+        return text && !text.startsWith("Pilih") ? text : null;
+    }
+
     const newWord = {
         id: wordId || Date.now(),
         text: $("#input-lafadz").val().trim(),
         order_number: wordId ? $("#input-order-number").val() : newOrder,
         translation: $("#input-translation").val().trim(),
-        kalimat: kalimatText,
+        kalimat: getSelectText("#input-kalimat"),
         color: color,
-        kategori: $("#input-kategori option:selected").text() || null,
-        hukum: $("#input-hukum").val(),
-        kedudukan: $("#input-kedudukan option:selected").text() || null,
-        irob: $("#input-irob").val(),
-        tanda: $("#input-tanda").val(),
-        simbol: $("#input-simbol").val(),
+        kategori: getSelectText("#input-kategori"),
+        hukum: getSelectVal("#input-hukum"),
+        kedudukan: getSelectText("#input-kedudukan "),
+        irob: getSelectVal("#input-irob"),
+        tanda: getSelectVal("#input-tanda"),
+        simbol: getSelectVal("#input-simbol"),
     };
 
     // get mode
@@ -175,15 +177,13 @@ function renderWordsTable(wordGroup) {
             </tr>
         `);
 
-        $(".editor-kalimat a")
-            .contents()
-            .last()[0].textContent = ` -`;
+        $(".editor-kalimat a").contents().last()[0].textContent = ` -`;
         return;
     }
 
     // sort word based on order_number
     wordGroup.words.sort(
-        (a, b) => (a.order_number || 0) - (b.order_number || 0)
+        (a, b) => (a.order_number || 0) - (b.order_number || 0),
     );
 
     wordGroup.words.forEach((word) => {
@@ -201,10 +201,10 @@ function renderWordsTable(wordGroup) {
                 </td>
                 <td class="text-center align-middle">
                     <div class="${simbolClass} dropdown d-inline arabic-text words" id="${
-            word.id
-        }" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${
-            word.text
-        }</div>
+                        word.id
+                    }" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${
+                        word.text
+                    }</div>
                     <div class="dropdown-menu">
                         <a href="#" class="dropdown-item has-icon word-edit"><i class="far fa-edit"></i> Edit</a>
                         <a href="#" class="dropdown-item has-icon text-danger word-delete" id="btl-delete"><i class="far fa-trash-can"></i> Hapus</a>
@@ -212,8 +212,8 @@ function renderWordsTable(wordGroup) {
                 </td>
                 <td class="text-center align-middle">
                     <div class="text-center ${simbolClass} mb-2 arabic-text ar-symbol">${
-            word.simbol ?? ""
-        }</div>
+                        word.simbol ?? ""
+                    }</div>
                 </td>
                 <td class="align-middle">${word.translation ?? ""}</td>
             </tr>
@@ -245,7 +245,7 @@ function renderWordsDetails(wordGroup) {
 
     // sort word based on order_number
     wordGroup.words.sort(
-        (a, b) => (a.order_number || 0) - (b.order_number || 0)
+        (a, b) => (a.order_number || 0) - (b.order_number || 0),
     );
 
     wordGroup.words.forEach((word) => {
@@ -263,7 +263,7 @@ function renderWordsDetails(wordGroup) {
             word.tanda,
         ]
             .filter(
-                (p) => p !== null && p !== undefined && String(p).trim() !== ""
+                (p) => p !== null && p !== undefined && String(p).trim() !== "",
             )
             .join(" - ");
 
@@ -318,7 +318,7 @@ $(document).on("click", ".dropdown-menu .word-delete", function (e) {
 
         // get data from local storage
         const currentKey = Object.keys(localStorage).find((k) =>
-            k.startsWith("wordgroups_")
+            k.startsWith("wordgroups_"),
         );
         if (!currentKey) return;
 
@@ -326,11 +326,11 @@ $(document).on("click", ".dropdown-menu .word-delete", function (e) {
 
         // get active wordgroup
         const activeWordGroupId = $(".owl-item.active .word-group").attr(
-            "wg-id"
+            "wg-id",
         );
         // console.log('activeWordGroupId: ', activeWordGroupId);
         const groupIndex = stored.data.wordGroups.findIndex(
-            (g) => g.id == activeWordGroupId
+            (g) => g.id == activeWordGroupId,
         );
         if (groupIndex === -1) return;
 
@@ -362,15 +362,15 @@ $(document).on("click", ".dropdown-menu .word-edit", function (e) {
 
     // get data from local storage
     const currentKey = Object.keys(localStorage).find((k) =>
-        k.startsWith("wordgroups_")
+        k.startsWith("wordgroups_"),
     );
     const stored = JSON.parse(localStorage.getItem(currentKey));
     const activeWordGroupId = $(".owl-item.active .word-group").attr("wg-id");
     const groupIndex = stored.data.wordGroups.findIndex(
-        (g) => g.id == activeWordGroupId
+        (g) => g.id == activeWordGroupId,
     );
     const word = stored.data.wordGroups[groupIndex].words.find(
-        (w) => w.id == wordId
+        (w) => w.id == wordId,
     );
 
     // fill modal form
@@ -380,7 +380,10 @@ $(document).on("click", ".dropdown-menu .word-edit", function (e) {
     $("#input-lafadz").val(word.text);
     $("#input-translation").val(word.translation);
 
-    $("#input-kalimat").val(word.kalimat).change();
+    const kalimatSelect = document.getElementById("input-kalimat");
+    kalimatSelect.value = word.kalimat_id;
+    kalimatSelect.dispatchEvent(new Event("change"));
+
     $("#input-kategori").val(word.kategori).change();
     $("#input-hukum").val(word.hukum).change();
     $("#input-irob").val(word.irob).change();
@@ -399,7 +402,7 @@ $("#btn-save-all").on("click", function (e) {
     e.preventDefault();
 
     const currentKey = Object.keys(localStorage).find((k) =>
-        k.startsWith("wordgroups_")
+        k.startsWith("wordgroups_"),
     );
     if (!currentKey) {
         alert("Tidak ada data");
@@ -418,7 +421,7 @@ $("#btn-save-all").on("click", function (e) {
     }
 
     const emptyGroups = stored.data.wordGroups.filter(
-        (g) => !g.words || g.words.length === 0
+        (g) => !g.words || g.words.length === 0,
     );
     if (emptyGroups.length > 0) {
         let list = emptyGroups.map((g) => `${g.text}`).join(" - ");

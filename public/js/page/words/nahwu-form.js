@@ -202,7 +202,7 @@ class CustomDropdown {
         });
     }
 
-    setValue(value) {
+    setValue(value, silent = false) {
         this.select.value = value;
 
         const selectedOption = this.select.options[this.select.selectedIndex];
@@ -212,9 +212,10 @@ class CustomDropdown {
 
         this.wrapper.classList.remove("active");
         this.displaySpan.classList.add("ar");
-        this.validate();
-        this.renderOptions();
 
+        if (!silent) this.validate();
+
+        this.renderOptions();
         this.select.dispatchEvent(new Event("change"));
     }
 
@@ -236,11 +237,17 @@ class CustomDropdown {
         // remove arrow icon
         const icon = this.selectBtn.querySelector("i");
         if (icon) icon.style.display = "none";
+
+        this.isRequired = false;
     }
 
     enable() {
         this.select.disabled = false;
         this.wrapper.classList.remove("disabled");
+        this.wrapper.classList.remove("invalid");
+
+        // remove error message
+        this.errorMessage.textContent = "";
 
         if (!this.select.value) {
             this.displaySpan.textContent = this.placeholder;
@@ -249,6 +256,8 @@ class CustomDropdown {
         // show arrow icon
         const icon = this.selectBtn.querySelector("i");
         if (icon) icon.style.display = "block";
+        
+        this.isRequired = true;
     }
 
     validate() {
@@ -322,7 +331,6 @@ class NahwuFormController {
 
         this.bindRelations();
         this.bindAutoFill();
-        this.bindFormValidation();
     }
 
     bindRelations() {
@@ -343,8 +351,6 @@ class NahwuFormController {
             this.resetDropdown(this.instances.simbol);
 
             const selected = kalimat.select.value;
-            // debug
-            console.log("Kalimat id: ", selected);
 
             const filteredKategori = data.kategori
                 .filter((k) => k.id_kalimat === selected)
@@ -352,7 +358,7 @@ class NahwuFormController {
                     value: k.id,
                     label: k.kategori_ar_musyakal,
                     label_ar: k.kategori_ar,
-                    label_in: k. kategori_in,
+                    label_in: k.kategori_in,
                 }));
 
             kategori?.setData(filteredKategori);
@@ -425,6 +431,13 @@ class NahwuFormController {
         // KATEGORI -> HUKUM + TANDA
         // ==========================
         kategori?.select.addEventListener("change", () => {
+            // reset child dropdowns
+            this.resetDropdown(this.instances.kedudukan);
+            this.resetDropdown(this.instances.hukum);
+            this.resetDropdown(this.instances.irob);
+            this.resetDropdown(this.instances.tanda);
+            this.resetDropdown(this.instances.simbol);
+
             const kategoriInstance = this.instances.kategori;
             const selectedKategori = data.kategori.find(
                 (k) => k.id == kategoriInstance.select.value,
@@ -440,7 +453,7 @@ class NahwuFormController {
                         label: selectedKategori.hukum,
                     },
                 ]);
-                hukum.setValue(selectedKategori.hukum);
+                hukum.setValue(selectedKategori.hukum, true);
 
                 // if kalimat is fiil madhi (21) or fiil amr (23) or 30 (huruf) or mudhori mabni, set simbol
                 const kalimatId = selectedKategori.id_kalimat;
@@ -457,7 +470,7 @@ class NahwuFormController {
                             label: selectedKategori.simbol,
                         },
                     ]);
-                    simbol.setValue(selectedKategori.simbol);
+                    simbol.setValue(selectedKategori.simbol, true);
                 }
             }
         });
@@ -467,6 +480,10 @@ class NahwuFormController {
         // ==========================
 
         kedudukan?.select.addEventListener("change", () => {
+            // reset child dropdowns
+            this.resetDropdown(this.instances.irob);
+            this.resetDropdown(this.instances.tanda);
+
             const kalimatId = this.instances.kalimat?.select.value;
             const selectedKedudukan = data.kedudukan.find(
                 (k) => k.id == kedudukan.select.value,
@@ -501,7 +518,7 @@ class NahwuFormController {
                             label: selectedKedudukan.irob,
                         },
                     ]);
-                    irob.setValue(selectedKedudukan.irob);
+                    irob.setValue(selectedKedudukan.irob, true);
                 }
 
                 // Tanda
@@ -551,7 +568,7 @@ class NahwuFormController {
                             break;
                     }
 
-                    tanda.setValue(tandaIrob);
+                    tanda.setValue(tandaIrob, true);
                 }
             }
 
@@ -572,7 +589,9 @@ class NahwuFormController {
     }
 
     bindFormValidation() {
-        const form = document.querySelector("form");
+        const form = document.getElementById("form-add-word");
+        console.log("Form detected: ", form);
+        
         if (!form) return;
 
         form.setAttribute("novalidate", true);
@@ -591,8 +610,14 @@ class NahwuFormController {
     resetDropdown(instance) {
         if (!instance) return;
 
-        instance.setValue("");
-        instance.displaySpan.textContent = instance.placeholder;
+        instance.setValue("", true);
+
+        if (!instance.select.disabled) {
+            instance.displaySpan.textContent = instance.placeholder;
+        } else {
+            instance.displaySpan.textContent = "";
+        }
+        
         instance.wrapper.classList.remove("invalid");
         instance.displaySpan.classList.remove("ar");
     }
@@ -603,5 +628,5 @@ class NahwuFormController {
    ====================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
-    new NahwuFormController();
+    window.nahwuFormController = new NahwuFormController();
 });
