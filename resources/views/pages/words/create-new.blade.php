@@ -213,6 +213,12 @@
             border-radius: 5px;
         }
 
+        .options li.add-new-option {
+            color: #008f85;
+            font-size: 14px;
+            border: 1px dashed #008f85;
+        }
+
         .options li:hover,
         .options li.selected {
             background: #f2f2f2;
@@ -228,7 +234,7 @@
         textarea.invalid {
             border-color: #e74c3c !important;
         }
-        
+
 
         @media (max-width: 1080px) {
             .word-group {

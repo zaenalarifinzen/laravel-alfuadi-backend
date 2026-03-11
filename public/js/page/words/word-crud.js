@@ -48,7 +48,7 @@ $("#form-add-word").on("submit", function (e) {
     let valid = true;
 
     const editMode = $("#additional-fields").is(":visible");
-    
+
     const controller = window.nahwuFormController;
     if (editMode && controller) {
         if (!validateInput("#input-lafadz")) valid = false;
@@ -403,17 +403,25 @@ $(document).on("click", ".dropdown-menu .word-edit", function (e) {
         const { kalimat_id, kategori_id, kedudukan_id } = ctrl.resolveIds(word);
 
         // 1. Set kalimat dulu
-        ctrl.instances.kalimat?.setValueById(kalimat_id);        
-        ctrl.instances.kalimat?.select.dispatchEvent(new Event("change"));
+        ctrl.instances.kalimat?.setValueById(kalimat_id);
+        ctrl.instances.kalimat?.select.dispatchEvent(
+            new CustomEvent("change", { detail: { isRestoring: true } }),
+        );
 
         // 2. Set child field
         setTimeout(() => {
             ctrl.instances.kategori?.setValueById(kategori_id);
-            ctrl.instances.kategori?.select.dispatchEvent(new Event("change"));
+            ctrl.instances.kategori?.select.dispatchEvent(
+                new CustomEvent("change", { detail: { isRestoring: true } }),
+            );
 
             setTimeout(() => {
                 ctrl.instances.kedudukan?.setValueById(kedudukan_id);
-                ctrl.instances.kedudukan?.select.dispatchEvent(new Event("change"));
+                ctrl.instances.kedudukan?.select.dispatchEvent(
+                    new CustomEvent("change", {
+                        detail: { isRestoring: true },
+                    }),
+                );
 
                 ctrl.instances.hukum?.setValueById(word.hukum);
                 ctrl.instances.irob?.setValueById(word.irob);

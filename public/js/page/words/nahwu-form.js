@@ -181,7 +181,7 @@ class CustomDropdown {
 
         if (!dataset || dataset.length === 0) {
             const searchVal = this.searchInput.value.trim();
-            this.optionsContainer.innerHTML = `<span>Data tidak ditemukan</span>`;
+            this.optionsContainer.innerHTML = `<span>Data tidak ditemukan.</span>`;
 
             // Custom option
             if (searchVal) {
@@ -212,20 +212,15 @@ class CustomDropdown {
 
             this.optionsContainer.appendChild(li);
         });
-
-        // Add custom option
-        
-
-        
     }
 
     addNewOption(value) {
         // if exist
         const exist = this.data.find(
-            (d) => d.value.toLowerCase() === value.toLowerCase()
+            (d) => d.value.toLowerCase() === value.toLowerCase(),
         );
         if (exist) {
-            this.setValue(exist.value);
+            this.setValue(exist.value, false, true);
             return;
         }
 
@@ -242,13 +237,13 @@ class CustomDropdown {
         option.textContent = value;
         this.select.appendChild(option);
 
-        this.setValue(value);
+        this.setValue(value, false, true);
 
         this.searchInput.value = "";
         this.renderOptions();
     }
 
-    setValue(value, silent = false) {
+    setValue(value, silent = false, skipChange = false) {
         this.select.value = value;
 
         const selectedOption = this.select.options[this.select.selectedIndex];
@@ -262,19 +257,47 @@ class CustomDropdown {
         if (!silent) this.validate();
 
         this.renderOptions();
-        this.select.dispatchEvent(new Event("change"));
+        if (!skipChange) {
+            this.select.dispatchEvent(
+                new CustomEvent("change", { detail: { isRestoring: true } }),
+            );
+        }
     }
 
-    setValueById (value) {
+    setValueById(value) {
+        if (!value) return;
+
         this.select.value = value;
         const selectedOption = this.select.options[this.select.selectedIndex];
+
         if (selectedOption && selectedOption.value) {
-            this.displaySpan.textContent = selectedOption.textContent;
+            const dataItem = this.data.find((d) => d.value == value);
+
+            if (dataItem) {
+                this.displaySpan.textContent = dataItem.label;
+            } else {
+                this.displaySpan.textContent = selectedOption.textContent;
+            }
+
             this.displaySpan.classList.add("ar");
         } else {
-            this.displaySpan.textContent = this.placeholder;
-            this.displaySpan.classList.remove("ar");
+            const option = document.createElement("option");
+            option.value = value;
+            option.textContent = value;
+            this.select.appendChild(option);
+
+            this.data.push({
+                value: value,
+                label: value,
+                label_ar: value,
+                label_in: value,
+            });
+
+            this.select.value = value;
+            this.displaySpan.textContent = value;
+            this.displaySpan.classList.add("ar");
         }
+
         this.wrapper.classList.remove("invalid");
         this.renderOptions();
     }
@@ -316,7 +339,7 @@ class CustomDropdown {
         // show arrow icon
         const icon = this.selectBtn.querySelector("i");
         if (icon) icon.style.display = "block";
-        
+
         this.isRequired = true;
     }
 
@@ -402,13 +425,17 @@ class NahwuFormController {
 
         if (!kalimat) return;
 
-        kalimat.select.addEventListener("change", () => {
-            this.resetDropdown(this.instances.kategori);
-            this.resetDropdown(this.instances.kedudukan);
-            this.resetDropdown(this.instances.hukum);
-            this.resetDropdown(this.instances.irob);
-            this.resetDropdown(this.instances.tanda);
-            this.resetDropdown(this.instances.simbol);
+        kalimat.select.addEventListener("change", (e) => {
+            const isRestoring = e.detail?.isRestoring || false;
+
+            if (!isRestoring) {
+                this.resetDropdown(this.instances.kategori);
+                this.resetDropdown(this.instances.kedudukan);
+                this.resetDropdown(this.instances.hukum);
+                this.resetDropdown(this.instances.irob);
+                this.resetDropdown(this.instances.tanda);
+                this.resetDropdown(this.instances.simbol);
+            }
 
             const selected = kalimat.select.value;
 
@@ -490,13 +517,17 @@ class NahwuFormController {
         // ==========================
         // KATEGORI -> HUKUM + TANDA
         // ==========================
-        kategori?.select.addEventListener("change", () => {
+        kategori?.select.addEventListener("change", (e) => {
+            const isRestoring = e.detail?.isRestoring || false;
+
             // reset child dropdowns
-            this.resetDropdown(this.instances.kedudukan);
-            this.resetDropdown(this.instances.hukum);
-            this.resetDropdown(this.instances.irob);
-            this.resetDropdown(this.instances.tanda);
-            this.resetDropdown(this.instances.simbol);
+            if (!isRestoring) {
+                this.resetDropdown(this.instances.kedudukan);
+                this.resetDropdown(this.instances.hukum);
+                this.resetDropdown(this.instances.irob);
+                this.resetDropdown(this.instances.tanda);
+                this.resetDropdown(this.instances.simbol);
+            }
 
             const kategoriInstance = this.instances.kategori;
             const selectedKategori = data.kategori.find(
@@ -539,10 +570,14 @@ class NahwuFormController {
         // KEDUDUKAN -> IROB + TANDA + SIMBOL
         // ==========================
 
-        kedudukan?.select.addEventListener("change", () => {
+        kedudukan?.select.addEventListener("change", (e) => {
+            const isRestoring = e.detail?.isRestoring || false;
+
             // reset child dropdowns
-            this.resetDropdown(this.instances.irob);
-            this.resetDropdown(this.instances.tanda);
+            if (!isRestoring) {
+                this.resetDropdown(this.instances.irob);
+                this.resetDropdown(this.instances.tanda);
+            }
 
             const kalimatId = this.instances.kalimat?.select.value;
             const selectedKedudukan = data.kedudukan.find(
@@ -634,7 +669,8 @@ class NahwuFormController {
 
             // Simbol
 
-            if (kalimatId === "22" && hukum?.select.value.trim() !== "مُعْرَبٌ" ) return;            
+            if (kalimatId === "22" && hukum?.select.value.trim() !== "مُعْرَبٌ")
+                return;
 
             if (simbol && selectedKedudukan.simbol) {
                 simbol.setData([
@@ -651,7 +687,7 @@ class NahwuFormController {
     bindFormValidation() {
         const form = document.getElementById("form-add-word");
         console.log("Form detected: ", form);
-        
+
         if (!form) return;
 
         form.setAttribute("novalidate", true);
@@ -677,7 +713,7 @@ class NahwuFormController {
         } else {
             instance.displaySpan.textContent = "";
         }
-        
+
         instance.wrapper.classList.remove("invalid");
         instance.displaySpan.classList.remove("ar");
     }
@@ -688,7 +724,7 @@ class NahwuFormController {
     // =============================================================
 
     resolveIds(word) {
-        const data = MasterData.raw;        
+        const data = MasterData.raw;
 
         // If ID is already
         if (word.kalimat_id && word.kategori_id && word.kedudukan_id) {
@@ -703,7 +739,7 @@ class NahwuFormController {
         let kalimat_id = word.kalimat_id || null;
         if (!kalimat_id && word.kalimat) {
             const found = data.kalimat.find(
-                (k) => k.kalimat_ar === word.kalimat
+                (k) => k.kalimat_ar === word.kalimat,
             );
             kalimat_id = found?.id || null;
         }
@@ -712,7 +748,7 @@ class NahwuFormController {
         let kategori_id = word.kategori_id || null;
         if (!kategori_id && word.kategori) {
             const found = data.kategori.find(
-                (k) => k.kategori_ar_musyakal === word.kategori
+                (k) => k.kategori_ar_musyakal === word.kategori,
             );
             kategori_id = found?.id || null;
         }
@@ -721,11 +757,11 @@ class NahwuFormController {
         let kedudukan_id = word.kedudukan_id || null;
         if (!kedudukan_id && word.kedudukan) {
             const found = data.kedudukan.find(
-                (k) => k.kedudukan_ar_musyakal === word.kedudukan
+                (k) => k.kedudukan_ar_musyakal === word.kedudukan,
             );
             kedudukan_id = found?.id || null;
         }
-        
+
         return { kalimat_id, kategori_id, kedudukan_id };
     }
 }
