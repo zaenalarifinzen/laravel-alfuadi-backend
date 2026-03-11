@@ -180,7 +180,19 @@ class CustomDropdown {
         this.optionsContainer.innerHTML = "";
 
         if (!dataset || dataset.length === 0) {
+            const searchVal = this.searchInput.value.trim();
             this.optionsContainer.innerHTML = `<span>Data tidak ditemukan</span>`;
+
+            // Custom option
+            if (searchVal) {
+                const addNew = document.createElement("li");
+                addNew.classList.add("add-new-option");
+                addNew.innerHTML = `Tambah "<b class=>${searchVal}</b>"`;
+                addNew.addEventListener("click", () => {
+                    this.addNewOption(searchVal);
+                });
+                this.optionsContainer.appendChild(addNew);
+            }
             return;
         }
 
@@ -200,6 +212,40 @@ class CustomDropdown {
 
             this.optionsContainer.appendChild(li);
         });
+
+        // Add custom option
+        
+
+        
+    }
+
+    addNewOption(value) {
+        // if exist
+        const exist = this.data.find(
+            (d) => d.value.toLowerCase() === value.toLowerCase()
+        );
+        if (exist) {
+            this.setValue(exist.value);
+            return;
+        }
+
+        const newItem = {
+            value: value,
+            label: value,
+            label_ar: value,
+            label_in: value,
+        };
+        this.data.push(newItem);
+
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = value;
+        this.select.appendChild(option);
+
+        this.setValue(value);
+
+        this.searchInput.value = "";
+        this.renderOptions();
     }
 
     setValue(value, silent = false) {

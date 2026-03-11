@@ -6,6 +6,9 @@ $("#btn-add-word").on("click", function () {
     $("#form-add-word-label").text("Tambah Kalimat");
     $("#btn-submit").text("Tambahkan");
 
+    clearInputError("#input-lafadz");
+    clearInputError("#input-translation");
+
     // remove required attribute
     document
         .getElementById("form-add-word")
@@ -369,6 +372,9 @@ $(document).on("click", ".dropdown-menu .word-delete", function (e) {
 $(document).on("click", ".dropdown-menu .word-edit", function (e) {
     e.preventDefault();
 
+    clearInputError("#input-lafadz");
+    clearInputError("#input-translation");
+
     const tr = $(this).closest("tr");
     const wordId = tr.find(".words").attr("id");
 
@@ -526,8 +532,6 @@ function validateInput(selector, message = "Wajib diisi") {
     const input = $(selector);
     const wrapper = input.closest(".form-group");
     let errorElement = wrapper.find(".error-message");
-
-    console.log("element: ", errorElement);
 
     if (!errorElement.length) {
         input.after(`<small class="error-message"></small>`);

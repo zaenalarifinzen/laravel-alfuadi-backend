@@ -144,6 +144,7 @@
         .custom-dropdown.disabled .select-btn {
             background: #f5f5f5;
             border: 1px solid #fff;
+            color: #f5f5f5;
             cursor: not-allowed;
         }
 
@@ -227,6 +228,7 @@
         textarea.invalid {
             border-color: #e74c3c !important;
         }
+        
 
         @media (max-width: 1080px) {
             .word-group {
