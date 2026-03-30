@@ -334,6 +334,7 @@ class CustomDropdown {
 
         if (!this.select.value) {
             this.displaySpan.textContent = this.placeholder;
+            this.displaySpan.classList.remove("ar");
         }
 
         // show arrow icon
