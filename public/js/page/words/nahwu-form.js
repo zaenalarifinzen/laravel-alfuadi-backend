@@ -10,11 +10,11 @@ const MasterData = {
         if (this.raw) return this.raw;
 
         if (!this.loadingPromise) {
-            this.loadingPromise = fetch("/json/data-nahwu.json")
+            this.loadingPromise = fetch("/words/data/data-nahwu")
                 .then((res) => res.json())
                 .then((data) => {
-                    this.raw = data;
-                    return data;
+                    this.raw = data;               
+                    return data;                    
                 });
         }
 
@@ -94,7 +94,7 @@ class CustomDropdown {
                     value: i.id,
                     label_in: i.kalimat_in,
                     label_ar: i.kalimat_ar,
-                    label: i.kalimat_ar,
+                    label: i.kalimat_ar_musyakal,
                 }));
 
             case "kategori":
@@ -739,7 +739,7 @@ class NahwuFormController {
         let kalimat_id = word.kalimat_id || null;
         if (!kalimat_id && word.kalimat) {
             const found = data.kalimat.find(
-                (k) => k.kalimat_ar === word.kalimat,
+                (k) => k.kalimat_ar_musyakal === word.kalimat,
             );
             kalimat_id = found?.id || null;
         }

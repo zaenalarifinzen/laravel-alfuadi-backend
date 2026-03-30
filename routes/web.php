@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\NahwuDataController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SurahController;
 use App\Http\Controllers\UserController;
@@ -36,6 +37,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('words/sync', [WordController::class, 'sync'])->name('words.sync');
 
         Route::get('/wordgroups/get/{id?}', [WordGroupController::class, 'getWordGroup'])->name('wordgroups.get');
+        Route::get('/words/data/data-nahwu', [NahwuDataController::class, 'index']);
     });
 
     // All User
