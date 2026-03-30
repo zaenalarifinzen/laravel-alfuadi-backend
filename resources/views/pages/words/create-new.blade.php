@@ -34,6 +34,14 @@
             padding-top: 10px;
         }
 
+        #input-lafadz::placeholder {
+            color: #dddddd;
+        }
+
+        #input-translation::placeholder {
+            color: #dddddd;
+        }
+
         .slider-nav-btn {
             position: absolute;
             top: 50%;
@@ -497,7 +505,7 @@
                             <div class="form-group col-12">
                                 {{-- <label for="input-translation">Terjemah</label> --}}
                                 <input type="text" class="form-control text-center" id="input-translation"
-                                    placeholder="Terjemah">
+                                    placeholder="terjemah">
                             </div>
                         </div>
                         {{-- additional fields --}}

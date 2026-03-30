@@ -41,9 +41,9 @@
                     </a>
                 </li>
                 <li class="{{ Request::is('words/create') ? 'active' : '' }}">
-                    <a class="nav-link beep beep-sidebar" href="{{ route('words.create') }}">
+                    <a class="nav-link" href="{{ route('words.create') }}">
                         <i class="fas fa-keyboard"></i>
-                        <span>Input Irob</span>
+                        <span>Input Irob <span class="beep"></span></span>
                     </a>
                 </li>
             @endif
