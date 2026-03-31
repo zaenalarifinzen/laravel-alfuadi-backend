@@ -28,9 +28,27 @@ $("[data-checkboxes]").each(function() {
   });
 });
 
-$("#sortable-table tbody").sortable({
-  handle: '.sort-handler',
-  update: function (event, ui) {
+// Move word up/down
+$(document).on('click', '.btn-move-up, .btn-move-down', function () {
+    const $row = $(this).closest('tr');
+    const isUp = $(this).hasClass('btn-move-up');
+
+    if (isUp) {
+      const $prev = $row.prev('tr');
+      if ($prev.length) $row.insertBefore($prev);
+      else return;
+    } else {
+      const $next = $row.next('tr');
+      if ($next.length) $row.insertAfter($next);
+      else return;
+    }
+
+    saveNewOrder();
+    markModified();
+    $("#btn-save-all").show();
+})
+
+function saveNewOrder() {
     // get key local storage
     const currentKey = Object.keys(localStorage).find(k => k.startsWith('wordgroups_'));
     const stored = JSON.parse(localStorage.getItem(currentKey));
@@ -57,4 +75,3 @@ $("#sortable-table tbody").sortable({
     // re save to local
     localStorage.setItem(currentKey, JSON.stringify(stored));
   }
-});

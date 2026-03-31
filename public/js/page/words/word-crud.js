@@ -212,9 +212,14 @@ function renderWordsTable(wordGroup) {
 
         const row = `
             <tr>
-                <td class="text-center align-middle">
-                    <div class="sort-handler align-middle">
-                        <i class="fa-solid fa-grip"></i>
+                <td class="width: 60px;">
+                    <div class="d-flex justify-content-center gap-1">
+                        <button class="btn btn-sm btn-icon icon-left btn-primary btn-move-up" title="move-up">
+                            <i class="fa-solid fa-arrow-up"></i>
+                        </button>
+                        <button class="btn btn-sm btn-icon icon-left btn-primary btn-move-down" title="move-down">
+                            <i class="fa-solid fa-arrow-down"></i>
+                        </button>
                     </div>
                 </td>
                 <td class="text-center align-middle">

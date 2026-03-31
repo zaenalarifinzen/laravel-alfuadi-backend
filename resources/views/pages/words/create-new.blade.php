@@ -375,7 +375,7 @@
                                                 <tbody>
                                                     @forelse ($words as $word)
                                                         <tr class="text-center">
-                                                            <td style="width: 28px;">
+                                                            <td style="width: 60px;">
                                                                 <div class="sort-handler">
                                                                     <i class="fa-solid fa-grip"></i>
                                                                 </div>
