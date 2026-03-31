@@ -176,6 +176,9 @@ $("#form-add-word").on("submit", function (e) {
     renderWordsTable(wordGroup);
     renderWordsDetails(wordGroup);
 
+    // show save-all button
+    $("#btn-save-all").show();
+
     // form.stopProgress();
     $("#modal-add-word").modal("hide");
 });
@@ -241,6 +244,13 @@ function renderWordsTable(wordGroup) {
         ? firstWord.editor_info.name
         : " -";
     $(".editor-kalimat a").contents().last()[0].textContent = ` ${editorName}`;
+
+    const modified = isModified();
+    if (modified) {
+        $("#btn-save-all").show();
+    } else {
+        $("#btn-save-all").hide();
+    }
 }
 
 // Render Words Table

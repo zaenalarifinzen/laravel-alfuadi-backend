@@ -346,6 +346,7 @@
                                     <div class="card-header">
                                         <div class="d-flex justify-content-between align-items-center w-100">
                                             <h4 class="mb-0">Input Kalimat</h4>
+                                            {{-- hide btn-add-word when editor is blank --}}
                                             <button class="btn btn-icon icon-left btn-primary btn-lg" id="btn-add-word">
                                                 <i class="fa-solid fa-plus"></i> Tambah
                                             </button>
@@ -472,7 +473,8 @@
                                 class="ion-chevron-right" data-pack="default" data-tags="arrow, left"></i></button>
                     </div>
                     <div>
-                        <button class="btn btn-icon icon-left btn-success btn-lg" id="btn-save-all">Simpan &
+                        <button class="btn btn-icon icon-left btn-success btn-lg" id="btn-save-all"
+                            style="display: none;">Simpan &
                             lanjutkan</button>
                     </div>
                 </div>
@@ -603,7 +605,5 @@
     <script src="{{ asset('js/page/words/storage-helper.js') }}?v=1.1.6"></script>
     <script src="{{ asset('js/page/words/word-crud.js') }}?v=1.1.6"></script>
     <script src="{{ asset('js/page/words/words-page.js') }}?v=1.1.6"></script>
-    {{-- <script src="{{ asset('js/page/words/autocomplete.js') }}?v=1.1.6"></script>
-    <script src="{{ asset('js/page/words/custom-dropdown.js') }}?v=1.1.6"></script> --}}
     <script src="{{ asset('js/page/words/nahwu-form.js') }}?v=1.1.6"></script>
 @endpush
