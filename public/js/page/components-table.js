@@ -55,6 +55,7 @@ function saveNewOrder() {
 
     // get active wordgroup id
     const activeWordGroupId = $('.owl-item.active .word-group').attr('wg-id');
+    const activeWordGroup = stored.data.wordGroups.find((wg) => wg.id == activeWordGroupId);
 
     const groupIndex = stored.data.wordGroups.findIndex(g => g.id == activeWordGroupId);
     if (groupIndex === -1) return;
@@ -74,4 +75,7 @@ function saveNewOrder() {
 
     // re save to local
     localStorage.setItem(currentKey, JSON.stringify(stored));
+
+    // sync word details
+    renderWordsDetails(activeWordGroup);
   }

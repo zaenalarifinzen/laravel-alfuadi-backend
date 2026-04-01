@@ -87,6 +87,10 @@
             padding: 25px 0 !important;
         }
 
+        .action-buttons button {
+            margin: 0 2px;
+        }
+
         /* Custom Dropdown */
         .custom-dropdown {
             position: relative;
@@ -250,6 +254,24 @@
                 text-align: center;
             }
         }
+
+        @media (max-width: 768px) {
+
+            .col-symbol,
+            .col-translation {
+                display: none;
+            }
+
+            td:last-child {
+                white-space: nowrap;
+            }
+
+            #sortable-table th:last-child,
+            #sortable-table td:last-child {
+                max-width: 100px;
+                padding: 0 0;
+            }
+        }
     </style>
 @endpush
 
@@ -353,16 +375,14 @@
                                         </div>
                                     </div>
                                     <div class="table-sm">
-                                        <div class="table-responsive">
+                                        <div class="">
                                             <table class="table-striped table" id="sortable-table">
                                                 <thead>
                                                     <tr class="text-center">
-                                                        <th style="width:28px;">
-                                                            <i class="fa-solid fa-sort"></i>
-                                                        </th>
-                                                        <th>Lafadz</th>
-                                                        <th>Simbol</th>
-                                                        <th>Terjemah</th>
+                                                        <th class="col-word">Lafadz</th>
+                                                        <th class="col-symbol">Simbol</th>
+                                                        <th class="col-translation">Terjemah</th>
+                                                        <th class="col-action">Opsi</th>
                                                     </tr>
                                                 </thead>
                                                 @php
@@ -375,12 +395,7 @@
                                                 <tbody>
                                                     @forelse ($words as $word)
                                                         <tr class="text-center">
-                                                            <td style="width: 60px;">
-                                                                <div class="sort-handler">
-                                                                    <i class="fa-solid fa-grip"></i>
-                                                                </div>
-                                                            </td>
-                                                            <td class="text-center align-middle word"
+                                                            <td class="text-center align-middle col-word"
                                                                 id="{{ $word->id }}">
                                                                 <div class="dropdown
                                                             @if ($word->color == 'red') text-huruf
@@ -397,11 +412,11 @@
                                                                             class="far fa-edit"></i> Edit</a>
                                                                     <a href="#"
                                                                         class="dropdown-item has-icon text-danger word-delete"
-                                                                        id="btl-delete"><i class="far fa-trash-can"></i>
+                                                                        id="btn-delete"><i class="far fa-trash-can"></i>
                                                                         Hapus</a>
                                                                 </div>
                                                             </td>
-                                                            <td>
+                                                            <td class="col-symbol">
                                                                 <div
                                                                     class="text-center @if ($word->color == 'red') text-huruf
                                                 @elseif($word->color == 'green') text-fiil
@@ -409,8 +424,30 @@
                                                 @else text-dark mb-2 @endif mb-2 arabic-text ar-symbol">
                                                                     {{ $word->simbol }}</div>
                                                             </td>
-                                                            <td class="translation">
+                                                            <td class="col-translation">
                                                                 {{ $word->translation }}
+                                                            </td>
+                                                            <td class="align-middle col-actions">
+                                                                <div class="d-flex justify-content-center action-buttons">
+                                                                    <button class="btn btn-sm btn-icon btn-warning"
+                                                                        title="Edit">
+                                                                        <i class="fa-solid fa-edit"></i>
+                                                                    </button>
+                                                                    <button class="btn btn-sm btn-icon btn-danger"
+                                                                        title="Hapus" id="btn-delete">
+                                                                        <i class="fa-solid fa-trash"></i>
+                                                                    </button>
+                                                                    <button
+                                                                        class="btn btn-sm btn-icon btn-primary btn-move-up"
+                                                                        title="Naikkan">
+                                                                        <i class="fa-solid fa-arrow-up"></i>
+                                                                    </button>
+                                                                    <button
+                                                                        class="btn btn-sm btn-icon btn-primary btn-move-down"
+                                                                        title="Turunkan">
+                                                                        <i class="fa-solid fa-arrow-down"></i>
+                                                                    </button>
+                                                                </div>
                                                             </td>
                                                         </tr>
                                                     @empty

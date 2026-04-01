@@ -168,7 +168,7 @@ function renderWordGroups(response) {
 
         swal({
             title: "Ayat belum melalui proses grouping",
-            text: "Silakan lakukan grouping terlebih dahulu untuk dapat menambahkan kata",
+            text: "Silakan lakukan grouping terlebih dahulu untuk dapat menambahkan kalimat",
             icon: "info",
             buttons: {
                 cancel: {

@@ -212,33 +212,31 @@ function renderWordsTable(wordGroup) {
 
         const row = `
             <tr>
-                <td class="width: 60px;">
-                    <div class="d-flex justify-content-center gap-1">
-                        <button class="btn btn-sm btn-icon icon-left btn-primary btn-move-up" title="move-up">
-                            <i class="fa-solid fa-arrow-up"></i>
-                        </button>
-                        <button class="btn btn-sm btn-icon icon-left btn-primary btn-move-down" title="move-down">
-                            <i class="fa-solid fa-arrow-down"></i>
-                        </button>
-                    </div>
+                <td class="text-center align-middle col-word">
+                    <div class="${simbolClass} arabic-text words" id="${word.id}">${word.text}</div>
                 </td>
-                <td class="text-center align-middle">
-                    <div class="${simbolClass} dropdown d-inline arabic-text words" id="${
-                        word.id
-                    }" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${
-                        word.text
-                    }</div>
-                    <div class="dropdown-menu">
-                        <a href="#" class="dropdown-item has-icon word-edit"><i class="far fa-edit"></i> Edit</a>
-                        <a href="#" class="dropdown-item has-icon text-danger word-delete" id="btl-delete"><i class="far fa-trash-can"></i> Hapus</a>
-                    </div>
-                </td>
-                <td class="text-center align-middle">
+                <td class="text-center align-middle col-symbol">
                     <div class="text-center ${simbolClass} mb-2 arabic-text ar-symbol">${
                         word.simbol ?? ""
                     }</div>
                 </td>
-                <td class="align-middle">${word.translation ?? ""}</td>
+                <td class="align-middle col-translation">${word.translation ?? ""}</td>
+                <td class="align-middle col-action">
+                    <div class="d-flex justify-content-center action-buttons">
+                        <button class="btn btn-sm btn-icon btn-warning word-edit" id="btn-edit" title="Edit">
+                            <i class="fa-solid fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-icon btn-danger word-delete" id="btn-delete" title="Hapus">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                        <button class="btn btn-sm btn-icon btn-primary btn-move-up" title="Naikkan">
+                            <i class="fa-solid fa-arrow-up"></i>
+                        </button>
+                        <button class="btn btn-sm btn-icon btn-primary btn-move-down" title="Turunkan">
+                            <i class="fa-solid fa-arrow-down"></i>
+                        </button>
+                    </div>
+                </td>
             </tr>
         `;
         tbody.append(row);
@@ -323,7 +321,7 @@ function renderWordsDetails(wordGroup) {
 }
 
 // Delete word row
-$(document).on("click", ".dropdown-menu .word-delete", function (e) {
+$(document).on("click", ".action-buttons .word-delete", function (e) {
     e.preventDefault();
 
     // confirm deletion
@@ -384,7 +382,7 @@ $(document).on("click", ".dropdown-menu .word-delete", function (e) {
 });
 
 // Edit Word Row
-$(document).on("click", ".dropdown-menu .word-edit", function (e) {
+$(document).on("click", ".action-buttons .word-edit", function (e) {
     e.preventDefault();
 
     clearInputError("#input-lafadz");
