@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.7
+
+-   Restruktur dropdown dengan fitur pencarian
+-   Perubahan popup action ke kolom opsi pada tabel kalimat
+-   Pemberitahuan kalimat belum di grup saat input kalimat
+
 ## 1.1.6
 
 -   Penambahan isim & khobar maa daama

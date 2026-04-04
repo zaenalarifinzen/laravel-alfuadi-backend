@@ -56,6 +56,11 @@
                 </li>
 
                 <li class="menu-header">Organize</li>
+                <li class="{{ Request::is('skema-nahwu') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('page.skema-nahwu') }}">
+                        <i class="fas fa-sitemap"></i>
+                        <span>Skema Nahwu</span></a>
+                </li>
                 <li class="{{ Request::is('users') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('users.index') }}">
                         <i class="fas fa-user"></i>

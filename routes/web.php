@@ -19,9 +19,12 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['roles:administrator'])->group(function () {
         Route::resource('users', UserController::class);
         Route::resource('products', ProductController::class);
+        Route::get('/skema-nahwu', function () {
+            return view('pages.Template.develop.skema-nahwu', ['type_menu' => '']);
+        })->name('page.skema-nahwu'); // Template Page
         Route::get('/example', function () {
-            return view('pages.Template.develop.dropdown-multiple', ['type_menu' => '']);
-        })->name('page.templatepage');; // Template Page
+            return view('pages.Template.develop.skema-nahwu', ['type_menu' => '']);
+        })->name('page.templatepage'); // Template Page
     });
 
     // Administrator & Operator Only
