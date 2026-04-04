@@ -1,3 +1,3 @@
   <div class="simple-footer">
-      Copyright &copy; Al-Fuadi Learning Center 2025
+      Copyright &copy; Al-Fuadi Learning Center 2026
   </div>

@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", async () => {
     // --- Load JSON Data ---
-    const response = await fetch("/json/data-nahwu.json");
-    const data = await response.json();
+    await MasterData.load();
+    const data = MasterData.raw;
 
     // --- Get Form Element ---
     const translation = document.getElementById("input-translation");
@@ -18,11 +18,13 @@ document.addEventListener("DOMContentLoaded", async () => {
             f.value = "";
             f.disabled = true;
             f.removeAttribute("required");
+            f._customInstance?.wrapper.classList.toggle("disabled", f.disabled);
         });
     const enableFields = (...fields) =>
         fields.forEach((f) => {
             f.disabled = false;
             f.setAttribute("required", "required");
+            f._customInstance?.wrapper.classList.toggle("disabled", f.disabled);
         });
 
     // --- isi dropdown Kategori ---
@@ -37,6 +39,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         filteredKategori.forEach((k) => {
             kategoriSelect.innerHTML += `<option value="${k.id}">${k.kategori_ar}</option>`;
         });
+
+        kategoriSelect._customInstance?.refresh();
     }
 
     // --- isi dropdown Kedudukan ---
@@ -57,6 +61,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         filteredKedudukan.forEach((k) => {
             kedudukanSelect.innerHTML += `<option value="${k.id}">${k.kedudukan_ar}</option>`;
         });
+
+        kedudukan._customInstance?.refresh();
     }
 
     // --- isi Hukum ---
@@ -72,21 +78,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         } else {
             hukumSelect.innerHTML = `<option selected>${kategori.hukum}</option>`;
         }
-
-        // add too other unique hukum in dropdown based on kalimat without duplicating
-        // const filteredKategori = data.kategori.filter(
-        //     (k) => k.id_kalimat === selectedKalimat
-        // );
-
-        // const uniqueHukum = new Set();
-        // filteredKategori.forEach((k) => {
-        //     if (k.hukum !== kategori.hukum) {
-        //         uniqueHukum.add(k.hukum);
-        //     }
-        // });
-        // uniqueHukum.forEach((h) => {
-        //     hukumSelect.innerHTML += `<option>${h}</option>`;
-        // });
     }
 
     // --- isi i'rob ---
@@ -96,20 +87,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (!kd) return;
 
         irobSelect.innerHTML = `<option selected>${kd.irob}</option>`;
-        // add too other unique irob in dropdown based on kalimat without duplicating
-        // const selectedKalimat = kalimatSelect.value.trim();
-        // const filteredKedudukan = data.kedudukan.filter(
-        //     (k) => k.id_kalimat === selectedKalimat
-        // );
-        // const uniqueIrob = new Set();
-        // filteredKedudukan.forEach((k) => {
-        //     if (k.irob !== kd.irob) {
-        //         uniqueIrob.add(k.irob);
-        //     }
-        // });
-        // uniqueIrob.forEach((i) => {
-        //     irobSelect.innerHTML += `<option>${i}</option>`;
-        // });
     }
 
     // --- isi Tanda I‘rob ---
@@ -129,7 +106,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 case "مَنْصُوْبٌ":
                     tanda = kategoriMabni.nashob;
                     break;
-                case "مَجْرُوْرٌ":
+                case "مَنْصُوْبٌ":
                     tanda = kategoriMabni.jar;
                     break;
                 case "مَجْزُوْمٌ":
@@ -294,6 +271,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     kategoriSelect.addEventListener("change", () => {
         fillHukum();
 
+        console.log("Kategori berubah");
+        
+
         const currentKalimat = kalimatSelect.value.trim();
         if (currentKalimat === "10" || currentKalimat === "22") {
             populateKedudukan(currentKalimat);
@@ -316,10 +296,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (currentKedudukan === "KD4101" || currentKedudukan === "KD4102") {
             // jika jumlah atau sibhul jumlah
             disableFields(irobSelect, tandaSelect);
-        } else if (
-            currentKedudukan === "KD1006" ||
-            currentKedudukan === "KD1006"
-        ) {
+        } else if (currentKedudukan === "KD1006" || currentKedudukan === "KD1006") {
             // jika fail mustatir
             disableFields(hukumSelect, irobSelect, tandaSelect);
         } else if (currentKedudukan === "KD1056") {

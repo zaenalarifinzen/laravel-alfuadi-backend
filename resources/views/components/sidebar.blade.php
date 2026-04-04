@@ -41,9 +41,9 @@
                     </a>
                 </li>
                 <li class="{{ Request::is('words/create') ? 'active' : '' }}">
-                    <a class="nav-link beep beep-sidebar" href="{{ route('words.create') }}">
+                    <a class="nav-link" href="{{ route('words.create') }}">
                         <i class="fas fa-keyboard"></i>
-                        <span>Input Irob</span>
+                        <span>Input Irob <span class="beep"></span></span>
                     </a>
                 </li>
             @endif
@@ -56,6 +56,11 @@
                 </li>
 
                 <li class="menu-header">Organize</li>
+                <li class="{{ Request::is('skema-nahwu') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('page.skema-nahwu') }}">
+                        <i class="fas fa-sitemap"></i>
+                        <span>Skema Nahwu</span></a>
+                </li>
                 <li class="{{ Request::is('users') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('users.index') }}">
                         <i class="fas fa-user"></i>
@@ -67,7 +72,7 @@
                 </li> --}}
                 <li class="{{ Request::is('example') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('page.templatepage') }}"><i class="fas fa-file-lines"></i>
-                        <span>Template</span></a>
+                        <span>Develop Page</span></a>
                 </li>
             @endif
     </aside>

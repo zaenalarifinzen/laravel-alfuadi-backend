@@ -2683,10 +2683,11 @@ pre {
   position: relative;
 }
 .beep:after {
+  top: 35% !important;
   content: "";
   position: absolute;
   top: 2px;
-  right: 8px;
+  left: 8px;
   width: 7px;
   height: 7px;
   background-color: #ffa426;

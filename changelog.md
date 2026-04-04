@@ -2,7 +2,9 @@
 
 ## 1.1.7
 
--   Penambahan kategori maqshur dan manqush pada isim mufrod dan jamak taksir
+-   Restruktur dropdown dengan fitur pencarian
+-   Perubahan popup action ke kolom opsi pada tabel kalimat
+-   Pemberitahuan kalimat belum di grup saat input kalimat
 
 ## 1.1.6
 

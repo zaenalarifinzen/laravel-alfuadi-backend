@@ -6,6 +6,9 @@ $("#btn-add-word").on("click", function () {
     $("#form-add-word-label").text("Tambah Kalimat");
     $("#btn-submit").text("Tambahkan");
 
+    clearInputError("#input-lafadz");
+    clearInputError("#input-translation");
+
     // remove required attribute
     document
         .getElementById("form-add-word")
@@ -17,14 +20,14 @@ $("#btn-add-word").on("click", function () {
 
     // get key from local storage
     const currentKey = Object.keys(localStorage).find((k) =>
-        k.startsWith("wordgroups_")
+        k.startsWith("wordgroups_"),
     );
     const stored = JSON.parse(localStorage.getItem(currentKey));
 
     // get active wordgroup
     const activeWordGroupId = $(".owl-item.active .word-group").attr("wg-id");
     const wordGroup = stored.data.wordGroups.find(
-        (g) => g.id == activeWordGroupId
+        (g) => g.id == activeWordGroupId,
     );
 
     $("#input-id").val("");
@@ -36,50 +39,46 @@ $("#btn-add-word").on("click", function () {
     $("#input-kedudukan").val("");
     $("#input-simbol").val("");
 
+    $("#input-lafadz").attr("required", true);
     $("#modal-add-word").modal("show");
 });
 
 $("#form-add-word").on("submit", function (e) {
     e.preventDefault();
+    let valid = true;
 
-    // Validate Input
+    const editMode = $("#additional-fields").is(":visible");
+
+    const controller = window.nahwuFormController;
+    if (editMode && controller) {
+        if (!validateInput("#input-lafadz")) valid = false;
+        if (!validateInput("#input-translation")) valid = false;
+
+        Object.values(controller.instances).forEach((instance) => {
+            if (!instance.validate()) valid = false;
+        });
+        if (!valid) return;
+    }
+
     const wordId = $("#input-id").val();
     const lafadz = $("#input-lafadz").val().trim();
     const kalimat = $("#input-kalimat").val();
-    let kalimatText = $("#input-kalimat option:selected").text();
-
-    // if kalimat text starts with "Pilih", set to empty
-    if (kalimat && kalimatText.startsWith("Pilih")) {
-        kalimatText = "";
-    }
-
-    // validate required fields
-    if (!lafadz) {
-        alert("Lafadz tidak boleh kosong");
-        return;
-    }
-
-    // if wordId is not empty, it's in edit mode, so kalimat is required
-    if (wordId && !kalimat) {
-        alert("Kalimat tidak boleh kosong");
-        return;
-    }
 
     // Logic
     // get key from local storage
     const currentKey = Object.keys(localStorage).find((k) =>
-        k.startsWith("wordgroups_")
+        k.startsWith("wordgroups_"),
     );
     const stored = JSON.parse(localStorage.getItem(currentKey));
 
     // get active wordgroup
     const activeWordGroupId = $(".owl-item.active .word-group").attr("wg-id");
     const wordGroup = stored.data.wordGroups.find(
-        (g) => g.id == activeWordGroupId
+        (g) => g.id == activeWordGroupId,
     );
 
     const groupIndex = stored.data.wordGroups.findIndex(
-        (g) => g.id == activeWordGroupId
+        (g) => g.id == activeWordGroupId,
     );
     if (groupIndex === -1) {
         alert("WordGroup tidak ditemukan");
@@ -113,19 +112,37 @@ $("#form-add-word").on("submit", function (e) {
         }
     }
 
+    function getSelectVal(id) {
+        const val = $(id).val();
+        return val ? val : null;
+    }
+
+    function getSelectText(id) {
+        const val = $(id).val();
+        if (!val) return null;
+        const text = $(`${id} option:selected`).text().trim();
+        return text && !text.startsWith("Pilih") ? text : null;
+    }
+
     const newWord = {
         id: wordId || Date.now(),
         text: $("#input-lafadz").val().trim(),
         order_number: wordId ? $("#input-order-number").val() : newOrder,
         translation: $("#input-translation").val().trim(),
-        kalimat: kalimatText,
+
+        // save id
+        kalimat_id: $("#input-kalimat").val(),
+        kategori_id: $("#input-kategori").val(),
+        kedudukan_id: $("#input-kedudukan").val(),
+
+        kalimat: getSelectText("#input-kalimat"),
         color: color,
-        kategori: $("#input-kategori option:selected").text() || null,
-        hukum: $("#input-hukum").val(),
-        kedudukan: $("#input-kedudukan option:selected").text() || null,
-        irob: $("#input-irob").val(),
-        tanda: $("#input-tanda").val(),
-        simbol: $("#input-simbol").val(),
+        kategori: getSelectText("#input-kategori"),
+        hukum: getSelectVal("#input-hukum"),
+        kedudukan: getSelectText("#input-kedudukan "),
+        irob: getSelectVal("#input-irob"),
+        tanda: getSelectVal("#input-tanda"),
+        simbol: getSelectVal("#input-simbol"),
     };
 
     // get mode
@@ -159,6 +176,9 @@ $("#form-add-word").on("submit", function (e) {
     renderWordsTable(wordGroup);
     renderWordsDetails(wordGroup);
 
+    // show save-all button
+    $("#btn-save-all").show();
+
     // form.stopProgress();
     $("#modal-add-word").modal("hide");
 });
@@ -175,15 +195,13 @@ function renderWordsTable(wordGroup) {
             </tr>
         `);
 
-        $(".editor-kalimat a")
-            .contents()
-            .last()[0].textContent = ` -`;
+        $(".editor-kalimat a").contents().last()[0].textContent = ` -`;
         return;
     }
 
     // sort word based on order_number
     wordGroup.words.sort(
-        (a, b) => (a.order_number || 0) - (b.order_number || 0)
+        (a, b) => (a.order_number || 0) - (b.order_number || 0),
     );
 
     wordGroup.words.forEach((word) => {
@@ -194,28 +212,31 @@ function renderWordsTable(wordGroup) {
 
         const row = `
             <tr>
-                <td class="text-center align-middle">
-                    <div class="sort-handler align-middle">
-                        <i class="fa-solid fa-grip"></i>
-                    </div>
+                <td class="text-center align-middle col-word">
+                    <div class="${simbolClass} arabic-text words" id="${word.id}">${word.text}</div>
                 </td>
-                <td class="text-center align-middle">
-                    <div class="${simbolClass} dropdown d-inline arabic-text words" id="${
-            word.id
-        }" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${
-            word.text
-        }</div>
-                    <div class="dropdown-menu">
-                        <a href="#" class="dropdown-item has-icon word-edit"><i class="far fa-edit"></i> Edit</a>
-                        <a href="#" class="dropdown-item has-icon text-danger word-delete" id="btl-delete"><i class="far fa-trash-can"></i> Hapus</a>
-                    </div>
-                </td>
-                <td class="text-center align-middle">
+                <td class="text-center align-middle col-symbol">
                     <div class="text-center ${simbolClass} mb-2 arabic-text ar-symbol">${
-            word.simbol ?? ""
-        }</div>
+                        word.simbol ?? ""
+                    }</div>
                 </td>
-                <td class="align-middle">${word.translation ?? ""}</td>
+                <td class="align-middle col-translation">${word.translation ?? ""}</td>
+                <td class="align-middle col-action">
+                    <div class="d-flex justify-content-center action-buttons">
+                        <button class="btn btn-sm btn-icon btn-warning word-edit" id="btn-edit" title="Edit">
+                            <i class="fa-solid fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-icon btn-danger word-delete" id="btn-delete" title="Hapus">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                        <button class="btn btn-sm btn-icon btn-primary btn-move-up" title="Naikkan">
+                            <i class="fa-solid fa-arrow-up"></i>
+                        </button>
+                        <button class="btn btn-sm btn-icon btn-primary btn-move-down" title="Turunkan">
+                            <i class="fa-solid fa-arrow-down"></i>
+                        </button>
+                    </div>
+                </td>
             </tr>
         `;
         tbody.append(row);
@@ -226,6 +247,13 @@ function renderWordsTable(wordGroup) {
         ? firstWord.editor_info.name
         : " -";
     $(".editor-kalimat a").contents().last()[0].textContent = ` ${editorName}`;
+
+    const modified = isModified();
+    if (modified) {
+        $("#btn-save-all").show();
+    } else {
+        $("#btn-save-all").hide();
+    }
 }
 
 // Render Words Table
@@ -245,7 +273,7 @@ function renderWordsDetails(wordGroup) {
 
     // sort word based on order_number
     wordGroup.words.sort(
-        (a, b) => (a.order_number || 0) - (b.order_number || 0)
+        (a, b) => (a.order_number || 0) - (b.order_number || 0),
     );
 
     wordGroup.words.forEach((word) => {
@@ -263,7 +291,7 @@ function renderWordsDetails(wordGroup) {
             word.tanda,
         ]
             .filter(
-                (p) => p !== null && p !== undefined && String(p).trim() !== ""
+                (p) => p !== null && p !== undefined && String(p).trim() !== "",
             )
             .join(" - ");
 
@@ -293,7 +321,7 @@ function renderWordsDetails(wordGroup) {
 }
 
 // Delete word row
-$(document).on("click", ".dropdown-menu .word-delete", function (e) {
+$(document).on("click", ".action-buttons .word-delete", function (e) {
     e.preventDefault();
 
     // confirm deletion
@@ -318,7 +346,7 @@ $(document).on("click", ".dropdown-menu .word-delete", function (e) {
 
         // get data from local storage
         const currentKey = Object.keys(localStorage).find((k) =>
-            k.startsWith("wordgroups_")
+            k.startsWith("wordgroups_"),
         );
         if (!currentKey) return;
 
@@ -326,11 +354,11 @@ $(document).on("click", ".dropdown-menu .word-delete", function (e) {
 
         // get active wordgroup
         const activeWordGroupId = $(".owl-item.active .word-group").attr(
-            "wg-id"
+            "wg-id",
         );
         // console.log('activeWordGroupId: ', activeWordGroupId);
         const groupIndex = stored.data.wordGroups.findIndex(
-            (g) => g.id == activeWordGroupId
+            (g) => g.id == activeWordGroupId,
         );
         if (groupIndex === -1) return;
 
@@ -354,39 +382,70 @@ $(document).on("click", ".dropdown-menu .word-delete", function (e) {
 });
 
 // Edit Word Row
-$(document).on("click", ".dropdown-menu .word-edit", function (e) {
+$(document).on("click", ".action-buttons .word-edit", function (e) {
     e.preventDefault();
+
+    clearInputError("#input-lafadz");
+    clearInputError("#input-translation");
 
     const tr = $(this).closest("tr");
     const wordId = tr.find(".words").attr("id");
 
     // get data from local storage
     const currentKey = Object.keys(localStorage).find((k) =>
-        k.startsWith("wordgroups_")
+        k.startsWith("wordgroups_"),
     );
     const stored = JSON.parse(localStorage.getItem(currentKey));
     const activeWordGroupId = $(".owl-item.active .word-group").attr("wg-id");
     const groupIndex = stored.data.wordGroups.findIndex(
-        (g) => g.id == activeWordGroupId
+        (g) => g.id == activeWordGroupId,
     );
     const word = stored.data.wordGroups[groupIndex].words.find(
-        (w) => w.id == wordId
+        (w) => w.id == wordId,
     );
 
-    // fill modal form
+    // fill input biasa
     $("#input-translation").required = true;
     $("#input-id").val(word.id);
     $("#input-order-number").val(word.order_number);
     $("#input-lafadz").val(word.text);
     $("#input-translation").val(word.translation);
 
-    $("#input-kalimat").val(word.kalimat).change();
-    $("#input-kategori").val(word.kategori).change();
-    $("#input-hukum").val(word.hukum).change();
-    $("#input-irob").val(word.irob).change();
-    $("#input-tanda").val(word.tanda).change();
-    $("#input-kedudukan").val(word.kedudukan).change();
-    $("#input-simbol").val(word.simbol).change();
+    const ctrl = window.nahwuFormController;
+    if (ctrl) {
+        const { kalimat_id, kategori_id, kedudukan_id } = ctrl.resolveIds(word);
+
+        // 1. Set kalimat dulu
+        ctrl.instances.kalimat?.setValueById(kalimat_id);
+        ctrl.instances.kalimat?.select.dispatchEvent(
+            new CustomEvent("change", { detail: { isRestoring: true } }),
+        );
+
+        // 2. Set child field
+        setTimeout(() => {
+            ctrl.instances.kategori?.setValueById(kategori_id);
+            ctrl.instances.kategori?.select.dispatchEvent(
+                new CustomEvent("change", { detail: { isRestoring: true } }),
+            );
+
+            setTimeout(() => {
+                ctrl.instances.kedudukan?.setValueById(kedudukan_id);
+                ctrl.instances.kedudukan?.select.dispatchEvent(
+                    new CustomEvent("change", {
+                        detail: { isRestoring: true },
+                    }),
+                );
+
+                ctrl.instances.hukum?.setValueById(word.hukum);
+                ctrl.instances.irob?.setValueById(word.irob);
+                ctrl.instances.tanda?.setValueById(word.tanda);
+                ctrl.instances.simbol?.setValueById(word.simbol);
+            }, 50);
+        }, 50);
+    }
+
+    // set lafadz & transtalion required
+    $("#input-lafadz").attr("required", true);
 
     $("#form-add-word-label").text("Update Kalimat");
     $("#btn-submit").text("Update");
@@ -399,7 +458,7 @@ $("#btn-save-all").on("click", function (e) {
     e.preventDefault();
 
     const currentKey = Object.keys(localStorage).find((k) =>
-        k.startsWith("wordgroups_")
+        k.startsWith("wordgroups_"),
     );
     if (!currentKey) {
         alert("Tidak ada data");
@@ -418,7 +477,7 @@ $("#btn-save-all").on("click", function (e) {
     }
 
     const emptyGroups = stored.data.wordGroups.filter(
-        (g) => !g.words || g.words.length === 0
+        (g) => !g.words || g.words.length === 0,
     );
     if (emptyGroups.length > 0) {
         let list = emptyGroups.map((g) => `${g.text}`).join(" - ");
@@ -485,3 +544,35 @@ $("#btn-save-all").on("click", function (e) {
         });
     });
 });
+
+// ========================
+// HELPER
+// ========================
+
+function validateInput(selector, message = "Wajib diisi") {
+    const input = $(selector);
+    const wrapper = input.closest(".form-group");
+    let errorElement = wrapper.find(".error-message");
+
+    if (!errorElement.length) {
+        input.after(`<small class="error-message"></small>`);
+        errorElement = wrapper.find(".error-message");
+    }
+
+    if (!input.val().trim()) {
+        input.addClass("invalid");
+        errorElement.text(message);
+        return false;
+    }
+
+    input.removeClass("invalid");
+    errorElement.text("");
+    return true;
+}
+
+function clearInputError(selector) {
+    const input = $(selector);
+    const wrapper = input.closest(".form-group");
+    input.removeClass("invalid");
+    wrapper.find(".error-message").text("");
+}

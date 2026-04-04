@@ -1,0 +1,213 @@
+@extends('layouts.auth')
+
+@section('title', 'Dropdown Page')
+
+@push('style')
+    <!-- CSS Libraries -->
+    {{-- <link rel="stylesheet" href="{{ asset('library/bootstrap-social/bootstrap-social.css') }}"> --}}
+    <link
+        href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Cinzel+Decorative:wght@400;700;900&family=Scheherazade+New:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        body {
+            background: #f1f1f1 !important;
+        }
+
+        .wrapper {
+            position: relative;
+            margin: 130px auto 0;
+        }
+
+        .select-btn,
+        .options li {
+            display: flex;
+            cursor: pointer;
+            align-items: center;
+        }
+
+        .select-btn {
+            height: 50px;
+            padding: 0 20px;
+            border-radius: 7px;
+            background: #fff;
+            font-size: 18px;
+            justify-content: space-between;
+        }
+
+        .select-btn i {
+            transition: transform 0.2s linear;
+        }
+
+        .wrapper.active .select-btn i {
+            transform: rotate(-180deg);
+        }
+
+        .content {
+            display: none;
+            background: #fff;
+            margin-top: 5px;
+            padding: 20px;
+            border-radius: 7px;
+        }
+
+        .wrapper .content {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .wrapper.active .select-btn {
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .wrapper.active .content {
+            display: block;
+            position: absolute;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+
+        }
+
+        .content .search {
+            position: relative;
+        }
+
+        .search i {
+            position: absolute;
+            left: 15px;
+            font-size: 15px;
+            color: #999;
+            line-height: 40px;
+        }
+
+        .search input {
+            height: 40px;
+            width: 100%;
+            outline: none;
+            font-size: 15px;
+            padding: 0 15px 0 43px;
+            border: 1px solid #b7d8d5;
+            border-radius: 5px;
+        }
+
+        .content .options {
+            margin-top: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+            padding-left: 0;
+            padding-right: 7px;
+        }
+
+        .options::-webkit-scrollbar {
+            width: 7px;
+        }
+
+        .options::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 25px;
+        }
+
+        .options::-webkit-scrollbar-thumb {
+            background: #ccc;
+            width: 25px;
+        }
+
+        .options li {
+            height: 40px;
+            padding: 0 13px;
+            font-size: 18px;
+            border-radius: 5px;
+        }
+
+        .options li:hover,
+        .options li.selected {
+            background: #f2f2f2;
+        }
+
+        .ar {
+            direction: rtl;
+            font-family: "Scheherazade New", "Amiri Quran", serif;
+            /* font-size: 12px; */
+        }
+    </style>
+@endpush
+
+@section('main')
+    <div class="wrapper">
+        <div class="select-btn">
+            <span class="ar">Pilih daftar</span>
+            <i class="fa-solid fa-angle-down"></i>
+        </div>
+        <div class="content">
+            <div class="search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Cari" autofocus="true">
+            </div>
+            <ul class="options"></ul>
+        </div>
+    </div>
+@endsection
+
+@push('scripts')
+    <!-- JS Libraies -->
+
+    <!-- Page Specific JS File -->
+    <script src="{{ asset('js/page/auth/auth-form.js') }}"></script>
+    <script>
+        const wrapper = document.querySelector(".wrapper");
+        const selectBtn = wrapper.querySelector(".select-btn");
+        searchInput = wrapper.querySelector("input");
+        options = wrapper.querySelector(".options");
+
+        let dataIrob = {};
+        fetch("{{ asset('json/data-nahwu.json') }}")
+            .then(response => response.json())
+            .then(jsonData => {
+                dataIrob = jsonData;
+                addCollection()
+            });
+
+
+        function addCollection(selectedItem) {
+            options.innerHTML = "";
+
+            dataIrob.kedudukan.forEach(data => {
+                let isSelected = data.kedudukan_ar_musyakal == selectedItem ? "selected" : "";
+                let li =
+                    `<li onClick="updateName(this)" class="ar ${isSelected}">${data.kedudukan_ar_musyakal}</li>`;
+                options.insertAdjacentHTML("beforeend", li);
+            });
+        }
+
+        function updateName(selectedLi) {
+            searchInput.value = "";
+            addCollection(selectedLi.innerText)
+            wrapper.classList.remove("active");
+            selectBtn.firstElementChild.innerText = selectedLi.innerText;
+        }
+
+        searchInput.addEventListener("keyup", () => {
+            let filtered = [];
+            let searchedValue = searchInput.value.toLowerCase();
+            filtered = dataIrob.kedudukan.filter(data => {
+                // kedudukan_ar or kedudukan_in includes searched value
+                return data.kedudukan_ar_musyakal.includes(searchedValue) ||
+                    data.kedudukan_in.toLowerCase().includes(searchedValue) ||
+                    data.kedudukan_ar.includes(searchedValue);
+            }).map(data => `<li onClick="updateName(this)" class="ar">${data.kedudukan_ar_musyakal}</li>`).join(
+                "");
+            options.innerHTML = filtered ? filtered : `<li">Data tidak ditemukan</li>`;
+
+        })
+
+        selectBtn.addEventListener("click", () => {
+            wrapper.classList.toggle("active");
+        })
+
+        // Close the dropdown if the user clicks outside
+        window.addEventListener("click", function (event) {
+            if (!wrapper.contains(event.target)) {
+                wrapper.classList.remove("active");
+            }
+        });
+    </script>
+@endpush
