@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Cache;
 class NahwuDataController extends Controller
 {
     public function index() : JsonResponse {
-        $data = Cache::remember('data-nahwu', now()->addHours(0), function () {
+        $data = Cache::remember('data-nahwu', now()->addHours(24), function () {
             $kalimat = Kalimat::orderBy('id')->get()->map(fn($k) => [
                 'id' => (string) $k->id,
                 'kalimat_ar' => $k->kalimat_ar,
