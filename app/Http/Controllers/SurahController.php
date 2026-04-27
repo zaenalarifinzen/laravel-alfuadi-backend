@@ -22,6 +22,18 @@ class SurahController extends Controller
         return view('pages.surahs.index', compact('surahs'), ['type_menu' => 'Al-Fuadi Database']);
     }
 
+    public function getAll(Request $request)
+    {
+        $surahs = DB::table('surahs')
+            ->when($request->input('name'), function ($query, $name) {
+                return $query->where('name', 'like', '%'.$name.'%');
+            })
+            ->orderBy('id', 'asc')
+            ->get();
+
+        return response()->json($surahs);
+    }
+
     /**
      * Show the form for creating a new resource.
      */

@@ -13,6 +13,16 @@ Route::get('/', function () {
     return redirect()->route('home');
 });
 
+// Public routes
+Route::get('/home', function () {
+    return view('pages.dashboard', ['type_menu' => 'dashboard']);
+})->name('home');
+
+Route::resource('surahs', SurahController::class);
+Route::resource('verses', VerseController::class);
+Route::resource('wordgroups', WordGroupController::class);
+Route::resource('words', WordController::class);
+
 Route::middleware(['auth'])->group(function () {
 
     // Administrator Only
@@ -43,13 +53,14 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/words/data/data-nahwu', [NahwuDataController::class, 'index']);
     });
 
-    // All User
-    Route::get('/home', function () {
-        return view('pages.dashboard', ['type_menu' => 'dashboard']);
-    })->name('home');
+    // Administrator, Operator and User Only
+    Route::middleware(['roles:administrator,operator,user'])->group(function () {
+        Route::get('/metode-al-fuadi/jilid-1', function() {
+            return view('pages.modul.nahwu.jilid-1', ['type_menu' => 'metode-al-fuadi']);
+        })->name('metode-al-fuadi.jilid-1');
+        Route::get('/metode-al-fuadi/exercise', function() {
+            return view('pages.modul.exercise.exercise', ['type_menu' => '']);
+        })->name('metode-al-fuadi.exercise');
+    });
 
-    Route::resource('surahs', SurahController::class);
-    Route::resource('verses', VerseController::class);
-    Route::resource('wordgroups', WordGroupController::class);
-    Route::resource('words', WordController::class);
 });

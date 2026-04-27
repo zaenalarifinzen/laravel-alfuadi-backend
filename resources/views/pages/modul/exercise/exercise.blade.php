@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Input Irob')
+@section('title', 'Latihan analisa')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -13,7 +13,7 @@
 @section('main')<div class="main-content">
         <section class="section">
             <div class="section-header d-flex justify-content-between align-items-center">
-                <h1>Input I'rob</h1>
+                <h1>Latihan analisa</h1>
 
                 <div class="float-right">
                     <form method="GET" action="{{ route('wordgroups.grouping') }}" id="filter-form" class="mb-0">
@@ -22,18 +22,14 @@
                                 id="surah-option"
                                 style="flex: 3; border-top-left-radius: 0.5rem; border-bottom-left-radius: 0.5rem;"
                                 required>
-                                <option value="">Pilih Surah</option>
-                                @foreach ($surahs as $surah)
-                                    <option value="{{ $surah->id }}" data-verse-count="{{ $surah->verse_count }}">
-                                        {{ $surah->name }}
-                                    </option>
-                                @endforeach
+                                <option value="">Pilih Soal</option>
+                                <option value="">Latihan 1</option>
+                                <option value="">Latihan 2</option>
+                                <option value="">Latihan 3</option>
                             </select>
-                            <input type="number" class="form-control" placeholder="Ayat" name="verse-option"
-                                id="verse-option" value="" style="flex: 1;" required>
 
                             <div class="input-group-append">
-                                <button class="btn btn-primary" type="submit">Cari</button>
+                                <button class="btn btn-primary" type="submit">Buka</button>
                             </div>
                         </div>
                     </form>
@@ -42,15 +38,13 @@
 
             <div class="section-body">
                 <div class="card">
-                    <input type="hidden" id="surah-id" value="{{ $surahId }}">
-                    <input type="hidden" id="verse-number" value="{{ $verseNumber }}">
-                    <input type="hidden" id="verse-id" value="{{ $verseId }}">
+                    <input type="hidden" id="surah-id" value="">
+                    <input type="hidden" id="verse-number" value="">
+                    <input type="hidden" id="verse-id" value="">
 
                     <div class="card-header" id="word">
                         <div class="d-flex justify-content-between align-items-center w-100">
-                            <h4 id="current-verse-label">{{ $surahId }}. {{ $surahName }} - Ayat
-                                {{ $verseNumber }}</h4>
-                            {{-- refresh button akan tampil disini setelah fetch dari lokal --}}
+                            <h4 id="current-verse-label">Nama Latihan</h4>
                         </div>
                     </div>
 
@@ -60,24 +54,21 @@
                         </button>
 
                         <div class="owl-carousel owl-theme slider" id="slider-rtl">
-                            @foreach ($wordgroups as $wordgroup)
-                                <div>
-                                    <h4 class="arabic-text ar-title word-group text-center" wg-id="{{ $wordgroup->id }}">
-                                        {{ $wordgroup->text }}
-                                    </h4>
-                                </div>
-                            @endforeach
+                            <div>
+                                <h4 class="arabic-text ar-title word-group text-center" wg-id="#">
+                                    lafadz 1
+                                </h4>
+                            </div>
+                            <div>
+                                <h4 class="arabic-text ar-title word-group text-center" wg-id="#">
+                                    lafadz 2
+                                </h4>
+                            </div>
                         </div>
 
                         <button id="btn-prev-slide" class="slider-nav-btn next">
                             <i class="fa fa-chevron-right"></i>
                         </button>
-
-                        <div class="editor-wordgroup" style="padding-top: 20px">
-                            <span>Editor grouping : </span>
-                            <a href="#"
-                                class="font-weight-600">{{ $wordgroups->first()->editorInfo->name ?? '-' }}</a>
-                        </div>
                     </div>
 
                 </div>
@@ -103,7 +94,6 @@
                                     <div class="card-header">
                                         <div class="d-flex justify-content-between align-items-center w-100">
                                             <h4 class="mb-0">Input Kalimat</h4>
-                                            {{-- hide btn-add-word when editor is blank --}}
                                             <button class="btn btn-icon icon-left btn-primary btn-lg" id="btn-add-word">
                                                 <i class="fa-solid fa-plus"></i> Tambah
                                             </button>
@@ -114,84 +104,16 @@
                                             <table class="table-striped table" id="sortable-table">
                                                 <thead>
                                                     <tr class="text-center">
-                                                        <th class="col-word">Lafadz</th>
-                                                        <th class="col-symbol">Simbol</th>
-                                                        <th class="col-translation">Terjemah</th>
-                                                        <th class="col-action">Opsi</th>
+                                                        <th>Tanda</th>
+                                                        <th>I'rob</th>
+                                                        <th>Kedudukan</th>
+                                                        <th>Kategori</th>
+                                                        <th>Hukum</th>
+                                                        <th>Kalimat</th>
+                                                        <th>Opsi</th>
                                                     </tr>
                                                 </thead>
-                                                @php
-                                                    $firstGroup = $wordgroups->first();
-                                                    $words =
-                                                        $firstGroup && isset($firstGroup->words)
-                                                            ? $firstGroup->words
-                                                            : collect();
-                                                @endphp
                                                 <tbody>
-                                                    @forelse ($words as $word)
-                                                        <tr class="text-center">
-                                                            <td class="text-center align-middle col-word"
-                                                                id="{{ $word->id }}">
-                                                                <div class="dropdown
-                                                            @if ($word->color == 'red') text-huruf
-                                                            @elseif($word->color == 'green') text-fiil
-                                                            @elseif($word->color == 'blue') text-isim 
-                                                            @else text-dark @endif arabic-text words"
-                                                                    type="button" id="dropdownMenuButton2"
-                                                                    data-toggle="dropdown" aria-haspopup="true"
-                                                                    aria-expanded="false">
-                                                                    {{ $word->text }}</div>
-                                                                <div class="dropdown-menu">
-                                                                    <a href="#"
-                                                                        class="dropdown-item has-icon word-edit"><i
-                                                                            class="far fa-edit"></i> Edit</a>
-                                                                    <a href="#"
-                                                                        class="dropdown-item has-icon text-danger word-delete"
-                                                                        id="btn-delete"><i class="far fa-trash-can"></i>
-                                                                        Hapus</a>
-                                                                </div>
-                                                            </td>
-                                                            <td class="col-symbol">
-                                                                <div
-                                                                    class="text-center @if ($word->color == 'red') text-huruf
-                                                @elseif($word->color == 'green') text-fiil
-                                                @elseif($word->color == 'blue') text-isim
-                                                @else text-dark mb-2 @endif mb-2 arabic-text ar-symbol">
-                                                                    {{ $word->simbol }}</div>
-                                                            </td>
-                                                            <td class="col-translation">
-                                                                {{ $word->translation }}
-                                                            </td>
-                                                            <td class="align-middle col-actions">
-                                                                <div class="d-flex justify-content-center action-buttons">
-                                                                    <button class="btn btn-sm btn-icon btn-warning"
-                                                                        title="Edit">
-                                                                        <i class="fa-solid fa-edit"></i>
-                                                                    </button>
-                                                                    <button class="btn btn-sm btn-icon btn-danger"
-                                                                        title="Hapus" id="btn-delete">
-                                                                        <i class="fa-solid fa-trash"></i>
-                                                                    </button>
-                                                                    <button
-                                                                        class="btn btn-sm btn-icon btn-primary btn-move-up"
-                                                                        title="Naikkan">
-                                                                        <i class="fa-solid fa-arrow-up"></i>
-                                                                    </button>
-                                                                    <button
-                                                                        class="btn btn-sm btn-icon btn-primary btn-move-down"
-                                                                        title="Turunkan">
-                                                                        <i class="fa-solid fa-arrow-down"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    @empty
-                                                        <tr>
-                                                            <td colspan="5" class="text-center text-muted">Tidak
-                                                                ada
-                                                                data</td>
-                                                        </tr>
-                                                    @endforelse
                                                 </tbody>
                                             </table>
                                         </div>
@@ -213,13 +135,6 @@
                                                     <th style="width:110px;">Lafadz</th>
                                                 </tr>
                                             </thead>
-                                            @php
-                                                $firstGroup = $wordgroups->first();
-                                                $words =
-                                                    $firstGroup && isset($firstGroup->words)
-                                                        ? $firstGroup->words
-                                                        : collect();
-                                            @endphp
                                             <tbody>
                                                 <tr>
                                                     <td colspan="5" class="text-center text-muted">Tidak ada data</td>
@@ -229,11 +144,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="editor-kalimat" style="padding-top: 20px">
-                            <span>Editor kalimat : </span>
-                            {{-- show editor name based on this words --}}
-                            <a href="#" class="font-weight-600" id="word-editor-info">-</a>
                         </div>
                     </div>
                 </div>
@@ -246,8 +156,7 @@
                     </div>
                     <div>
                         <button class="btn btn-icon icon-left btn-success btn-lg" id="btn-save-all"
-                            style="display: none;">Simpan &
-                            lanjutkan</button>
+                            style="display: none;">Simpan</button>
                     </div>
                 </div>
             </div>
@@ -364,7 +273,6 @@
     <script src="{{ asset('library/owl.carousel/dist/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('library/izitoast/dist/js/iziToast.min.js') }}"></script>
     <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
-    {{-- <script src="{{ asset('library/select2/dist/js/select2.full.min.js') }}"></script> --}}
 
     <script>
         window.WORDS_SYNC_URL = "{{ route('words.sync') }}";
