@@ -104,7 +104,7 @@ function fetchWordGroups(surah_id, verse_number, verse_id) {
     $.ajax({
         url,
         type: "GET",
-        success: function (response) {
+        success: function (response) {            
             const verseId = response.data.verse.id;
             const storageKey = `wordgroups_${verseId}`;
 
