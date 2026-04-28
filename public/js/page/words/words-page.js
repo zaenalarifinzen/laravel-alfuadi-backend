@@ -41,6 +41,7 @@ const currentVerseId = document.getElementById("verse-id");
 
 let activeWordGroupId = null;
 let verseCount = 0;
+const wordGroupsPrefix = "wordgroups_";
 
 // =============================
 // HELPERS
@@ -255,7 +256,7 @@ $slider.on("translated.owl.carousel", (e) => {
 // NAVIGASI AYAT
 // =============================
 async function goToPrevVerse() {
-    const modified = isModified();
+    const modified = isModified(wordGroupsPrefix);
     if (modified) {
         const confirmed = await showEditConfirmation();
         if (!confirmed) return;
@@ -266,7 +267,7 @@ async function goToPrevVerse() {
 }
 
 async function goToNextVerse() {
-    const modified = isModified();
+    const modified = isModified(wordGroupsPrefix);
     if (modified) {
         const confirmed = await showEditConfirmation();
         if (!confirmed) return;
@@ -321,7 +322,7 @@ function removeRefreshButton() {
 async function searchVerse(e) {
     e.preventDefault();
 
-    const modified = isModified();
+    const modified = isModified(wordGroupsPrefix);
     if (modified) {
         const confirmed = await showEditConfirmation();
         if (!confirmed) return;
@@ -358,7 +359,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    const cachedKey = getActiveStorageKey();
+    const cachedKey = getActiveStorageKey(wordGroupsPrefix);
     const currentKey = `wordgroups_${initialVerseId}`;
     const cached = localStorage.getItem(cachedKey);
 

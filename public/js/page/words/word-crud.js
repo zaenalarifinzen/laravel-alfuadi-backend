@@ -170,7 +170,7 @@ $("#form-add-word").on("submit", function (e) {
 
     // track modification
     // modified = true;
-    markModified();
+    markModified(wordGroupsPrefix);
 
     // re render word table & details
     renderWordsTable(wordGroup);
@@ -248,7 +248,7 @@ function renderWordsTable(wordGroup) {
         : " -";
     $(".editor-kalimat a").contents().last()[0].textContent = ` ${editorName}`;
 
-    const modified = isModified();
+    const modified = isModified(wordGroupsPrefix);
     if (modified) {
         $("#btn-save-all").show();
     } else {
@@ -372,7 +372,7 @@ $(document).on("click", ".action-buttons .word-delete", function (e) {
 
         // track modification
         // modified = true;
-        markModified();
+        markModified(wordGroupsPrefix);
 
         // render table
         const updatedGroup = stored.data.wordGroups[groupIndex];

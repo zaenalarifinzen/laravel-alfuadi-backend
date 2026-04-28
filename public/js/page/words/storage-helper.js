@@ -3,13 +3,13 @@
 // ==========================
 
 // get active key from storage
-function getActiveStorageKey() {
-    return Object.keys(localStorage).find(k => k.startsWith('wordgroups_')) || null;
+function getActiveStorageKey(prefix) {
+    return Object.keys(localStorage).find(k => k.startsWith(prefix)) || null;
 }
 
 // get data from storage
-function getStoredData() {
-    const key = getActiveStorageKey();
+function getStoredData(prefix) {
+    const key = getActiveStorageKey(prefix);
     if (!key) return null;
 
     const data = JSON.parse(localStorage.getItem(key))
@@ -17,8 +17,8 @@ function getStoredData() {
 }
 
 // set modified
-function markModified() {
-    const key = getActiveStorageKey();
+function markModified(prefix) {
+    const key = getActiveStorageKey(prefix);
     if (!key) return;
 
     const stored = JSON.parse(localStorage.getItem(key));
@@ -28,14 +28,14 @@ function markModified() {
 }
 
 // check is modified
-function isModified() {
-    const stored = getStoredData();
+function isModified(prefix) {
+    const stored = getStoredData(prefix);
     return stored?.data?.modified === true;
 }
 
 // reset modified mark (set false)
-function resetModified() {
-    const key = getActiveStorageKey();
+function resetModified(prefix) {
+    const key = getActiveStorageKey(prefix);
     if (!key) return;
 
     const stored = JSON.parse(localStorage.getItem(key));
