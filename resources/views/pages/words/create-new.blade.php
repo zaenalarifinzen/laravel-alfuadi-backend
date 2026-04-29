@@ -23,11 +23,11 @@
                                 style="flex: 3; border-top-left-radius: 0.5rem; border-bottom-left-radius: 0.5rem;"
                                 required>
                                 <option value="">Pilih Surah</option>
-                                @foreach ($surahs as $surah)
+                                {{-- @foreach ($surahs as $surah)
                                     <option value="{{ $surah->id }}" data-verse-count="{{ $surah->verse_count }}">
                                         {{ $surah->name }}
                                     </option>
-                                @endforeach
+                                @endforeach --}}
                             </select>
                             <input type="number" class="form-control" placeholder="Ayat" name="verse-option"
                                 id="verse-option" value="" style="flex: 1;" required>

@@ -23,10 +23,9 @@
                                 style="flex: 3; border-top-left-radius: 0.5rem; border-bottom-left-radius: 0.5rem;"
                                 required>
                                 <option value="">Pilih Soal</option>
-                                <option value="">Latihan 1</option>
-                                <option value="">Latihan 2</option>
-                                <option value="">Latihan 3</option>
                             </select>
+                            <input type="number" class="form-control" placeholder="Ayat" name="verse-option"
+                                id="verse-option" value="" style="flex: 1;" required>
 
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="submit">Buka</button>
@@ -44,7 +43,7 @@
 
                     <div class="card-header" id="word">
                         <div class="d-flex justify-content-between align-items-center w-100">
-                            <h4 id="current-verse-label">Nama Latihan</h4>
+                            <h4 id="current-verse-label">Nama Soal</h4>
                         </div>
                     </div>
 
@@ -56,12 +55,7 @@
                         <div class="owl-carousel owl-theme slider" id="slider-rtl">
                             <div>
                                 <h4 class="arabic-text ar-title word-group text-center" wg-id="#">
-                                    lafadz 1
-                                </h4>
-                            </div>
-                            <div>
-                                <h4 class="arabic-text ar-title word-group text-center" wg-id="#">
-                                    lafadz 2
+                                    Pilih soal terlebih dahulu
                                 </h4>
                             </div>
                         </div>
@@ -69,6 +63,11 @@
                         <button id="btn-prev-slide" class="slider-nav-btn next">
                             <i class="fa fa-chevron-right"></i>
                         </button>
+
+                        <div class="editor-wordgroup" style="padding-top: 20px" hidden>
+                            <span>Editor grouping : </span>
+                            <a href="#" class="font-weight-600">-</a>
+                        </div>
                     </div>
 
                 </div>
@@ -93,7 +92,7 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="d-flex justify-content-between align-items-center w-100">
-                                            <h4 class="mb-0">Input Kalimat</h4>
+                                            <h4 class="mb-0">Tabel analisa</h4>
                                             <button class="btn btn-icon icon-left btn-primary btn-lg" id="btn-add-word">
                                                 <i class="fa-solid fa-plus"></i> Tambah
                                             </button>
@@ -110,6 +109,7 @@
                                                         <th>Kategori</th>
                                                         <th>Hukum</th>
                                                         <th>Kalimat</th>
+                                                        <th>Lafadz</th>
                                                         <th>Opsi</th>
                                                     </tr>
                                                 </thead>
@@ -144,6 +144,11 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="editor-kalimat" style="padding-top: 20px" hidden>
+                            <span>Editor kalimat : </span>
+                            {{-- show editor name based on this words --}}
+                            <a href="#" class="font-weight-600" id="word-editor-info">-</a>
                         </div>
                     </div>
                 </div>

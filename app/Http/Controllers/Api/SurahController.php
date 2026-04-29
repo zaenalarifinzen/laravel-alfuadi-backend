@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Surah;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class SurahController extends Controller
 {
@@ -13,7 +14,9 @@ class SurahController extends Controller
      */
     public function index()
     {
-        $surahs = Surah::orderBy('id', 'asc')->get();
+        $surahs = Cache::rememberForever('surahs', function () {
+            return Surah::orderBy('id', 'asc')->get();
+        });
 
         return response()->json([
             'success' => true,

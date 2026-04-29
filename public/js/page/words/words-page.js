@@ -85,6 +85,23 @@ function hideLoading() {
 }
 
 // =============================
+// FETCH SURAH LIST
+// =============================
+function fetchSurahList() {
+    $.ajax({
+        url: '/api/surahs',
+        type: 'GET',
+        success: function (response) {
+            response.data.forEach((surah) => {
+                surahOption.insertAdjacentHTML('beforeend',
+                    `<option value="${surah.id}" data-verse-count="${surah.verse_count}">${surah.id}. ${surah.name}</option>`
+                );
+            });
+        }
+    });    
+}
+
+// =============================
 // FETCH WORDGROUPS
 // =============================
 function fetchWordGroups(surah_id, verse_number, verse_id) {
@@ -130,7 +147,7 @@ function fetchWordGroups(surah_id, verse_number, verse_id) {
 }
 
 // =============================
-// RENDER WORDGROUPS
+// RENDER WORDGROUPS SLIDER
 // =============================
 function renderWordGroups(response) {
     $slider.trigger("destroy.owl.carousel");
@@ -189,6 +206,147 @@ function renderWordGroups(response) {
             window.location.href = groupingUrl;
         });
     }
+}
+
+// =============================
+// RENDER WORDS TABLE
+// =============================
+function renderWordsTable(wordGroup) {
+    const tbody = $("#sortable-table tbody");
+    tbody.empty();
+
+    if (!wordGroup || !wordGroup.words || wordGroup.words.length === 0) {
+        tbody.append(`
+            <tr>
+                <td colspan="5" class="text-center text-muted">Tidak ada data</td>
+            </tr>
+        `);
+
+        $(".editor-kalimat a").contents().last()[0].textContent = ` -`;
+        return;
+    }
+
+    // sort word based on order_number
+    wordGroup.words.sort(
+        (a, b) => (a.order_number || 0) - (b.order_number || 0),
+    );
+
+    wordGroup.words.forEach((word) => {
+        let simbolClass = "text-dark";
+        if (word.color === "red") simbolClass = "text-huruf";
+        else if (word.color === "green") simbolClass = "text-fiil";
+        else if (word.color === "blue") simbolClass = "text-isim";
+
+        const row = `
+            <tr>
+                <td class="text-center align-middle col-word">
+                    <div class="${simbolClass} arabic-text words" id="${word.id}">${word.text}</div>
+                </td>
+                <td class="text-center align-middle col-symbol">
+                    <div class="text-center ${simbolClass} mb-2 arabic-text ar-symbol">${
+                        word.simbol ?? ""
+                    }</div>
+                </td>
+                <td class="align-middle col-translation">${word.translation ?? ""}</td>
+                <td class="align-middle col-action">
+                    <div class="d-flex justify-content-center action-buttons">
+                        <button class="btn btn-sm btn-icon btn-warning word-edit" id="btn-edit" title="Edit">
+                            <i class="fa-solid fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-icon btn-danger word-delete" id="btn-delete" title="Hapus">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                        <button class="btn btn-sm btn-icon btn-primary btn-move-up" title="Naikkan">
+                            <i class="fa-solid fa-arrow-up"></i>
+                        </button>
+                        <button class="btn btn-sm btn-icon btn-primary btn-move-down" title="Turunkan">
+                            <i class="fa-solid fa-arrow-down"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `;
+        tbody.append(row);
+    });
+
+    const firstWord = wordGroup.words[0];
+    const editorName = firstWord.editor_info
+        ? firstWord.editor_info.name
+        : " -";
+    $(".editor-kalimat a").contents().last()[0].textContent = ` ${editorName}`;
+
+    const modified = isModified(wordGroupsPrefix);
+    if (modified) {
+        $("#btn-save-all").show();
+    } else {
+        $("#btn-save-all").hide();
+    }
+}
+
+// =============================
+// RENDER WORDS DETAILS
+// =============================
+function renderWordsDetails(wordGroup) {
+    const tbody = $("#detail-kalimat-table tbody");
+    tbody.empty();
+
+    if (!wordGroup || !wordGroup.words || wordGroup.words.length === 0) {
+        console.log("Data tidak tersedia");
+        tbody.append(`
+            <tr>
+                <td colspan="5" class="text-center text-muted">Tidak ada data</td>
+            </tr>
+        `);
+        return;
+    }
+
+    // sort word based on order_number
+    wordGroup.words.sort(
+        (a, b) => (a.order_number || 0) - (b.order_number || 0),
+    );
+
+    wordGroup.words.forEach((word) => {
+        let simbolClass = "text-dark";
+        if (word.color === "red") simbolClass = "text-huruf";
+        else if (word.color === "green") simbolClass = "text-fiil";
+        else if (word.color === "blue") simbolClass = "text-isim";
+
+        const parts = [
+            word.kalimat,
+            word.hukum,
+            word.kategori,
+            word.kedudukan,
+            word.irob,
+            word.tanda,
+        ]
+            .filter(
+                (p) => p !== null && p !== undefined && String(p).trim() !== "",
+            )
+            .join(" - ");
+
+        const row = `
+            <tr class="text-center kalimat-detail-row">
+                <td>
+                    <div class="text-right arabic-text ar-subtitle">
+                        ${parts}
+                    </div>
+                </td>
+                <td class="text-center align-middle word" id="${word.id}">
+                       <div class="${simbolClass} arabic-text words">
+                           ${word.text}
+                       </div>
+                          <div class="text-center ${simbolClass} arabic-text ar-symbol-mini">
+                            ${word.simbol ?? ""}
+                        </div>
+                       <div class="translation">
+                           ${word.translation ?? ""}
+                       </div>
+                   </td>
+             </tr>
+             
+        `;
+        tbody.append(row);
+    });
 }
 
 // =============================
@@ -352,6 +510,8 @@ btnNext.addEventListener("click", goToNextVerse);
 // DOM
 // =============================
 document.addEventListener("DOMContentLoaded", () => {
+    fetchSurahList();
+
     const initialVerseId = currentVerseId?.value;
 
     if (!initialVerseId) {
