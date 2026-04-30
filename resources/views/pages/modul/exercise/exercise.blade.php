@@ -98,24 +98,26 @@
                                             </button>
                                         </div>
                                     </div>
-                                    <div class="table-sm">
-                                        <div class="">
-                                            <table class="table-striped table" id="sortable-table">
-                                                <thead>
-                                                    <tr class="text-center">
-                                                        <th>Tanda</th>
-                                                        <th>I'rob</th>
-                                                        <th>Kedudukan</th>
-                                                        <th>Kategori</th>
-                                                        <th>Hukum</th>
-                                                        <th>Kalimat</th>
-                                                        <th>Lafadz</th>
-                                                        <th>Opsi</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                </tbody>
-                                            </table>
+                                    <div class="table-responsive" style="direction: rtl;">
+                                        <div class="table-sm">
+                                            <div class="">
+                                                <table class="table-striped table" id="sortable-table">
+                                                    <thead>
+                                                        <tr class="text-center">
+                                                            <th>Opsi</th>
+                                                            <th>Lafadz</th>
+                                                            <th>Kalimat</th>
+                                                            <th>Hukum</th>
+                                                            <th>Kategori</th>
+                                                            <th>Kedudukan</th>
+                                                            <th>I'rob</th>
+                                                            <th>Tanda</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

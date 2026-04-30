@@ -109,91 +109,112 @@
                                             </button>
                                         </div>
                                     </div>
-                                    <div class="table-sm">
-                                        <div class="">
-                                            <table class="table-striped table" id="sortable-table">
-                                                <thead>
-                                                    <tr class="text-center">
-                                                        <th class="col-word">Lafadz</th>
-                                                        <th class="col-symbol">Simbol</th>
-                                                        <th class="col-translation">Terjemah</th>
-                                                        <th class="col-action">Opsi</th>
-                                                    </tr>
-                                                </thead>
-                                                @php
-                                                    $firstGroup = $wordgroups->first();
-                                                    $words =
-                                                        $firstGroup && isset($firstGroup->words)
-                                                            ? $firstGroup->words
-                                                            : collect();
-                                                @endphp
-                                                <tbody>
-                                                    @forelse ($words as $word)
+                                    <div class="table-responsive" style="direction: rtl;">
+                                        <div class="table-sm">
+                                            <div class="">
+                                                <table class="table-striped table" id="sortable-table">
+                                                    <thead>
                                                         <tr class="text-center">
-                                                            <td class="text-center align-middle col-word"
-                                                                id="{{ $word->id }}">
-                                                                <div class="dropdown
+                                                            <th class="col-action">Opsi</th>
+                                                            <th class="col-word">Lafadz</th>
+                                                            <th class="col-kalimat">Kalimat</th>
+                                                            <th class="col-hukum">Hukum</th>
+                                                            <th class="col-kategori">Kategori</th>
+                                                            <th class="col-kedudukan">Kedudukan</th>
+                                                            <th class="col-irob">I'rob</th>
+                                                            <th class="col-tanda">Tanda</th>
+                                                        </tr>
+                                                    </thead>
+                                                    @php
+                                                        $firstGroup = $wordgroups->first();
+                                                        $words =
+                                                            $firstGroup && isset($firstGroup->words)
+                                                                ? $firstGroup->words
+                                                                : collect();
+                                                    @endphp
+                                                    <tbody>
+                                                        @forelse ($words as $word)
+                                                            <tr class="text-center">
+                                                                <td class="align-middle col-actions">
+                                                                    <div
+                                                                        class="d-flex justify-content-center action-buttons">
+                                                                        <button class="btn btn-sm btn-icon btn-warning"
+                                                                            title="Edit">
+                                                                            <i class="fa-solid fa-edit"></i>
+                                                                        </button>
+                                                                        <button class="btn btn-sm btn-icon btn-danger"
+                                                                            title="Hapus" id="btn-delete">
+                                                                            <i class="fa-solid fa-trash"></i>
+                                                                        </button>
+                                                                        <button
+                                                                            class="btn btn-sm btn-icon btn-primary btn-move-up"
+                                                                            title="Naikkan">
+                                                                            <i class="fa-solid fa-arrow-up"></i>
+                                                                        </button>
+                                                                        <button
+                                                                            class="btn btn-sm btn-icon btn-primary btn-move-down"
+                                                                            title="Turunkan">
+                                                                            <i class="fa-solid fa-arrow-down"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                </td>
+                                                                <td class="text-center align-middle col-word"
+                                                                    id="{{ $word->id }}">
+                                                                    <div class="dropdown
                                                             @if ($word->color == 'red') text-huruf
                                                             @elseif($word->color == 'green') text-fiil
                                                             @elseif($word->color == 'blue') text-isim 
                                                             @else text-dark @endif arabic-text words"
-                                                                    type="button" id="dropdownMenuButton2"
-                                                                    data-toggle="dropdown" aria-haspopup="true"
-                                                                    aria-expanded="false">
-                                                                    {{ $word->text }}</div>
-                                                                <div class="dropdown-menu">
-                                                                    <a href="#"
-                                                                        class="dropdown-item has-icon word-edit"><i
-                                                                            class="far fa-edit"></i> Edit</a>
-                                                                    <a href="#"
-                                                                        class="dropdown-item has-icon text-danger word-delete"
-                                                                        id="btn-delete"><i class="far fa-trash-can"></i>
-                                                                        Hapus</a>
-                                                                </div>
-                                                            </td>
-                                                            <td class="col-symbol">
-                                                                <div
-                                                                    class="text-center @if ($word->color == 'red') text-huruf
-                                                @elseif($word->color == 'green') text-fiil
-                                                @elseif($word->color == 'blue') text-isim
-                                                @else text-dark mb-2 @endif mb-2 arabic-text ar-symbol">
-                                                                    {{ $word->simbol }}</div>
-                                                            </td>
-                                                            <td class="col-translation">
-                                                                {{ $word->translation }}
-                                                            </td>
-                                                            <td class="align-middle col-actions">
-                                                                <div class="d-flex justify-content-center action-buttons">
-                                                                    <button class="btn btn-sm btn-icon btn-warning"
-                                                                        title="Edit">
-                                                                        <i class="fa-solid fa-edit"></i>
-                                                                    </button>
-                                                                    <button class="btn btn-sm btn-icon btn-danger"
-                                                                        title="Hapus" id="btn-delete">
-                                                                        <i class="fa-solid fa-trash"></i>
-                                                                    </button>
-                                                                    <button
-                                                                        class="btn btn-sm btn-icon btn-primary btn-move-up"
-                                                                        title="Naikkan">
-                                                                        <i class="fa-solid fa-arrow-up"></i>
-                                                                    </button>
-                                                                    <button
-                                                                        class="btn btn-sm btn-icon btn-primary btn-move-down"
-                                                                        title="Turunkan">
-                                                                        <i class="fa-solid fa-arrow-down"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    @empty
-                                                        <tr>
-                                                            <td colspan="5" class="text-center text-muted">Tidak
-                                                                ada
-                                                                data</td>
-                                                        </tr>
-                                                    @endforelse
-                                                </tbody>
-                                            </table>
+                                                                        type="button" id="dropdownMenuButton2"
+                                                                        data-toggle="dropdown" aria-haspopup="true"
+                                                                        aria-expanded="false">
+                                                                        {{ $word->text }}</div>
+                                                                    <div class="dropdown-menu">
+                                                                        <a href="#"
+                                                                            class="dropdown-item has-icon word-edit"><i
+                                                                                class="far fa-edit"></i> Edit</a>
+                                                                        <a href="#"
+                                                                            class="dropdown-item has-icon text-danger word-delete"
+                                                                            id="btn-delete"><i
+                                                                                class="far fa-trash-can"></i>
+                                                                            Hapus</a>
+                                                                    </div>
+                                                                </td>
+                                                                <td class="col-kalimat">
+                                                                    <div class="text-center mb-2 arabic-text ar-symbol">
+                                                                        {{ $word->kalimat }}</div>
+                                                                </td>
+                                                                <td class="col-hukum">
+                                                                    <div class="text-center mb-2 arabic-text ar-symbol">
+                                                                        {{ $word->hukum }}</div>
+                                                                </td>
+                                                                <td class="col-kategori">
+                                                                    <div class="text-center mb-2 arabic-text ar-symbol">
+                                                                        {{ $word->kategori }}</div>
+                                                                </td>
+                                                                <td class="col-kedudukan">
+                                                                    <div class="text-center mb-2 arabic-text ar-symbol">
+                                                                        {{ $word->kedudukan }}</div>
+                                                                </td>
+                                                                <td class="col-irob">
+                                                                    <div class="text-center mb-2 arabic-text ar-symbol">
+                                                                        {{ $word->irob }}</div>
+                                                                </td>
+                                                                <td class="col-hukum">
+                                                                    <div class="text-center mb-2 arabic-text ar-symbol">
+                                                                        {{ $word->tanda }}</div>
+                                                                </td>
+                                                            </tr>
+                                                        @empty
+                                                            <tr>
+                                                                <td colspan="5" class="text-center text-muted">Tidak
+                                                                    ada
+                                                                    data</td>
+                                                            </tr>
+                                                        @endforelse
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

@@ -239,16 +239,7 @@ function renderWordsTable(wordGroup) {
 
         const row = `
             <tr>
-                <td class="text-center align-middle col-word">
-                    <div class="${simbolClass} arabic-text words" id="${word.id}">${word.text}</div>
-                </td>
-                <td class="text-center align-middle col-symbol">
-                    <div class="text-center ${simbolClass} mb-2 arabic-text ar-symbol">${
-                        word.simbol ?? ""
-                    }</div>
-                </td>
-                <td class="align-middle col-translation">${word.translation ?? ""}</td>
-                <td class="align-middle col-action">
+            <td class="align-middle col-action">
                     <div class="d-flex justify-content-center action-buttons">
                         <button class="btn btn-sm btn-icon btn-warning word-edit" id="btn-edit" title="Edit">
                             <i class="fa-solid fa-edit"></i>
@@ -263,6 +254,39 @@ function renderWordsTable(wordGroup) {
                             <i class="fa-solid fa-arrow-down"></i>
                         </button>
                     </div>
+                </td>
+                <td class="text-center align-middle col-word">
+                    <div class="${simbolClass} arabic-text words" id="${word.id}">${word.text}</div>
+                </td>
+                <td class="text-center align-middle col-kalimat">
+                    <div class="text-center mb-2 arabic-text ar-symbol">${
+                        word.kalimat ?? ""
+                    }</div>
+                </td>
+                <td class="text-center align-middle col-hukum">
+                    <div class="text-center mb-2 arabic-text ar-symbol">${
+                        word.hukum ?? ""
+                    }</div>
+                </td>
+                <td class="text-center align-middle col-kategori">
+                    <div class="text-center mb-2 arabic-text ar-symbol">${
+                        word.kategori ?? ""
+                    }</div>
+                </td>
+                <td class="text-center align-middle col-kedudukan">
+                    <div class="text-center mb-2 arabic-text ar-symbol">${
+                        word.kedudukan ?? ""
+                    }</div>
+                </td>
+                <td class="text-center align-middle col-irob">
+                    <div class="text-center mb-2 arabic-text ar-symbol">${
+                        word.irob ?? ""
+                    }</div>
+                </td>
+                <td class="text-center align-middle col-tanda">
+                    <div class="text-center mb-2 arabic-text ar-symbol">${
+                        word.tanda ?? ""
+                    }</div>
                 </td>
             </tr>
         `;

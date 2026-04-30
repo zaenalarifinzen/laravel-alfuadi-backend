@@ -655,9 +655,9 @@ table tr:hover .table-links {
             align-items: center;
         }
 
-        .ar-subtitle {
+        /* .ar-subtitle {
             font-size: 28px !important;
-        }
+        } */
 
         .input-big {
             height: 80px !important;
@@ -849,7 +849,7 @@ table tr:hover .table-links {
         }
 
         .options li {
-            height: 40px;
+            height: 55px;
             padding: 0 13px;
             font-size: 18px;
             border-radius: 5px;
