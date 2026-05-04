@@ -20,13 +20,13 @@ $("#btn-add-word").on("click", function () {
 
     // get key from local storage
     const currentKey = Object.keys(localStorage).find((k) =>
-        k.startsWith("wordgroups_"),
+        k.startsWith(wordGroupsPrefix),
     );
     const stored = JSON.parse(localStorage.getItem(currentKey));
 
     // get active wordgroup
     const activeWordGroupId = $(".owl-item.active .word-group").attr("wg-id");
-    const wordGroup = stored.data.wordGroups.find(
+    const wordGroup = stored.wordGroups.find(
         (g) => g.id == activeWordGroupId,
     );
 
@@ -67,17 +67,17 @@ $("#form-add-word").on("submit", function (e) {
     // Logic
     // get key from local storage
     const currentKey = Object.keys(localStorage).find((k) =>
-        k.startsWith("wordgroups_"),
+        k.startsWith(wordGroupsPrefix),
     );
     const stored = JSON.parse(localStorage.getItem(currentKey));
 
     // get active wordgroup
     const activeWordGroupId = $(".owl-item.active .word-group").attr("wg-id");
-    const wordGroup = stored.data.wordGroups.find(
+    const wordGroup = stored.wordGroups.find(
         (g) => g.id == activeWordGroupId,
     );
 
-    const groupIndex = stored.data.wordGroups.findIndex(
+    const groupIndex = stored.wordGroups.findIndex(
         (g) => g.id == activeWordGroupId,
     );
     if (groupIndex === -1) {
@@ -139,7 +139,7 @@ $("#form-add-word").on("submit", function (e) {
         color: color,
         kategori: getSelectText("#input-kategori"),
         hukum: getSelectVal("#input-hukum"),
-        kedudukan: getSelectText("#input-kedudukan "),
+        kedudukan: getSelectText("#input-kedudukan"),
         irob: getSelectVal("#input-irob"),
         tanda: getSelectVal("#input-tanda"),
         simbol: getSelectVal("#input-simbol"),
@@ -148,21 +148,21 @@ $("#form-add-word").on("submit", function (e) {
     // get mode
     if (wordId) {
         // MODE EDIT
-        const words = stored.data.wordGroups[groupIndex].words || [];
+        const words = stored.wordGroups[groupIndex].words || [];
         const wordIndex = words.findIndex((w) => w.id == wordId);
 
         if (wordIndex !== -1) {
-            stored.data.wordGroups[groupIndex].words[wordIndex] = newWord;
+            stored.wordGroups[groupIndex].words[wordIndex] = newWord;
         } else {
             console.warn("Word tidak ditemukan, menambahkan sebagai baru");
-            word.push(newWord);
+            words.push(newWord);
         }
     } else {
         // MODE ADD
-        if (!stored.data.wordGroups[groupIndex].words) {
-            stored.data.wordGroups[groupIndex].words = [];
+        if (!stored.wordGroups[groupIndex].words) {
+            stored.wordGroups[groupIndex].words = [];
         }
-        stored.data.wordGroups[groupIndex].words.push(newWord);
+        stored.wordGroups[groupIndex].words.push(newWord);
     }
 
     // save to local storage
@@ -209,7 +209,7 @@ $(document).on("click", ".action-buttons .word-delete", function (e) {
 
         // get data from local storage
         const currentKey = Object.keys(localStorage).find((k) =>
-            k.startsWith("wordgroups_"),
+            k.startsWith(wordGroupsPrefix),
         );
         if (!currentKey) return;
 
@@ -220,13 +220,13 @@ $(document).on("click", ".action-buttons .word-delete", function (e) {
             "wg-id",
         );
         // console.log('activeWordGroupId: ', activeWordGroupId);
-        const groupIndex = stored.data.wordGroups.findIndex(
+        const groupIndex = stored.wordGroups.findIndex(
             (g) => g.id == activeWordGroupId,
         );
         if (groupIndex === -1) return;
 
         // delete word base on Id
-        stored.data.wordGroups[groupIndex].words = stored.data.wordGroups[
+        stored.wordGroups[groupIndex].words = stored.wordGroups[
             groupIndex
         ].words.filter((w) => w.id != wordId);
 
@@ -238,7 +238,7 @@ $(document).on("click", ".action-buttons .word-delete", function (e) {
         markModified(wordGroupsPrefix);
 
         // render table
-        const updatedGroup = stored.data.wordGroups[groupIndex];
+        const updatedGroup = stored.wordGroups[groupIndex];
         renderWordsTable(updatedGroup);
         renderWordsDetails(updatedGroup);
     });
@@ -256,14 +256,14 @@ $(document).on("click", ".action-buttons .word-edit", function (e) {
 
     // get data from local storage
     const currentKey = Object.keys(localStorage).find((k) =>
-        k.startsWith("wordgroups_"),
+        k.startsWith(wordGroupsPrefix),
     );
     const stored = JSON.parse(localStorage.getItem(currentKey));
     const activeWordGroupId = $(".owl-item.active .word-group").attr("wg-id");
-    const groupIndex = stored.data.wordGroups.findIndex(
+    const groupIndex = stored.wordGroups.findIndex(
         (g) => g.id == activeWordGroupId,
     );
-    const word = stored.data.wordGroups[groupIndex].words.find(
+    const word = stored.wordGroups[groupIndex].words.find(
         (w) => w.id == wordId,
     );
 
@@ -321,7 +321,7 @@ $("#btn-save-all").on("click", function (e) {
     e.preventDefault();
 
     const currentKey = Object.keys(localStorage).find((k) =>
-        k.startsWith("wordgroups_"),
+        k.startsWith(wordGroupsPrefix),
     );
     if (!currentKey) {
         alert("Tidak ada data");
@@ -331,15 +331,14 @@ $("#btn-save-all").on("click", function (e) {
     const stored = JSON.parse(localStorage.getItem(currentKey));
     if (
         !stored ||
-        !stored.data ||
-        !stored.data.wordGroups ||
-        stored.data.wordGroups.length === 0
+        !stored.wordGroups ||
+        stored.wordGroups.length === 0
     ) {
         alert("Data kosong");
         return;
     }
 
-    const emptyGroups = stored.data.wordGroups.filter(
+    const emptyGroups = stored.wordGroups.filter(
         (g) => !g.words || g.words.length === 0,
     );
     if (emptyGroups.length > 0) {
@@ -377,8 +376,8 @@ $("#btn-save-all").on("click", function (e) {
             type: "POST",
             data: {
                 _token: CSRF_TOKEN,
-                verse_id: stored.data.verse.id,
-                groups: stored.data.wordGroups,
+                verse_id: stored.verse.id,
+                groups: stored.wordGroups,
             },
             beforeSend: function () {
                 $("#btn-save-all").prop("disabled", true).text("Menyimpan...");
@@ -391,7 +390,7 @@ $("#btn-save-all").on("click", function (e) {
                 localStorage.removeItem(currentKey);
 
                 // load next verse
-                const nextVerse = stored.data.verse.id + 1;
+                const nextVerse = stored.verse.id + 1;
                 fetchWordGroups(null, null, nextVerse);
             },
             error: function (xhr) {

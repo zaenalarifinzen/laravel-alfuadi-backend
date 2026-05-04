@@ -1,44 +1,61 @@
-// ==========================
+﻿// ==========================
 // STORAGE HELPER
 // ==========================
 
-// get active key from storage
 function getActiveStorageKey(prefix) {
-    return Object.keys(localStorage).find(k => k.startsWith(prefix)) || null;
+    return Object.keys(localStorage).find((k) => k.startsWith(prefix)) ?? null;
 }
 
-// get data from storage
-function getStoredData(prefix) {
+function getStoredObject(prefix) {
     const key = getActiveStorageKey(prefix);
     if (!key) return null;
 
-    const data = JSON.parse(localStorage.getItem(key))
-    return {key, data};
+    const raw = localStorage.getItem(key);
+    if (raw === null) return null;
+
+    try {
+        return JSON.parse(raw);
+    } catch (error) {
+        console.warn(`Invalid JSON in localStorage for key ${key}:`, error);
+        return null;
+    }
 }
 
-// set modified
+function getStoredData(prefix) {
+    return getStoredObject(prefix);
+}
+
+function updateStoredData(prefix, updater) {
+    const key = getActiveStorageKey(prefix);
+    if (!key) return null;
+
+    const stored = getStoredObject(prefix);
+    if (!stored) return null;
+
+    if (typeof updater === "function") {
+        updater(stored);
+    } else if (typeof updater === "object" && updater !== null) {
+        Object.assign(stored, updater);
+    } else {
+        return null;
+    }
+
+    localStorage.setItem(key, JSON.stringify(stored));
+    return stored;
+}
+
 function markModified(prefix) {
-    const key = getActiveStorageKey(prefix);
-    if (!key) return;
-
-    const stored = JSON.parse(localStorage.getItem(key));
-
-    stored.modified = true;
-    localStorage.setItem(key, JSON.stringify(stored));
+    updateStoredData(prefix, (stored) => {
+        stored.modified = true;
+    });    
 }
 
-// check is modified
 function isModified(prefix) {
-    const stored = getStoredData(prefix);
-    return stored?.data?.modified === true;
+    return getStoredData(prefix)?.modified === true;
 }
 
-// reset modified mark (set false)
 function resetModified(prefix) {
-    const key = getActiveStorageKey(prefix);
-    if (!key) return;
-
-    const stored = JSON.parse(localStorage.getItem(key));
-    stored.modified = false;
-    localStorage.setItem(key, JSON.stringify(stored));
+    updateStoredData(prefix, (stored) => {
+        stored.modified = false;
+    });
 }

@@ -93,7 +93,7 @@
                                     <div class="card-header">
                                         <div class="d-flex justify-content-between align-items-center w-100">
                                             <h4 class="mb-0">Tabel analisa</h4>
-                                            <button class="btn btn-icon icon-left btn-primary btn-lg" id="btn-add-word">
+                                            <button class="btn btn-icon icon-left btn-primary btn-lg" id="btn-add-word" hidden>
                                                 <i class="fa-solid fa-plus"></i> Tambah
                                             </button>
                                         </div>
@@ -161,7 +161,7 @@
                         <button type="button" class="btn btn-outline-primary btn-lg mr-2" id="btn-prev-verse"><i
                                 class="ion-chevron-right" data-pack="default" data-tags="arrow, left"></i></button>
                     </div>
-                    <div>
+                    <div hidden>
                         <button class="btn btn-icon icon-left btn-success btn-lg" id="btn-save-all"
                             style="display: none;">Simpan</button>
                     </div>
@@ -285,6 +285,7 @@
         window.WORDS_SYNC_URL = "{{ route('words.sync') }}";
         window.WORDGROUP_GET_URL = "{{ route('wordgroups.get', ['id' => ':id']) }}";
         window.CSRF_TOKEN = "{{ csrf_token() }}";
+        window.PAGE_TYPE = "exercise";
     </script>
 
     <!-- Page Specific JS File -->

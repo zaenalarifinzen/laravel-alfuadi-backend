@@ -41,7 +41,8 @@ const currentVerseId = document.getElementById("verse-id");
 
 let activeWordGroupId = null;
 let verseCount = 0;
-const wordGroupsPrefix = "wordgroups_";
+const wordGroupsPrefix =
+    window.PAGE_TYPE === "exercise" ? "answer_" : "wordgroups_";
 
 // =============================
 // HELPERS
@@ -89,16 +90,17 @@ function hideLoading() {
 // =============================
 function fetchSurahList() {
     $.ajax({
-        url: '/api/surahs',
-        type: 'GET',
+        url: "/api/surahs",
+        type: "GET",
         success: function (response) {
             response.data.forEach((surah) => {
-                surahOption.insertAdjacentHTML('beforeend',
-                    `<option value="${surah.id}" data-verse-count="${surah.verse_count}">${surah.id}. ${surah.name}</option>`
+                surahOption.insertAdjacentHTML(
+                    "beforeend",
+                    `<option value="${surah.id}" data-verse-count="${surah.verse_count}">${surah.id}. ${surah.name}</option>`,
                 );
             });
-        }
-    });    
+        },
+    });
 }
 
 // =============================
@@ -122,20 +124,48 @@ function fetchWordGroups(surah_id, verse_number, verse_id) {
     $.ajax({
         url,
         type: "GET",
-        success: function (response) {            
-            const verseId = response.data.verse.id;
-            const storageKey = `wordgroups_${verseId}`;
+        success: function (response) {
+            const data = response.data;
+            const verseId = data.verse.id;
+            const storageKey = `${wordGroupsPrefix}${verseId}`;
 
-            response.modified = false;
+            data.modified = false;
             removeRefreshButton();
 
             // Clear old cache
-            Object.keys(localStorage)
-                .filter((k) => k.startsWith("wordgroups_"))
-                .forEach((k) => localStorage.removeItem(k));
+                Object.keys(localStorage)
+                    .filter((k) => k.startsWith(wordGroupsPrefix))
+                    .forEach((k) => localStorage.removeItem(k));
 
-            localStorage.setItem(storageKey, JSON.stringify(response));
-            renderWordGroups(response);
+            // if exercise page
+            if (window.PAGE_TYPE === "exercise") {
+                // preserve to answer
+                const cloned = structuredClone(data);
+
+                const answerKey = `answer_key_${verseId}`;
+                const userAnswer = `answer_user_${verseId}`;
+
+                localStorage.setItem(answerKey, JSON.stringify(cloned));
+
+                cloned.wordGroups.forEach((wg) => {
+                    wg.words.forEach((w) => {
+                        w.color = null;
+                        w.kalimat = null;
+                        w.hukum = null;
+                        w.kategori = null;
+                        w.kedudukan = null;
+                        w.irob = null;
+                        w.tanda = null;
+                    });
+                });
+
+                localStorage.setItem(userAnswer, JSON.stringify(cloned));
+                renderWordGroups(cloned);
+            } else {
+                localStorage.setItem(storageKey, JSON.stringify(data));
+                
+                renderWordGroups(data);
+            }
 
             // Update URL in address bar
             history.pushState({}, "", `?verse_id=${verseId}`);
@@ -147,13 +177,55 @@ function fetchWordGroups(surah_id, verse_number, verse_id) {
 }
 
 // =============================
+// FETCH WORDS
+// =============================
+function fetchWords(word_group_id) {
+    const tbodyWords = $("#sortable-table tbody");
+    const tbodyWordsDetail = $("#detail-kalimat-table tbody");
+
+    const key = Object.keys(localStorage).find((k) =>
+        k.startsWith(wordGroupsPrefix),
+    );
+    if (!key) {
+        const row = `
+            <tr>
+                <div class="spinner-border text-primary" role="status"></div>
+                <span class="ml-2">Memuat...</span>
+            </tr>
+        `;
+    }
+
+    const stored = JSON.parse(localStorage.getItem(key));
+    const activeGroup = stored.wordGroups.find(
+        (wg) => wg.id == word_group_id,
+    );
+
+    if (!activeGroup || !activeGroup.words || activeGroup.words.length === 0) {
+        const row = `
+            <tr>
+                <td colspan="5" class="text-center text-muted">Tidak ada data</td>
+            </tr>
+        `;
+
+        $(".editor-kalimat a").contents().last()[0].textContent = " -";
+
+        tbodyWords.html(row);
+        tbodyWordsDetail.html(row);
+        return;
+    }
+
+    renderWordsTable(activeGroup);
+    renderWordsDetails(activeGroup);
+}
+
+// =============================
 // RENDER WORDGROUPS SLIDER
 // =============================
-function renderWordGroups(response) {
+function renderWordGroups(data) {    
     $slider.trigger("destroy.owl.carousel");
     $slider.html("");
 
-    response.data.wordGroups.forEach((wordGroup) => {
+    data.wordGroups.forEach((wordGroup) => {
         $slider.append(`
       <div>
         <h4 class="arabic-text ar-title word-group" wg-id="${wordGroup.id}">${wordGroup.text}</h4>
@@ -162,17 +234,17 @@ function renderWordGroups(response) {
 
     $slider.owlCarousel({ rtl: true, items: 1, dots: false, nav: false });
 
-    currentSurahId.value = response.data.surah.id;
-    currentVerseNumber.value = response.data.verse.number;
-    currentVerseId.value = response.data.verse.id;
+    currentSurahId.value = data.surah.id;
+    currentVerseNumber.value = data.verse.number;
+    currentVerseId.value = data.verse.id;
 
     surahOption.value = "";
     verseOption.value = "";
 
-    currentVerseLabel.textContent = `${response.data.surah.id}. ${response.data.surah.name} - Ayat ${response.data.verse.number}`;
+    currentVerseLabel.textContent = `${data.surah.id}. ${data.surah.name} - Ayat ${data.verse.number}`;
 
     // update wordgroup editor info
-    const firstWordGroup = response.data.wordGroups[0];
+    const firstWordGroup = data.wordGroups[0];
     const btnAddWord = document.getElementById("btn-add-word");
 
     if (firstWordGroup.editor_info) {
@@ -202,7 +274,7 @@ function renderWordGroups(response) {
             if (!confirmed) return;
 
             // redirect to grouping page
-            const groupingUrl = `/wordgroups/grouping?verse_id=${response.data.verse.id}`;
+            const groupingUrl = `/wordgroups/grouping?verse_id=${data.verse.id}`;
             window.location.href = groupingUrl;
         });
     }
@@ -237,22 +309,29 @@ function renderWordsTable(wordGroup) {
         else if (word.color === "green") simbolClass = "text-fiil";
         else if (word.color === "blue") simbolClass = "text-isim";
 
+        const isAnswerMode = wordGroupsPrefix === 'answer_';
+        const actionButtons = isAnswerMode
+            ? `<button class="btn btn-sm btn-icon btn-warning word-edit" title="Edit">Edit 
+                   <i class="fa-solid fa-edit"></i>
+               </button>`
+            : `<button class="btn btn-sm btn-icon btn-warning word-edit" title="Edit">
+                   <i class="fa-solid fa-edit"></i>
+               </button>
+               <button class="btn btn-sm btn-icon btn-danger word-delete" title="Hapus">
+                   <i class="fa-solid fa-trash"></i>
+               </button>
+               <button class="btn btn-sm btn-icon btn-primary btn-move-up" title="Naikkan">
+                   <i class="fa-solid fa-arrow-up"></i>
+               </button>
+               <button class="btn btn-sm btn-icon btn-primary btn-move-down" title="Turunkan">
+                   <i class="fa-solid fa-arrow-down"></i>
+               </button>`;
+
         const row = `
             <tr>
             <td class="align-middle col-action">
                     <div class="d-flex justify-content-center action-buttons">
-                        <button class="btn btn-sm btn-icon btn-warning word-edit" id="btn-edit" title="Edit">
-                            <i class="fa-solid fa-edit"></i>
-                        </button>
-                        <button class="btn btn-sm btn-icon btn-danger word-delete" id="btn-delete" title="Hapus">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                        <button class="btn btn-sm btn-icon btn-primary btn-move-up" title="Naikkan">
-                            <i class="fa-solid fa-arrow-up"></i>
-                        </button>
-                        <button class="btn btn-sm btn-icon btn-primary btn-move-down" title="Turunkan">
-                            <i class="fa-solid fa-arrow-down"></i>
-                        </button>
+                        ${actionButtons}
                     </div>
                 </td>
                 <td class="text-center align-middle col-word">
@@ -371,48 +450,6 @@ function renderWordsDetails(wordGroup) {
         `;
         tbody.append(row);
     });
-}
-
-// =============================
-// FETCH WORDS
-// =============================
-function fetchWords(word_group_id) {
-    const tbodyWords = $("#sortable-table tbody");
-    const tbodyWordsDetail = $("#detail-kalimat-table tbody");
-
-    const key = Object.keys(localStorage).find((k) =>
-        k.startsWith("wordgroups_"),
-    );
-    if (!key) {
-        const row = `
-            <tr>
-                <div class="spinner-border text-primary" role="status"></div>
-                <span class="ml-2">Memuat...</span>
-            </tr>
-        `;
-    }
-
-    const stored = JSON.parse(localStorage.getItem(key));
-    const activeGroup = stored.data.wordGroups.find(
-        (wg) => wg.id == word_group_id,
-    );
-
-    if (!activeGroup || !activeGroup.words || activeGroup.words.length === 0) {
-        const row = `
-            <tr>
-                <td colspan="5" class="text-center text-muted">Tidak ada data</td>
-            </tr>
-        `;
-
-        $(".editor-kalimat a").contents().last()[0].textContent = " -";
-
-        tbodyWords.html(row);
-        tbodyWordsDetail.html(row);
-        return;
-    }
-
-    renderWordsTable(activeGroup);
-    renderWordsDetails(activeGroup);
 }
 
 // =============================
@@ -544,13 +581,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const cachedKey = getActiveStorageKey(wordGroupsPrefix);
-    const currentKey = `wordgroups_${initialVerseId}`;
-    const cached = localStorage.getItem(cachedKey);
+    const currentKey = `${wordGroupsPrefix}${initialVerseId}`;
+    const cachedRaw = cachedKey ? localStorage.getItem(cachedKey) : null;
 
     // ------------------------------------------------------
     // 1. Jika TIDAK ADA cache sama sekali → fetch baru
     // ------------------------------------------------------
-    if (!cached) {
+    if (!cachedRaw) {
         fetchWordGroups(null, null, initialVerseId);
         return;
     }
@@ -559,11 +596,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // 2. Jika ADA cache, tapi berbeda ayat → tampilkan modal restore
     // ------------------------------------------------------
     if (cachedKey !== currentKey) {
-        const data = JSON.parse(cached);
+        const data = JSON.parse(cachedRaw);
 
-        const lastProgressLabel = `${data.data.surah.name} - Ayat ${data.data.verse.number}`;
+        const lastProgressLabel = `${data.surah.name} - Ayat ${data.verse.number}`;
 
-        const restoreUrl = `/words/create?verse_id=${data.data.verse.id}`;
+        const restoreUrl = `/words/create?verse_id=${data.verse.id}`;
 
         $("#last-location-label").text(lastProgressLabel);
 
@@ -585,9 +622,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // ------------------------------------------------------
     // 3. Jika ADA cache dan sesuai ayat → restore langsung
     // ------------------------------------------------------
-    const data = JSON.parse(cached);
-    renderWordGroups(data);
-    if (data.modified) {
+
+    const cachedData = JSON.parse(cachedRaw);
+    
+    renderWordGroups(cachedData);
+
+    if (cachedData.modified) {
         // add refresh button in card header
         addRefreshButton();
 
@@ -597,7 +637,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    const firstGroup = data.data.wordGroups?.[0];
+    const firstGroup = cachedData.wordGroups?.[0];
     if (firstGroup) fetchWords(firstGroup.id);
 });
 
