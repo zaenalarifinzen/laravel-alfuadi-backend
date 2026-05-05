@@ -60,8 +60,11 @@ Route::middleware(['auth'])->group(function () {
             return view('pages.modul.nahwu.jilid-1', ['type_menu' => 'metode-al-fuadi']);
         })->name('metode-al-fuadi.jilid-1');
         Route::get('/metode-al-fuadi/exercise', function () {
-            return view('pages.modul.exercise.exercise', ['type_menu' => '']);
+            return view('pages.modul.exercise.index', ['type_menu' => '']);
         })->name('metode-al-fuadi.exercise');
+        Route::get('/metode-al-fuadi/exercise/quran', function () {
+            return view('pages.modul.exercise.exercise', ['type_menu' => '']);
+        })->name('metode-al-fuadi.exercise.quran');
     });
 
     // Resource

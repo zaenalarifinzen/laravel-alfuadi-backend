@@ -69,6 +69,7 @@ $("#form-add-word").on("submit", function (e) {
     const currentKey = Object.keys(localStorage).find((k) =>
         k.startsWith(wordGroupsPrefix),
     );
+    
     const stored = JSON.parse(localStorage.getItem(currentKey));
 
     // get active wordgroup

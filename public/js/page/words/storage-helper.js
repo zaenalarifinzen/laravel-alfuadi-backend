@@ -7,7 +7,7 @@ function getActiveStorageKey(prefix) {
 }
 
 function getStoredObject(prefix) {
-    const key = getActiveStorageKey(prefix);
+    const key = getActiveStorageKey(prefix);    
     if (!key) return null;
 
     const raw = localStorage.getItem(key);

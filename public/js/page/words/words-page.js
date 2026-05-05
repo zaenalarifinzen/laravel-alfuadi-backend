@@ -42,7 +42,7 @@ const currentVerseId = document.getElementById("verse-id");
 let activeWordGroupId = null;
 let verseCount = 0;
 const wordGroupsPrefix =
-    window.PAGE_TYPE === "exercise" ? "answer_" : "wordgroups_";
+    window.PAGE_TYPE === "exercise" ? "answer_user_" : "wordgroups_";
 
 // =============================
 // HELPERS
@@ -132,13 +132,17 @@ function fetchWordGroups(surah_id, verse_number, verse_id) {
             data.modified = false;
             removeRefreshButton();
 
-            // Clear old cache
-                Object.keys(localStorage)
-                    .filter((k) => k.startsWith(wordGroupsPrefix))
-                    .forEach((k) => localStorage.removeItem(k));
-
             // if exercise page
             if (window.PAGE_TYPE === "exercise") {
+                // Clear old answer cache
+                Object.keys(localStorage)
+                    .filter(
+                        (k) =>
+                            k.startsWith("answer_key_") ||
+                            k.startsWith("answer_user_"),
+                    )
+                    .forEach((k) => localStorage.removeItem(k));
+
                 // preserve to answer
                 const cloned = structuredClone(data);
 
@@ -161,10 +165,18 @@ function fetchWordGroups(surah_id, verse_number, verse_id) {
 
                 localStorage.setItem(userAnswer, JSON.stringify(cloned));
                 renderWordGroups(cloned);
+                renderWordsTable(cloned.wordGroups[0]);
+                renderWordsDetails(cloned.wordGroups[0]);
             } else {
+                // Clear old cache
+                Object.keys(localStorage)
+                    .filter((k) => k.startsWith(wordGroupsPrefix))
+                    .forEach((k) => localStorage.removeItem(k));
+
                 localStorage.setItem(storageKey, JSON.stringify(data));
-                
                 renderWordGroups(data);
+                renderWordsTable(data.wordGroups[0]);
+                renderWordsDetails(data.wordGroups[0]);
             }
 
             // Update URL in address bar
@@ -186,6 +198,7 @@ function fetchWords(word_group_id) {
     const key = Object.keys(localStorage).find((k) =>
         k.startsWith(wordGroupsPrefix),
     );
+
     if (!key) {
         const row = `
             <tr>
@@ -196,9 +209,7 @@ function fetchWords(word_group_id) {
     }
 
     const stored = JSON.parse(localStorage.getItem(key));
-    const activeGroup = stored.wordGroups.find(
-        (wg) => wg.id == word_group_id,
-    );
+    const activeGroup = stored.wordGroups.find((wg) => wg.id == word_group_id);
 
     if (!activeGroup || !activeGroup.words || activeGroup.words.length === 0) {
         const row = `
@@ -221,7 +232,11 @@ function fetchWords(word_group_id) {
 // =============================
 // RENDER WORDGROUPS SLIDER
 // =============================
-function renderWordGroups(data) {    
+function renderWordGroups(data) {
+    // Remove existing event listeners to prevent duplicates
+    $slider.off("initialized.owl.carousel");
+    $slider.off("translated.owl.carousel");
+
     $slider.trigger("destroy.owl.carousel");
     $slider.html("");
 
@@ -233,6 +248,17 @@ function renderWordGroups(data) {
     });
 
     $slider.owlCarousel({ rtl: true, items: 1, dots: false, nav: false });
+
+    // Re-add event listeners after initialization
+    $slider.on("initialized.owl.carousel", (e) => {
+        const id = getActiveWgId(e);
+        if (id) fetchWords(id);
+    });
+
+    $slider.on("translated.owl.carousel", (e) => {
+        const id = getActiveWgId(e);
+        if (id) fetchWords(id);
+    });
 
     currentSurahId.value = data.surah.id;
     currentVerseNumber.value = data.verse.number;
@@ -309,7 +335,7 @@ function renderWordsTable(wordGroup) {
         else if (word.color === "green") simbolClass = "text-fiil";
         else if (word.color === "blue") simbolClass = "text-isim";
 
-        const isAnswerMode = wordGroupsPrefix === 'answer_';
+        const isAnswerMode = wordGroupsPrefix === "answer_user_";
         const actionButtons = isAnswerMode
             ? `<button class="btn btn-sm btn-icon btn-warning word-edit" title="Edit">Edit 
                    <i class="fa-solid fa-edit"></i>
@@ -573,59 +599,35 @@ btnNext.addEventListener("click", goToNextVerse);
 document.addEventListener("DOMContentLoaded", () => {
     fetchSurahList();
 
-    const initialVerseId = currentVerseId?.value;
+    // const initialVerseId = currentVerseId?.value;
 
-    if (!initialVerseId) {
-        console.warn("No initial verse ID found");
-        return;
-    }
+    // if (!initialVerseId) {
+    //     console.warn("No initial verse ID found");
+    //     return;
+    // }
 
     const cachedKey = getActiveStorageKey(wordGroupsPrefix);
-    const currentKey = `${wordGroupsPrefix}${initialVerseId}`;
+
+    // const currentKey = `${wordGroupsPrefix}${initialVerseId}`;
     const cachedRaw = cachedKey ? localStorage.getItem(cachedKey) : null;
 
     // ------------------------------------------------------
-    // 1. Jika TIDAK ADA cache sama sekali → fetch baru
+    // 1. Jika TIDAK ADA cache → fetch baru
     // ------------------------------------------------------
     if (!cachedRaw) {
-        fetchWordGroups(null, null, initialVerseId);
+        fetchWordGroups(null, null, 1);
         return;
     }
 
     // ------------------------------------------------------
-    // 2. Jika ADA cache, tapi berbeda ayat → tampilkan modal restore
-    // ------------------------------------------------------
-    if (cachedKey !== currentKey) {
-        const data = JSON.parse(cachedRaw);
-
-        const lastProgressLabel = `${data.surah.name} - Ayat ${data.verse.number}`;
-
-        const restoreUrl = `/words/create?verse_id=${data.verse.id}`;
-
-        $("#last-location-label").text(lastProgressLabel);
-
-        $("#btn-restore-continue")
-            .off("click")
-            .on("click", () => (window.location.href = restoreUrl));
-
-        $("#btn-restore-cancel")
-            .off("click")
-            .on("click", () => {
-                $("#modal-restore").modal("hide");
-                fetchWordGroups(null, null, initialVerseId);
-            });
-
-        $("#modal-restore").modal("show");
-        return;
-    }
-
-    // ------------------------------------------------------
-    // 3. Jika ADA cache dan sesuai ayat → restore langsung
+    // 2. Jika ADA cache → restore langsung
     // ------------------------------------------------------
 
     const cachedData = JSON.parse(cachedRaw);
-    
+
     renderWordGroups(cachedData);
+    renderWordsTable(cachedData.wordGroups[0]);
+    renderWordsDetails(cachedData.wordGroups[0]);
 
     if (cachedData.modified) {
         // add refresh button in card header
@@ -637,8 +639,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    const firstGroup = cachedData.wordGroups?.[0];
-    if (firstGroup) fetchWords(firstGroup.id);
+    // Note: fetchWords for firstGroup is handled by carousel initialized event in renderWordGroups
 });
 
 $(document).ajaxStart(showLoading);

@@ -35,7 +35,7 @@
                 </div>
             </div>
 
-            <div class="section-body">
+            <div class="section-body exercise">
                 <div class="card">
                     <input type="hidden" id="surah-id" value="">
                     <input type="hidden" id="verse-number" value="">
@@ -81,7 +81,7 @@
                                 <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
                                     aria-controls="home" aria-selected="true">Input</a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item" hidden>
                                 <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
                                     aria-controls="profile" aria-selected="false">Detail</a>
                             </li>
@@ -93,6 +93,12 @@
                                     <div class="card-header">
                                         <div class="d-flex justify-content-between align-items-center w-100">
                                             <h4 class="mb-0">Tabel analisa</h4>
+                                            {{-- <label class="custom-switch mt-2">
+                                                <input type="checkbox" name="custom-switch-checkbox"
+                                                    class="custom-switch-input">
+                                                <span class="custom-switch-indicator"></span>
+                                                <span class="custom-switch-description">Periksa</span>
+                                            </label> --}}
                                             <button class="btn btn-icon icon-left btn-primary btn-lg" id="btn-add-word" hidden>
                                                 <i class="fa-solid fa-plus"></i> Tambah
                                             </button>
@@ -122,7 +128,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab"
+                                hidden>
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="d-flex justify-content-between align-items-center w-100">
@@ -154,17 +161,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
+                <div class="d-flex justify-content-end align-items-center">
+                    <div hidden>
                         <button type="button" class="btn btn-outline-primary btn-lg" id="btn-next-verse">
                             <i class="ion-chevron-left" data-pack="default" data-tags="arrow, right"></i></button>
                         <button type="button" class="btn btn-outline-primary btn-lg mr-2" id="btn-prev-verse"><i
                                 class="ion-chevron-right" data-pack="default" data-tags="arrow, left"></i></button>
                     </div>
-                    <div hidden>
-                        <button class="btn btn-icon icon-left btn-success btn-lg" id="btn-save-all"
-                            style="display: none;">Simpan</button>
+                    <div>
+                        <button class="btn btn-icon icon-left btn-success btn-lg" id="">Submit</button>
                     </div>
+
                 </div>
             </div>
         </section>
@@ -250,24 +257,6 @@
                         <button type="submit" class="btn btn-primary btn-lg" id="btn-submit">Tambahkan</button>
                     </div>
                 </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Restore Modal -->
-    <div class="modal fade" tabindex="-1" role="dialog" id="modal-restore">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Lanjutkan progres sebelumnya?</h5>
-                </div>
-                <div class="modal-body">
-                    <p>Terakhir di edit : <span class="text-primary" id="last-location-label"></span></p>
-                </div>
-                <div class="modal-footer bg-whitesmoke br">
-                    <button type="button" class="btn btn-secondary" id="btn-restore-cancel">Tutup</button>
-                    <button type="button" class="btn btn-primary" id="btn-restore-continue">Lanjutkan</button>
-                </div>
             </div>
         </div>
     </div>
