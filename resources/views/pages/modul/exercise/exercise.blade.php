@@ -283,4 +283,5 @@
     <script src="{{ asset('js/page/words/word-crud.js') }}?v=1.1.7"></script>
     <script src="{{ asset('js/page/words/words-page.js') }}?v=1.1.7"></script>
     <script src="{{ asset('js/page/words/nahwu-form.js') }}?v=1.1.7"></script>
+    <script src="{{ asset('js/page/words/exercise-validation.js') }}?v=1.1.7"></script>
 @endpush

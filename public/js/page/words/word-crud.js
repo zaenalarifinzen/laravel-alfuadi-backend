@@ -63,6 +63,7 @@ $("#form-add-word").on("submit", function (e) {
     const wordId = $("#input-id").val();
     const lafadz = $("#input-lafadz").val().trim();
     const kalimat = $("#input-kalimat").val();
+    const numericWordId = wordId ? Number(wordId) : null;
 
     // Logic
     // get key from local storage
@@ -126,9 +127,9 @@ $("#form-add-word").on("submit", function (e) {
     }
 
     const newWord = {
-        id: wordId || Date.now(),
+        id: numericWordId ?? Date.now(),
         text: $("#input-lafadz").val().trim(),
-        order_number: wordId ? $("#input-order-number").val() : newOrder,
+        order_number: wordId ? Number($("#input-order-number").val()) : newOrder,
         translation: $("#input-translation").val().trim(),
 
         // save id
