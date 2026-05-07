@@ -44,6 +44,9 @@ let verseCount = 0;
 const wordGroupsPrefix =
     window.PAGE_TYPE === "exercise" ? "answer_user_" : "wordgroups_";
 
+let currentCompareResult = [];
+let currentCompareVerseId = null;
+
 // =============================
 // ANSWER COMPARISON & VALIDATION
 // =============================
@@ -59,11 +62,21 @@ function compareAnswers(verseId) {
     const answerKey = JSON.parse(answerKeyRaw);
     const answerUser = JSON.parse(answerUserRaw);
 
-    const fields = ["kalimat", "hukum", "kategori", "kedudukan", "irob", "tanda", "simbol"];
+    const fields = [
+        "kalimat",
+        "hukum",
+        "kategori",
+        "kedudukan",
+        "irob",
+        "tanda",
+        "simbol",
+    ];
     const result = [];
 
     answerKey.wordGroups.forEach((keyGroup) => {
-        const userGroup = answerUser.wordGroups.find((g) => g.id === keyGroup.id);
+        const userGroup = answerUser.wordGroups.find(
+            (g) => g.id === keyGroup.id,
+        );
         if (!userGroup) return;
 
         keyGroup.words.forEach((keyWord) => {
@@ -93,9 +106,27 @@ function compareAnswers(verseId) {
     return result;
 }
 
+function clearComparisonHighlights() {
+    document.querySelectorAll("#sortable-table tbody tr").forEach((tr) => {
+        tr.classList.remove("is-wrong", "is-correct");
+        tr.querySelectorAll("td.is-wrong").forEach((td) => {
+            td.classList.remove("is-wrong");
+        });
+    });
+}
+
+function applyComparisonHighlights() {
+    if (!currentCompareResult || currentCompareResult.length === 0) return;
+    highlightErrors(currentCompareResult);
+}
+
 function highlightErrors(compareResult) {
+    clearComparisonHighlights();
+
     compareResult.forEach((item) => {
-        const row = document.querySelector(`#sortable-table tbody tr div.words[id="${item.wordId}"]`);
+        const row = document.querySelector(
+            `#sortable-table tbody tr div.words[id="${item.wordId}"]`,
+        );
 
         if (!row) return;
 
@@ -236,6 +267,8 @@ function fetchWordGroups(surah_id, verse_number, verse_id) {
             // if exercise page
             if (window.PAGE_TYPE === "exercise") {
                 // Clear old answer cache
+                currentCompareResult = [];
+                currentCompareVerseId = null;
                 Object.keys(localStorage)
                     .filter(
                         (k) =>
@@ -246,28 +279,37 @@ function fetchWordGroups(surah_id, verse_number, verse_id) {
 
                 // preserve to answer
                 const cloned = structuredClone(data);
-
+                
                 const answerKey = `answer_key_${verseId}`;
                 const userAnswer = `answer_user_${verseId}`;
 
                 localStorage.setItem(answerKey, JSON.stringify(cloned));
 
-                cloned.wordGroups.forEach((wg) => {
-                    wg.words.forEach((w) => {
-                        w.color = null;
-                        w.kalimat = null;
-                        w.hukum = null;
-                        w.kategori = null;
-                        w.kedudukan = null;
-                        w.irob = null;
-                        w.tanda = null;
+                // Validasi before iteraion
+                if (cloned.wordGroups && Array.isArray(cloned.wordGroups) && cloned.wordGroups.length > 0) {
+                    cloned.wordGroups.forEach((wg) => {
+                        if (wg && wg.words && Array.isArray(wg.words)) {
+                            wg.words.forEach((w) => {
+                                w.color = null;
+                                w.kalimat = null;
+                                w.hukum = null;
+                                w.kategori = null;
+                                w.kedudukan = null;
+                                w.irob = null;
+                                w.tanda = null;
+                            });
+                        }
                     });
-                });
+                } else {
+                    console.warn("Data wordGroups tidak valid atau kosong");
+                }
 
                 localStorage.setItem(userAnswer, JSON.stringify(cloned));
                 renderWordGroups(cloned);
-                renderWordsTable(cloned.wordGroups[0]);
-                renderWordsDetails(cloned.wordGroups[0]);
+                if (cloned.wordGroups && cloned.wordGroups.length > 0) {
+                    renderWordsTable(cloned.wordGroups[0]);
+                    renderWordsDetails(cloned.wordGroups[0]);
+                }
             } else {
                 // Clear old cache
                 Object.keys(localStorage)
@@ -315,7 +357,7 @@ function fetchWords(word_group_id) {
     if (!activeGroup || !activeGroup.words || activeGroup.words.length === 0) {
         const row = `
             <tr>
-                <td colspan="5" class="text-center text-muted">Tidak ada data</td>
+                <td colspan="8" class="text-center text-muted">Tidak ada data</td>
             </tr>
         `;
 
@@ -417,7 +459,7 @@ function renderWordsTable(wordGroup) {
     if (!wordGroup || !wordGroup.words || wordGroup.words.length === 0) {
         tbody.append(`
             <tr>
-                <td colspan="5" class="text-center text-muted">Tidak ada data</td>
+                <td colspan="8" class="text-center text-muted">Tidak ada data</td>
             </tr>
         `);
 
@@ -511,6 +553,8 @@ function renderWordsTable(wordGroup) {
     } else {
         $("#btn-save-all").hide();
     }
+
+    applyComparisonHighlights();
 }
 
 // =============================
@@ -524,7 +568,7 @@ function renderWordsDetails(wordGroup) {
         console.log("Data tidak tersedia");
         tbody.append(`
             <tr>
-                <td colspan="5" class="text-center text-muted">Tidak ada data</td>
+                <td colspan="8" class="text-center text-muted">Tidak ada data</td>
             </tr>
         `);
         return;
@@ -719,18 +763,45 @@ if (window.PAGE_TYPE === "exercise") {
                 return;
             }
 
+            currentCompareResult = compareResult;
+            currentCompareVerseId = verseId;
+
             highlightErrors(compareResult);
 
             const totalAnswers = compareResult.length;
-            const correctAnswers = compareResult.filter((r) => r.correct).length;
+            const correctAnswers = compareResult.filter(
+                (r) => r.correct,
+            ).length;
             const wrongAnswers = totalAnswers - correctAnswers;
             const score = Math.round((correctAnswers / totalAnswers) * 100);
 
-            iziToast.warning({
-                message: `Hasil: ${correctAnswers}/${totalAnswers} benar (${score}%) - ${wrongAnswers} salah ditandai merah`,
-                position: "topRight",
-                timeout: 5000,
-            });
+            if (score === 100) {
+                swal({
+                    icon: "success",
+                    title: "Selamat",
+                    text: "Anda dapat melanjutkan ke soal selanjutnya",
+                    buttons: {
+                        cancel: {
+                            text: "Kembali",
+                            visible: true,
+                        },
+                        confirm: {
+                            text: "Selanjutnya",
+                            visible: true,
+                            className: "btn-success",
+                        },
+                    },
+                }).then((next) => {
+                    const nextVerse = Number(currentVerseId.value) + 1;
+                    fetchWordGroups(null, null, nextVerse)
+                });
+            } else {
+                iziToast.warning({
+                    message: `${wrongAnswers} jawaban salah. Mohon cek kembali`,
+                    position: "bottomRight",
+                    timeout: 5000,
+                });
+            }
         });
     }
 }
@@ -741,20 +812,11 @@ if (window.PAGE_TYPE === "exercise") {
 document.addEventListener("DOMContentLoaded", () => {
     fetchSurahList();
 
-    // const initialVerseId = currentVerseId?.value;
-
-    // if (!initialVerseId) {
-    //     console.warn("No initial verse ID found");
-    //     return;
-    // }
-
     const cachedKey = getActiveStorageKey(wordGroupsPrefix);
-
-    // const currentKey = `${wordGroupsPrefix}${initialVerseId}`;
     const cachedRaw = cachedKey ? localStorage.getItem(cachedKey) : null;
 
     // ------------------------------------------------------
-    // 1. Jika TIDAK ADA cache → fetch baru
+    // FETCH NEW
     // ------------------------------------------------------
     if (!cachedRaw) {
         fetchWordGroups(null, null, 1);
@@ -762,7 +824,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ------------------------------------------------------
-    // 2. Jika ADA cache → restore langsung
+    // RESTORE CACHE
     // ------------------------------------------------------
 
     const cachedData = JSON.parse(cachedRaw);
@@ -772,7 +834,6 @@ document.addEventListener("DOMContentLoaded", () => {
     renderWordsDetails(cachedData.wordGroups[0]);
 
     if (cachedData.modified) {
-        // add refresh button in card header
         addRefreshButton();
 
         iziToast.info({

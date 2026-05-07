@@ -26,9 +26,7 @@ $("#btn-add-word").on("click", function () {
 
     // get active wordgroup
     const activeWordGroupId = $(".owl-item.active .word-group").attr("wg-id");
-    const wordGroup = stored.wordGroups.find(
-        (g) => g.id == activeWordGroupId,
-    );
+    const wordGroup = stored.wordGroups.find((g) => g.id == activeWordGroupId);
 
     $("#input-id").val("");
     $("#input-lafadz").val(wordGroup.text);
@@ -70,14 +68,12 @@ $("#form-add-word").on("submit", function (e) {
     const currentKey = Object.keys(localStorage).find((k) =>
         k.startsWith(wordGroupsPrefix),
     );
-    
+
     const stored = JSON.parse(localStorage.getItem(currentKey));
 
     // get active wordgroup
     const activeWordGroupId = $(".owl-item.active .word-group").attr("wg-id");
-    const wordGroup = stored.wordGroups.find(
-        (g) => g.id == activeWordGroupId,
-    );
+    const wordGroup = stored.wordGroups.find((g) => g.id == activeWordGroupId);
 
     const groupIndex = stored.wordGroups.findIndex(
         (g) => g.id == activeWordGroupId,
@@ -129,7 +125,9 @@ $("#form-add-word").on("submit", function (e) {
     const newWord = {
         id: numericWordId ?? Date.now(),
         text: $("#input-lafadz").val().trim(),
-        order_number: wordId ? Number($("#input-order-number").val()) : newOrder,
+        order_number: wordId
+            ? Number($("#input-order-number").val())
+            : newOrder,
         translation: $("#input-translation").val().trim(),
 
         // save id
@@ -177,6 +175,11 @@ $("#form-add-word").on("submit", function (e) {
     // re render word table & details
     renderWordsTable(wordGroup);
     renderWordsDetails(wordGroup);
+
+    if (currentCompareResult.length !== 0) {
+        const compareResult = compareAnswers(stored.verse.id);
+        highlightErrors(compareResult);
+    }
 
     // show save-all button
     $("#btn-save-all").show();
@@ -331,11 +334,7 @@ $("#btn-save-all").on("click", function (e) {
     }
 
     const stored = JSON.parse(localStorage.getItem(currentKey));
-    if (
-        !stored ||
-        !stored.wordGroups ||
-        stored.wordGroups.length === 0
-    ) {
+    if (!stored || !stored.wordGroups || stored.wordGroups.length === 0) {
         alert("Data kosong");
         return;
     }
