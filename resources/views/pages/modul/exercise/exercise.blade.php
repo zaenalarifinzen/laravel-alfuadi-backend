@@ -8,6 +8,21 @@
     <link rel="stylesheet" href="{{ asset('library/owl.carousel/dist/assets/owl.theme.default.min.css') }}">
     <link rel="stylesheet" href="{{ asset('library/ionicons201/css/ionicons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('library/izitoast/dist/css/iziToast.min.css') }}">
+    <style>
+        tr.is-wrong {
+            background-color: #ffe6e6 !important; 
+        }
+
+        tr.is-correct {
+            background-color: #e6ffe6 !important;
+        }
+
+        td.is-wrong {
+            background-color: #ffcccc !important;
+            font-weight: bold;
+            outline: 1px solid #ff4a4a;
+        }
+    </style>
 @endpush
 
 @section('main')<div class="main-content">
@@ -169,7 +184,7 @@
                                 class="ion-chevron-right" data-pack="default" data-tags="arrow, left"></i></button>
                     </div>
                     <div>
-                        <button class="btn btn-icon icon-left btn-success btn-lg" id="">Submit</button>
+                        <button class="btn btn-icon icon-left btn-success btn-lg" id="btn-submit-exercise">Submit</button>
                     </div>
 
                 </div>
@@ -283,5 +298,5 @@
     <script src="{{ asset('js/page/words/word-crud.js') }}?v=1.1.7"></script>
     <script src="{{ asset('js/page/words/words-page.js') }}?v=1.1.7"></script>
     <script src="{{ asset('js/page/words/nahwu-form.js') }}?v=1.1.7"></script>
-    <script src="{{ asset('js/page/words/exercise-validation.js') }}?v=1.1.7"></script>
+    {{-- <script src="{{ asset('js/page/words/exercise-validation.js') }}?v=1.1.7"></script> --}}
 @endpush

@@ -45,6 +45,107 @@ const wordGroupsPrefix =
     window.PAGE_TYPE === "exercise" ? "answer_user_" : "wordgroups_";
 
 // =============================
+// ANSWER COMPARISON & VALIDATION
+// =============================
+function compareAnswers(verseId) {
+    const answerKeyRaw = localStorage.getItem(`answer_key_${verseId}`);
+    const answerUserRaw = localStorage.getItem(`answer_user_${verseId}`);
+
+    if (!answerKeyRaw || !answerUserRaw) {
+        console.warn("Answer key atau user answer tidak ditemukan");
+        return [];
+    }
+
+    const answerKey = JSON.parse(answerKeyRaw);
+    const answerUser = JSON.parse(answerUserRaw);
+
+    const fields = ["kalimat", "hukum", "kategori", "kedudukan", "irob", "tanda", "simbol"];
+    const result = [];
+
+    answerKey.wordGroups.forEach((keyGroup) => {
+        const userGroup = answerUser.wordGroups.find((g) => g.id === keyGroup.id);
+        if (!userGroup) return;
+
+        keyGroup.words.forEach((keyWord) => {
+            const userWord = userGroup.words.find((w) => w.id === keyWord.id);
+            if (!userWord) return;
+
+            const fieldsResult = fields.map((field) => {
+                const expected = String(keyWord[field] ?? "").trim();
+                const actual = String(userWord[field] ?? "").trim();
+                return {
+                    field,
+                    expected,
+                    actual,
+                    correct: expected === actual,
+                };
+            });
+
+            result.push({
+                wordId: keyWord.id,
+                text: keyWord.text,
+                correct: fieldsResult.every((f) => f.correct),
+                fields: fieldsResult,
+            });
+        });
+    });
+
+    return result;
+}
+
+function highlightErrors(compareResult) {
+    compareResult.forEach((item) => {
+        const row = document.querySelector(`#sortable-table tbody tr div.words[id="${item.wordId}"]`);
+
+        if (!row) return;
+
+        const tr = row.closest("tr");
+        if (!tr) return;
+
+        if (item.correct) {
+            tr.classList.remove("is-wrong");
+            tr.classList.add("is-correct");
+        } else {
+            tr.classList.remove("is-correct");
+            tr.classList.add("is-wrong");
+
+            item.fields.forEach((fieldResult) => {
+                if (!fieldResult.correct) {
+                    let colClass;
+                    switch (fieldResult.field) {
+                        case "kalimat":
+                            colClass = ".col-kalimat";
+                            break;
+                        case "hukum":
+                            colClass = ".col-hukum";
+                            break;
+                        case "kategori":
+                            colClass = ".col-kategori";
+                            break;
+                        case "kedudukan":
+                            colClass = ".col-kedudukan";
+                            break;
+                        case "irob":
+                            colClass = ".col-irob";
+                            break;
+                        case "tanda":
+                            colClass = ".col-tanda";
+                            break;
+                        default:
+                            colClass = null;
+                    }
+
+                    if (colClass) {
+                        const td = tr.querySelector(colClass);
+                        if (td) td.classList.add("is-wrong");
+                    }
+                }
+            });
+        }
+    });
+}
+
+// =============================
 // HELPERS
 // =============================
 function updateVerseCount() {
@@ -592,6 +693,47 @@ verseOption.addEventListener("change", () => {
 filterForm.addEventListener("submit", searchVerse);
 btnPrev.addEventListener("click", goToPrevVerse);
 btnNext.addEventListener("click", goToNextVerse);
+
+// Exercise page submit handler
+if (window.PAGE_TYPE === "exercise") {
+    const btnSubmitExercise = document.getElementById("btn-submit-exercise");
+    if (btnSubmitExercise) {
+        btnSubmitExercise.addEventListener("click", (e) => {
+            e.preventDefault();
+
+            const verseId = currentVerseId.value;
+            if (!verseId) {
+                iziToast.warning({
+                    message: "Verse ID tidak ditemukan",
+                    position: "topRight",
+                });
+                return;
+            }
+
+            const compareResult = compareAnswers(verseId);
+            if (compareResult.length === 0) {
+                iziToast.warning({
+                    message: "Tidak ada data untuk dibandingkan",
+                    position: "topRight",
+                });
+                return;
+            }
+
+            highlightErrors(compareResult);
+
+            const totalAnswers = compareResult.length;
+            const correctAnswers = compareResult.filter((r) => r.correct).length;
+            const wrongAnswers = totalAnswers - correctAnswers;
+            const score = Math.round((correctAnswers / totalAnswers) * 100);
+
+            iziToast.warning({
+                message: `Hasil: ${correctAnswers}/${totalAnswers} benar (${score}%) - ${wrongAnswers} salah ditandai merah`,
+                position: "topRight",
+                timeout: 5000,
+            });
+        });
+    }
+}
 
 // =============================
 // DOM
