@@ -44,23 +44,23 @@ $(document).on('click', '.btn-move-up, .btn-move-down', function () {
     }
 
     saveNewOrder();
-    markModified();
+    markModified(wordGroupsPrefix);
     $("#btn-save-all").show();
 })
 
 function saveNewOrder() {
     // get key local storage
-    const currentKey = Object.keys(localStorage).find(k => k.startsWith('wordgroups_'));
+    const currentKey = Object.keys(localStorage).find(k => k.startsWith(wordGroupsPrefix));
     const stored = JSON.parse(localStorage.getItem(currentKey));
 
     // get active wordgroup id
     const activeWordGroupId = $('.owl-item.active .word-group').attr('wg-id');
-    const activeWordGroup = stored.data.wordGroups.find((wg) => wg.id == activeWordGroupId);
+    const activeWordGroup = stored.wordGroups.find((wg) => wg.id == activeWordGroupId);
 
-    const groupIndex = stored.data.wordGroups.findIndex(g => g.id == activeWordGroupId);
+    const groupIndex = stored.wordGroups.findIndex(g => g.id == activeWordGroupId);
     if (groupIndex === -1) return;
 
-    const words = stored.data.wordGroups[groupIndex].words;
+    const words = stored.wordGroups[groupIndex].words;
 
     // loop each row to get word ID based new order
     $('#sortable-table tbody tr').each(function (index) {

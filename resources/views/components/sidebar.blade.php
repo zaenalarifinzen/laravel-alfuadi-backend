@@ -12,7 +12,7 @@
                 <a class="nav-link" href="{{ route('login') }}"><i class="fas fa-house"></i> <span>Dashboard</span></a>
             </li>
 
-            <li class="menu-header">Alfuadi Database</li>
+            <li class="menu-header">Qur'an Alfuadi</li>
             <li class="nav-item dropdown {{ $type_menu === 'Al-Fuadi Database' ? 'active' : '' }}">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-book-quran"></i>
                     <span>Al-Quran</span></a>
@@ -31,6 +31,33 @@
                     </li>
                 </ul>
             </li>
+
+            @if (auth()->check())
+                <li class="menu-header">Metode Al-Fuadi</li>
+                <li class="nav-item dropdown {{ $type_menu === 'metode-al-fuadi' ? 'active' : '' }}">
+                    <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
+                            class="fas fa-book-open"></i>
+                        <span>Modul Al-Fuadi</span></a>
+                    <ul class="dropdown-menu">
+                        <li class="{{ Request::is('metode-al-fuadi/jilid-1') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('metode-al-fuadi.jilid-1') }}">
+                                <span>Jilid 1</span>
+                            </a>
+                        </li>
+                        <li class="{{ Request::is('modul/jilid-2') ? 'active' : '' }}">
+                            <a class="nav-link" href="#">
+                                <span>Jilid 2</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="{{ Request::is('metode-al-fuadi/exercise') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('metode-al-fuadi.exercise') }}">
+                        <i class="fas fa-pen-to-square"></i>
+                        <span>Latihan analisa</span>
+                    </a>
+                </li>
+            @endauth
 
             @if (auth()->check() && auth()->user()->roles !== 'user')
                 <li class="menu-header">Tools</li>
@@ -75,5 +102,5 @@
                         <span>Develop Page</span></a>
                 </li>
             @endif
-    </aside>
+</aside>
 </div>

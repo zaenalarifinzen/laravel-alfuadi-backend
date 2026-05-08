@@ -222,27 +222,35 @@
                 </div>
             </div>
         </li> --}}
-        <li class="dropdown"><a href="#" data-toggle="dropdown"
-                class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-                <img alt="image" src="{{ asset('img/avatar/avatar-3.png') }}" class="rounded-circle mr-1">
-                <div class="d-sm-none d-lg-inline-block">Hi, {{ auth()->user()->name }}</div>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right">
-                <a href="#" class="dropdown-item has-icon">
-                    <i class="far fa-user"></i> Profile
+        @auth
+            <li class="dropdown"><a href="#" data-toggle="dropdown"
+                    class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+                    <img alt="image" src="{{ asset('img/avatar/avatar-3.png') }}" class="rounded-circle mr-1">
+                    <div class="d-sm-none d-lg-inline-block">Hi, {{ auth()->user()->name }}</div>
                 </a>
-                <a href="#" class="dropdown-item has-icon">
-                    <i class="fas fa-cog"></i> Settings
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a href="#" class="dropdown-item has-icon">
+                        <i class="far fa-user"></i> Profil
+                    </a>
+                    <a href="#" class="dropdown-item has-icon">
+                        <i class="fas fa-cog"></i> Pengaturan
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item has-icon text-danger"
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        @csrf
+                    </form>
+                </div>
+            </li>
+        @else
+            <li>
+                <a href="{{ route('login') }}" class="btn btn-outline-light">
+                    <i class="fas fa-arrow-right-to-bracket"></i> Masuk
                 </a>
-                <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item has-icon text-danger"
-                    onclick="event.preventDefault(); document.getElementById('logout-form').submit()">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </a>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                    @csrf
-                </form>
-            </div>
-        </li>
+            </li>
+        @endauth
     </ul>
 </nav>
