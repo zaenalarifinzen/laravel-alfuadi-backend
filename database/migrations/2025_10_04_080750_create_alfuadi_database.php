@@ -53,9 +53,7 @@ return new class extends Migration
 
             $table->text('text');
 
-            $table->timestamps('created_at');
-
-            $table->timestamps('updated_at');
+            $table->timestamps();
 
             $table->bigInteger('editor');
         });
