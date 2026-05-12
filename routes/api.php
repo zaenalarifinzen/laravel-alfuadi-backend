@@ -26,18 +26,17 @@ Route::apiResource('surahs', SurahController::class)->only(['index']);
 Route::get('questions', [QuestionController::class, 'index']);
 Route::get('questions/{id}', [QuestionController::class, 'show']);
 Route::get('questions/level/{level}', [QuestionController::class, 'getByLevel']);
-Route::Question management endpoints - hanya untuk admin/pembuat soal
-    Route::post('questions', [QuestionController::class, 'store']);
-    Route::put('questions/{id}', [QuestionController::class, 'update']);
-    Route::delete('questions/{id}', [QuestionController::class, 'destroy']);
+// Question management endpoints - hanya untuk admin/pembuat soal
+Route::post('questions', [QuestionController::class, 'store']);
+Route::put('questions/{id}', [QuestionController::class, 'update']);
+Route::delete('questions/{id}', [QuestionController::class, 'destroy']);
 
-    // Question Level management endpoints
-    Route::apiResource('question-levels', QuestionLevelController::class);
+// Question Level management endpoints
+Route::apiResource('question-levels', QuestionLevelController::class);
 
-    // User Answers endpoints
-    Route::post('user-answers', [UserAnswerController::class, 'store']); // Simpan jawaban
-    Route::get('user-answers', [UserAnswerController::class, 'index']); // List jawaban user dengan filter
-    Route::get('user-answers/{questionstionLevelController::class, 'index']);
+// User Answers endpoints
+Route::post('user-answers', [UserAnswerController::class, 'store']); // Simpan jawaban
+Route::get('user-answers', [UserAnswerController::class, 'index']); // List jawaban user dengan filter
 Route::get('question-levels/{id}', [QuestionLevelController::class, 'show']);
 Route::get('question-levels/number/{levelNumber}', [QuestionLevelController::class, 'getByNumber']);
 

@@ -31,7 +31,7 @@ Route::middleware(['auth'])->group(function () {
             return view('pages.Template.develop.skema-nahwu', ['type_menu' => '']);
         })->name('page.skema-nahwu'); // Template Page
         Route::get('/example', function () {
-            return view('pages.Template.develop.skema-nahwu', ['type_menu' => '']);
+            return view('pages.users.profile', ['type_menu' => '']);
         })->name('page.templatepage'); // Template Page
     });
 

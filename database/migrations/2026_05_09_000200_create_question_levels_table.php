@@ -13,15 +13,11 @@ return new class extends Migration
     {
         Schema::create('question_levels', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 100); // "Pemula", "Menengah", "Lanjutan"
-            $table->integer('level_number')->unique(); // 1, 2, 3
+            $table->string('name', 100);
+            $table->integer('level_number')->unique();
             $table->text('description')->nullable();
-            $table->string('color', 50)->nullable(); // Untuk UI: "green", "yellow", "red"
-            $table->string('icon', 100)->nullable(); // Icon name
-            $table->integer('min_score')->default(0); // Score minimum untuk lanjut ke level berikutnya
-            $table->integer('question_count')->default(10); // Jumlah soal per level
             $table->boolean('is_active')->default(true);
-            $table->json('metadata')->nullable(); // Data tambahan
+            $table->json('metadata')->nullable();
             $table->timestamps();
         });
     }
