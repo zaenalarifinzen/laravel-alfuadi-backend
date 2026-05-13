@@ -232,9 +232,6 @@
                     <a href="{{ route('profile') }}" class="dropdown-item has-icon">
                         <i class="far fa-user"></i> Profil
                     </a>
-                    <a href="#" class="dropdown-item has-icon">
-                        <i class="fas fa-cog"></i> Pengaturan
-                    </a>
                     <div class="dropdown-divider"></div>
                     <a href="#" class="dropdown-item has-icon text-danger"
                         onclick="event.preventDefault(); document.getElementById('logout-form').submit()">

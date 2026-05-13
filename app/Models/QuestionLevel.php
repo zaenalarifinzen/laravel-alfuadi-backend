@@ -15,10 +15,6 @@ class QuestionLevel extends Model
         'name',
         'level_number',
         'description',
-        'color',
-        'icon',
-        'min_score',
-        'question_count',
         'is_active',
         'metadata',
     ];

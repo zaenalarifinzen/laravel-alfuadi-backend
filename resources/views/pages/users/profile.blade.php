@@ -25,7 +25,7 @@
 
 
             <div class="section-body">
-                
+
                 <div class="row">
                     <div class="col-12">
                         @include('layouts.alert')
@@ -43,7 +43,8 @@
                                                 style="max-width: 200px; max-height: 200px;">
                                             <div class="user-details">
                                                 <div class="user-name">{{ auth()->user()->name }}</div>
-                                                <div class="badge badge-warning author-box-job">{{ auth()->user()->roles }}</div>
+                                                <div class="badge badge-warning author-box-job">{{ auth()->user()->roles }}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -62,7 +63,8 @@
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
                                                 <label for="name">Nama</label>
-                                                <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" placeholder="Nama Lengkap"
+                                                <input type="text" class="form-control @error('name') is-invalid @enderror"
+                                                    id="name" name="name" placeholder="Nama Lengkap"
                                                     value="{{ auth()->user()->name }}">
                                                 @error('name')
                                                     <span class="invalid-feedback">{{ $message }}</span>
@@ -83,9 +85,108 @@
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-end align-items-center card-footer">
-                                        <button type="submit" class="btn btn-primary">Perbarui</button>
+                                        <button type="submit" class="btn btn-primary">Simpan</button>
                                     </div>
                                 </form>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>Update Password</h4>
+                                </div>
+
+                                <div class="card-body">
+                                    <form method="POST" action="{{ route('user-password.update') }}" class="needs-validation"
+                                        novalidate="">
+                                        @csrf
+                                        @method('PUT')
+
+                                        <div class="form-group" style="position: relative">
+                                            <div class="form-group" style="position: relative">
+                                                <div class="d-block">
+                                                    <label for="current_password" class="control-label">Password
+                                                        sekarang</label>
+                                                </div>
+                                                <input id="current_password" type="password"
+                                                    class="form-control @error('current_password') is-invalid @enderror"
+                                                    name="current_password" tabindex="2" autocomplete="current-password"
+                                                    required>
+                                                <span class="toggle-password-icon"
+                                                    style="
+                                                        position: absolute;
+                                                        right: 15px;
+                                                        top: 48px;
+                                                        transform: translateY(-50%);
+                                                        cursor: pointer;
+                                                        color: #888
+                                                    ">
+                                                    <i class="fas fa-eye"></i>
+                                                </span>
+                                                @error('current_password')
+                                                    <div class="invalid-feedback">
+                                                        {{ $message }}
+                                                    </div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="form-group" style="position: relative">
+                                            <div class="form-group" style="position: relative">
+                                                <div class="d-block">
+                                                    <label for="password" class="control-label">Password baru</label>
+                                                </div>
+                                                <input id="password" type="password"
+                                                    class="form-control @error('password') is-invalid @enderror" name="password"
+                                                    tabindex="2" autocomplete="new-password" required>
+                                                <span class="toggle-password-icon"
+                                                    style="
+                                                        position: absolute;
+                                                        right: 15px;
+                                                        top: 48px;
+                                                        transform: translateY(-50%);
+                                                        cursor: pointer;
+                                                        color: #888
+                                                    ">
+                                                    <i class="fas fa-eye"></i>
+                                                </span>
+                                                @error('password')
+                                                    <div class="invalid-feedback">
+                                                        {{ $message }}
+                                                    </div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="form-group" style="position: relative">
+                                            <div class="d-block">
+                                                <label for="password_confirmation" class="control-label">Konfirmasi
+                                                    password</label>
+                                            </div>
+                                            <input id="password_confirmation" type="password"
+                                                class="form-control @error('password') is-invalid @enderror"
+                                                name="password_confirmation" tabindex="2" autocomplete="current-password"
+                                                required>
+                                            <span class="toggle-password-icon"
+                                                style="
+                                                        position: absolute;
+                                                        right: 15px;
+                                                        top: 48px;
+                                                        transform: translateY(-50%);
+                                                        cursor: pointer;
+                                                        color: #888
+                                                        ">
+                                                <i class="fas fa-eye"></i>
+                                            </span>
+                                            @error('password')
+                                                <div class="invalid-feedback">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
+                                        </div>
+                                        <div class="d-flex justify-content-end align-items-center card-footer">
+                                            <button type="submit" class="btn btn-primary">Perbarui</button>
+                                        </div>
+                                    </form>
+                                </div>
+
                             </div>
                         </div>
                     </div>
