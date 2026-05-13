@@ -67,6 +67,12 @@ Route::middleware(['auth'])->group(function () {
         })->name('metode-al-fuadi.exercise.quran');
     });
 
+    // User Profile
+    Route::get('/profile', function () {
+        return view('pages.users.profile', ['type_menu' => 'profile']);
+    })->name('profile');
+    Route::put('/profile', [UserController::class, 'updateProfile'])->name('profile.update');
+
     // Resource
     Route::resource('surahs', SurahController::class);
     Route::resource('verses', VerseController::class);

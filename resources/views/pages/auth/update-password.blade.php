@@ -8,12 +8,12 @@
 @endpush
 
 @section('main')
-    @if (session('status') == 'password-updated')
-        <div class="alert alert-success">
-            Password berhasil diubah
+    <div class="row">
+        <div class="col-12">
+            @include('layouts.alert')
         </div>
-    @endif
-    
+    </div>
+
     <div class="card card-primary">
         <div class="card-header">
             <h4>Update Password</h4>

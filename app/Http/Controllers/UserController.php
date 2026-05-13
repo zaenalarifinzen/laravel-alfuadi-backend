@@ -49,6 +49,20 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success', 'User succesfully updated');
     }
 
+    public function updateProfile(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $user = auth()->user();
+        $user->update([
+            'name' => $request->name,
+        ]);
+
+        return redirect()->route('profile')->with('success', 'Profil berhasil diperbarui');
+    }
+
     public function destroy(User $user)
     {
         $user->delete();
