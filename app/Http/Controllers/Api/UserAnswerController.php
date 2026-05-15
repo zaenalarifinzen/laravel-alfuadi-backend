@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserAnswerRequest;
 use App\Models\UserAnswer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+
+use function Illuminate\Log\log;
 
 class UserAnswerController extends Controller
 {
@@ -13,7 +16,7 @@ class UserAnswerController extends Controller
      * Simpan jawaban user
      */
     public function store(StoreUserAnswerRequest $request)
-    {
+    {       
         try {
             $userId = auth()->id();
             $questionId = $request->question_id;

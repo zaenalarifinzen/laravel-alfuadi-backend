@@ -25,11 +25,28 @@ class StoreUserAnswerRequest extends FormRequest
             'question_id' => 'required|exists:questions,id',
             'level' => 'required|integer|in:1,2,3',
             'answer' => 'required|string',
-            'pass' => 'boolean',
+            'pass' => 'nullable|boolean',
             'score' => 'nullable|numeric|min:0|max:100',
             'attempt_count' => 'nullable|integer|min:1',
             'time_spent' => 'nullable|integer|min:0',
             'metadata' => 'nullable|json',
+        ];
+    }
+
+    /**
+     * Get custom error messages
+     */
+    public function messages()
+    {
+        return [
+            'question_id.required' => 'question_id wajib diisi',
+            'question_id.exists' => 'question_id tidak ditemukan di tabel questions',
+            'level.required' => 'level wajib diisi',
+            'level.in' => 'level harus 1, 2, atau 3',
+            'answer.required' => 'answer wajib diisi',
+            'answer.string' => 'answer harus berupa string',
+            'score.numeric' => 'score harus berupa angka',
+            'metadata.json' => 'metadata harus berupa JSON',
         ];
     }
 

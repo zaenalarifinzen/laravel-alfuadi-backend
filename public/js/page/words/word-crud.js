@@ -408,7 +408,7 @@ $("#btn-save-all").on("click", function (e) {
     });
 });
 
-// SUBMUT USER ANSWER
+// SUBMIT USER ANSWER
 $("#btn-submit-answer").on("click", function (e) {
     e.preventDefault();
 
@@ -443,13 +443,13 @@ $("#btn-submit-answer").on("click", function (e) {
     if (score === 100) {
         const questionId = verseId;
         const payload = {
-            question_id: questionId,
+            question_id: parseInt(questionId),
             level: 1,
-            answer: JSON.stringify(compareResult), // Jawaban sebagai JSON hasil perbandingan
-            pass: true, // Karena score 100%
+            answer: JSON.stringify(compareResult),
+            pass: true,
             score: score,
-            attempt_count: 1, // Atau ambil dari localStorage jika ada
-            time_spent: null, // Jika ada timer, isi dengan waktu yang dihabiskan
+            attempt_count: 1,
+            time_spent: null,
             metadata: JSON.stringify({
                 total_answers: totalAnswers,
                 correct_answers: correctAnswers,
@@ -457,38 +457,41 @@ $("#btn-submit-answer").on("click", function (e) {
         };
 
         $.ajax({
-            url: "/api/user-answers",
+            url: "/user-answers",
             type: "POST",
             xhrFields: {
                 withCredentials: true,
             },
             headers: {
                 "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                "Content-Type": "application/json",
             },
-            data: payload,
+            data: JSON.stringify(payload),
             beforeSend: function () {
                 $("#btn-submit-answer")
                     .prop("disabled", true)
                     .text("Menyimpan...");
             },
             success: function (response) {
+                console.log("Success response:", response);
                 if (response.success) {
                     swal({
-                        icon: "success",
+                        icon: 'success',
                         title: "Selamat",
                         text: "Anda dapat melanjutkan ke soal selanjutnya",
                         buttons: {
                             cancel: {
-                                text: "Kembali",
+                                text: "Tutup",
                                 visible: true,
                             },
                             confirm: {
                                 text: "Selanjutnya",
                                 visible: true,
-                                className: "btn-success",
                             },
                         },
-                    }).then((next) => {
+                    }).then((willSave) => {
+                        if (!willSave) return;
+
                         const nextVerse = Number(currentVerseId.value) + 1;
                         fetchWordGroups(null, null, nextVerse);
                     });
@@ -500,11 +503,27 @@ $("#btn-submit-answer").on("click", function (e) {
                 }
             },
             error: function (xhr) {
-                console.error("Error saving answer:", xhr.responseText);
+                console.error("Error response status:", xhr.status);
+                console.error("Error response:", xhr.responseText);
+
                 let errorMessage = "Terjadi kesalahan saat menyimpan jawaban";
                 if (xhr.status === 401) {
                     errorMessage =
                         "Anda belum login. Silakan login terlebih dahulu.";
+                } else if (xhr.status === 422) {
+                    try {
+                        const errors = JSON.parse(xhr.responseText);
+                        console.error("Validation errors:", errors);
+                        if (errors.errors) {
+                            errorMessage =
+                                "Validation error: " +
+                                Object.values(errors.errors).flat().join(", ");
+                        } else if (errors.message) {
+                            errorMessage = errors.message;
+                        }
+                    } catch (e) {
+                        errorMessage = "Validation error occurred";
+                    }
                 } else if (xhr.responseJSON && xhr.responseJSON.message) {
                     errorMessage = xhr.responseJSON.message;
                 }

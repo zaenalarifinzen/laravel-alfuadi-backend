@@ -3,6 +3,7 @@
 use App\Http\Controllers\NahwuDataController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SurahController;
+use App\Http\Controllers\UserAnswerController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerseController;
 use App\Http\Controllers\WordController;
@@ -76,4 +77,5 @@ Route::middleware(['auth'])->group(function () {
     // Resource
     Route::resource('surahs', SurahController::class);
     Route::resource('verses', VerseController::class);
+    Route::resource('user-answers', UserAnswerController::class);
 });
