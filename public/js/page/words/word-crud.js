@@ -408,6 +408,124 @@ $("#btn-save-all").on("click", function (e) {
     });
 });
 
+// SUBMUT USER ANSWER
+$("#btn-submit-answer").on("click", function (e) {
+    e.preventDefault();
+
+    const verseId = currentVerseId.value;
+    if (!verseId) {
+        iziToast.warning({
+            message: "Verse ID tidak ditemukan",
+            position: "topRight",
+        });
+        return;
+    }
+
+    const compareResult = compareAnswers(verseId);
+    if (compareResult.length === 0) {
+        iziToast.warning({
+            message: "Tidak ada data untuk dibandingkan",
+            position: "topRight",
+        });
+        return;
+    }
+
+    currentCompareResult = compareResult;
+    currentCompareVerseId = verseId;
+
+    highlightErrors(compareResult);
+
+    const totalAnswers = compareResult.length;
+    const correctAnswers = compareResult.filter((r) => r.correct).length;
+    const wrongAnswers = totalAnswers - correctAnswers;
+    const score = Math.round((correctAnswers / totalAnswers) * 100);
+
+    if (score === 100) {
+        const questionId = verseId;
+        const payload = {
+            question_id: questionId,
+            level: 1,
+            answer: JSON.stringify(compareResult), // Jawaban sebagai JSON hasil perbandingan
+            pass: true, // Karena score 100%
+            score: score,
+            attempt_count: 1, // Atau ambil dari localStorage jika ada
+            time_spent: null, // Jika ada timer, isi dengan waktu yang dihabiskan
+            metadata: JSON.stringify({
+                total_answers: totalAnswers,
+                correct_answers: correctAnswers,
+            }),
+        };
+
+        $.ajax({
+            url: "/api/user-answers",
+            type: "POST",
+            xhrFields: {
+                withCredentials: true,
+            },
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            data: payload,
+            beforeSend: function () {
+                $("#btn-submit-answer")
+                    .prop("disabled", true)
+                    .text("Menyimpan...");
+            },
+            success: function (response) {
+                if (response.success) {
+                    swal({
+                        icon: "success",
+                        title: "Selamat",
+                        text: "Anda dapat melanjutkan ke soal selanjutnya",
+                        buttons: {
+                            cancel: {
+                                text: "Kembali",
+                                visible: true,
+                            },
+                            confirm: {
+                                text: "Selanjutnya",
+                                visible: true,
+                                className: "btn-success",
+                            },
+                        },
+                    }).then((next) => {
+                        const nextVerse = Number(currentVerseId.value) + 1;
+                        fetchWordGroups(null, null, nextVerse);
+                    });
+                } else {
+                    iziToast.error({
+                        message: response.message || "Gagal menyimpan jawaban",
+                        position: "topRight",
+                    });
+                }
+            },
+            error: function (xhr) {
+                console.error("Error saving answer:", xhr.responseText);
+                let errorMessage = "Terjadi kesalahan saat menyimpan jawaban";
+                if (xhr.status === 401) {
+                    errorMessage =
+                        "Anda belum login. Silakan login terlebih dahulu.";
+                } else if (xhr.responseJSON && xhr.responseJSON.message) {
+                    errorMessage = xhr.responseJSON.message;
+                }
+                iziToast.error({
+                    message: errorMessage,
+                    position: "bottomRight",
+                });
+            },
+            complete: function () {
+                $("#btn-submit-answer").prop("disabled", false).text("Submit");
+            },
+        });
+    } else {
+        iziToast.warning({
+            message: `${wrongAnswers} jawaban salah. Mohon cek kembali`,
+            position: "bottomRight",
+            timeout: 5000,
+        });
+    }
+});
+
 // ========================
 // HELPER
 // ========================

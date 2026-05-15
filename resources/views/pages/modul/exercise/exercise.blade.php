@@ -184,7 +184,7 @@
                                 class="ion-chevron-right" data-pack="default" data-tags="arrow, left"></i></button>
                     </div>
                     <div>
-                        <button class="btn btn-icon icon-left btn-success btn-lg" id="btn-submit-exercise">Submit</button>
+                        <button class="btn btn-icon icon-left btn-success btn-lg" id="btn-submit-answer">Submit</button>
                     </div>
 
                 </div>
