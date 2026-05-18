@@ -16,7 +16,6 @@ class UserAnswer extends Model
         'question_id',
         'level',
         'pass',
-        'answer',
         'score',
         'attempt_count',
         'time_spent',
@@ -30,6 +29,19 @@ class UserAnswer extends Model
         'metadata' => 'json',
         'score' => 'decimal:2',
     ];
+
+    protected $hidden = [
+        'answer',
+    ];
+
+    protected $appends = [
+        'completed',
+    ];
+
+    public function getCompletedAttribute()
+    {
+        return $this->pass;
+    }
 
     /**
      * Relasi ke User

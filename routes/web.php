@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\QuestionLevelController;
 use App\Http\Controllers\NahwuDataController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SurahController;
@@ -46,6 +47,10 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/wordgroups/split', [WordGroupController::class, 'split'])->name('wordgroups.split');
         Route::post('/wordgroups/complete', [WordGroupController::class, 'completeOrderNumber'])->name('wordgroups.complete');
 
+        // Exercise
+        Route::get('/exercise/new', [QuestionLevelController::class, 'create'])->name('exercise-level.create');
+        Route::post('/exercise/new', [QuestionLevelController::class, 'store'])->name('exercise-level.store');
+
         // Custom words routes
         Route::post('words/sync', [WordController::class, 'sync'])->name('words.sync');
         Route::get('/words/data/data-nahwu', [NahwuDataController::class, 'index']);
@@ -60,12 +65,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/metode-al-fuadi/jilid-1', function () {
             return view('pages.modul.nahwu.jilid-1', ['type_menu' => 'metode-al-fuadi']);
         })->name('metode-al-fuadi.jilid-1');
-        Route::get('/metode-al-fuadi/exercise', function () {
-            return view('pages.modul.exercise.index', ['type_menu' => '']);
-        })->name('metode-al-fuadi.exercise');
-        Route::get('/metode-al-fuadi/exercise/quran', function () {
-            return view('pages.modul.exercise.exercise', ['type_menu' => '']);
-        })->name('metode-al-fuadi.exercise.quran');
+        Route::get('/exercise', [QuestionLevelController::class, 'index'])->name('exercise-level.index');
+        Route::get('/exercise/quran', function () {
+            return view('pages.exercise.question.analyze', ['type_menu' => '']);
+        })->name('exercise.quran');
     });
 
     // User Profile

@@ -445,7 +445,6 @@ $("#btn-submit-answer").on("click", function (e) {
         const payload = {
             question_id: parseInt(questionId),
             level: 1,
-            answer: JSON.stringify(compareResult),
             pass: true,
             score: score,
             attempt_count: 1,

@@ -25,9 +25,8 @@ class UserAnswerController extends Controller
             if ($existingAnswer) {
                 $existingAnswer->update([
                     'pass' => $request->pass ?? false,
-                    'answer' => $request->answer,
                     'score' => $request->score,
-                    'attempt_count' => ($existingAnswer->attemp_count ?? 0) + 1,
+                    'attempt_count' => ($existingAnswer->attempt_count ?? 0) + 1,
                     'time_spent' => $request->time_spent,
                     'metadata' => $request->metadata,
                     'is_latest' => true,
@@ -35,7 +34,7 @@ class UserAnswerController extends Controller
 
                 return response()->json([
                     'success' => true,
-                    'message' => 'Jawaban berhasil diperbarui',
+                    'message' => 'Status penyelesaian berhasil diperbarui',
                     'data' => $existingAnswer->load(['user', 'question']),
                 ], 200);
             }
@@ -46,9 +45,8 @@ class UserAnswerController extends Controller
                 'question_id' => $questionId,
                 'level' => $level,
                 'pass' => $request->pass ?? false,
-                'answer' => $request->answer,
                 'score' => $request->score,
-                'attempt_count' => $request->attemp_count ??  1,
+                'attempt_count' => $request->attempt_count ??  1,
                 'time_spent' => $request->time_spent,
                 'metadata' => $request->metadata,
                 'is_latest' => true,
@@ -56,9 +54,39 @@ class UserAnswerController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Jawaban berhasil disimpan',
+                'message' => 'Status penyelesaian berhasil disimpan',
                 'data' => $userAnswer->load(['user', 'question']),
             ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function show($questionId)
+    {
+        try {
+            $userId = auth()->id();
+            
+            $userAnswer = UserAnswer::where('user_id', $userId)
+                ->where('question_id', $questionId)
+                ->where('is_latest', true)
+                ->first();
+
+            if (!$userAnswer) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Status tidak ditemukan',
+                ], 404);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Detail status penyelesaian',
+                'data' => $userAnswer->load(['user', 'question']),
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,

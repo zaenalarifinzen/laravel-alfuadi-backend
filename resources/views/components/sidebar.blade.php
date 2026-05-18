@@ -51,8 +51,8 @@
                         </li>
                     </ul>
                 </li>
-                <li class="{{ Request::is('metode-al-fuadi/exercise') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('metode-al-fuadi.exercise') }}">
+                <li class="{{ $type_menu === 'exercise' ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('exercise-level.index') }}">
                         <i class="fas fa-pen-to-square"></i>
                         <span>Latihan analisa</span>
                     </a>

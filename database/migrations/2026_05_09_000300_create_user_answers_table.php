@@ -17,7 +17,6 @@ return new class extends Migration
             $table->foreignId('question_id')->constrained('questions')->onDelete('cascade');
             $table->tinyInteger('level')->default(1); // 1, 2, 3
             $table->boolean('pass')->default(false);
-            $table->text('answer')->nullable();
             $table->decimal('score', 5, 2)->nullable();
             $table->integer('attempt_count')->default(1);
             $table->integer('time_spent')->nullable(); // dalam detik

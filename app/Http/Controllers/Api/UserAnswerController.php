@@ -29,10 +29,9 @@ class UserAnswerController extends Controller
                 ->first();
 
             if ($existingAnswer) {
-                // Jika sudah ada, update jawaban yang sudah ada
+                // Jika sudah ada, update status penyelesaian saja
                 $existingAnswer->update([
                     'pass' => $request->pass ?? false,
-                    'answer' => $request->answer,
                     'score' => $request->score,
                     'attempt_count' => ($existingAnswer->attempt_count ?? 0) + 1,
                     'time_spent' => $request->time_spent,
@@ -42,18 +41,17 @@ class UserAnswerController extends Controller
 
                 return response()->json([
                     'success' => true,
-                    'message' => 'Jawaban berhasil diperbarui',
+                    'message' => 'Status penyelesaian berhasil diperbarui',
                     'data' => $existingAnswer->load(['user', 'question']),
                 ], 200);
             }
 
-            // Jika belum ada, buat jawaban baru
+            // Jika belum ada, buat catatan penyelesaian baru
             $userAnswer = UserAnswer::create([
                 'user_id' => $userId,
                 'question_id' => $questionId,
                 'level' => $level,
                 'pass' => $request->pass ?? false,
-                'answer' => $request->answer,
                 'score' => $request->score,
                 'attempt_count' => $request->attempt_count ?? 1,
                 'time_spent' => $request->time_spent,
@@ -63,7 +61,7 @@ class UserAnswerController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Jawaban berhasil disimpan',
+                'message' => 'Status penyelesaian berhasil disimpan',
                 'data' => $userAnswer->load(['user', 'question']),
             ], 201);
         } catch (\Exception $e) {
@@ -90,13 +88,13 @@ class UserAnswerController extends Controller
             if (!$userAnswer) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Jawaban tidak ditemukan',
+                    'message' => 'Status tidak ditemukan',
                 ], 404);
             }
 
             return response()->json([
                 'success' => true,
-                'message' => 'Detail jawaban',
+                'message' => 'Detail status penyelesaian',
                 'data' => $userAnswer->load(['user', 'question']),
             ], 200);
         } catch (\Exception $e) {
