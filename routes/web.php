@@ -9,6 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerseController;
 use App\Http\Controllers\WordController;
 use App\Http\Controllers\WordGroupController;
+use App\Http\Controllers\QuestionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -69,6 +70,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/exercise/quran', function () {
             return view('pages.exercise.question.analyze', ['type_menu' => '']);
         })->name('exercise.quran');
+        Route::get('/exercise/analysis/{verseId}', [QuestionController::class, 'getAnalysisQuestion'])
+            ->name('exercise.analysis');
     });
 
     // User Profile

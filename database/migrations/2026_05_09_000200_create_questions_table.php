@@ -15,9 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('title', 255); // Judul soal
             $table->text('description')->nullable(); // Deskripsi atau konteks soal
-            $table->text('content'); // Isi soal
+            $table->text('content')->nullable(); // Isi soal
             $table->tinyInteger('level')->default(1); // Level 1, 2, 3
             $table->enum('type', ['multiple_choice', 'short_answer', 'essay', 'analysis'])->default('multiple_choice'); // Tipe soal
+            $table->unsignedInteger('verse_id')->nullable();
+            $table->foreign('verse_id')->references('id')->on('verses')->onDelete('cascade');
             $table->json('options')->nullable(); // Untuk multiple choice: {a: "...", b: "...", c: "...", d: "..."}
             $table->text('correct_answer')->nullable(); // Jawaban benar
             $table->text('explanation')->nullable(); // Penjelasan jawaban

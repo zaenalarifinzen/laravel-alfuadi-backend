@@ -16,7 +16,7 @@ class QuestionController extends Controller
     public function index(Request $request)
     {
         try {
-            $query = Question::with(['creator']);
+            $query = Question::with(['creator', 'verse.wordGroups.words']);
 
             // Filter by level
             if ($request->query('level')) {
@@ -82,7 +82,7 @@ class QuestionController extends Controller
     public function show($id)
     {
         try {
-            $question = Question::with(['creator', 'userAnswers'])->find($id);
+            $question = Question::with(['creator', 'userAnswers', 'verse.wordGroups.words'])->find($id);
 
             if (!$question) {
                 return response()->json([
@@ -169,7 +169,8 @@ class QuestionController extends Controller
     public function getByLevel($level)
     {
         try {
-            $questions = Question::where('level', $level)
+            $questions = Question::with('verse.wordGroups.words')
+                ->where('level', $level)
                 ->where('is_active', true)
                 ->orderBy('display_order')
                 ->get();

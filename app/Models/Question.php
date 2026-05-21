@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 class Question extends Model
 {
@@ -17,6 +18,7 @@ class Question extends Model
         'content',
         'level',
         'type',
+        'verse_id',
         'options',
         'correct_answer',
         'explanation',
@@ -33,6 +35,42 @@ class Question extends Model
         'metadata' => 'json',
         'is_active' => 'boolean',
     ];
+
+    protected $appends = [
+        'display_content',
+        'display_correct_answer',
+    ];
+
+    public static function findOrCreateAnalysisQuestion($verseId, $level = 1)
+    {
+        $admin = User::where('roles', 'administrator')->first();
+        $adminId = $admin ? $admin->id : 1;
+
+        return self::firstOrCreate(
+            [
+                'verse_id' => $verseId,
+                'type' => 'analysis',
+                'level' => $level,
+            ],
+            [
+                'title' => "Analisa ayat {$verseId}",
+                'description' => 'Soal analisa dari ayat',
+                'content' => null,
+                'correct_answer' => null,
+                'type' => 'analysis',
+                'level' => $level,
+                'is_active' => true,
+                'created_by' => $adminId,
+            ]
+        );
+    }
+
+    /**
+     * Relasi ke Verse
+     */
+    public function verse() {
+        return $this->belongsTo(Verse::class);
+    }
 
     /**
      * Relasi ke User (pembuat soal)
@@ -56,6 +94,24 @@ class Question extends Model
     public function questionLevel()
     {
         return $this->belongsTo(QuestionLevel::class, 'level', 'level_number');
+    }
+
+    public function getDisplayContentAttribute()
+    {
+        if ($this->type === 'analysis' && $this->verse) {
+            return $this->verse->text;
+        }
+
+        return $this->content;
+    }
+
+    public function getDisplayCorrectAnswerAttribute()
+    {
+        if ($this->type === 'analysis' && $this->verse) {
+            return $this->verse->translation_indo;
+        }
+
+        return $this->correct_answer;
     }
 
     /**

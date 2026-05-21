@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateQuestionRequest extends FormRequest
 {
@@ -24,11 +25,21 @@ class UpdateQuestionRequest extends FormRequest
         return [
             'title' => 'sometimes|required|string|max:255',
             'description' => 'nullable|string',
-            'content' => 'sometimes|required|string',
+            'content' => [
+                'sometimes',
+                Rule::requiredIf(fn () => $this->input('type') !== 'analysis'),
+                'string',
+                Rule::prohibitedIf(fn () => $this->input('type') === 'analysis'),
+            ],
             'level' => 'sometimes|required|integer|in:1,2,3',
             'type' => 'sometimes|required|in:multiple_choice,short_answer,essay,analysis',
             'options' => 'nullable|json',
-            'correct_answer' => 'nullable|string',
+            'correct_answer' => [
+                'sometimes',
+                Rule::requiredIf(fn () => $this->input('type') !== 'analysis'),
+                'string',
+                Rule::prohibitedIf(fn () => $this->input('type') === 'analysis'),
+            ],
             'explanation' => 'nullable|string',
             'display_order' => 'nullable|integer',
             'is_active' => 'boolean',

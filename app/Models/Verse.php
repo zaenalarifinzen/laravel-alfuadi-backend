@@ -19,4 +19,20 @@ class Verse extends Model
     ];
 
     public $timestamps = false;
+
+    /**
+     * Relasi ke Surah
+     */
+    public function surah()
+    {
+        return $this->belongsTo(Surah::Class, 'surah_id');
+    }
+
+    /**
+     * Relasi ke WordGroups - ambil semua grup kata untuk ayat ini
+     */
+    public function wordGroups()
+    {
+        return $this->hasMany(WordGroups::class, 'verse_id', 'id');
+    }
 }
