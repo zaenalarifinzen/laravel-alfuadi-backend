@@ -305,7 +305,7 @@ function fetchWordGroups(surah_id, verse_number, verse_id) {
                 }
 
                 localStorage.setItem(userAnswer, JSON.stringify(cloned));
-                renderWordGroups(cloned);
+                renderOwlSlider(cloned);
                 if (cloned.wordGroups && cloned.wordGroups.length > 0) {
                     renderWordsTable(cloned.wordGroups[0]);
                     renderWordsDetails(cloned.wordGroups[0]);
@@ -317,7 +317,7 @@ function fetchWordGroups(surah_id, verse_number, verse_id) {
                     .forEach((k) => localStorage.removeItem(k));
 
                 localStorage.setItem(storageKey, JSON.stringify(data));
-                renderWordGroups(data);
+                renderOwlSlider(data);
                 renderWordsTable(data.wordGroups[0]);
                 renderWordsDetails(data.wordGroups[0]);
             }
@@ -375,7 +375,7 @@ function fetchWords(word_group_id) {
 // =============================
 // RENDER WORDGROUPS SLIDER
 // =============================
-function renderWordGroups(data) {
+function renderOwlSlider(data) {
     // Remove existing event listeners to prevent duplicates
     $slider.off("initialized.owl.carousel");
     $slider.off("translated.owl.carousel");
@@ -761,7 +761,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const cachedData = JSON.parse(cachedRaw);
 
-    renderWordGroups(cachedData);
+    renderOwlSlider(cachedData);
     renderWordsTable(cachedData.wordGroups[0]);
     renderWordsDetails(cachedData.wordGroups[0]);
 

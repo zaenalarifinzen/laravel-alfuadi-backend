@@ -31,7 +31,7 @@
                 <h1>Latihan analisa</h1>
 
                 <div class="float-right">
-                    <form method="GET" action="{{ route('wordgroups.grouping') }}" id="filter-form" class="mb-0">
+                    <form method="GET" action="{{ route('wordgroups.grouping') }}" id="search-verse-form" class="mb-0">
                         <div class="input-group">
                             <select class="form-control {{-- select2 --}} form-control-sm" name="surah-option"
                                 id="surah-option"
@@ -143,36 +143,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab"
-                                hidden>
-                                <div class="card">
-                                    <div class="card-header">
-                                        <div class="d-flex justify-content-between align-items-center w-100">
-                                            <h4 class="mb-0">Detail Kalimat</h4>
-                                        </div>
-                                    </div>
-                                    <div class="table-sm">
-                                        <table class="table-striped table" id="detail-kalimat-table">
-                                            <thead>
-                                                <tr class="text-center">
-                                                    <th>Irob</th>
-                                                    <th style="width:110px;">Lafadz</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td colspan="5" class="text-center text-muted">Tidak ada data</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="editor-kalimat" style="padding-top: 20px" hidden>
-                            <span>Editor kalimat : </span>
-                            {{-- show editor name based on this words --}}
-                            <a href="#" class="font-weight-600" id="word-editor-info">-</a>
                         </div>
                     </div>
                 </div>
@@ -287,7 +257,7 @@
 
     <script>
         window.WORDS_SYNC_URL = "{{ route('words.sync') }}";
-        window.WORDGROUP_GET_URL = "{{ route('wordgroups.get', ['id' => ':id']) }}";
+        window.ANALYSIS_GET_URL = "{{ route('exercise.analysis', ['verseId' => ':id']) }}";
         window.CSRF_TOKEN = "{{ csrf_token() }}";
         window.PAGE_TYPE = "exercise";
     </script>
@@ -296,7 +266,9 @@
     <script src="{{ asset('js/page/components-table.js') }}"></script>
     <script src="{{ asset('js/page/words/storage-helper.js') }}?v=1.1.7"></script>
     <script src="{{ asset('js/page/words/word-crud.js') }}?v=1.1.7"></script>
-    <script src="{{ asset('js/page/words/words-page.js') }}?v=1.1.7"></script>
     <script src="{{ asset('js/page/words/nahwu-form.js') }}?v=1.1.7"></script>
-    {{-- <script src="{{ asset('js/page/words/exercise-validation.js') }}?v=1.1.7"></script> --}}
+    <script src="{{ asset('js/page/exercise/analysis-page.js') }}?v=1.1.7"></script>
+    <script src="{{ asset('js/utils/search-verse.js') }}?v=1.1.7"></script>
+    <script src="{{ asset('js/utils/owl-slider.js') }}?v=1.1.7"></script>
+    <script src="{{ asset('js/utils/word-table.js') }}?v=1.1.7"></script>
 @endpush

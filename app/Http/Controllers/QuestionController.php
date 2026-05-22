@@ -67,15 +67,41 @@ class QuestionController extends Controller
     /**
      * CUSTOM FUNCTION
      */
-    public function getAnalysisQuestion($verseId, $level = 1)
+    public function getAnalysisQuestion(Request $request, $verseId = null)
     {
         try {
-            $verse = Verse::with(['surah', 'wordGroups.words'])->find($verseId);
-            if (!$verse) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Ayat tidak ditemukan',
-                ], 404);
+            $level = 1;
+            // If verseId not provided, try to find verse by surah_id and verse_number
+            if (!$verseId) {
+                $surahId = $request->query('surah_id');
+                $verseNumber = $request->query('verse_number');
+
+                if ($surahId && $verseNumber) {
+                    $verse = Verse::with(['surah', 'wordGroups.words'])
+                        ->where('surah_id', $surahId)
+                        ->where('number', $verseNumber)
+                        ->first();
+                    if (!$verse) {
+                        return response()->json([
+                            'success' => false,
+                            'message' => 'Ayat tidak ditemukan',
+                        ], 404);
+                    }
+                    $verseId = $verse->id;
+                } else {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Parameter verseId atau (surah_id dan verse_number) diperlukan',
+                    ], 400);
+                }
+            } else {
+                $verse = Verse::with(['surah', 'wordGroups.words'])->find($verseId);
+                if (!$verse) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Ayat tidak ditemukan',
+                    ], 404);
+                }
             }
 
             $question = Question::findOrCreateAnalysisQuestion($verseId, $level);

@@ -70,7 +70,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/exercise/quran', function () {
             return view('pages.exercise.question.analyze', ['type_menu' => '']);
         })->name('exercise.quran');
-        Route::get('/exercise/analysis/{verseId}', [QuestionController::class, 'getAnalysisQuestion'])
+        Route::get('/exercise/analysis/{verseId?}', [QuestionController::class, 'getAnalysisQuestion'])
             ->name('exercise.analysis');
     });
 

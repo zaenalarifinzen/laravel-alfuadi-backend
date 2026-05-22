@@ -441,7 +441,7 @@ $("#btn-submit-answer").on("click", function (e) {
     const score = Math.round((correctAnswers / totalAnswers) * 100);
 
     if (score === 100) {
-        const questionId = verseId;
+        const questionId = currentQuestionId;
         const payload = {
             question_id: parseInt(questionId),
             level: 1,
