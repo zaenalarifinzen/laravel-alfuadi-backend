@@ -74,15 +74,17 @@ function renderOwlSlider(data) {
 
     // update wordgroup editor info
     const firstWordGroup = data?.wordGroups?.[0];
+    const editorName = firstWordGroup.editor_info
+        ? firstWordGroup.editor_info.name 
+        : " -";
+
     const editorWgInfo = $(".editor-wordgroup a").contents().last()[0];
     const btnAddWord = document.getElementById("btn-add-word");
 
-    if (firstWordGroup?.editor_info) {
-        const editorName = firstWordGroup.editor_info.name;
+    if (editorWgInfo && firstWordGroup.editor_info.name) {
         editorWgInfo.textContent = ` ${editorName}`;
         btnAddWord.style.display = "inline-block";
     } else {
-        editorWgInfo.textContent = ` -`;
         btnAddWord.style.display = "none";
     }
 }

@@ -216,6 +216,25 @@ function fetchWordGroups(surah_id, verse_number, verse_id) {
                 console.error("Invalid response data");
                 return;
             }
+            
+            const hasWords =
+                Array.isArray(data.wordGroups[0]?.words) &&
+                data.wordGroups[0]?.words.length > 0;
+
+            if (!hasWords) {
+                swal({
+                    title: "Ayat belum tersedia",
+                    text: "Silakan coba ayat lainnya",
+                    icon: "error",
+                    buttons: {
+                        confirm: {
+                            text: "Tutup",
+                            visible: true,
+                        },
+                    },
+                });
+                return;
+            }
 
             const verseId = data.verse.id;
             const answerKey = `answer_key_${verseId}`;
@@ -242,26 +261,6 @@ function fetchWordGroups(surah_id, verse_number, verse_id) {
             const cloned = structuredClone(data);
 
             localStorage.setItem(answerKey, JSON.stringify(cloned));
-
-            const hasWordGroups =
-                Array.isArray(cloned.wordGroups) &&
-                cloned.wordGroups.length > 0;
-
-            if (!hasWordGroups) {
-                swal({
-                    title: "Ayat belum tersedia",
-                    text: "Silakan coba ayat lainnya",
-                    icon: "info",
-                    buttons: {
-                        confirm: {
-                            text: "Tutup",
-                            visible: true,
-                        },
-                    },
-                });
-
-                return;
-            }
 
             cloned.wordGroups.forEach((wg) => {
                 if (!Array.isArray(wg.words)) return;

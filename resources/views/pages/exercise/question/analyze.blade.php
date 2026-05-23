@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{{ asset('library/izitoast/dist/css/iziToast.min.css') }}">
     <style>
         tr.is-wrong {
-            background-color: #ffe6e6 !important; 
+            background-color: #ffe6e6 !important;
         }
 
         tr.is-correct {
@@ -74,15 +74,6 @@
                                 </h4>
                             </div>
                         </div>
-
-                        <button id="btn-prev-slide" class="slider-nav-btn next">
-                            <i class="fa fa-chevron-right"></i>
-                        </button>
-
-                        <div class="editor-wordgroup" style="padding-top: 20px" hidden>
-                            <span>Editor grouping : </span>
-                            <a href="#" class="font-weight-600">-</a>
-                        </div>
                     </div>
 
                 </div>
@@ -90,57 +81,40 @@
 
 
                 <div class="card">
-                    <div class="card-body">
-                        <ul class="nav nav-tabs" id="myTab" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
-                                    aria-controls="home" aria-selected="true">Input</a>
-                            </li>
-                            <li class="nav-item" hidden>
-                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
-                                    aria-controls="profile" aria-selected="false">Detail</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content" id="myTabContent">
-                            <div class="tab-pane fade show active" id="home" role="tabpanel"
-                                aria-labelledby="home-tab">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <div class="d-flex justify-content-between align-items-center w-100">
-                                            <h4 class="mb-0">Tabel analisa</h4>
-                                            {{-- <label class="custom-switch mt-2">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center w-100">
+                            <h4 class="mb-0">Tabel analisa</h4>
+                            {{-- <label class="custom-switch mt-2">
                                                 <input type="checkbox" name="custom-switch-checkbox"
                                                     class="custom-switch-input">
                                                 <span class="custom-switch-indicator"></span>
                                                 <span class="custom-switch-description">Periksa</span>
                                             </label> --}}
-                                            <button class="btn btn-icon icon-left btn-primary btn-lg" id="btn-add-word" hidden>
-                                                <i class="fa-solid fa-plus"></i> Tambah
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="table-responsive" style="direction: rtl;">
-                                        <div class="table-sm">
-                                            <div class="">
-                                                <table class="table-striped table" id="sortable-table">
-                                                    <thead>
-                                                        <tr class="text-center">
-                                                            <th>Opsi</th>
-                                                            <th>Lafadz</th>
-                                                            <th>Kalimat</th>
-                                                            <th>Hukum</th>
-                                                            <th>Kategori</th>
-                                                            <th>Kedudukan</th>
-                                                            <th>I'rob</th>
-                                                            <th>Tanda</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
+                            <button class="btn btn-icon icon-left btn-primary btn-lg" id="btn-add-word" hidden>
+                                <i class="fa-solid fa-plus"></i> Tambah
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive" style="direction: rtl;">
+                            <div class="table-sm">
+                                <div class="">
+                                    <table class="table-striped table" id="sortable-table">
+                                        <thead>
+                                            <tr class="text-center">
+                                                <th>Opsi</th>
+                                                <th>Lafadz</th>
+                                                <th>Kalimat</th>
+                                                <th>Hukum</th>
+                                                <th>Kategori</th>
+                                                <th>Kedudukan</th>
+                                                <th>I'rob</th>
+                                                <th>Tanda</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
