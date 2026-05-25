@@ -24,7 +24,7 @@ class UserAnswerController extends Controller
             // Update
             if ($existingAnswer) {
                 $existingAnswer->update([
-                    'pass' => $request->pass ?? false,
+                    'passed' => $request->pass ?? false,
                     'score' => $request->score,
                     'attempt_count' => ($existingAnswer->attempt_count ?? 0) + 1,
                     'time_spent' => $request->time_spent,
@@ -44,7 +44,7 @@ class UserAnswerController extends Controller
                 'user_id' => $userId,
                 'question_id' => $questionId,
                 'level' => $level,
-                'pass' => $request->pass ?? false,
+                'passed' => $request->pass ?? false,
                 'score' => $request->score,
                 'attempt_count' => $request->attempt_count ??  1,
                 'time_spent' => $request->time_spent,

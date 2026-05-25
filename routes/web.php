@@ -54,7 +54,6 @@ Route::middleware(['auth'])->group(function () {
 
         // Custom words routes
         Route::post('words/sync', [WordController::class, 'sync'])->name('words.sync');
-        Route::get('/words/data/data-nahwu', [NahwuDataController::class, 'index']);
 
         // Resource routes
         Route::resource('wordgroups', WordGroupController::class);
@@ -72,6 +71,9 @@ Route::middleware(['auth'])->group(function () {
         })->name('exercise.quran');
         Route::get('/exercise/analysis/{verseId?}', [QuestionController::class, 'getAnalysisQuestion'])
             ->name('exercise.analysis');
+        
+            // Data Nahwu Resource
+        Route::get('/words/data/data-nahwu', [NahwuDataController::class, 'index']);
     });
 
     // User Profile

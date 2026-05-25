@@ -83,8 +83,12 @@ function renderOwlSlider(data) {
 
     if (editorWgInfo && firstWordGroup.editor_info.name) {
         editorWgInfo.textContent = ` ${editorName}`;
-        btnAddWord.style.display = "inline-block";
+        if (btnAddWord) {
+            btnAddWord.style.display = "inline-block";
+        }
     } else {
-        btnAddWord.style.display = "none";
+        if (btnAddWord) {
+            btnAddWord.style.display = "none";
+        }
     }
 }

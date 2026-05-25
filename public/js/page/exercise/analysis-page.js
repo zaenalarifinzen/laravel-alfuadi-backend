@@ -210,16 +210,17 @@ function fetchWordGroups(surah_id, verse_number, verse_id) {
         url,
         type: "GET",
         success: function (response) {
-            const data = response?.data?.content;         
+            const dataQuestion = response?.data;
+            const content = dataQuestion?.content
 
-            if (!data || !data.verse) {
+            if (!content || !content.verse) {
                 console.error("Invalid response data");
                 return;
             }
-            
+
             const hasWords =
-                Array.isArray(data.wordGroups[0]?.words) &&
-                data.wordGroups[0]?.words.length > 0;
+                Array.isArray(content.wordGroups[0]?.words) &&
+                content.wordGroups[0]?.words.length > 0;
 
             if (!hasWords) {
                 swal({
@@ -236,16 +237,17 @@ function fetchWordGroups(surah_id, verse_number, verse_id) {
                 return;
             }
 
-            const verseId = data.verse.id;
+            const verseId = content.verse.id;
             const answerKey = `answer_key_${verseId}`;
             const userAnswer = `answer_user_${verseId}`;
 
-            data.modified = false;
-            data.questionId = response?.data?.id;
+            content.modified = false;
+            content.questionId = dataQuestion.id;
+            content.passed = dataQuestion.passed;
 
             removeRefreshButton();
 
-            currentQuestionId = response?.data?.id;
+            currentQuestionId = dataQuestion?.id;
             currentCompareResult = [];
             currentCompareVerseId = null;
 
@@ -258,25 +260,31 @@ function fetchWordGroups(surah_id, verse_number, verse_id) {
                 )
                 .forEach((k) => localStorage.removeItem(k));
 
-            const cloned = structuredClone(data);
+            const cloned = structuredClone(content);
+            const passed = dataQuestion.passed;
 
             localStorage.setItem(answerKey, JSON.stringify(cloned));
 
-            cloned.wordGroups.forEach((wg) => {
-                if (!Array.isArray(wg.words)) return;
+            if (!passed) {
+                cloned.wordGroups.forEach((wg) => {
+                    if (!Array.isArray(wg.words)) return;
 
-                wg.words.forEach((w) => {
-                    Object.assign(w, {
-                        color : null,
-                        kalimat : null,
-                        hukum : null,
-                        kategori : null,
-                        kedudukan : null,
-                        irob : null,
-                        tanda : null,
-                    })
+                    wg.words.forEach((w) => {
+                        Object.assign(w, {
+                            color: null,
+                            kalimat: null,
+                            hukum: null,
+                            kategori: null,
+                            kedudukan: null,
+                            irob: null,
+                            tanda: null,
+                        });
+                    });
                 });
-            });
+
+                resetCard();
+                changeSubmitButton('btn-submit-answer', 'Submit', 'success');
+            }
 
             localStorage.setItem(userAnswer, JSON.stringify(cloned));
 
@@ -286,6 +294,12 @@ function fetchWordGroups(surah_id, verse_number, verse_id) {
 
             renderWordsTable(firstWordGroup);
             renderWordsDetails(firstWordGroup);
+
+            if (passed) {
+                resetCard();
+                updateCard('Selesai', 'success')
+                changeSubmitButton('btn-next-verse', 'Selanjutnya', 'primary');
+            }
 
             // Update URL in address bar
             history.pushState({}, "", `?verse_id=${verseId}`);
@@ -338,6 +352,19 @@ function fetchWords(word_group_id) {
     renderWordsDetails(activeGroup);
 }
 
+function changeSubmitButton(id, label, type) {
+    // get from name attribute
+    const submitBtn = document.querySelector(`button[name="btn-submit"]`);
+    if (submitBtn) {
+        // change id from parameter: id
+        submitBtn.id = id;
+        submitBtn.textContent = label;
+
+        submitBtn.classList.remove("btn-success", "btn-secondary", "btn-primary", "btn-danger");
+        submitBtn.classList.add(`btn-${type}`);
+    }
+}
+
 // =============================
 // DOM
 // =============================
@@ -360,7 +387,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // ------------------------------------------------------
 
     const cachedData = JSON.parse(cachedRaw);
-
+    
     currentQuestionId = cachedData.questionId;
     renderOwlSlider(cachedData);
     renderWordsTable(cachedData.wordGroups[0]);
@@ -368,11 +395,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (cachedData.modified) {
         addRefreshButton();
+        changeSubmitButton('btn-submit-answer', 'Submit', 'success');
 
         iziToast.info({
             message: "Data sebelumnya berhasil dipulihkan",
             position: "bottomCenter",
         });
+    }
+
+    if (cachedData.passed) {
+        updateCard('Selesai', 'success')
     }
 
     // Note: fetchWords for firstGroup is handled by carousel initialized event in renderWordGroups

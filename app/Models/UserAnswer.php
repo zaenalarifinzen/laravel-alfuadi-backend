@@ -15,7 +15,7 @@ class UserAnswer extends Model
         'user_id',
         'question_id',
         'level',
-        'pass',
+        'passed',
         'score',
         'attempt_count',
         'time_spent',
@@ -24,7 +24,7 @@ class UserAnswer extends Model
     ];
 
     protected $casts = [
-        'pass' => 'boolean',
+        'passed' => 'boolean',
         'is_latest' => 'boolean',
         'metadata' => 'json',
         'score' => 'decimal:2',
@@ -74,6 +74,6 @@ class UserAnswer extends Model
     {
         return $query->where('user_id', $userId)
             ->where('level', $level)
-            ->where('pass', true);
+            ->where('passed', true);
     }
 }

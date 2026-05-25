@@ -171,6 +171,7 @@ $("#form-add-word").on("submit", function (e) {
     // track modification
     // modified = true;
     markModified(wordGroupsPrefix);
+    changeSubmitButton('btn-submit-answer', 'Submit', 'success');
 
     // re render word table & details
     renderWordsTable(wordGroup);
@@ -409,7 +410,7 @@ $("#btn-save-all").on("click", function (e) {
 });
 
 // SUBMIT USER ANSWER
-$("#btn-submit-answer").on("click", function (e) {
+$(document).on("click", "button[name='btn-submit']", function (e) {
     e.preventDefault();
 
     const verseId = currentVerseId.value;
@@ -419,6 +420,14 @@ $("#btn-submit-answer").on("click", function (e) {
             position: "topRight",
         });
         return;
+    }
+    
+    // passed check
+    const btnId = this.id;
+    if (btnId === 'btn-next-verse') {
+        const nextVerse = Number(currentVerseId.value) + 1;
+        fetchWordGroups(null, null, nextVerse)
+        return
     }
 
     const compareResult = compareAnswers(verseId);
@@ -468,12 +477,13 @@ $("#btn-submit-answer").on("click", function (e) {
             data: JSON.stringify(payload),
             beforeSend: function () {
                 $("#btn-submit-answer")
-                    .prop("disabled", true)
                     .text("Menyimpan...");
             },
             success: function (response) {
-                console.log("Success response:", response);
                 if (response.success) {
+                    resetCard();
+                    changeSubmitButton('btn-next-verse', 'Selanjutnya', 'primary');
+
                     swal({
                         icon: 'success',
                         title: "Selamat",
@@ -532,7 +542,7 @@ $("#btn-submit-answer").on("click", function (e) {
                 });
             },
             complete: function () {
-                $("#btn-submit-answer").prop("disabled", false).text("Submit");
+                $("#btn-submit-answer").text("Submit");
             },
         });
     } else {

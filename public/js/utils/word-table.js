@@ -218,3 +218,37 @@ function removeRefreshButton() {
         btn.remove();
     }
 }
+
+function updateCard(label, type) {
+    const cardHeader = document.getElementById('input-table-header');
+    const headerContainer = cardHeader.querySelector(".d-flex");
+
+    const parent = cardHeader.parentElement;
+    parent.classList.add(`card-${type}`)
+    
+    const bagdeWrapper = document.createElement('div');
+    bagdeWrapper.innerHTML = `
+        <span class="badge badge-${type}"><i class="fas fa-check mr-1"></i> ${label}</span>
+    `;
+
+    if (headerContainer) {
+        headerContainer.appendChild(bagdeWrapper);
+    }
+}
+
+function resetCard() {
+    const cardHeader = document.getElementById('input-table-header');
+    const headerContainer = cardHeader.querySelector(".d-flex");
+
+    const parent = cardHeader.parentElement;
+    parent.classList.remove(`card-success`, `card-danger`, `card-warning`, `card-info`);
+    
+    const bagdeWrapper = headerContainer.querySelector(".badge");
+
+    if (bagdeWrapper) {
+        bagdeWrapper.remove();
+    }
+
+    // update submit button
+    changeSubmitButton('btn-submit-answer', 'Submit', 'success');
+}

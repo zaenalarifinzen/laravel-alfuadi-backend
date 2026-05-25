@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Question;
+use App\Models\UserAnswer;
 use App\Models\Verse;
 use Illuminate\Http\Request;
 
@@ -157,6 +158,16 @@ class QuestionController extends Controller
                     return $groupData;
                 })->toArray(),
             ];
+
+            if (auth()->check()) {
+                $ua = UserAnswer::where('user_id', auth()->id())
+                    ->where('question_id', $question->id)
+                    ->where('passed', true)
+                    ->latest()
+                    ->first();
+
+                $question['passed'] = $ua ? (bool) $ua->passed : false;
+            }
 
             return response()->json([
                 'success' => true,

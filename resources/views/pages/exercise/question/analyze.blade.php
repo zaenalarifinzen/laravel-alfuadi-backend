@@ -74,6 +74,10 @@
                                 </h4>
                             </div>
                         </div>
+
+                        <button id="btn-prev-slide" class="slider-nav-btn next">
+                            <i class="fa fa-chevron-right"></i>
+                        </button>
                     </div>
 
                 </div>
@@ -81,18 +85,9 @@
 
 
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header" id="input-table-header">
                         <div class="d-flex justify-content-between align-items-center w-100">
                             <h4 class="mb-0">Tabel analisa</h4>
-                            {{-- <label class="custom-switch mt-2">
-                                                <input type="checkbox" name="custom-switch-checkbox"
-                                                    class="custom-switch-input">
-                                                <span class="custom-switch-indicator"></span>
-                                                <span class="custom-switch-description">Periksa</span>
-                                            </label> --}}
-                            <button class="btn btn-icon icon-left btn-primary btn-lg" id="btn-add-word" hidden>
-                                <i class="fa-solid fa-plus"></i> Tambah
-                            </button>
                         </div>
                     </div>
                     <div class="card-body">
@@ -128,7 +123,7 @@
                                 class="ion-chevron-right" data-pack="default" data-tags="arrow, left"></i></button>
                     </div>
                     <div>
-                        <button class="btn btn-icon icon-left btn-success btn-lg" id="btn-submit-answer">Submit</button>
+                        <button class="btn btn-icon icon-left btn-success btn-lg" name="btn-submit" id="btn-submit-answer">Submit</button>
                     </div>
 
                 </div>
