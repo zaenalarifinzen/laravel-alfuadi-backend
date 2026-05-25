@@ -228,7 +228,7 @@ function updateCard(label, type) {
     
     const bagdeWrapper = document.createElement('div');
     bagdeWrapper.innerHTML = `
-        <span class="badge badge-${type}"><i class="fas fa-check mr-1"></i> ${label}</span>
+        <span class="badge badge-${type}"><i class="fas fa-check mr-1"></i>${label}</span>
     `;
 
     if (headerContainer) {
@@ -250,5 +250,5 @@ function resetCard() {
     }
 
     // update submit button
-    changeSubmitButton('btn-submit-answer', 'Submit', 'success');
+    changeSubmitButton('btn-submit-answer', 'Submit', 'primary');
 }

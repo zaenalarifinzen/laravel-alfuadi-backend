@@ -418,11 +418,7 @@ class NahwuFormController {
     }
 
     bindRelations() {
-        const data = MasterData.raw;
-
         const kalimat = this.instances.kalimat;
-        const kategori = this.instances.kategori;
-        const kedudukan = this.instances.kedudukan;
 
         if (!kalimat) return;
 
@@ -440,249 +436,222 @@ class NahwuFormController {
 
             const selected = kalimat.select.value;
 
-            const filteredKategori = data.kategori
-                .filter((k) => k.id_kalimat === selected)
-                .map((k) => ({
-                    value: k.id,
-                    label: k.kategori_ar_musyakal,
-                    label_ar: k.kategori_ar,
-                    label_in: k.kategori_in,
-                }));
+            this.updateKategoriOptions(selected);
+            this.updateKedudukanOptions(selected);
 
-            kategori?.setData(filteredKategori);
+            this.enableAllRelationFields();
+            this.applyKalimatFieldRules(selected);
+        });
+    }
 
-            // Special case for id_kalimat 41,42 and 50 (jumlah, shibhul jumlah & isim muawwal)
-            if (selected === "41" || selected === "42" || selected === "50") {
-                const filteredKedudukan = data.kedudukan
-                    .filter((k) => ["10", "41"].includes(k.id_kalimat))
-                    .map((k) => ({
-                        value: k.id,
-                        label: k.kedudukan_ar_musyakal,
-                        label_ar: k.kedudukan_ar,
-                        label_in: k.kedudukan_in,
-                    }));
-                kedudukan?.setData(filteredKedudukan);
-            } else {
-                const filteredKedudukan = data.kedudukan
-                    .filter((k) => k.id_kalimat === selected)
-                    .map((k) => ({
-                        value: k.id,
-                        label: k.kedudukan_ar_musyakal,
-                        label_ar: k.kedudukan_ar,
-                        label_in: k.kedudukan_in,
-                    }));
+    updateKategoriOptions(selectedKalimat) {
+        const kategori = this.instances.kategori;
+        if (!kategori) return;
 
-                kedudukan?.setData(filteredKedudukan);
-            }
+        const data = MasterData.raw;
+        const filteredKategori = data.kategori
+            .filter((k) => k.id_kalimat === selectedKalimat)
+            .map((k) => this.createOptionItem(k.id, k.kategori_ar_musyakal, k.kategori_ar, k.kategori_in));
 
-            // ====================
-            // FIELD CONTROLLER
-            // ====================
+        kategori.setData(filteredKategori);
+    }
 
-            // Enable all first
-            this.instances.kategori?.enable();
-            this.instances.kedudukan?.enable();
-            this.instances.hukum?.enable();
-            this.instances.irob?.enable();
-            this.instances.tanda?.enable();
-            this.instances.simbol?.enable();
+    updateKedudukanOptions(selectedKalimat) {
+        const kedudukan = this.instances.kedudukan;
+        if (!kedudukan) return;
 
-            // Rule Config (disable fields based on selected kalimat)
-            const FIELD_RULES = {
-                21: ["kedudukan", "irob", "tanda"],
-                23: ["kedudukan", "irob", "tanda"],
-                30: ["kedudukan", "irob", "tanda"],
-                41: ["kategori", "hukum"],
-                42: ["hukum"],
-                50: ["kategori", "hukum"],
-            };
+        const data = MasterData.raw;
+        const candidates = ["41", "42", "50"].includes(selectedKalimat)
+            ? data.kedudukan.filter((k) => ["10", "41"].includes(k.id_kalimat))
+            : data.kedudukan.filter((k) => k.id_kalimat === selectedKalimat);
 
-            const fieldToDisable = FIELD_RULES[selected] || [];
+        const filteredKedudukan = candidates.map((k) =>
+            this.createOptionItem(k.id, k.kedudukan_ar_musyakal, k.kedudukan_ar, k.kedudukan_in),
+        );
 
-            fieldToDisable.forEach((name) => {
-                this.instances[name]?.disable();
-            });
+        kedudukan.setData(filteredKedudukan);
+    }
+
+    createOptionItem(value, label, label_ar = "", label_in = "") {
+        return { value, label, label_ar, label_in };
+    }
+
+    enableAllRelationFields() {
+        this.instances.kategori?.enable();
+        this.instances.kedudukan?.enable();
+        this.instances.hukum?.enable();
+        this.instances.irob?.enable();
+        this.instances.tanda?.enable();
+        this.instances.simbol?.enable();
+    }
+
+    applyKalimatFieldRules(selected) {
+        const FIELD_RULES = {
+            21: ["kedudukan", "irob", "tanda"],
+            23: ["kedudukan", "irob", "tanda"],
+            30: ["kedudukan", "irob", "tanda"],
+            41: ["kategori", "hukum"],
+            42: ["hukum"],
+            50: ["kategori", "hukum"],
+        };
+
+        const fieldToDisable = FIELD_RULES[selected] || [];
+        fieldToDisable.forEach((name) => {
+            this.instances[name]?.disable();
         });
     }
 
     bindAutoFill() {
-        const data = MasterData.raw;
-
         const kategori = this.instances.kategori;
         const kedudukan = this.instances.kedudukan;
-        const hukum = this.instances.hukum;
-        const irob = this.instances.irob;
-        const tanda = this.instances.tanda;
-        const simbol = this.instances.simbol;
 
-        // ==========================
-        // KATEGORI -> HUKUM + TANDA
-        // ==========================
-        kategori?.select.addEventListener("change", (e) => {
-            const isRestoring = e.detail?.isRestoring || false;
+        kategori?.select.addEventListener("change", (e) => this.handleKategoriChange(e));
+        kedudukan?.select.addEventListener("change", (e) => this.handleKedudukanChange(e));
+    }
 
-            // reset child dropdowns
-            if (!isRestoring) {
-                this.resetDropdown(this.instances.kedudukan);
-                this.resetDropdown(this.instances.hukum);
-                this.resetDropdown(this.instances.irob);
-                this.resetDropdown(this.instances.tanda);
-                this.resetDropdown(this.instances.simbol);
+    handleKategoriChange(e) {
+        const isRestoring = e.detail?.isRestoring || false;
+
+        if (!isRestoring) {
+            this.resetDropdown(this.instances.kedudukan);
+            this.resetDropdown(this.instances.hukum);
+            this.resetDropdown(this.instances.irob);
+            this.resetDropdown(this.instances.tanda);
+            this.resetDropdown(this.instances.simbol);
+        }
+
+        const selectedKategori = this.getKategoriById(this.instances.kategori?.select.value);
+        if (!selectedKategori) return;
+
+        this.autoFillHukumAndSimbolByKategori(selectedKategori);
+    }
+
+    handleKedudukanChange(e) {
+        const isRestoring = e.detail?.isRestoring || false;
+
+        if (!isRestoring) {
+            this.resetDropdown(this.instances.irob);
+            this.resetDropdown(this.instances.tanda);
+        }
+
+        const selectedKedudukan = this.getKedudukanById(this.instances.kedudukan?.select.value);
+        if (!selectedKedudukan) return;
+
+        if (selectedKedudukan.id === "KD4101" || selectedKedudukan.id === "KD4102") {
+            this.instances.irob?.disable();
+            this.instances.tanda?.disable();
+            return;
+        }
+
+        if (selectedKedudukan.id === "KD1006") {
+            this.instances.hukum?.disable();
+            this.instances.irob?.disable();
+            this.instances.tanda?.disable();
+            return;
+        }
+
+        if (selectedKedudukan.id === "KD1056") {
+            this.instances.irob?.disable();
+            this.instances.tanda?.disable();
+            return;
+        }
+
+        this.instances.irob?.enable();
+        this.instances.tanda?.enable();
+
+        if (this.instances.irob && selectedKedudukan.irob) {
+            this.instances.irob.setData([
+                this.createOptionItem(selectedKedudukan.irob, selectedKedudukan.irob),
+            ]);
+            this.instances.irob.setValue(selectedKedudukan.irob, true);
+        }
+
+        const selectedKategori = this.getKategoriForTanda(this.instances.kalimat?.select.value);
+        if (selectedKategori && this.instances.tanda) {
+            const tandaList = [
+                selectedKategori.rofa,
+                selectedKategori.nashob,
+                selectedKategori.jar,
+                selectedKategori.jazm,
+            ]
+                .filter(Boolean)
+                .map((val) => this.createOptionItem(val, val));
+
+            this.instances.tanda.setData(tandaList);
+
+            let tandaIrob = "";
+            const currentIrob = this.instances.irob?.data?.[0]?.value || "";
+
+            switch (currentIrob) {
+                case "مَرْفُوْعٌ":
+                    tandaIrob = selectedKategori.rofa;
+                    break;
+                case "مَنْصُوْبٌ":
+                    tandaIrob = selectedKategori.nashob;
+                    break;
+                case "مَجْرُوْرٌ":
+                    tandaIrob = selectedKategori.jar;
+                    break;
+                case "مَجْزُوْمٌ":
+                    tandaIrob = selectedKategori.jazm;
+                    break;
             }
 
-            const kategoriInstance = this.instances.kategori;
-            const selectedKategori = data.kategori.find(
-                (k) => k.id == kategoriInstance.select.value,
-            );
+            this.instances.tanda.setValue(tandaIrob, true);
+        }
 
-            if (!selectedKategori) return;
-
-            // Hukum
-            if (hukum && selectedKategori.hukum) {
-                hukum.setData([
-                    {
-                        value: selectedKategori.hukum,
-                        label: selectedKategori.hukum,
-                    },
+        if (this.instances.hukum?.select.value.trim() === "مُعْرَبٌ" || this.instances.kalimat?.select.value !== "22") {
+            if (this.instances.simbol && selectedKedudukan.simbol) {
+                this.instances.simbol.setData([
+                    this.createOptionItem(selectedKedudukan.simbol, selectedKedudukan.simbol),
                 ]);
-                hukum.setValue(selectedKategori.hukum, true);
-
-                // if kalimat is fiil madhi (21) or fiil amr (23) or 30 (huruf) or mudhori mabni, set simbol
-                const kalimatId = selectedKategori.id_kalimat;
-                if (
-                    kalimatId === "21" ||
-                    kalimatId === "23" ||
-                    kalimatId === "30" ||
-                    (kalimatId === "22" &&
-                        hukum.data?.[0]?.value !== "مُعْرَبٌ")
-                ) {
-                    simbol.setData([
-                        {
-                            value: selectedKategori.simbol,
-                            label: selectedKategori.simbol,
-                        },
-                    ]);
-                    simbol.setValue(selectedKategori.simbol, true);
-                }
+                this.instances.simbol.setValue(selectedKedudukan.simbol);
             }
-        });
+        }
+    }
 
-        // ==========================
-        // KEDUDUKAN -> IROB + TANDA + SIMBOL
-        // ==========================
+    autoFillHukumAndSimbolByKategori(selectedKategori) {
+        if (!this.instances.hukum || !selectedKategori.hukum) return;
 
-        kedudukan?.select.addEventListener("change", (e) => {
-            const isRestoring = e.detail?.isRestoring || false;
+        this.instances.hukum.setData([
+            this.createOptionItem(selectedKategori.hukum, selectedKategori.hukum),
+        ]);
+        this.instances.hukum.setValue(selectedKategori.hukum, true);
 
-            // reset child dropdowns
-            if (!isRestoring) {
-                this.resetDropdown(this.instances.irob);
-                this.resetDropdown(this.instances.tanda);
-            }
-
-            const kalimatId = this.instances.kalimat?.select.value;
-            const selectedKedudukan = data.kedudukan.find(
-                (k) => k.id == kedudukan.select.value,
-            );
-
-            if (!selectedKedudukan) return;
-
-            if (
-                selectedKedudukan.id === "KD4101" ||
-                selectedKedudukan.id === "KD4102"
-            ) {
-                // if jumlah or sibhul jumlah, disable irob dan tanda
-                this.instances.irob?.disable();
-                this.instances.tanda?.disable();
-            } else if (selectedKedudukan.id === "KD1006") {
-                // if fail mustatir, disable hukum, irob and tanda
-                this.instances.hukum?.disable();
-                this.instances.irob?.disable();
-                this.instances.tanda?.disable();
-            } else if (selectedKedudukan.id === "KD1056") {
-                // if dhomir fashl, disable irob and tanda
-                this.instances.irob?.disable();
-                this.instances.tanda?.disable();
-            } else {
-                this.instances.irob?.enable();
-                this.instances.tanda?.enable();
-
-                if (irob && selectedKedudukan.irob) {
-                    irob.setData([
-                        {
-                            value: selectedKedudukan.irob,
-                            label: selectedKedudukan.irob,
-                        },
-                    ]);
-                    irob.setValue(selectedKedudukan.irob, true);
-                }
-
-                // Tanda
-                const kategoriInstance = this.instances.kategori;
-                let selectedKategori = null;
-
-                if (kalimatId !== "50" && kalimatId !== "41") {
-                    selectedKategori = data.kategori.find(
-                        (k) => k.id == kategoriInstance.select.value,
-                    );
-                } else {
-                    selectedKategori = data.kategori.find(
-                        (k) => k.id === "C1008",
-                    );
-                }
-
-                if (tanda) {
-                    const tandaList = [
-                        selectedKategori.rofa,
-                        selectedKategori.nashob,
-                        selectedKategori.jar,
-                        selectedKategori.jazm,
-                    ]
-                        .filter(Boolean)
-                        .map((val) => ({
-                            value: val,
-                            label: val,
-                        }));
-
-                    tanda.setData(tandaList);
-
-                    let tandaIrob = "";
-                    const currentIrob = irob?.data?.[0]?.value || "";
-
-                    switch (currentIrob) {
-                        case "مَرْفُوْعٌ":
-                            tandaIrob = selectedKategori.rofa;
-                            break;
-                        case "مَنْصُوْبٌ":
-                            tandaIrob = selectedKategori.nashob;
-                            break;
-                        case "مَجْرُوْرٌ":
-                            tandaIrob = selectedKategori.jar;
-                            break;
-                        case "مَجْزُوْمٌ":
-                            tandaIrob = selectedKategori.jazm;
-                            break;
-                    }
-
-                    tanda.setValue(tandaIrob, true);
-                }
-            }
-
-            // Simbol
-
-            if (kalimatId === "22" && hukum?.select.value.trim() !== "مُعْرَبٌ")
-                return;
-
-            if (simbol && selectedKedudukan.simbol) {
-                simbol.setData([
-                    {
-                        value: selectedKedudukan.simbol,
-                        label: selectedKedudukan.simbol,
-                    },
+        const kalimatId = selectedKategori.id_kalimat;
+        if (
+            kalimatId === "21" ||
+            kalimatId === "23" ||
+            kalimatId === "30" ||
+            (kalimatId === "22" && this.instances.hukum.data?.[0]?.value !== "مُعْرَبٌ")
+        ) {
+            if (this.instances.simbol && selectedKategori.simbol) {
+                this.instances.simbol.setData([
+                    this.createOptionItem(selectedKategori.simbol, selectedKategori.simbol),
                 ]);
-                simbol.setValue(selectedKedudukan.simbol);
+                this.instances.simbol.setValue(selectedKategori.simbol, true);
             }
-        });
+        }
+    }
+
+    getKategoriById(id) {
+        const data = MasterData.raw;
+        return data.kategori.find((k) => k.id == id) || null;
+    }
+
+    getKedudukanById(id) {
+        const data = MasterData.raw;
+        return data.kedudukan.find((k) => k.id == id) || null;
+    }
+
+    getKategoriForTanda(kalimatId) {
+        const data = MasterData.raw;
+
+        if (kalimatId !== "50" && kalimatId !== "41") {
+            return data.kategori.find((k) => k.id == this.instances.kategori?.select.value) || null;
+        }
+
+        return data.kategori.find((k) => k.id === "C1008") || null;
     }
 
     bindFormValidation() {

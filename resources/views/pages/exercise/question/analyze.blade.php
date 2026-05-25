@@ -123,7 +123,7 @@
                                 class="ion-chevron-right" data-pack="default" data-tags="arrow, left"></i></button>
                     </div>
                     <div>
-                        <button class="btn btn-icon icon-left btn-success btn-lg" name="btn-submit" id="btn-submit-answer">Submit</button>
+                        <button class="btn btn-icon icon-left btn-primary btn-lg" name="btn-submit" id="btn-submit-answer">Submit</button>
                     </div>
 
                 </div>
@@ -151,12 +151,12 @@
                             <div class="form-group col-12">
                                 {{-- <label for="input-lafadz">Lafadz</label> --}}
                                 <input type="text" class="form-control arabic-text ar-title input-big text-center"
-                                    id="input-lafadz" placeholder="لفظ">
+                                    id="input-lafadz" placeholder="لفظ" disabled>
                             </div>
                             <div class="form-group col-12">
                                 {{-- <label for="input-translation">Terjemah</label> --}}
                                 <input type="text" class="form-control text-center" id="input-translation"
-                                    placeholder="terjemah">
+                                    placeholder="terjemah" disabled>
                             </div>
                         </div>
                         {{-- additional fields --}}
@@ -234,9 +234,9 @@
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/components-table.js') }}"></script>
     <script src="{{ asset('js/page/words/storage-helper.js') }}?v=1.1.7"></script>
-    <script src="{{ asset('js/page/words/word-crud.js') }}?v=1.1.7"></script>
     <script src="{{ asset('js/page/words/nahwu-form.js') }}?v=1.1.7"></script>
     <script src="{{ asset('js/page/exercise/analysis-page.js') }}?v=1.1.7"></script>
+    <script src="{{ asset('js/page/exercise/analysis-answer-handler.js') }}?v=1.1.7"></script>
     <script src="{{ asset('js/utils/search-verse.js') }}?v=1.1.7"></script>
     <script src="{{ asset('js/utils/owl-slider.js') }}?v=1.1.7"></script>
     <script src="{{ asset('js/utils/word-table.js') }}?v=1.1.7"></script>

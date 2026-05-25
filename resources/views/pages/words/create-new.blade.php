@@ -16,7 +16,7 @@
                 <h1>Input I'rob</h1>
 
                 <div class="float-right">
-                    <form method="GET" action="{{ route('wordgroups.grouping') }}" id="filter-form" class="mb-0">
+                    <form method="GET" action="{{ route('wordgroups.grouping') }}" id="search-verse-form" class="mb-0">
                         <div class="input-group">
                             <select class="form-control {{-- select2 --}} form-control-sm" name="surah-option"
                                 id="surah-option"
@@ -266,7 +266,7 @@
                                 class="ion-chevron-right" data-pack="default" data-tags="arrow, left"></i></button>
                     </div>
                     <div>
-                        <button class="btn btn-icon icon-left btn-success btn-lg" id="btn-save-all"
+                        <button class="btn btn-icon icon-left btn-success btn-lg" name="btn-submit" id="btn-save-all"
                             style="display: none;">Simpan &
                             lanjutkan</button>
                     </div>
@@ -399,4 +399,7 @@
     <script src="{{ asset('js/page/words/word-crud.js') }}?v=1.1.7"></script>
     <script src="{{ asset('js/page/words/words-page.js') }}?v=1.1.7"></script>
     <script src="{{ asset('js/page/words/nahwu-form.js') }}?v=1.1.7"></script>
+    <script src="{{ asset('js/utils/search-verse.js') }}?v=1.1.7"></script>
+    <script src="{{ asset('js/utils/owl-slider.js') }}?v=1.1.7"></script>
+    <script src="{{ asset('js/utils/word-table.js') }}?v=1.1.7"></script>
 @endpush

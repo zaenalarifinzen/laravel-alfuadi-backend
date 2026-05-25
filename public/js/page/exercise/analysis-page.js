@@ -283,7 +283,7 @@ function fetchWordGroups(surah_id, verse_number, verse_id) {
                 });
 
                 resetCard();
-                changeSubmitButton('btn-submit-answer', 'Submit', 'success');
+                changeSubmitButton('btn-submit-answer', 'Submit', 'primary');
             }
 
             localStorage.setItem(userAnswer, JSON.stringify(cloned));
@@ -395,7 +395,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (cachedData.modified) {
         addRefreshButton();
-        changeSubmitButton('btn-submit-answer', 'Submit', 'success');
+        changeSubmitButton('btn-submit-answer', 'Submit', 'primary');
 
         iziToast.info({
             message: "Data sebelumnya berhasil dipulihkan",
@@ -404,10 +404,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (cachedData.passed) {
+        changeSubmitButton('btn-next-verse', 'Selanjutnya', 'primary');
         updateCard('Selesai', 'success')
     }
-
-    // Note: fetchWords for firstGroup is handled by carousel initialized event in renderWordGroups
 });
 
 $(document).ajaxStart(showLoading);
