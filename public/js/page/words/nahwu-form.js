@@ -23,375 +23,12 @@ const MasterData = {
 };
 
 /* ======================================================
-   CUSTOM DROPDOWN COMPONENT
-   ====================================================== */
-
-class CustomDropdown {
-    constructor(selectElement) {
-        this.select = selectElement;
-        this.name = selectElement.name;
-        this.isRequired = this.select.hasAttribute("required");
-        this.select.removeAttribute("required");
-
-        this.placeholder =
-            selectElement.getAttribute("placeholder") || `Pilih ${this.name}`;
-
-        this.buildHTML();
-        this.cacheElements();
-        this.init();
-    }
-
-    buildHTML() {
-        this.select.style.display = "none";
-
-        this.wrapper = document.createElement("div");
-        this.wrapper.classList.add("custom-dropdown");
-
-        if (this.select.disabled) {
-            this.wrapper.classList.add("disabled");
-        }
-
-        this.wrapper.innerHTML = `
-            <div class="select-btn">
-                <span>${this.placeholder}</span>
-                <i class="fa-solid fa-angle-down"></i>
-            </div>
-            <div class="content">
-                <div class="search">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" placeholder="Cari">
-                </div>
-                <ul class="options"></ul>
-            </div>
-            <small class="error-message"></small>
-        `;
-
-        this.select.after(this.wrapper);
-    }
-
-    cacheElements() {
-        this.selectBtn = this.wrapper.querySelector(".select-btn");
-        this.searchInput = this.wrapper.querySelector(".search input");
-        this.optionsContainer = this.wrapper.querySelector(".options");
-        this.displaySpan = this.selectBtn.querySelector("span");
-        this.errorMessage = this.wrapper.querySelector(".error-message");
-    }
-
-    async init() {
-        await MasterData.load();
-        this.data = this.buildInitialData();
-        this.populateSelect();
-        this.renderOptions();
-        this.bindEvents();
-    }
-
-    buildInitialData() {
-        const data = MasterData.raw;
-
-        switch (this.name) {
-            case "kalimat":
-                return data.kalimat.map((i) => ({
-                    value: i.id,
-                    label_in: i.kalimat_in,
-                    label_ar: i.kalimat_ar,
-                    label: i.kalimat_ar_musyakal,
-                }));
-
-            case "kategori":
-                return data.kategori.map((i) => ({
-                    value: i.id,
-                    label_in: i.kategori_in,
-                    label_ar: i.kategori_ar,
-                    label: i.kategori_ar_musyakal,
-                }));
-
-            case "kedudukan":
-                return data.kedudukan.map((i) => ({
-                    value: i.id,
-                    label_in: i.kedudukan_in,
-                    label_ar: i.kedudukan_ar,
-                    label: i.kedudukan_ar_musyakal,
-                }));
-
-            case "hukum":
-                return [...new Set(data.kategori.map((k) => k.hukum))]
-                    .filter(Boolean)
-                    .map((h) => ({
-                        value: h,
-                        label_in: "",
-                        label_ar: h,
-                        label: h,
-                    }));
-
-            case "irob":
-                return [...new Set(data.kedudukan.map((k) => k.irob))]
-                    .filter(Boolean)
-                    .map((i) => ({
-                        value: i,
-                        label_in: i,
-                        label_ar: i,
-                        label: i,
-                    }));
-
-            case "tanda":
-                const tandaSet = new Set();
-
-                data.kategori.forEach((k) => {
-                    [k.rofa, k.nashob, k.jar, k.jazm]
-                        .map((val) => (val ? val.trim() : ""))
-                        .filter((val) => val !== "")
-                        .forEach((val) => tandaSet.add(val));
-                });
-
-                return Array.from(tandaSet).map((t) => ({
-                    value: t,
-                    label_in: t,
-                    label_ar: t,
-                    label: t,
-                }));
-
-            case "simbol":
-                return [...new Set(data.kedudukan.map((k) => k.simbol))]
-                    .filter(Boolean)
-                    .map((s) => ({
-                        value: s,
-                        label_in: s,
-                        label_ar: s,
-                        label: s,
-                    }));
-
-            default:
-                return [];
-        }
-    }
-
-    populateSelect() {
-        this.select.innerHTML = `<option value="">${this.placeholder}</option>`;
-        this.data.forEach((item) => {
-            const option = document.createElement("option");
-            option.value = item.value;
-            option.textContent = item.label;
-            this.select.appendChild(option);
-        });
-    }
-
-    renderOptions(filtered = null) {
-        const dataset = filtered || this.data;
-        this.optionsContainer.innerHTML = "";
-
-        if (!dataset || dataset.length === 0) {
-            const searchVal = this.searchInput.value.trim();
-            this.optionsContainer.innerHTML = `<span>Data tidak ditemukan.</span>`;
-
-            // Custom option
-            if (searchVal) {
-                const addNew = document.createElement("li");
-                addNew.classList.add("add-new-option");
-                addNew.innerHTML = `Tambah "<b class=>${searchVal}</b>"`;
-                addNew.addEventListener("click", () => {
-                    this.addNewOption(searchVal);
-                });
-                this.optionsContainer.appendChild(addNew);
-            }
-            return;
-        }
-
-        dataset.forEach((item) => {
-            const li = document.createElement("li");
-            li.classList.add("ar");
-            li.textContent = item.label;
-            li.dataset.value = item.value;
-
-            if (item.value == this.select.value) {
-                li.classList.add("selected");
-            }
-
-            li.addEventListener("click", () => {
-                this.setValue(item.value);
-            });
-
-            this.optionsContainer.appendChild(li);
-        });
-    }
-
-    addNewOption(value) {
-        // if exist
-        const exist = this.data.find(
-            (d) => d.value.toLowerCase() === value.toLowerCase(),
-        );
-        if (exist) {
-            this.setValue(exist.value, false, true);
-            return;
-        }
-
-        const newItem = {
-            value: value,
-            label: value,
-            label_ar: value,
-            label_in: value,
-        };
-        this.data.push(newItem);
-
-        const option = document.createElement("option");
-        option.value = value;
-        option.textContent = value;
-        this.select.appendChild(option);
-
-        this.setValue(value, false, true);
-
-        this.searchInput.value = "";
-        this.renderOptions();
-    }
-
-    setValue(value, silent = false, skipChange = false) {
-        this.select.value = value;
-
-        const selectedOption = this.select.options[this.select.selectedIndex];
-
-        this.displaySpan.textContent =
-            selectedOption?.textContent || this.placeholder;
-
-        this.wrapper.classList.remove("active");
-        this.displaySpan.classList.add("ar");
-
-        if (!silent) this.validate();
-
-        this.renderOptions();
-        if (!skipChange) {
-            this.select.dispatchEvent(
-                new CustomEvent("change", { detail: { isRestoring: true } }),
-            );
-        }
-    }
-
-    setValueById(value) {
-        if (!value) return;
-
-        this.select.value = value;
-        const selectedOption = this.select.options[this.select.selectedIndex];
-
-        if (selectedOption && selectedOption.value) {
-            const dataItem = this.data.find((d) => d.value == value);
-
-            if (dataItem) {
-                this.displaySpan.textContent = dataItem.label;
-            } else {
-                this.displaySpan.textContent = selectedOption.textContent;
-            }
-
-            this.displaySpan.classList.add("ar");
-        } else {
-            const option = document.createElement("option");
-            option.value = value;
-            option.textContent = value;
-            this.select.appendChild(option);
-
-            this.data.push({
-                value: value,
-                label: value,
-                label_ar: value,
-                label_in: value,
-            });
-
-            this.select.value = value;
-            this.displaySpan.textContent = value;
-            this.displaySpan.classList.add("ar");
-        }
-
-        this.wrapper.classList.remove("invalid");
-        this.renderOptions();
-    }
-
-    setData(newData) {
-        this.data = newData;
-        this.populateSelect();
-        this.renderOptions();
-    }
-
-    disable() {
-        this.select.disabled = true;
-        this.wrapper.classList.add("disabled");
-        this.select.value = "";
-        this.displaySpan.textContent = "";
-
-        this.wrapper.classList.remove("invalid");
-        this.displaySpan.classList.remove("ar");
-
-        // remove arrow icon
-        const icon = this.selectBtn.querySelector("i");
-        if (icon) icon.style.display = "none";
-
-        this.isRequired = false;
-    }
-
-    enable() {
-        this.select.disabled = false;
-        this.wrapper.classList.remove("disabled");
-        this.wrapper.classList.remove("invalid");
-
-        // remove error message
-        this.errorMessage.textContent = "";
-
-        if (!this.select.value) {
-            this.displaySpan.textContent = this.placeholder;
-            this.displaySpan.classList.remove("ar");
-        }
-
-        // show arrow icon
-        const icon = this.selectBtn.querySelector("i");
-        if (icon) icon.style.display = "block";
-
-        this.isRequired = true;
-    }
-
-    validate() {
-        if (!this.isRequired) return true;
-
-        if (!this.select.value) {
-            this.wrapper.classList.add("invalid");
-            this.errorMessage.textContent = "Wajib diisi";
-            return false;
-        }
-
-        this.wrapper.classList.remove("invalid");
-        this.errorMessage.textContent = "";
-        return true;
-    }
-
-    bindEvents() {
-        this.selectBtn.addEventListener("click", () => {
-            if (this.select.disabled) return;
-            this.wrapper.classList.toggle("active");
-        });
-
-        this.searchInput.addEventListener("keyup", () => {
-            const val = this.searchInput.value.toLowerCase();
-
-            const filtered = this.data.filter((d) =>
-                [d.label, d.label_ar, d.label_in]
-                    .filter(Boolean)
-                    .some((label) => label.toLowerCase().includes(val)),
-            );
-
-            this.renderOptions(filtered);
-        });
-
-        window.addEventListener("click", (e) => {
-            if (!this.wrapper.contains(e.target)) {
-                this.wrapper.classList.remove("active");
-                this.searchInput.value = "";
-                this.renderOptions();
-            }
-        });
-    }
-}
-
-/* ======================================================
    RELATIONAL LOGIC ENGINE
    ====================================================== */
 
 class NahwuFormController {
-    constructor() {
+    constructor(options = {}) {
+        this.options = Object.assign({ autoFill: true }, options);
         this.init();
     }
 
@@ -414,7 +51,25 @@ class NahwuFormController {
         this.instances.simbol?.disable();
 
         this.bindRelations();
-        this.bindAutoFill();
+
+        const autoFillEnabled = this.options.autoFill && this.isAutoFillAllowedOnPage();
+        if (autoFillEnabled) this.bindAutoFill();
+    }
+
+    isAutoFillAllowedOnPage() {
+        // Priority: body[data-nahwu-autofill], then form[data-nahwu-autofill], default true
+        try {
+            const bodyFlag = document.body?.dataset?.nahwuAutofill;
+            if (typeof bodyFlag !== "undefined") return bodyFlag !== "false";
+
+            const form = document.getElementById("form-add-word");
+            const formFlag = form?.dataset?.nahwuAutofill;
+            if (typeof formFlag !== "undefined") return formFlag !== "false";
+        } catch (err) {
+            // ignore and allow autofill by default
+        }
+
+        return true;
     }
 
     bindRelations() {
@@ -741,5 +396,8 @@ class NahwuFormController {
    ====================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
-    window.nahwuFormController = new NahwuFormController();
+    const bodyFlag = document.body?.dataset?.nahwuAutofill;
+    const autoFill = typeof bodyFlag !== "undefined" ? bodyFlag !== "false" : true;
+
+    window.nahwuFormController = new NahwuFormController({ autoFill });
 });

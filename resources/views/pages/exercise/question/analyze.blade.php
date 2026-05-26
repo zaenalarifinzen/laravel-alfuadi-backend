@@ -143,7 +143,7 @@
                     </button>
                 </div>
 
-                <form id="form-add-word">
+                <form id="form-add-word" data-nahwu-autofill="false">
                     <div class="modal-body">
                         <input type="hidden" id="input-id">
                         <input type="hidden" id="input-order-number">
@@ -156,7 +156,7 @@
                             <div class="form-group col-12">
                                 {{-- <label for="input-translation">Terjemah</label> --}}
                                 <input type="text" class="form-control text-center" id="input-translation"
-                                    placeholder="terjemah" disabled>
+                                    placeholder="terjemah">
                             </div>
                         </div>
                         {{-- additional fields --}}
@@ -167,20 +167,20 @@
                                     <select id="input-kalimat" class="custom-dropdown" name="kalimat" required></select>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="input-kategori">Kategori</label>
-                                    <select id="input-kategori" class="custom-dropdown" name="kategori">
+                                    <label for="input-hukum">Hukum</label>
+                                    <select id="input-hukum" class="custom-dropdown" name="hukum">
                                     </select>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <label for="input-kedudukan">Kedudukan</label>
-                                    <select id="input-kedudukan" class="custom-dropdown" name="kedudukan">
+                                    <label for="input-kategori">Kategori / Alasan mabni</label>
+                                    <select id="input-kategori" class="custom-dropdown" name="kategori">
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="input-hukum">Hukum</label>
-                                    <select id="input-hukum" class="custom-dropdown" name="hukum">
+                                    <label for="input-kedudukan">Kedudukan</label>
+                                    <select id="input-kedudukan" class="custom-dropdown" name="kedudukan">
                                     </select>
                                 </div>
                             </div>
@@ -196,7 +196,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-row">
+                            <div class="form-row" hidden>
                                 <div class="form-group col-md-6">
                                     <label for="input-simbol">Simbol</label>
                                     <select id="input-simbol" class="custom-dropdown" name="simbol">

@@ -311,20 +311,20 @@
                                     <select id="input-kalimat" class="custom-dropdown" name="kalimat" required></select>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="input-kategori">Kategori</label>
-                                    <select id="input-kategori" class="custom-dropdown" name="kategori">
+                                    <label for="input-hukum">Hukum</label>
+                                    <select id="input-hukum" class="custom-dropdown" name="hukum">
                                     </select>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
+                                <label for="input-kategori">Kategori / Alasan mabni</label>
+                                <select id="input-kategori" class="custom-dropdown" name="kategori">
+                                </select>
+                            </div>
+                                <div class="form-group col-md-6">
                                     <label for="input-kedudukan">Kedudukan</label>
                                     <select id="input-kedudukan" class="custom-dropdown" name="kedudukan">
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="input-hukum">Hukum</label>
-                                    <select id="input-hukum" class="custom-dropdown" name="hukum">
                                     </select>
                                 </div>
                             </div>
@@ -398,7 +398,7 @@
     <script src="{{ asset('js/page/words/storage-helper.js') }}?v=1.1.7"></script>
     <script src="{{ asset('js/page/words/word-crud.js') }}?v=1.1.7"></script>
     <script src="{{ asset('js/page/words/words-page.js') }}?v=1.1.7"></script>
-    <script src="{{ asset('js/page/words/nahwu-form.js') }}?v=1.1.7"></script>
+    <script src="{{ asset('js/page/words/nahwu-form-autofill.js') }}?v=1.1.7"></script>
     <script src="{{ asset('js/utils/search-verse.js') }}?v=1.1.7"></script>
     <script src="{{ asset('js/utils/owl-slider.js') }}?v=1.1.7"></script>
     <script src="{{ asset('js/utils/word-table.js') }}?v=1.1.7"></script>
