@@ -196,7 +196,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-row" hidden>
+                            <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="input-simbol">Simbol</label>
                                     <select id="input-simbol" class="custom-dropdown" name="simbol">
@@ -234,7 +234,7 @@
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/components-table.js') }}"></script>
     <script src="{{ asset('js/page/words/storage-helper.js') }}?v=1.1.7"></script>
-    <script src="{{ asset('js/page/words/nahwu-form.js') }}?v=1.1.7"></script>
+    <script src="{{ asset('js/page/words/nahwu-form-autofill.js') }}?v=1.1.7"></script>
     <script src="{{ asset('js/page/exercise/analysis-page.js') }}?v=1.1.7"></script>
     <script src="{{ asset('js/page/exercise/analysis-answer-handler.js') }}?v=1.1.7"></script>
     <script src="{{ asset('js/utils/search-verse.js') }}?v=1.1.7"></script>
