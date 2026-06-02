@@ -458,14 +458,15 @@ class NahwuFormController {
             }
 
             const selected = kalimat.select.value;
-            
+
             // If sibhul jumlah, set data categori
             if (selected === "42") {
-                this.updateKategoriOptions(selected, null)
+                this.updateKategoriOptions(selected, null);
             }
 
             this.updateHukumOptions(selected);
-            this.prepareFieldsAfterKalimatSelection();
+            this.enableAllRelationFields();
+            this.resetAllDropdowns();
             this.applyKalimatFieldRules(selected);
         });
     }
@@ -535,14 +536,22 @@ class NahwuFormController {
             const selectedKategori = this.getKategoriById(
                 kategori.select.value,
             );
+
             if (selectedKategori) {
                 this.autoFillSimbolByKategori(selectedKategori);
+
+                this.applyKalimatFieldRules(selectedKalimat);
+                if (selectedKategori.id === "C1013") {
+                    this.instances.irob?.disable();
+                    this.instances.tanda?.disable();
+                }
             }
 
             this.instances.simbol?.enable();
         });
     }
 
+    // 4. Kedudukan
     bindKedudukanRelations() {
         const kedudukan = this.instances.kedudukan;
         if (!kedudukan) return;
@@ -561,51 +570,47 @@ class NahwuFormController {
             );
             if (!selectedKedudukan) return;
 
-            if (
-                selectedKedudukan.id === "KD4101" ||
-                selectedKedudukan.id === "KD4102"
-            ) {
+            const selectedKategori = this.getKategoriById(
+                this.instances.kategori.select.value,
+            );
+
+            const isIsimFiil = selectedKategori?.id === "C1013";
+
+            const shouldDisableIrobAndTanda =
+                selectedKedudukan.id === "KD4101" || // shilah
+                selectedKedudukan.id === "KD4102" || // jawab
+                selectedKedudukan.id === "KD1006" || // fail mustatir
+                selectedKedudukan.id === "KD1056" || // dhomir fashl
+                isIsimFiil; // isim fiil
+
+            if (shouldDisableIrobAndTanda) {
                 this.instances.irob?.disable();
                 this.instances.tanda?.disable();
-                return;
             }
 
-            if (selectedKedudukan.id === "KD1006") {
-                this.instances.hukum?.disable();
-                this.instances.irob?.disable();
-                this.instances.tanda?.disable();
-                return;
-            }
-
-            if (selectedKedudukan.id === "KD1056") {
-                this.instances.irob?.disable();
-                this.instances.tanda?.disable();
-                return;
-            }
-
-            this.instances.irob?.enable();
+            const isMurab =
+                this.instances.hukum?.select.value.trim() === "مُعْرَبٌ";
+            const isNotFiilMudhari =
+                this.instances.kalimat?.select.value !== "22";
 
             // Auto-fill simbol
             if (
-                this.instances.hukum?.select.value.trim() === "مُعْرَبٌ" ||
-                this.instances.kalimat?.select.value !== "22"
+                !isIsimFiil &&
+                (isMurab || isNotFiilMudhari) &&
+                selectedKedudukan.simbol
             ) {
-                if (this.instances.simbol && selectedKedudukan.simbol) {
-                    this.instances.simbol.setData([
-                        this.createOptionItem(
-                            selectedKedudukan.simbol,
-                            selectedKedudukan.simbol,
-                        ),
-                    ]);
-                    this.instances.simbol.setValue(
+                this.instances.simbol.setData([
+                    this.createOptionItem(
                         selectedKedudukan.simbol,
-                        true,
-                    );
-                }
+                        selectedKedudukan.simbol,
+                    ),
+                ]);
+                this.instances.simbol.setValue(selectedKedudukan.simbol, true);
             }
         });
     }
 
+    // 5. Irob
     bindIrobRelations() {
         const irob = this.instances.irob;
         if (!irob) return;
@@ -649,12 +654,29 @@ class NahwuFormController {
 
         const data = MasterData.raw;
 
+        const isFiilMadhi = selectedKalimat === "21";
+        const isFiilAmr = selectedKalimat === "23";
+        const isFiilMudhari = selectedKalimat === "22";
+        const isMurob = selectedHukum === "مُعْرَبٌ";        
+
         const filteredKategori = data.kategori
-            .filter(
-                (k) =>
+            .filter((k) => {
+                if (isFiilMadhi || isFiilAmr) {
+                    return k.id_kalimat === selectedKalimat;
+                }
+
+                if (isFiilMudhari && !isMurob) {
+                    return (
+                        k.id_kalimat === selectedKalimat &&
+                        k.hukum !== "مُعْرَبٌ" && k.hukum !== null
+                    );
+                }
+                
+                return (
                     k.id_kalimat === selectedKalimat &&
-                    (k.hukum == null || k.hukum === selectedHukum),
-            )
+                    (k.hukum == null || k.hukum === selectedHukum)
+                );
+            })
             .map((k) =>
                 this.createOptionItem(
                     k.id,
@@ -665,6 +687,7 @@ class NahwuFormController {
             );
 
         kategori.setData(filteredKategori);
+        
     }
 
     updateKedudukanOptions(selectedKalimat) {
@@ -739,15 +762,6 @@ class NahwuFormController {
     }
 
     // FIELD STATE MANAGEMENT
-    prepareFieldsAfterKalimatSelection() {
-        this.instances.hukum?.enable();
-        this.instances.kategori?.enable();
-        this.instances.kedudukan?.enable();
-        this.instances.irob?.enable();
-        this.instances.tanda?.enable();
-        this.instances.simbol?.enable();
-    }
-
     createOptionItem(value, label, label_ar = "", label_in = "") {
         return { value, label, label_ar, label_in };
     }
@@ -761,8 +775,7 @@ class NahwuFormController {
         this.instances.simbol?.enable();
     }
 
-    applyKalimatFieldRules(selected) {
-        // Reset all related fields first
+    resetAllDropdowns() {
         const FIELD_TO_RESET = [
             "hukum",
             "kategori",
@@ -771,10 +784,14 @@ class NahwuFormController {
             "tanda",
             "simbol",
         ];
-        
+
         FIELD_TO_RESET.forEach((name) => {
             this.resetDropdown(this.instances[name]);
         });
+    }
+
+    applyKalimatFieldRules(selected) {
+        this.enableAllRelationFields();
 
         // Define which fields to disable based on selected kalimat
         const FIELD_RULES = {
@@ -859,10 +876,7 @@ class NahwuFormController {
     autoFillSimbolByKategori(selectedKategori) {
         if (!this.instances.hukum || !selectedKategori.hukum) return;
 
-        // this.instances.hukum.setData([
-        //     this.createOptionItem(selectedKategori.hukum, selectedKategori.hukum),
-        // ]);
-        // this.instances.hukum.setValue(selectedKategori.hukum, true);
+        this.instances.simbol.setValue();
 
         const kalimatId = selectedKategori.id_kalimat;
         if (
@@ -870,7 +884,8 @@ class NahwuFormController {
             kalimatId === "23" ||
             kalimatId === "30" ||
             (kalimatId === "22" &&
-                this.instances.hukum.data?.[0]?.value !== "مُعْرَبٌ")
+                this.instances.hukum.data?.[0]?.value !== "مُعْرَبٌ") ||
+            selectedKategori.id === "C1013"
         ) {
             if (this.instances.simbol && selectedKategori.simbol) {
                 this.instances.simbol.setData([
