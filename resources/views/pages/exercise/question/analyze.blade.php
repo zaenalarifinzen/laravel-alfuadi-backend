@@ -196,7 +196,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-row">
+                            <div class="form-row" hidden>
                                 <div class="form-group col-md-6">
                                     <label for="input-simbol">Simbol</label>
                                     <select id="input-simbol" class="custom-dropdown" name="simbol">

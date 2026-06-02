@@ -130,7 +130,7 @@ $("#form-add-word").on("submit", function (e) {
     // track modification
     // modified = true;
     markModified(wordGroupsPrefix);
-    changeSubmitButton('btn-submit-answer', 'Submit', 'primary');
+    changeSubmitButton("btn-submit-answer", "Submit", "primary");
 
     // re render word table & details
     renderWordsTable(wordGroup);
@@ -190,23 +190,31 @@ $(document).on("click", ".action-buttons .word-edit", function (e) {
 
         // 2. Set child field
         setTimeout(() => {
-            ctrl.instances.kategori?.setValueById(kategori_id);
-            ctrl.instances.kategori?.select.dispatchEvent(
-                new CustomEvent("change", { detail: { isRestoring: true } }),
-            );
+            ctrl.instances.hukum?.setValueById(word.hukum);
+            ctrl.instances.hukum?.select.dispatchEvent(
+                new CustomEvent("change", {detail: {isRestoring: true}}),
+            )
 
             setTimeout(() => {
-                ctrl.instances.kedudukan?.setValueById(kedudukan_id);
-                ctrl.instances.kedudukan?.select.dispatchEvent(
+                ctrl.instances.kategori?.setValueById(kategori_id);
+                ctrl.instances.kategori?.select.dispatchEvent(
                     new CustomEvent("change", {
                         detail: { isRestoring: true },
                     }),
                 );
 
-                ctrl.instances.hukum?.setValueById(word.hukum);
-                ctrl.instances.irob?.setValueById(word.irob);
-                ctrl.instances.tanda?.setValueById(word.tanda);
-                ctrl.instances.simbol?.setValueById(word.simbol);
+                setTimeout(() => {
+                    ctrl.instances.kedudukan?.setValueById(kedudukan_id);
+                    ctrl.instances.kedudukan?.select.dispatchEvent(
+                        new CustomEvent("change", {
+                            detail: { isRestoring: true },
+                        }),
+                    );
+
+                    ctrl.instances.irob?.setValueById(word.irob);
+                    ctrl.instances.tanda?.setValueById(word.tanda);
+                    ctrl.instances.simbol?.setValueById(word.simbol);
+                }, 50);
             }, 50);
         }, 50);
     }
@@ -220,7 +228,6 @@ $(document).on("click", ".action-buttons .word-edit", function (e) {
     $("#modal-add-word").modal("show");
 });
 
-
 // SUBMIT USER ANSWER
 $(document).on("click", "button[name='btn-submit']", function (e) {
     e.preventDefault();
@@ -233,13 +240,13 @@ $(document).on("click", "button[name='btn-submit']", function (e) {
         });
         return;
     }
-    
+
     // passed check
     const btnId = this.id;
-    if (btnId === 'btn-next-verse') {
+    if (btnId === "btn-next-verse") {
         const nextVerse = Number(currentVerseId.value) + 1;
-        fetchWordGroups(null, null, nextVerse)
-        return
+        fetchWordGroups(null, null, nextVerse);
+        return;
     }
 
     const compareResult = compareAnswers(verseId);
@@ -288,16 +295,19 @@ $(document).on("click", "button[name='btn-submit']", function (e) {
             },
             data: JSON.stringify(payload),
             beforeSend: function () {
-                $("#btn-submit-answer")
-                    .text("Menyimpan...");
+                $("#btn-submit-answer").text("Menyimpan...");
             },
             success: function (response) {
                 if (response.success) {
                     resetCard();
-                    changeSubmitButton('btn-next-verse', 'Selanjutnya', 'primary');
+                    changeSubmitButton(
+                        "btn-next-verse",
+                        "Selanjutnya",
+                        "primary",
+                    );
 
                     swal({
-                        icon: 'success',
+                        icon: "success",
                         title: "Selamat",
                         text: "Anda dapat melanjutkan ke soal selanjutnya",
                         buttons: {

@@ -283,32 +283,42 @@ $(document).on("click", ".action-buttons .word-edit", function (e) {
     if (ctrl) {
         const { kalimat_id, kategori_id, kedudukan_id } = ctrl.resolveIds(word);
 
-        // 1. Set kalimat dulu
+        // 1. Set kalimat
         ctrl.instances.kalimat?.setValueById(kalimat_id);
         ctrl.instances.kalimat?.select.dispatchEvent(
             new CustomEvent("change", { detail: { isRestoring: true } }),
         );
 
-        // 2. Set child field
+        // 2. Set hukum (kalimat already set, so kategori dropdown will update based on kalimat + hukum)
         setTimeout(() => {
-            ctrl.instances.kategori?.setValueById(kategori_id);
-            ctrl.instances.kategori?.select.dispatchEvent(
+            ctrl.instances.hukum?.setValueById(word.hukum);
+            ctrl.instances.hukum?.select.dispatchEvent(
                 new CustomEvent("change", { detail: { isRestoring: true } }),
             );
 
+            // Wait for kategori dropdown to update based on hukum change
             setTimeout(() => {
-                ctrl.instances.kedudukan?.setValueById(kedudukan_id);
-                ctrl.instances.kedudukan?.select.dispatchEvent(
+                ctrl.instances.kategori?.setValueById(kategori_id);
+                ctrl.instances.kategori?.select.dispatchEvent(
                     new CustomEvent("change", {
                         detail: { isRestoring: true },
                     }),
                 );
 
-                ctrl.instances.hukum?.setValueById(word.hukum);
-                ctrl.instances.irob?.setValueById(word.irob);
-                ctrl.instances.tanda?.setValueById(word.tanda);
-                ctrl.instances.simbol?.setValueById(word.simbol);
-            }, 50);
+                // Then set kedudukan and other fields
+                setTimeout(() => {
+                    ctrl.instances.kedudukan?.setValueById(kedudukan_id);
+                    ctrl.instances.kedudukan?.select.dispatchEvent(
+                        new CustomEvent("change", {
+                            detail: { isRestoring: true },
+                        }),
+                    );
+
+                    ctrl.instances.irob?.setValueById(word.irob);
+                    ctrl.instances.tanda?.setValueById(word.tanda);
+                    ctrl.instances.simbol?.setValueById(word.simbol);
+                }, 100);
+            }, 100);
         }, 50);
     }
 

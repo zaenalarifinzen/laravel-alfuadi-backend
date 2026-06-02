@@ -363,6 +363,11 @@ class SearchableDropdown {
         this.selectBtn.addEventListener("click", () => {
             if (this.select.disabled) return;
             this.wrapper.classList.toggle("active");
+            if (this.wrapper.classList.contains("active")) {
+                setTimeout(() => {
+                    this.searchInput.focus();
+                }, 0);
+            }
         });
 
         this.searchInput.addEventListener("keyup", () => {
