@@ -212,8 +212,8 @@ body.sidebar-mini
 .input-group-text,
 .custom-select,
 .custom-file-label {
-    background-color: #fdfdff;
-    border-color: #e4e6fc;
+    background-color: #fafafa !important;
+    border-color: #ffffff00;
 }
 .form-control:focus,
 .input-group-text:focus,
@@ -784,7 +784,7 @@ table tr:hover .table-links {
         }
 
         .custom-dropdown.disabled .select-btn {
-            background: #f5f5f5;
+            background: #fafafa;
             border: 1px solid #fff;
             color: #f5f5f5;
             cursor: not-allowed;

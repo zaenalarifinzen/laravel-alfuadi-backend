@@ -8,6 +8,32 @@
     <link rel="stylesheet" href="{{ asset('library/owl.carousel/dist/assets/owl.theme.default.min.css') }}">
     <link rel="stylesheet" href="{{ asset('library/ionicons201/css/ionicons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('library/izitoast/dist/css/iziToast.min.css') }}">
+
+    <style>
+        .custom-dropdown.autofill-highlight .select-btn {
+            animation: autofill-outline 1.8s ease forwards;
+        }
+
+        @keyframes autofill-outline {
+            0% {
+                border-color: #10b981;
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.45);
+            }
+            20% {
+                border-color: #10b981;
+                box-shadow: 0 0 0 5px rgba(16, 185, 129, 0.18);
+                
+            }
+            45% {
+                border-color: #10b981;
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+            }
+            100% {
+                border-color: #EAECFC;
+                box-shadow: none;
+            }
+        }
+    </style>
 @endpush
 
 @section('main')<div class="main-content">

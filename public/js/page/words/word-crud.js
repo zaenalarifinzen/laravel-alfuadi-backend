@@ -308,11 +308,11 @@ $(document).on("click", ".action-buttons .word-edit", function (e) {
                 // Then set kedudukan and other fields
                 setTimeout(() => {
                     ctrl.instances.kedudukan?.setValueById(kedudukan_id);
-                    ctrl.instances.kedudukan?.select.dispatchEvent(
-                        new CustomEvent("change", {
-                            detail: { isRestoring: true },
-                        }),
-                    );
+                    // ctrl.instances.kedudukan?.select.dispatchEvent(
+                    //     new CustomEvent("change", {
+                    //         detail: { isRestoring: true },
+                    //     }),
+                    // );
 
                     ctrl.instances.irob?.setValueById(word.irob);
                     ctrl.instances.tanda?.setValueById(word.tanda);

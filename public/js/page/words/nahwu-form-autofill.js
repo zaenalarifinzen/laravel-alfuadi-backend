@@ -359,15 +359,22 @@ class SearchableDropdown {
         return true;
     }
 
+    flashAutofillHighlight(duration = 1800) {
+        const className = "autofill-highlight";
+        this.wrapper.classList.remove(className);
+        void this.wrapper.offsetWidth;
+        this.wrapper.classList.add(className);
+
+        clearTimeout(this._autofillHighlightTimer);
+        this._autofillHighlightTimer = setTimeout(() => {
+            this.wrapper.classList.remove(className);
+        }, duration);
+    }
+
     bindEvents() {
         this.selectBtn.addEventListener("click", () => {
             if (this.select.disabled) return;
             this.wrapper.classList.toggle("active");
-            if (this.wrapper.classList.contains("active")) {
-                setTimeout(() => {
-                    this.searchInput.focus();
-                }, 0);
-            }
         });
 
         this.searchInput.addEventListener("keyup", () => {
@@ -419,11 +426,11 @@ class NahwuFormController {
         this.bindKedudukanRelations();
         this.bindIrobRelations();
 
-        // const autoFillEnabled =
-        //     this.options.autoFill && this.isAutoFillAllowedOnPage();
+        const autoFillEnabled =
+            this.options.autoFill && this.isAutoFillAllowedOnPage();
 
-        // // Autofill relations
-        // if (autoFillEnabled) this.bindAutoFill();
+        // Autofill relations
+        if (autoFillEnabled) this.bindAutoFill();
     }
 
     isAutoFillAllowedOnPage() {
@@ -611,6 +618,7 @@ class NahwuFormController {
                     ),
                 ]);
                 this.instances.simbol.setValue(selectedKedudukan.simbol, true);
+                this.instances.simbol.flashAutofillHighlight();
             }
         });
     }
@@ -662,7 +670,7 @@ class NahwuFormController {
         const isFiilMadhi = selectedKalimat === "21";
         const isFiilAmr = selectedKalimat === "23";
         const isFiilMudhari = selectedKalimat === "22";
-        const isMurob = selectedHukum === "مُعْرَبٌ";        
+        const isMurob = selectedHukum === "مُعْرَبٌ";
 
         const filteredKategori = data.kategori
             .filter((k) => {
@@ -673,10 +681,11 @@ class NahwuFormController {
                 if (isFiilMudhari && !isMurob) {
                     return (
                         k.id_kalimat === selectedKalimat &&
-                        k.hukum !== "مُعْرَبٌ" && k.hukum !== null
+                        k.hukum !== "مُعْرَبٌ" &&
+                        k.hukum !== null
                     );
                 }
-                
+
                 return (
                     k.id_kalimat === selectedKalimat &&
                     (k.hukum == null || k.hukum === selectedHukum)
@@ -692,7 +701,6 @@ class NahwuFormController {
             );
 
         kategori.setData(filteredKategori);
-        
     }
 
     updateKedudukanOptions(selectedKalimat) {
@@ -816,18 +824,42 @@ class NahwuFormController {
 
     // AUTOFILL LOGIC
     bindAutoFill() {
-        const kategori = this.instances.kategori;
+        const hukum = this.instances.hukum;
         const kedudukan = this.instances.kedudukan;
 
-        kategori?.select.addEventListener("change", (e) =>
-            this.handleKategoriChange(e),
+        hukum?.select.addEventListener("change", (e) =>
+            this.autoHandleHukumRelation(e),
         );
+
         kedudukan?.select.addEventListener("change", (e) =>
-            this.handleKedudukanChange(e),
+            this.autoHandleKedudukanRelation(e),
         );
     }
 
-    handleKedudukanChange(e) {
+    autoHandleHukumRelation(e) {
+        const isRestoring = e.detail?.isRestoring || false;
+
+        const selectedKalimat = this.instances.kalimat?.select.value;
+        const selectedHukum = this.instances.hukum?.select.value;
+        const isMadhiOrAmr =
+            selectedKalimat === "21" || selectedKalimat === "23";
+
+        if (isMadhiOrAmr && selectedHukum) {
+            const data = MasterData.raw;
+
+            const filteredKategori = data.kategori.filter((k) => {
+                return (
+                    k.id_kalimat === selectedKalimat &&
+                    k.hukum === selectedHukum
+                );
+            });
+
+            this.instances.kategori?.setValue(filteredKategori[0]?.id);
+            this.instances.kategori?.flashAutofillHighlight();
+        }
+    }
+
+    autoHandleKedudukanRelation(e) {
         const isRestoring = e.detail?.isRestoring || false;
 
         if (!isRestoring) {
@@ -835,14 +867,18 @@ class NahwuFormController {
             this.resetDropdown(this.instances.tanda);
         }
 
-        this.instances.irob?.enable();
+        const selectedKedudukan = this.getKedudukanById(
+            this.instances.kedudukan?.select.value,
+        );
+        if (!selectedKedudukan) return;
 
         // Auto-fill irob based on selected kedudukan
         if (this.instances.irob && selectedKedudukan.irob) {
-            this.instances.irob.setValue(selectedKedudukan.irob, true);
-
-            // enable tanda
-            this.instances.tanda?.enable();
+            // check if irob is enabled before set value
+            if (!this.instances.irob.select.disabled) {
+                this.instances.irob.setValue(selectedKedudukan.irob, true);
+                this.instances.irob.flashAutofillHighlight();
+            }
         }
 
         const selectedKategori = this.getKategoriForTanda(
@@ -851,13 +887,15 @@ class NahwuFormController {
 
         // Auto-fill tanda based on selected irob & kategori
         if (this.instances.irob?.select.value) {
-            this.autoFillTandabyKategori(selectedKategori);
+            this.autoFillTanda(selectedKategori, selectedKedudukan);
         }
     }
 
-    autoFillTandabyKategori(selectedKategori) {
+    autoFillTanda(selectedKategori, selectedKedudukan) {
+        if (!selectedKategori || !selectedKedudukan) return;
+
         let tandaIrob = "";
-        const currentIrob = this.instances.irob?.data?.[0]?.value || "";
+        const currentIrob = selectedKedudukan?.irob || "";
 
         switch (currentIrob) {
             case "مَرْفُوْعٌ":
@@ -875,7 +913,10 @@ class NahwuFormController {
         }
 
         // auto-fill tanda based on irob & kategori
-        this.instances.tanda.setValue(tandaIrob, true);
+        if (tandaIrob) {
+            this.instances.tanda.setValue(tandaIrob, true);
+            this.instances.tanda.flashAutofillHighlight();
+        }
     }
 
     autoFillSimbolByKategori(selectedKategori) {
@@ -900,6 +941,7 @@ class NahwuFormController {
                     ),
                 ]);
                 this.instances.simbol.setValue(selectedKategori.simbol, true);
+                this.instances.simbol.flashAutofillHighlight();
             }
         }
     }

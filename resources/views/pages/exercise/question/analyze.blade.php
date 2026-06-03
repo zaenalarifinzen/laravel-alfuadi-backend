@@ -156,7 +156,7 @@
                             <div class="form-group col-12">
                                 {{-- <label for="input-translation">Terjemah</label> --}}
                                 <input type="text" class="form-control text-center" id="input-translation"
-                                    placeholder="terjemah">
+                                    placeholder="terjemah" disabled>
                             </div>
                         </div>
                         {{-- additional fields --}}
