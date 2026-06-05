@@ -66,9 +66,9 @@ Route::middleware(['auth'])->group(function () {
             return view('pages.modul.nahwu.jilid-1', ['type_menu' => 'metode-al-fuadi']);
         })->name('metode-al-fuadi.jilid-1');
         Route::get('/exercise', [QuestionLevelController::class, 'index'])->name('exercise-level.index');
-        Route::get('/exercise/quran', function () {
+        Route::get('/exercise/alquran', function () {
             return view('pages.exercise.question.analyze', ['type_menu' => '']);
-        })->name('exercise.quran');
+        })->name('exercise.alquran');
         Route::get('/exercise/analysis/{verseId?}', [QuestionController::class, 'getAnalysisQuestion'])
             ->name('exercise.analysis');
         

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Question;
+use App\Models\QuestionLevel;
 use App\Models\UserAnswer;
 use App\Models\Verse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class QuestionController extends Controller
 {
@@ -71,7 +73,24 @@ class QuestionController extends Controller
     public function getAnalysisQuestion(Request $request, $verseId = null)
     {
         try {
-            $level = 1;
+            $level = 99;
+            Log::info($level);
+
+            if ($request->filled('level_slug')) {
+                $questionLevel = QuestionLevel::where('slug', $request->query('level_slug'))->active()->first();
+                Log::info($questionLevel);
+
+                if (!$questionLevel) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Level soal tidak ditemukan',
+                    ], 404);
+                }
+                $level = $questionLevel->level_number;
+            } elseif ($request->filled('level')) {
+                $level = (int) $request->query('level');
+            }
+
             // If verseId not provided, try to find verse by surah_id and verse_number
             if (!$verseId) {
                 $surahId = $request->query('surah_id');

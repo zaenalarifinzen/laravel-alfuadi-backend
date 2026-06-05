@@ -13,7 +13,9 @@ class QuestionLevel extends Model
 
     protected $fillable = [
         'name',
+        'slug',
         'level_number',
+        'display_order',
         'description',
         'is_active',
         'metadata',

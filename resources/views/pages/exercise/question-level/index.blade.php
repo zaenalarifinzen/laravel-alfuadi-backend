@@ -44,34 +44,28 @@
                 <div class="row">
                     <div class="col-12">
                         @foreach ($questionLevel as $level)
-                            <a href="{{ route('exercise.quran') }}" class="text-decoration-none">
+                            @if ($level->slug === 'alquran')
+                                @continue
+                            @endif
+                            <a href="#" class="text-decoration-none">
                                 <div class="card">
                                     <div class="card-header">
                                         <figure class="avatar bg-secondary mr-2 text-white"
                                             data-initial="{{ $level->level_number }}"></figure>
                                         <h4>{{ $level->name }}</h4>
-                                        {{-- <div class="card-header-action">
-                                        <a href="{{ route('exercise.quran') }}" class="btn btn-primary">
-                                            Mulai
-                                        </a>
-                                    </div> --}}
                                     </div>
                                     <div class="collapse show" id="mycard-collapse">
                                         <div class="card-body">
                                             <div class="progress mb-3" data-height="5">
-                                                <div class="progress-bar bg-success" role="progressbar" data-width="25%"
-                                                    aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                                <div class="progress-bar bg-success" role="progressbar" data-width="0%"
+                                                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
                                                 </div>
                                             </div>
                                             <div class="d-flex justify-content-between">
-                                                <span>5 dari 15 soal selesai</span>
-                                                <span>100%</span>
+                                                <div class="card-description">0 dari 0 soal selesai</div>
+                                                <div class="card-description">0%</div>
                                             </div>
                                         </div>
-
-                                        {{-- <div class="card-footer">
-                                        Card Footer
-                                    </div> --}}
                                     </div>
                                 </div>
                             </a>
@@ -79,42 +73,39 @@
                     </div>
                 </div>
 
-                {{-- <div class="row">
-                    @foreach ($questionLevel as $level)
-                        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                            <a href="{{ route('exercise.quran') }}">
-                                <div class="card card-statistic-1">
-                                    <div class="card-icon bg-primary d-flex align-items-center justify-content-center">
-                                        <p class="display-4 text-light mb-0">{{ $level->level_number }}</p>
-                                    </div>
-                                    <div class="card-wrap">
-                                        <div class="card-header">
-                                            <h4>Level</h4>
-                                        </div>
-                                        <div class="card-body">
-                                            {{ $level->name }}
-                                        </div>
-                                    </div>
-                                    <div class="progress mb-1" data-height="5">
-                                        <div class="progress-bar bg-success" role="progressbar" data-width="25%"
-                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-between">
-                                        <span>5 dari 15 soal selesai</span>
-                                        <span>100%</span>
-                                    </div>
-                                </div>
-                            </a>
+                <a href="{{ route('exercise.alquran') }}" class="text-decoration-none">
+                    <div class="card card-hero">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-book-quran"></i>
+                            </div>
+                            <h4>Al-Quran</h4>
+                            <div class="card-description">Analisa langsung dari ayat Al-Quran</div>
                         </div>
-                    @endforeach
-                </div> --}}
+                        <div class="card-body p-0" id="last-opened-info" style="display: none">
+                            <div class="tickets-list">
+                                <a href="{{ route('exercise.alquran') }}" class="ticket-item">
+                                    {{-- <div class="ticket-title">
+                                        <h4>My order hasn't arrived yet</h4>
+                                    </div> --}}
+                                    <div class="ticket-info">
+                                        <div id="info-label"></div>
+                                        <div class="bullet"></div>
+                                        <div class="text-primary">Lanjutkan</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
             </div>
         </section>
     </div>
 
 
 @endsection
+
 
 @push('scripts')
     <!-- JS Libraies -->
@@ -124,4 +115,41 @@
     <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
 
     <!-- Page Specific JS File -->
+    <script src="{{ asset('js/utils/storage-helper.js') }}"></script>
+@endpush
+
+@push('scripts')
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const STORAGE_PREFIX = "answer_user_";
+
+            const lastOpenedEl = document.getElementById("last-opened-info");
+            const labelEl = document.getElementById("info-label");
+
+            function getLastExerciseData() {
+                try {
+                    const key = getActiveStorageKey(STORAGE_PREFIX);
+                    if (!key) return null;
+
+                    const raw = localStorage.getItem(key);
+                    return raw ? JSON.parse(raw) : null;
+                } catch (e) {
+                    return null;
+                }
+            }
+
+            function renderLastOpened(data) {
+                const isVisible = !!(data?.surah.name && data?.verse?.number);
+
+                lastOpenedEl.style.display = isVisible ? "inline-block" : "none";
+
+                if (isVisible) {
+                    labelEl.textContent = `${cachedData.surah.name} ayat ${cachedData.verse.number}`;
+                }
+            }
+
+            const cachedData = getLastExerciseData();
+            renderLastOpened(cachedData);
+        });
+    </script>
 @endpush

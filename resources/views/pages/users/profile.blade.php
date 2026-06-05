@@ -76,13 +76,6 @@
                                                     placeholder="{{ auth()->user()->email }}" disabled>
                                             </div>
                                         </div>
-                                        <div class="form-group mb-0">
-                                            <label>Alamat</label>
-                                            <textarea class="form-control @error('address') is-invalid @enderror" name="address" data-height="150">{{ auth()->user()->address ?? '' }}</textarea>
-                                            @error('address')
-                                                <span class="invalid-feedback">{{ $message }}</span>
-                                            @enderror
-                                        </div>
                                     </div>
                                     <div class="d-flex justify-content-end align-items-center card-footer">
                                         <button type="submit" class="btn btn-primary">Simpan</button>
@@ -95,12 +88,12 @@
                                     <h4>Update Password</h4>
                                 </div>
 
-                                <div class="card-body">
-                                    <form method="POST" action="{{ route('user-password.update') }}" class="needs-validation"
-                                        novalidate="">
-                                        @csrf
-                                        @method('PUT')
+                                <form method="POST" action="{{ route('user-password.update') }}" class="needs-validation"
+                                    novalidate="">
+                                    @csrf
+                                    @method('PUT')
 
+                                    <div class="card-body">
                                         <div class="form-group" style="position: relative">
                                             <div class="form-group" style="position: relative">
                                                 <div class="d-block">
@@ -181,13 +174,13 @@
                                                 </div>
                                             @enderror
                                         </div>
-                                        <div class="d-flex justify-content-end align-items-center card-footer">
-                                            <button type="submit" class="btn btn-primary">Perbarui</button>
-                                        </div>
-                                    </form>
-                                </div>
-
+                                    </div>
+                                    <div class="d-flex justify-content-end align-items-center card-footer">
+                                        <button type="submit" class="btn btn-primary">Perbarui</button>
+                                    </div>
+                                </form>
                             </div>
+
                         </div>
                     </div>
                 @endauth
@@ -213,4 +206,5 @@
 
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/forms-advanced-forms.js') }}"></script>
+    <script src="{{ asset('js/page/auth/auth-form.js') }}"></script>
 @endpush
