@@ -351,6 +351,8 @@ function changeSubmitButton(id, label, type) {
 // DOM
 // =============================
 document.addEventListener("DOMContentLoaded", () => {
+    fetchSurahList();
+    
     const cachedKey = getActiveStorageKey(wordGroupsPrefix);
     const cachedRaw = cachedKey ? localStorage.getItem(cachedKey) : null;
 

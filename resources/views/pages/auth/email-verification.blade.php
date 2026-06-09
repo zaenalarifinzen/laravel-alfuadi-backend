@@ -8,8 +8,10 @@
 
 @section('main')
     <div class="card card-primary">
-        <div class="card-header">
-            <h4>Verifikasi email</h4>
+        <div class="card-header d-flex flex-column align-items-center justify-content-center text-center">
+            <img src="{{ asset('img/envelope-checkmark.svg') }}" alt="logo" height="70" class="mb-3">
+            <h4 class="text-center">Verifikasi email</h4>
+
         </div>
 
         <div class="card-body">
@@ -17,9 +19,11 @@
         </div>
 
         <div class="card-footer bg-whitesmoke">
-            <p class="text-muted">Belum menerima email? <a href="{{ route('verification.notice') }}" class="text-primary">Klik disini</a> untuk mengirim ulang email verifikasi</p>
+            <p class="text-muted">Belum menerima email? <a href="{{ route('verification.notice') }}"
+                    class="text-primary">Klik
+                    disini</a> untuk mengirim ulang email verifikasi</p>
         </div>
-        
+
     </div>
 @endsection
 

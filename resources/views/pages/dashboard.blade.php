@@ -28,54 +28,94 @@
                         </div>
                     </div>
 
-                    @if(auth()->user()->roles === 'administrator' || auth()->user()->roles === 'operator')
-                        <h2 class="section-title">Tugas</h2>
-                        <p class="section-lead">
-                            Lihat pekerjaan terakhir anda
-                        </p>
-                        <div class="row">
-                            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                                <a href="">
-                                    <div class="card card-statistic-1">
-                                        <div class="card-icon bg-warning">
-                                            <i class="far fa-newspaper"></i>
-                                        </div>
-                                        <div class="card-wrap">
-                                            <div class="card-header">
-                                                <h4>Input i'rob</h4>
-                                            </div>
-                                            <div class="card-body">
-                                                Al-Baqarah ayat 55
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
+                    <div class="row">
+                        <div class="col-12 col-lg-6 mb-4">
+                            <div class="card shadow-sm border-0 h-100">
+                                <div class="card-header bg-light">
+                                    <h4 class="mb-0">Ayat pilihan hari ini</h4>
+                                </div>
+                                <div class="card-body align-items-center d-flex flex-column justify-content-center">
+                                    @if ($randomVerse)
+                                        <p class="text-right text-center arabic-text words mb-5">{{ $randomVerse->text }}</p>
+                                        <p class="text-muted text-center mb-2">{{ $randomVerse->translation_indo }}</p>
+                                        <p class="mb-0 text-primary text-center">QS.
+                                            {{ $randomVerse->surah->name ?? 'Al-Qur\'an' }} ayat {{ $randomVerse->number }}</p>
+                                    @else
+                                        <p class="mb-0 text-muted">Belum ada data ayat untuk ditampilkan.</p>
+                                    @endif
+                                </div>
                             </div>
                         </div>
-                    @endif
 
-                    <h2 class="section-title">Latihan</h2>
-                    <p class="section-lead">
-                        Lihat latihan terakhir anda
-                    </p>
-                    <div class="row">
-                        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                            <a href="">
-                                <div class="card card-statistic-1">
-                                    <div class="card-icon bg-primary">
-                                        <i class="far fa-newspaper"></i>
+                        @if (auth()->user()->roles === 'administrator' || auth()->user()->roles === 'operator')
+                            <div class="col-12 col-lg-6 mb-4">
+                                <div class="card shadow-sm border-0 h-100">
+                                    <div class="card-header bg-light">
+                                        <h4 class="mb-0">Aktivitas terakhir</h4>
                                     </div>
-                                    <div class="card-wrap">
-                                        <div class="card-header">
-                                            <h4>Input i'rob</h4>
-                                        </div>
-                                        <div class="card-body">
-                                            Al-Baqarah ayat 55
-                                        </div>
+                                    <div class="card-body">
+                                        @if ($latestTask)
+                                            <ul class="list-unstyled list-unstyled-border">
+                                                <li class="media">
+                                                    <img class="mr-3 rounded-circle" width="50"
+                                                        src="{{ asset('img/avatar/avatar-3.png') }}" alt="avatar">
+                                                    <div class="media-body">
+                                                        <h6 class="media-title"><a
+                                                                href="{{ route('words.create') }}">{{ $latestTask }}</a>
+                                                        </h6>
+                                                        <div class="text-small text-muted">
+                                                            {{ $updated_at ? $updated_at->diffForHumans() : 'Baru saja' }}
+                                                            <div class="bullet"></div>
+                                                            <span class="text-primary">Input i'rob</span>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        @else
+                                            <div class="d-flex align-items-center justify-content-center"
+                                                style="min-height: 150px;">
+                                                <span class="text-muted text-center">Belum ada aktivitas</span>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
-                            </a>
-                        </div>
+                            </div>
+                        @endif
+
+                        @if (auth()->user()->roles === 'user' && $latestExercise)
+                            <div class="col-12 col-lg-6 mb-4">
+                                <div class="card shadow-sm border-0 h-100">
+                                    <div class="card-header bg-light">
+                                        <h4 class="mb-0">Aktivitas terakhir</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        @if ($latestExercise)
+                                            <ul class="list-unstyled list-unstyled-border">
+                                                <li class="media">
+                                                    <img class="mr-3 rounded-circle" width="50"
+                                                        src="{{ asset('img/avatar/avatar-3.png') }}" alt="avatar">
+                                                    <div class="media-body">
+                                                        <h6 class="media-title"><a
+                                                                href="{{ route('exercise.alquran') }}">{{ $latestExercise }}</a>
+                                                        </h6>
+                                                        <div class="text-small text-muted">
+                                                            {{ $latestExercise->updated_at ? $latestExercise->updated_at->diffForHumans() : 'Baru saja' }}
+                                                            <div class="bullet"></div>
+                                                            <span class="text-primary">Latihan</span>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        @else
+                                            <div class="d-flex align-items-center justify-content-center"
+                                                style="min-height: 150px;">
+                                                <span class="text-muted text-center">Belum ada aktivitas</span>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
                     </div>
                 </div>
             @endauth

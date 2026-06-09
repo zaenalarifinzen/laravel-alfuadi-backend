@@ -10,6 +10,11 @@ use App\Http\Controllers\VerseController;
 use App\Http\Controllers\WordController;
 use App\Http\Controllers\WordGroupController;
 use App\Http\Controllers\QuestionController;
+use App\Models\Surah;
+use App\Models\UserAnswer;
+use App\Models\Verse;
+use App\Models\Word;
+use App\Models\WordGroups;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -19,8 +24,47 @@ Route::get('/', function () {
 
 // Public routes
 Route::get('/home', function () {
-    return view('pages.dashboard', ['type_menu' => 'dashboard']);
+    $user = Auth::user();
+
+    $randomVerse = Verse::query()
+        ->with('surah')
+        ->inRandomOrder()
+        ->first();
+
+    $latestTask = null;
+    $updatedAt = null;
+    $latestExercise = null;
+
+    if ($user) {
+        if (in_array($user->roles, ['administrator', 'operator'], true)) {
+            $latestProgres = Word::query()
+                ->where('editor', $user->id)
+                ->latest('updated_at')
+                ->first();
+
+            $wordgroup = WordGroups::query()
+                ->where('id', $latestProgres->word_group_id)
+                ->latest('updated_at')
+                ->first();
+
+            $surah = Surah::query()
+                ->where('id', $wordgroup->surah_id)
+                ->first();
+
+            $latestTask = 'Surah ' . $surah->name . ' ayat ' . $wordgroup->verse_number;
+            $updatedAt = $latestProgres->updated_at;
+        }
+    }
+
+    return view('pages.dashboard', [
+        'type_menu' => 'dashboard',
+        'randomVerse' => $randomVerse,
+        'latestTask' => $latestTask,
+        'updated_at' => $updatedAt,
+        'latestExercise' => $latestExercise,
+    ]);
 })->middleware(['auth'])->name('home');
+
 Route::resource('surahs', SurahController::class);
 Route::resource('verses', VerseController::class);
 
