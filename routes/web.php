@@ -10,6 +10,7 @@ use App\Http\Controllers\VerseController;
 use App\Http\Controllers\WordController;
 use App\Http\Controllers\WordGroupController;
 use App\Http\Controllers\QuestionController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -19,12 +20,15 @@ Route::get('/', function () {
 // Public routes
 Route::get('/home', function () {
     return view('pages.dashboard', ['type_menu' => 'dashboard']);
-})->name('home');
+})->middleware(['auth'])->name('home');
+Route::resource('surahs', SurahController::class);
+Route::resource('verses', VerseController::class);
+
 // Custom API routes
 Route::get('/wordgroups/get/{id?}', [WordGroupController::class, 'getWordGroup'])->name('wordgroups.get');
 Route::get('/words/get/{id}', [WordController::class, 'getWord'])->name('words.get');
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
 
     // Administrator Only
     Route::middleware(['roles:administrator'])->group(function () {
@@ -71,8 +75,8 @@ Route::middleware(['auth'])->group(function () {
         })->name('exercise.alquran');
         Route::get('/exercise/analysis/{verseId?}', [QuestionController::class, 'getAnalysisQuestion'])
             ->name('exercise.analysis');
-        
-            // Data Nahwu Resource
+
+        // Data Nahwu Resource
         Route::get('/words/data/data-nahwu', [NahwuDataController::class, 'index']);
     });
 
@@ -83,7 +87,5 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/profile', [UserController::class, 'updateProfile'])->name('profile.update');
 
     // Resource
-    Route::resource('surahs', SurahController::class);
-    Route::resource('verses', VerseController::class);
     Route::resource('user-answers', UserAnswerController::class);
 });

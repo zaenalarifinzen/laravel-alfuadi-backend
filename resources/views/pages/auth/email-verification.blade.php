@@ -1,0 +1,30 @@
+@extends('layouts.auth')
+
+@section('title', 'Verify email')
+
+@push('style')
+    <!-- CSS Libraries -->
+@endpush
+
+@section('main')
+    <div class="card card-primary">
+        <div class="card-header">
+            <h4>Verifikasi email</h4>
+        </div>
+
+        <div class="card-body">
+            <p>Kami telah mengirim link untuk memverifikasi email anda. Silahkan buka email anda dan klik link yang ada</p>
+        </div>
+
+        <div class="card-footer bg-whitesmoke">
+            <p class="text-muted">Belum menerima email? <a href="{{ route('verification.notice') }}" class="text-primary">Klik disini</a> untuk mengirim ulang email verifikasi</p>
+        </div>
+        
+    </div>
+@endsection
+
+@push('scripts')
+    <!-- JS Libraies -->
+
+    <!-- Page Specific JS File -->
+@endpush

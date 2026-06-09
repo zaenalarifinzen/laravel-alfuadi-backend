@@ -23,12 +23,12 @@
                     <li class="{{ Request::is('verses') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ route('verses.index') }}">Ayat</a>
                     </li>
-                    <li class="{{ Request::is('wordgroups') ? 'active' : '' }}">
+                    {{-- <li class="{{ Request::is('wordgroups') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ route('wordgroups.index') }}">Grup Kalimat</a>
                     </li>
                     <li class="{{ Request::is('words') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ route('words.index') }}">Kalimat</a>
-                    </li>
+                    </li> --}}
                 </ul>
             </li>
 
