@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.2.0
+
+-   Penambahan menu latihan
+-   Perbaikan autofill untuk input i'rob
+-   Pembaharuan profil
+
 ## 1.1.7
 
 -   Restruktur dropdown dengan fitur pencarian
