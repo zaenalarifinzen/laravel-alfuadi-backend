@@ -42,17 +42,24 @@ Route::get('/home', function () {
                 ->latest('updated_at')
                 ->first();
 
-            $wordgroup = WordGroups::query()
-                ->where('id', $latestProgres->word_group_id)
-                ->latest('updated_at')
-                ->first();
+            if ($latestProgres) {
+                $wordgroup = WordGroups::query()
+                    ->where('id', $latestProgres->word_group_id)
+                    ->latest('updated_at')
+                    ->first();
 
-            $surah = Surah::query()
-                ->where('id', $wordgroup->surah_id)
-                ->first();
+                if ($wordgroup) {
+                    $surah = Surah::query()
+                        ->where('id', $wordgroup->surah_id)
+                        ->first();
 
-            $latestTask = 'Surah ' . $surah->name . ' ayat ' . $wordgroup->verse_number;
-            $updatedAt = $latestProgres->updated_at;
+                    if ($surah) {
+                        $latestTask = 'Surah ' . $surah->name . ' ayat ' . $wordgroup->verse_number;
+                    }
+
+                    $updatedAt = $latestProgres->updated_at;
+                }
+            }
         }
     }
 
