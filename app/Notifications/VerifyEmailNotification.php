@@ -46,7 +46,7 @@ class VerifyEmailNotification extends Notification
 
         return (new MailMessage)
             ->subject('Verifikasi Alamat Email Anda')
-            ->greeting('Halo ')
+            ->greeting('Assalamualaikum ' . $notifiable->name)
             ->line('Terimakasih telah mendaftar. Silakan verifikasi alamat email Anda dengan mengklik tombol di bawah.')
             ->action('Verifikasi Email', $verificationUrl)
             ->line('Jika Anda tidak membuat akun ini, abaikan email ini.');
