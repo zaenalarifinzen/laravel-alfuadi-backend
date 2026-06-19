@@ -14,47 +14,49 @@
         </div>
 
         <div class="card-body">
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
             <form method="POST" action={{ route('register') }}>
                 @csrf
 
                 <div class="form-group">
                     <label for="name">Nama</label>
-                    <input id="name" type="text" class="form-control" name="name" autofocus>
-                    <div class="invalid-feedback">
-                    </div>
+                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror"
+                        placeholder="Nama Lengkap" value="{{ old('name') }}" name="name" autofocus>
+                    @error('name')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
 
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input id="email" type="email" class="form-control" name="email">
-                    <div class="invalid-feedback">
-                    </div>
+                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
+                        placeholder="contoh@email.com" value="{{ old('email') }}" name="email">
+                    @error('email')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
 
                 <div class="form-group">
                     <label for="phone">Nomor Handphone</label>
-                    <input id="phone" type="number" class="form-control" name="phone">
-                    <div class="invalid-feedback">
-                    </div>
+                    <input id="phone" type="number" class="form-control @error('phone') is-invalid @enderror"
+                        placeholder="08xxxxxxxxxx" value="{{ old('phone') }}" name="phone">
+                    @error('phone')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
 
                 <div class="form-group" style="position: relative">
                     <div class="d-block">
                         <label for="password" class="control-label">Password</label>
                     </div>
-                    <input id="password" type="password"
-                        class="form-control @error('password') is-invalid @enderror" name="password"
-                        tabindex="2" autocomplete="current-password" required>
+                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror"
+                        name="password" tabindex="2" placeholder="Password minimal 8 karakter"
+                        autocomplete="current-password" required>
                     <span class="toggle-password-icon"
                         style="
                         position: absolute;
@@ -99,7 +101,8 @@
 
                 <div class="form-group">
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" name="agree" class="custom-control-input" id="agree">
+                        <input type="checkbox" name="agree"
+                            class="custom-control-input @error('agree') is-invalid @enderror" id="agree" required>
                         <label class="custom-control-label" for="agree">Saya setuju dengan syarat dan ketentuan</label>
                     </div>
                 </div>

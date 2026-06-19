@@ -17,6 +17,17 @@
 
             @auth
                 <div class="section-body">
+                    @if (session('verified'))
+                    <div class="alert alert-success alert-dismissible show fade">
+                        <div class="alert-body">
+                            <button class="close" data-dismiss="alert">
+                                <span>&times;</span>
+                            </button>
+                            Akun anda berhasil diverifikasi.
+                        </div>
+                    </div>
+                    @endif
+
                     <div class="row">
                         <div class="col-12 mb-4">
                             <div class="hero bg-primary text-white">
