@@ -97,5 +97,5 @@
     <!-- JS Libraies -->
 
     <!-- Page Specific JS File -->
-    <script src="{{ asset('js/page/auth/auth-form.js') }}"></script>
+    @vite(['resources/js/page/auth/auth-form.js'])
 @endpush

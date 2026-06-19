@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreUserAnswerRequest;
 use App\Models\UserAnswer;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class UserAnswerController extends Controller
 {

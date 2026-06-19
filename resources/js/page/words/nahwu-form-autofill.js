@@ -595,9 +595,15 @@ class NahwuFormController {
                 selectedKedudukan.id === "KD1056" || // dhomir fashl
                 isIsimFiil; // isim fiil
 
+            const shouldDisableHukum = selectedKedudukan.id === "KD1006";
+
             if (shouldDisableIrobAndTanda) {
                 this.instances.irob?.disable();
                 this.instances.tanda?.disable();
+            }
+
+            if (shouldDisableHukum) {
+                this.instances.hukum?.disable();
             }
 
             const isMurab =
@@ -1052,14 +1058,10 @@ class NahwuFormController {
     }
 }
 
-/* ======================================================
-   INITIALIZE
-   ====================================================== */
-
-document.addEventListener("DOMContentLoaded", () => {
+export function createNahwuFormController(options = {}) {
     const bodyFlag = document.body?.dataset?.nahwuAutofill;
     const autoFill =
         typeof bodyFlag !== "undefined" ? bodyFlag !== "false" : true;
 
-    window.nahwuFormController = new NahwuFormController({ autoFill });
-});
+    return new NahwuFormController({ autoFill, ...options });
+}

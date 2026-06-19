@@ -1,12 +1,29 @@
 "use strict";
 
+export function initAnalysisAnswerHandler({
+    getPrefix,
+    markModified,
+    renderWordsTable,
+    renderWordsDetails,
+    getNahwuController,
+    getCurrentCompareResult,
+    setCurrentCompareResult,
+    getCurrentQuestionId,
+    getCurrentVerseId,
+    fetchWordGroups,
+    compareAnswers,
+    highlightErrors,
+    changeSubmitButton,
+    resetCard,
+}) {
+
 $("#form-add-word").on("submit", function (e) {
     e.preventDefault();
     let valid = true;
 
     const editMode = $("#additional-fields").is(":visible");
 
-    const controller = window.nahwuFormController;
+    const controller = getNahwuController();
     if (editMode && controller) {
         if (!validateInput("#input-lafadz")) valid = false;
         if (!validateInput("#input-translation")) valid = false;
@@ -25,7 +42,7 @@ $("#form-add-word").on("submit", function (e) {
     // Logic
     // get key from local storage
     const currentKey = Object.keys(localStorage).find((k) =>
-        k.startsWith(wordGroupsPrefix),
+        k.startsWith(getPrefix()),
     );
 
     const stored = JSON.parse(localStorage.getItem(currentKey));
@@ -129,14 +146,14 @@ $("#form-add-word").on("submit", function (e) {
 
     // track modification
     // modified = true;
-    markModified(wordGroupsPrefix);
+    markModified(getPrefix());
     changeSubmitButton("btn-submit-answer", "Submit", "primary");
 
     // re render word table & details
     renderWordsTable(wordGroup);
     renderWordsDetails(wordGroup);
 
-    if (currentCompareResult.length !== 0) {
+    if (getCurrentCompareResult().length !== 0) {
         const compareResult = compareAnswers(stored.verse.id);
         highlightErrors(compareResult);
     }
@@ -160,7 +177,7 @@ $(document).on("click", ".action-buttons .word-edit", function (e) {
 
     // get data from local storage
     const currentKey = Object.keys(localStorage).find((k) =>
-        k.startsWith(wordGroupsPrefix),
+        k.startsWith(getPrefix()),
     );
     const stored = JSON.parse(localStorage.getItem(currentKey));
     const activeWordGroupId = $(".owl-item.active .word-group").attr("wg-id");
@@ -178,7 +195,7 @@ $(document).on("click", ".action-buttons .word-edit", function (e) {
     $("#input-lafadz").val(word.text);
     $("#input-translation").val(word.translation);
 
-    const ctrl = window.nahwuFormController;
+    const ctrl = getNahwuController();
     if (ctrl) {
         const { kalimat_id, kategori_id, kedudukan_id } = ctrl.resolveIds(word);
 
@@ -232,7 +249,7 @@ $(document).on("click", ".action-buttons .word-edit", function (e) {
 $(document).on("click", "button[name='btn-submit']", function (e) {
     e.preventDefault();
 
-    const verseId = currentVerseId.value;
+    const verseId = getCurrentVerseId();
     if (!verseId) {
         iziToast.warning({
             message: "Verse ID tidak ditemukan",
@@ -244,7 +261,7 @@ $(document).on("click", "button[name='btn-submit']", function (e) {
     // passed check
     const btnId = this.id;
     if (btnId === "btn-next-verse") {
-        const nextVerse = Number(currentVerseId.value) + 1;
+        const nextVerse = Number(getCurrentVerseId()) + 1;
         fetchWordGroups(null, null, nextVerse);
         return;
     }
@@ -258,8 +275,7 @@ $(document).on("click", "button[name='btn-submit']", function (e) {
         return;
     }
 
-    currentCompareResult = compareResult;
-    currentCompareVerseId = verseId;
+    setCurrentCompareResult(compareResult, verseId);
 
     highlightErrors(compareResult);
 
@@ -269,7 +285,7 @@ $(document).on("click", "button[name='btn-submit']", function (e) {
     const score = Math.round((correctAnswers / totalAnswers) * 100);
 
     if (score === 100) {
-        const questionId = currentQuestionId;
+        const questionId = getCurrentQuestionId();
         const payload = {
             question_id: parseInt(questionId),
             level: 1,
@@ -323,7 +339,7 @@ $(document).on("click", "button[name='btn-submit']", function (e) {
                     }).then((willSave) => {
                         if (!willSave) return;
 
-                        const nextVerse = Number(currentVerseId.value) + 1;
+                        const nextVerse = Number(getCurrentVerseId()) + 1;
                         fetchWordGroups(null, null, nextVerse);
                     });
                 } else {
@@ -405,4 +421,5 @@ function clearInputError(selector) {
     const wrapper = input.closest(".form-group");
     input.removeClass("invalid");
     wrapper.find(".error-message").text("");
+}
 }

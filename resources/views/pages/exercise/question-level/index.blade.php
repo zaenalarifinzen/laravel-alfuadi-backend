@@ -115,7 +115,7 @@
     <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
 
     <!-- Page Specific JS File -->
-    <script src="{{ asset('js/utils/storage-helper.js') }}"></script>
+   @vite(['resources/js/utils/storage-helper.js'])
 @endpush
 
 @push('scripts')

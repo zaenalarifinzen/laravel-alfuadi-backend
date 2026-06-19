@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'reset' => 'Pawword berhasil diperbarui.',
+    'reset' => 'Password berhasil diperbarui.',
     'sent' => 'Link reset email berhasil dikirim. Silahkan cek email anda.',
     'throttled' => 'Please wait before retrying.',
     'token' => 'Token tidak valid.',

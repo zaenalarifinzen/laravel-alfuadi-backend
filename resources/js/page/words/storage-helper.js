@@ -2,11 +2,12 @@
 // STORAGE HELPER
 // ==========================
 
-function getActiveStorageKey(prefix) {
+export function getActiveStorageKey(prefix) {
     return Object.keys(localStorage).find((k) => k.startsWith(prefix)) ?? null;
 }
+window.getActiveStorageKey = getActiveStorageKey;
 
-function getStoredObject(prefix) {
+export function getStoredObject(prefix) {
     const key = getActiveStorageKey(prefix);    
     if (!key) return null;
 
@@ -20,12 +21,14 @@ function getStoredObject(prefix) {
         return null;
     }
 }
+window.getStoredObject = getStoredObject;
 
-function getStoredData(prefix) {
+export function getStoredData(prefix) {
     return getStoredObject(prefix);
 }
+window.getStoredData = getStoredData;
 
-function updateStoredData(prefix, updater) {
+export function updateStoredData(prefix, updater) {
     const key = getActiveStorageKey(prefix);
     if (!key) return null;
 
@@ -43,19 +46,23 @@ function updateStoredData(prefix, updater) {
     localStorage.setItem(key, JSON.stringify(stored));
     return stored;
 }
+window.updateStoredData = updateStoredData;
 
-function markModified(prefix) {
+export function markModified(prefix) {
     updateStoredData(prefix, (stored) => {
         stored.modified = true;
     });    
 }
+window.markModified = markModified;
 
-function isModified(prefix) {
+export function isModified(prefix) {
     return getStoredData(prefix)?.modified === true;
 }
+window.isModified = isModified;
 
-function resetModified(prefix) {
+export function resetModified(prefix) {
     updateStoredData(prefix, (stored) => {
         stored.modified = false;
     });
 }
+window.resetModified = resetModified;

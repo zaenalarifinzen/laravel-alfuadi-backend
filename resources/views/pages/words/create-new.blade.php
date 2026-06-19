@@ -413,19 +413,15 @@
     <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
     {{-- <script src="{{ asset('library/select2/dist/js/select2.full.min.js') }}"></script> --}}
 
-    <script>
-        window.WORDS_SYNC_URL = "{{ route('words.sync') }}";
-        window.WORDGROUP_GET_URL = "{{ route('wordgroups.get', ['id' => ':id']) }}";
-        window.CSRF_TOKEN = "{{ csrf_token() }}";
+    <script type="application/json" id="page-config">
+        {!! json_encode([
+            'pageType' => 'words',
+            'wordsSyncUrl' => route('words.sync'),
+            'wordgroupGetUrl' => route('wordgroups.get', ['id' => ':id']),
+            'csrfToken' => csrf_token(),
+        ]) !!}
     </script>
 
     <!-- Page Specific JS File -->
-    <script src="{{ asset('js/page/components-table.js') }}"></script>
-    <script src="{{ asset('js/page/words/storage-helper.js') }}?v=1.1.7"></script>
-    <script src="{{ asset('js/page/words/word-crud.js') }}?v=1.1.7"></script>
-    <script src="{{ asset('js/page/words/words-page.js') }}?v=1.1.7"></script>
-    <script src="{{ asset('js/page/words/nahwu-form-autofill.js') }}?v=1.1.7"></script>
-    <script src="{{ asset('js/utils/search-verse.js') }}?v=1.1.7"></script>
-    <script src="{{ asset('js/utils/owl-slider.js') }}?v=1.1.7"></script>
-    <script src="{{ asset('js/utils/word-table.js') }}?v=1.1.7"></script>
+    @vite(['resources/js/page/words/create-new.js'])
 @endpush

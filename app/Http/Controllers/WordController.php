@@ -8,8 +8,6 @@ use App\Models\WordGroups;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-use function Illuminate\Log\log;
-
 class WordController extends Controller
 {
     /**

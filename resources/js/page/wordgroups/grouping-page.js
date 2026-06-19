@@ -599,7 +599,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        nextVerseId = parseInt(currentVerseId.value) + 1;
+                        const nextVerseId = parseInt(currentVerseId.value) + 1;
                         fetchWordGroups(null, null, nextVerseId);
 
                         iziToast.success({

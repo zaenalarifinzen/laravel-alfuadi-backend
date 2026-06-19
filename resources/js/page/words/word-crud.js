@@ -1,5 +1,19 @@
 "use strict";
 
+export function initWordCrud({
+    config,
+    getPrefix,
+    storage,
+    markModified,
+    renderWordsTable,
+    renderWordsDetails,
+    fetchWordGroups,
+    getNahwuController,
+    getCurrentCompareResult,
+    compareAnswers,
+    highlightErrors,
+}) {
+
 // open modal
 $("#btn-add-word").on("click", function () {
     $("#form-add-word")[0].reset();
@@ -19,8 +33,9 @@ $("#btn-add-word").on("click", function () {
     $("#additional-fields").hide();
 
     // get key from local storage
+    const prefix = getPrefix();
     const currentKey = Object.keys(localStorage).find((k) =>
-        k.startsWith(wordGroupsPrefix),
+        k.startsWith(prefix),
     );
     const stored = JSON.parse(localStorage.getItem(currentKey));
 
@@ -47,7 +62,7 @@ $("#form-add-word").on("submit", function (e) {
 
     const editMode = $("#additional-fields").is(":visible");
 
-    const controller = window.nahwuFormController;
+    const controller = getNahwuController();
     if (editMode && controller) {
         if (!validateInput("#input-lafadz")) valid = false;
         if (!validateInput("#input-translation")) valid = false;
@@ -65,8 +80,9 @@ $("#form-add-word").on("submit", function (e) {
 
     // Logic
     // get key from local storage
+    const prefix = getPrefix();
     const currentKey = Object.keys(localStorage).find((k) =>
-        k.startsWith(wordGroupsPrefix),
+        k.startsWith(prefix),
     );
 
     const stored = JSON.parse(localStorage.getItem(currentKey));
@@ -170,13 +186,13 @@ $("#form-add-word").on("submit", function (e) {
 
     // track modification
     // modified = true;
-    markModified(wordGroupsPrefix);
+    markModified(prefix);
 
     // re render word table & details
     renderWordsTable(wordGroup);
     renderWordsDetails(wordGroup);
 
-    if (currentCompareResult.length !== 0) {
+    if (getCurrentCompareResult().length !== 0) {
         const compareResult = compareAnswers(stored.verse.id);
         highlightErrors(compareResult);
     }
@@ -213,8 +229,9 @@ $(document).on("click", ".action-buttons .word-delete", function (e) {
         const wordId = $(this).closest("tr").find(".words").attr("id");
 
         // get data from local storage
+        const prefix = getPrefix();
         const currentKey = Object.keys(localStorage).find((k) =>
-            k.startsWith(wordGroupsPrefix),
+            k.startsWith(prefix),
         );
         if (!currentKey) return;
 
@@ -240,7 +257,7 @@ $(document).on("click", ".action-buttons .word-delete", function (e) {
 
         // track modification
         // modified = true;
-        markModified(wordGroupsPrefix);
+        markModified(prefix);
 
         // render table
         const updatedGroup = stored.wordGroups[groupIndex];
@@ -261,7 +278,7 @@ $(document).on("click", ".action-buttons .word-edit", function (e) {
 
     // get data from local storage
     const currentKey = Object.keys(localStorage).find((k) =>
-        k.startsWith(wordGroupsPrefix),
+        k.startsWith(getPrefix()),
     );
     const stored = JSON.parse(localStorage.getItem(currentKey));
     const activeWordGroupId = $(".owl-item.active .word-group").attr("wg-id");
@@ -279,7 +296,7 @@ $(document).on("click", ".action-buttons .word-edit", function (e) {
     $("#input-lafadz").val(word.text);
     $("#input-translation").val(word.translation);
 
-    const ctrl = window.nahwuFormController;
+    const ctrl = getNahwuController();
     if (ctrl) {
         const { kalimat_id, kategori_id, kedudukan_id } = ctrl.resolveIds(word);
 
@@ -335,8 +352,9 @@ $(document).on("click", ".action-buttons .word-edit", function (e) {
 $("#btn-save-all").on("click", function (e) {
     e.preventDefault();
 
+    const prefix = getPrefix();
     const currentKey = Object.keys(localStorage).find((k) =>
-        k.startsWith(wordGroupsPrefix),
+        k.startsWith(prefix),
     );
     if (!currentKey) {
         alert("Tidak ada data");
@@ -383,10 +401,10 @@ $("#btn-save-all").on("click", function (e) {
 
         // Logic
         $.ajax({
-            url: WORDS_SYNC_URL,
+            url: config.wordsSyncUrl,
             type: "POST",
             data: {
-                _token: CSRF_TOKEN,
+                _token: config.csrfToken,
                 verse_id: stored.verse.id,
                 groups: stored.wordGroups,
             },
@@ -448,4 +466,5 @@ function clearInputError(selector) {
     const wrapper = input.closest(".form-group");
     input.removeClass("invalid");
     wrapper.find(".error-message").text("");
+}
 }

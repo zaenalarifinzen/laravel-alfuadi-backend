@@ -135,8 +135,7 @@
     <script src="{{ asset('library/selectric/public/jquery.selectric.min.js') }}"></script>
 
     <!-- Page Specific JS File -->
-    <script src="{{ asset('js/page/features-posts.js') }}"></script>
-    <script src="{{ asset('js/page/modules-toastr.js') }}"></script>
+    @vite(['resources/js/page/modules-toastr.js'])
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

@@ -1,6 +1,15 @@
 // =============================
 // RENDER WORDS TABLE
 // =============================
+export function initWordTable({
+    getPrefix,
+    isModified,
+    showEditConfirmation,
+    fetchWordGroups,
+    getCurrentVerseId,
+    applyComparisonHighlights = () => {},
+    changeSubmitButton = () => {},
+}) {
 function renderWordsTable(wordGroup) {
     const tbody = $("#sortable-table tbody");
     tbody.empty();
@@ -30,7 +39,8 @@ function renderWordsTable(wordGroup) {
         else if (word.color === "green") simbolClass = "text-fiil";
         else if (word.color === "blue") simbolClass = "text-isim";
 
-        const isAnswerMode = wordGroupsPrefix === "answer_user_";
+        const prefix = getPrefix();
+        const isAnswerMode = prefix === "answer_user_";
         const actionButtons = isAnswerMode
             ? `<button class="btn btn-sm btn-icon btn-warning word-edit" title="Edit">Edit 
                    <i class="fa-solid fa-edit"></i>
@@ -104,7 +114,7 @@ function renderWordsTable(wordGroup) {
         editorInfo.textContent = ` ${editorName}`;
     }
 
-    const modified = isModified(wordGroupsPrefix);
+    const modified = isModified(getPrefix());
     if (modified) {
         $("#btn-save-all").show();
     } else {
@@ -200,7 +210,7 @@ function addRefreshButton() {
         const confirmed = await showEditConfirmation();
         if (!confirmed) return;
 
-        fetchWordGroups(null, null, currentVerseId.value);
+        fetchWordGroups(null, null, getCurrentVerseId());
     });
 
     const headerContainer = cardHeader.querySelector(".d-flex");
@@ -251,4 +261,14 @@ function resetCard() {
 
     // update submit button
     changeSubmitButton('btn-submit-answer', 'Submit', 'primary');
+}
+
+return {
+    renderWordsTable,
+    renderWordsDetails,
+    addRefreshButton,
+    removeRefreshButton,
+    updateCard,
+    resetCard,
+};
 }

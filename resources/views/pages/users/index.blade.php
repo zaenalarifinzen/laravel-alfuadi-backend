@@ -131,7 +131,6 @@
 
 
     <!-- Page Specific JS File -->
-    <script src="{{ asset('js/page/features-posts.js') }}"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             document.querySelectorAll(".confirm-delete").forEach(btn => {

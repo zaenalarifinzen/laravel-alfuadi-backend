@@ -123,6 +123,6 @@
     <script src="{{ asset('library/jquery.pwstrength/jquery.pwstrength.min.js') }}"></script>
 
     <!-- Page Specific JS File -->
-    <script src="{{ asset('js/page/auth-register.js') }}"></script>
-    <script src="{{ asset('js/page/auth/auth-form.js') }}"></script>
+    @vite(['resources/js/page/auth-register.js'])
+    @vite(['resources/js/page/auth/auth-form.js'])
 @endpush

@@ -157,5 +157,5 @@
     <script src="{{ asset('library/upload-preview/upload-preview.js') }}"></script>
 
     <!-- Page Specific JS File -->
-    <script src="{{ asset('js/page/features-post-create.js') }}"></script>
+    @vite(['resources/js/page/features-post-create.js'])
 @endpush

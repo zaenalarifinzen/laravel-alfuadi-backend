@@ -10,8 +10,6 @@ use App\Models\WordGroups;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-use function Illuminate\Log\log;
-
 class WordGroupController extends Controller
 {
     /**
@@ -214,7 +212,6 @@ class WordGroupController extends Controller
 
             return response()->json(['success' => true, 'message' => 'Data tersimpan']);
         } catch (\Throwable $e) {
-            \Log::error('WordGroup save error: '.$e->getMessage());
 
             return response()->json(['success' => false, 'message' => 'Server error'], 500);
         }
@@ -323,9 +320,6 @@ class WordGroupController extends Controller
     {
         // Cek data yang dikirim dari frontend
         $data = $request->all();
-
-        // Log untuk memastikan diterima dengan benar
-        \Log::info('Test Save Request:', $data);
 
         // Balikkan response JSON untuk verifikasi
         return response()->json([

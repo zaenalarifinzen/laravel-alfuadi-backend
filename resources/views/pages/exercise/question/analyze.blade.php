@@ -224,20 +224,14 @@
     <script src="{{ asset('library/izitoast/dist/js/iziToast.min.js') }}"></script>
     <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
 
-    <script>
-        window.WORDS_SYNC_URL = "{{ route('words.sync') }}";
-        window.ANALYSIS_GET_URL = "{{ route('exercise.analysis', ['verseId' => ':id']) }}";
-        window.CSRF_TOKEN = "{{ csrf_token() }}";
-        window.PAGE_TYPE = "exercise";
+    <script type="application/json" id="page-config">
+        {!! json_encode([
+            'pageType' => 'exercise',
+            'wordgroupGetUrl' => route('exercise.analysis', ['verseId' => ':id']),
+            'csrfToken' => csrf_token(),
+        ]) !!}
     </script>
 
     <!-- Page Specific JS File -->
-    <script src="{{ asset('js/page/components-table.js') }}"></script>
-    <script src="{{ asset('js/page/words/storage-helper.js') }}?v=1.1.7"></script>
-    <script src="{{ asset('js/page/words/nahwu-form-autofill.js') }}?v=1.1.7"></script>
-    <script src="{{ asset('js/page/exercise/analysis-page.js') }}?v=1.1.7"></script>
-    <script src="{{ asset('js/page/exercise/analysis-answer-handler.js') }}?v=1.1.7"></script>
-    <script src="{{ asset('js/utils/search-verse.js') }}?v=1.1.7"></script>
-    <script src="{{ asset('js/utils/owl-slider.js') }}?v=1.1.7"></script>
-    <script src="{{ asset('js/utils/word-table.js') }}?v=1.1.7"></script>
+    @vite(['resources/js/page/exercise/exercise.js'])
 @endpush

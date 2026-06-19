@@ -7,7 +7,6 @@ use App\Models\QuestionLevel;
 use App\Models\UserAnswer;
 use App\Models\Verse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class QuestionController extends Controller
 {
@@ -74,11 +73,9 @@ class QuestionController extends Controller
     {
         try {
             $level = 99;
-            Log::info($level);
 
             if ($request->filled('level_slug')) {
                 $questionLevel = QuestionLevel::where('slug', $request->query('level_slug'))->active()->first();
-                Log::info($questionLevel);
 
                 if (!$questionLevel) {
                     return response()->json([

@@ -273,7 +273,8 @@
     </script>
 
     <!-- Page Specific JS File -->
-    <script src="{{ asset('js/page/features-posts.js') }}"></script>
-    <script src="{{ asset('js/page/modules-sweetalert.js') }}"></script>
-    <script src="{{ asset('js/page/wordgroups/grouping-page.js') }}"></script>
+
+    @vite(['resources/js/page/modules-sweetalert.js'])
+    @vite(['resources/js/page/wordgroups/grouping-page.js'])
+
 @endpush
