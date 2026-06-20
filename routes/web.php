@@ -16,6 +16,7 @@ use App\Models\Verse;
 use App\Models\Word;
 use App\Models\WordGroups;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -24,12 +25,15 @@ Route::get('/', function () {
 
 // Public routes
 Route::get('/home', function () {
+    dd(request()->all());
     $user = Auth::user();
 
-    $randomVerse = Verse::query()
-        ->with('surah')
-        ->inRandomOrder()
-        ->first();
+    $randomVerse = Cache::remember('daily_verse', now()->endOfDay(), function () {
+        return Verse::query()
+            ->with('surah')
+            ->inRandomOrder()
+            ->first();
+    });
 
     $latestTask = null;
     $updatedAt = null;
@@ -80,6 +84,56 @@ Route::get('/wordgroups/get/{id?}', [WordGroupController::class, 'getWordGroup']
 Route::get('/words/get/{id}', [WordController::class, 'getWord'])->name('words.get');
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/home', function () {
+        $user = Auth::user();
+
+        $randomVerse = Cache::remember('daily_verse', now()->endOfDay(), function () {
+            return Verse::query()
+                ->with('surah')
+                ->inRandomOrder()
+                ->first();
+        });
+
+        $latestTask = null;
+        $updatedAt = null;
+        $latestExercise = null;
+
+        if ($user) {
+            if (in_array($user->roles, ['administrator', 'operator'], true)) {
+                $latestProgres = Word::query()
+                    ->where('editor', $user->id)
+                    ->latest('updated_at')
+                    ->first();
+
+                if ($latestProgres) {
+                    $wordgroup = WordGroups::query()
+                        ->where('id', $latestProgres->word_group_id)
+                        ->latest('updated_at')
+                        ->first();
+
+                    if ($wordgroup) {
+                        $surah = Surah::query()
+                            ->where('id', $wordgroup->surah_id)
+                            ->first();
+
+                        if ($surah) {
+                            $latestTask = 'Surah ' . $surah->name . ' ayat ' . $wordgroup->verse_number;
+                        }
+
+                        $updatedAt = $latestProgres->updated_at;
+                    }
+                }
+            }
+        }
+
+        return view('pages.dashboard', [
+            'type_menu' => 'dashboard',
+            'randomVerse' => $randomVerse,
+            'latestTask' => $latestTask,
+            'updated_at' => $updatedAt,
+            'latestExercise' => $latestExercise,
+        ]);
+    })->name('home');
 
     // Administrator Only
     Route::middleware(['roles:administrator'])->group(function () {

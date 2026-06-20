@@ -40,8 +40,6 @@ class CreateNewUser implements CreatesNewUsers
             'roles' => 'user',
         ]);
 
-        $user->sendEmailVerificationNotification();
-
         return $user;
     }
 }
