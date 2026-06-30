@@ -13,6 +13,48 @@ export function initWordCrud({
     compareAnswers,
     highlightErrors,
 }) {
+    // =========================
+    // RESET FORM HELPER
+    // =========================
+    function resetWordForm() {
+        // 1. reset native form
+        $("#form-add-word")[0].reset();
+        $('#input-id').val("");
+        $("#input-order-number").val("");
+
+        // 2. clear error validation
+        clearInputError("#input-lafadz");
+        clearInputError("#input-translation");
+
+        // 3. reset all custom dropdown
+        const ctrl = getNahwuController();
+        if (ctrl) {
+            ctrl.resetDropdown(ctrl.instances.kalimat);
+            ctrl.resetAllDropdown();
+
+            // enable all dropdown
+            ctrl.enableAllRelationFields();
+
+            // set default category
+            ctrl.updateKategoriOptions();
+        }
+
+        // 4. release addition attribute
+        document
+            .getElementById("form-add-word")
+            .querySelector("[required]")
+            .forEach((el) => el.removeAttribute("required"));
+
+        // 5. hide additional fields & set label to defautl
+        $("#additional-fields").hide();
+        $("#form-add-word-label").text("Tambah Kalimat");
+        $("#btn-submit").text("Tambahkan");
+    }
+
+    $("#modal-add-word").on("hidden.bs.modal", function () {
+        resetWordForm();
+    });
+
     // open modal
     $("#btn-add-word").on("click", function () {
         $("#form-add-word")[0].reset();

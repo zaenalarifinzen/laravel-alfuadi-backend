@@ -479,7 +479,6 @@ class NahwuFormController {
             if (selected === "42") {
                 this.updateKategoriOptions(selected, null);
             } else {
-                console.log('Kategori diupdate oleh kalimat');
                 this.updateKategoriOptions(selected);
             }
 
@@ -510,7 +509,6 @@ class NahwuFormController {
             const selectedKalimat = this.instances.kalimat?.select.value || null;
             const selectedHukum = hukum.select.value || null;
 
-            console.log('Kategori diupdate oleh hukum');
             this.updateKategoriOptions(selectedKalimat, selectedHukum);
             this.instances.kategori?.enable();
         });
@@ -676,9 +674,7 @@ class NahwuFormController {
         hukum.setData(filteredHukum);
     }
 
-    updateKategoriOptions(selectedKalimat = null, selectedHukum = null) {
-        console.log(`kalimat: ${selectedKalimat}, hukum: ${selectedHukum}`);
-        
+    updateKategoriOptions(selectedKalimat = null, selectedHukum = null) {        
         const kategori = this.instances.kategori;
         if (!kategori) return;
 
@@ -723,9 +719,7 @@ class NahwuFormController {
                     k.kategori_ar,
                     k.kategori_in,
                 ),
-            );
-            console.log(filteredKategori);
-            
+            );            
         kategori.setData(filteredKategori);
     }
 

@@ -93,7 +93,7 @@ export function initWordsPage({
                 const slider = getSlider();
 
                 data.modified = false;
-                wordTable.removeRefreshButton();
+                wordTable.removeUpdateButton();
 
                 if (config.pageType === "exercise") {
                     currentCompareResult = [];
@@ -339,7 +339,7 @@ export function initWordsPage({
         wordTable.renderWordsDetails(cachedData.wordGroups[0]);
 
         if (cachedData.modified) {
-            wordTable.addRefreshButton();
+            wordTable.addUpdateButton();
 
             iziToast.info({
                 message: "Data sebelumnya berhasil dipulihkan",

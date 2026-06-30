@@ -190,21 +190,21 @@ function renderWordsDetails(wordGroup) {
     });
 }
 
-function addRefreshButton() {
+function addUpdateButton() {
     const cardHeader = document.getElementById("word");
 
-    // refresh button
+    // update button
     const wrapper = document.createElement("div");
     wrapper.innerHTML = `
         <button class="btn btn-icon icon-left btn-info btn-lg" id="btn-reload-wordgroups">
-            <i class="fa-solid fa-rotate"></i> Refresh
+            <i class="fa-solid fa-rotate"></i> Update
         </button>
     `;
 
-    const refreshBtn = wrapper.querySelector("#btn-reload-wordgroups");
+    const updateBtn = wrapper.querySelector("#btn-reload-wordgroups");
 
     // event listener
-    refreshBtn.addEventListener("click", async function (e) {
+    updateBtn.addEventListener("click", async function (e) {
         e.preventDefault();
 
         const confirmed = await showEditConfirmation();
@@ -217,11 +217,11 @@ function addRefreshButton() {
     if (headerContainer) {
         headerContainer.appendChild(wrapper);
     } else {
-        cardHeader.appendChild(refreshBtn);
+        cardHeader.appendChild(updateBtn);
     }
 }
 
-function removeRefreshButton() {
+function removeUpdateButton() {
     const btn = document.getElementById("btn-reload-wordgroups");
 
     if (btn) {
@@ -266,8 +266,8 @@ function resetCard() {
 return {
     renderWordsTable,
     renderWordsDetails,
-    addRefreshButton,
-    removeRefreshButton,
+    addUpdateButton,
+    removeUpdateButton,
     updateCard,
     resetCard,
 };
