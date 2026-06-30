@@ -345,6 +345,10 @@ class SearchableDropdown {
         this.isRequired = true;
     }
 
+    isEnabled() {
+        return !this.select.disabled;
+    }
+
     validate() {
         if (!this.isRequired) return true;
 
@@ -469,11 +473,14 @@ class NahwuFormController {
                 this.resetDropdown(this.instances.simbol);
             }
 
-            const selected = kalimat.select.value;
+            const selected = kalimat.select.value || null;
 
             // If sibhul jumlah, set data categori
             if (selected === "42") {
                 this.updateKategoriOptions(selected, null);
+            } else {
+                console.log('Kategori diupdate oleh kalimat');
+                this.updateKategoriOptions(selected);
             }
 
             this.updateHukumOptions(selected);
@@ -500,9 +507,10 @@ class NahwuFormController {
                 this.resetDropdown(this.instances.simbol);
             }
 
-            const selectedKalimat = this.instances.kalimat?.select.value;
-            const selectedHukum = hukum.select.value;
+            const selectedKalimat = this.instances.kalimat?.select.value || null;
+            const selectedHukum = hukum.select.value || null;
 
+            console.log('Kategori diupdate oleh hukum');
             this.updateKategoriOptions(selectedKalimat, selectedHukum);
             this.instances.kategori?.enable();
         });
@@ -553,7 +561,7 @@ class NahwuFormController {
                 this.autoFillSimbolByKategori(selectedKategori);
 
                 this.applyKalimatFieldRules(selectedKalimat);
-                if (selectedKategori.id === "C1013") {
+                if (selectedKategori.kategori_ar === "اسم فعل") {
                     this.instances.irob?.disable();
                     this.instances.tanda?.disable();
                 }
@@ -586,16 +594,17 @@ class NahwuFormController {
                 this.instances.kategori.select.value,
             );
 
-            const isIsimFiil = selectedKategori?.id === "C1013";
+            const isIsimFiil = selectedKategori?.kategori_ar === "اسم فعل";
 
             const shouldDisableIrobAndTanda =
-                selectedKedudukan.id === "KD4101" || // shilah
-                selectedKedudukan.id === "KD4102" || // jawab
-                selectedKedudukan.id === "KD1006" || // fail mustatir
-                selectedKedudukan.id === "KD1056" || // dhomir fashl
+                selectedKedudukan.kedudukan_ar === "صلة" || // shilah
+                selectedKedudukan.kedudukan_ar === "جواب" || // jawab
+                selectedKedudukan.kedudukan_ar === "فاعل مستتر" || // fail mustatir
+                selectedKedudukan.kedudukan_ar === "ضمير الفصل" || // dhomir fashl
                 isIsimFiil; // isim fiil
 
-            const shouldDisableHukum = selectedKedudukan.id === "KD1006";
+            const shouldDisableHukum =
+                selectedKedudukan.kedudukan_ar === "فاعل مستتر";
 
             if (shouldDisableIrobAndTanda) {
                 this.instances.irob?.disable();
@@ -667,7 +676,9 @@ class NahwuFormController {
         hukum.setData(filteredHukum);
     }
 
-    updateKategoriOptions(selectedKalimat, selectedHukum = null) {
+    updateKategoriOptions(selectedKalimat = null, selectedHukum = null) {
+        console.log(`kalimat: ${selectedKalimat}, hukum: ${selectedHukum}`);
+        
         const kategori = this.instances.kategori;
         if (!kategori) return;
 
@@ -680,6 +691,14 @@ class NahwuFormController {
 
         const filteredKategori = data.kategori
             .filter((k) => {
+                if (selectedKalimat == null) {
+                    return true;
+                }
+
+                if (selectedHukum == null) {
+                    return k.id_kalimat === selectedKalimat;
+                }
+
                 if (isFiilMadhi || isFiilAmr) {
                     return k.id_kalimat === selectedKalimat;
                 }
@@ -705,7 +724,8 @@ class NahwuFormController {
                     k.kategori_in,
                 ),
             );
-
+            console.log(filteredKategori);
+            
         kategori.setData(filteredKategori);
     }
 
@@ -817,9 +837,9 @@ class NahwuFormController {
             21: ["kedudukan", "irob", "tanda"],
             23: ["kedudukan", "irob", "tanda"],
             30: ["kedudukan", "irob", "tanda"],
-            41: ["kategori", "hukum"],
+            41: ["hukum", "kategori"],
             42: ["hukum"],
-            50: ["kategori", "hukum"],
+            50: ["hukum", "kategori"],
         };
 
         const fieldToDisable = FIELD_RULES[selected] || [];
@@ -937,7 +957,7 @@ class NahwuFormController {
             kalimatId === "30" ||
             (kalimatId === "22" &&
                 this.instances.hukum.data?.[0]?.value !== "مُعْرَبٌ") ||
-            selectedKategori.id === "C1013"
+            selectedKategori.kategori_ar === "اسم فعل"
         ) {
             if (this.instances.simbol && selectedKategori.simbol) {
                 this.instances.simbol.setData([
@@ -974,7 +994,7 @@ class NahwuFormController {
             );
         }
 
-        return data.kategori.find((k) => k.id === "C1008") || null;
+        return data.kategori.find((k) => k.kategori_ar === "اسم ضمير") || null;
     }
 
     bindFormValidation() {
