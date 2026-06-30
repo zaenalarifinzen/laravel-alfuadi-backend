@@ -481,6 +481,16 @@ class NahwuFormController {
             } else {
                 this.updateKategoriOptions(selected);
             }
+            
+            // replace lafadz to this kalimat
+            const lafadzInput = document.getElementById("input-lafadz");
+            if (selected === "41" || selected === "42") {
+                // set lafadz to kalimat_ar
+                const kalimatData = MasterData.raw.kalimat.find((k) => k.id === selected);                
+                if (kalimatData) {
+                    lafadzInput.value = `(${kalimatData.kalimat_ar_musyakal})`;
+                }
+            }
 
             this.updateHukumOptions(selected);
             this.enableAllRelationFields();

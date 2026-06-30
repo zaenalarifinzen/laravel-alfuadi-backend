@@ -30,7 +30,7 @@ export function initWordCrud({
         const ctrl = getNahwuController();
         if (ctrl) {
             ctrl.resetDropdown(ctrl.instances.kalimat);
-            ctrl.resetAllDropdown();
+            ctrl.resetAllDropdowns();
 
             // enable all dropdown
             ctrl.enableAllRelationFields();
@@ -42,7 +42,7 @@ export function initWordCrud({
         // 4. release addition attribute
         document
             .getElementById("form-add-word")
-            .querySelector("[required]")
+            .querySelectorAll("[required]")
             .forEach((el) => el.removeAttribute("required"));
 
         // 5. hide additional fields & set label to defautl
@@ -150,7 +150,7 @@ export function initWordCrud({
 
         const newOrder = (wordGroup.words?.length || 0) + 1;
         let color;
-        if (lafadz === "-") {
+        if (lafadz === "-" || lafadz.includes("(") || lafadz.includes(")")) {
             color = "black";
         } else {
             switch (kalimat) {
