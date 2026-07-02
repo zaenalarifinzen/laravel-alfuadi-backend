@@ -84,7 +84,7 @@
 
                 <li class="menu-header">Organize</li>
                 <li class="{{ Request::is('skema-nahwu') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('page.skema-nahwu') }}">
+                    <a class="nav-link" href="{{ route('kalimat.index') }}">
                         <i class="fas fa-sitemap"></i>
                         <span>Skema Nahwu</span></a>
                 </li>
