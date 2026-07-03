@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreKategoriRequest;
+use App\Http\Requests\UpdateKategoriRequest;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
 
@@ -35,7 +36,9 @@ class KategoriController extends Controller
         $data = $request->all();
 
         Kategori::create($data);
-        return redirect()->route('skema-nahwu.kategori.index')->with('success', '"' . $data['kategori_in'] . '" succesfully created');
+        return redirect()->route('skema-nahwu.index')
+            ->with('success', '"' . $data['kategori_in'] . '" succesfully created')
+            ->with('activeTab', 'kategori');
     }
 
     /**
@@ -58,9 +61,13 @@ class KategoriController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateKategoriRequest $request, Kategori $kategori)
     {
-        //
+        $data = $request->validated();
+        $kategori->update($data);
+        return redirect()->route('skema-nahwu.index')
+            ->with('success', '"' . $data['kategori_in'] . '" succesfully updated')
+            ->with('activeTab', 'kategori');
     }
 
     /**
@@ -69,6 +76,8 @@ class KategoriController extends Controller
     public function destroy(Kategori $kategori)
     {
         $kategori->delete();
-        return redirect()->route('skema-nahwu.kategori.index')->with('success', '"' . $kategori['kategori_in'] . '" succesfully deleted');
+        return redirect()->route('skema-nahwu.index')
+            ->with('success', '"' . $kategori['kategori_in'] . '" succesfully deleted')
+            ->with('activeTab', 'kategori');
     }
 }

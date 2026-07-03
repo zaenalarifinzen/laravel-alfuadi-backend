@@ -35,7 +35,9 @@ class KedudukanController extends Controller
     {
         $data = $request->all();
         Kedudukan::create($data);
-        return redirect()->route('skema-nahwu.kedudukan.index')->with('success', '"' . $data['kedudukan_in'] . '" succesfully created');
+        return redirect()->route('skema-nahwu.index')
+            ->with('success', '"' . $data['kedudukan_in'] . '" succesfully created')
+            ->with('activeTab', 'kedudukan');
     }
 
     /**
@@ -62,7 +64,8 @@ class KedudukanController extends Controller
     {
         $data = $request->validated();
         $kedudukan->update($data);
-        return redirect()->route('skema-nahwu.kedudukan.index')->with('success', '"' . $kedudukan['kedudukan_in'] . '" succesfully updated');
+        return redirect()->route('skema-nahwu.index')
+            ->with('success', '"' . $kedudukan['kedudukan_in'] . '" succesfully updated')->with('activeTab', 'kedudukan');
     }
 
     /**
@@ -71,6 +74,8 @@ class KedudukanController extends Controller
     public function destroy(Kedudukan $kedudukan)
     {
         $kedudukan->delete();
-        return redirect()->route('skema-nahwu.kedudukan.index')->with('success', '"' . $kedudukan['kedudukan_in'] . '" succesfully deleted');
+        return redirect()->route('skema-nahwu.index')
+            ->with('success', '"' . $kedudukan['kedudukan_in'] . '" succesfully deleted')
+            ->with('activeTab', 'kedudukan');
     }
 }

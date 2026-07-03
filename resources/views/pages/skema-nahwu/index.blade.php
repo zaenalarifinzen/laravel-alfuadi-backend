@@ -34,20 +34,20 @@
                             <div class="card-body">
                                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link active" id="kalimat-tab" data-toggle="tab" href="#kalimat"
+                                        <a class="nav-link {{ session('activeTab') == 'kalimat' || !session('activeTab') ? 'active' : '' }}" id="kalimat-tab" data-toggle="tab" href="#kalimat"
                                             role="tab" aria-controls="kalimat" aria-selected="true">Kalimat</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="kategori-tab" data-toggle="tab" href="#kategori"
+                                        <a class="nav-link {{ session('activeTab') == 'kategori' ? 'active' : '' }}" id="kategori-tab" data-toggle="tab" href="#kategori"
                                             role="tab" aria-controls="kategori" aria-selected="false">Kategori</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="kedudukan-tab" data-toggle="tab" href="#kedudukan"
+                                        <a class="nav-link {{ session('activeTab') == 'kedudukan' ? 'active' : '' }}" id="kedudukan-tab" data-toggle="tab" href="#kedudukan"
                                             role="tab" aria-controls="kedudukan" aria-selected="false">Kedudukan</a>
                                     </li>
                                 </ul>
                                 <div class="tab-content" id="myTabContent">
-                                    <div class="tab-pane fade show active" id="kalimat" role="tabpanel"
+                                    <div class="tab-pane fade {{ session('activeTab') == 'kalimat' || !session('activeTab') ? 'show active' : '' }}" id="kalimat" role="tabpanel"
                                         aria-labelledby="kalimat-tab">
                                         <div class="card">
                                             <div class="card-body">
@@ -114,7 +114,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tab-pane fade" id="kategori" role="tabpanel"
+                                    <div class="tab-pane fade {{ session('activeTab') == 'kategori' ? 'show active' : '' }}" id="kategori" role="tabpanel"
                                         aria-labelledby="kategori-tab">
                                         <div class="card">
                                             <div class="card-body">
@@ -207,7 +207,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tab-pane fade" id="kedudukan" role="tabpanel"
+                                    <div class="tab-pane fade {{ session('activeTab') == 'kedudukan' ? 'show active' : '' }}" id="kedudukan" role="tabpanel"
                                         aria-labelledby="kedudukan-tab">
                                         <div class="card">
                                             <div class="card-body">
