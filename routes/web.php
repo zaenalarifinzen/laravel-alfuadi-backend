@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\KalimatController;
+use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\QuestionLevelController;
 use App\Http\Controllers\NahwuDataController;
 use App\Http\Controllers\ProductController;
@@ -141,6 +142,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('users', UserController::class);
         Route::resource('products', ProductController::class);
         Route::resource('kalimat', KalimatController::class);
+        Route::resource('kategori', KategoriController::class);
         Route::get('/skema-nahwu', function () {
             return view('pages.Template.develop.skema-nahwu', ['type_menu' => '']);
         })->name('page.skema-nahwu'); // Template Page

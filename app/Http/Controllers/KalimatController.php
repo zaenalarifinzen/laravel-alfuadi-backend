@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreKalimatRequest;
+use App\Http\Requests\UpdateKalimatRequest;
 use App\Models\Kalimat;
 use Illuminate\Http\Request;
 
@@ -51,15 +52,18 @@ class KalimatController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $kalimat = Kalimat::findOrFail($id);
+        return view('pages.skema-nahwu.kalimat.edit', compact('kalimat'), ['type_menu' => '']);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateKalimatRequest $request, Kalimat $kalimat)
     {
-        //
+        $data = $request->validated();
+        $kalimat->update($data);
+        return redirect()->route('kalimat.index')->with('success', '"' . $data['kalimat_in'] . '" succesfully updated');
     }
 
     /**

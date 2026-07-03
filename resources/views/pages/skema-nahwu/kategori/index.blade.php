@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Kalimat')
+@section('title', 'Kategori')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -11,14 +11,14 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Kalimat</h1>
+                <h1>Kategori</h1>
                 <div class="section-header-button">
-                    <a href="{{ route('kalimat.create') }}" class="btn btn-primary">Tambah</a>
+                    <a href="{{ route('kategori.create') }}" class="btn btn-primary">Tambah</a>
                 </div>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
                     <div class="breadcrumb-item"><a href="#">Skema-Nahwu</a></div>
-                    <div class="breadcrumb-item">Kalimat</div>
+                    <div class="breadcrumb-item">Kategori</div>
                 </div>
             </div>
             <div class="section-body">
@@ -27,27 +27,27 @@
                         @include('layouts.alert')
                     </div>
                 </div>
-                <h2 class="section-title">Kalimat</h2>
+                <h2 class="section-title">Kategori</h2>
                 <p class="section-lead">
-                    You can manage all kalimat, such as editing, deleting and more.
+                    You can manage all kategori, such as editing, deleting and more.
                 </p>
 
                 <div class="row mt-4">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4>Kalimat</h4>
+                                <h4>Kategori</h4>
                             </div>
                             <div class="card-body">
                                 <div class="float-left">
                                     <select class="form-control selectric">
-                                        <option selected>Kalimat</option>
-                                        <option>Kategori & Tanda</option>
+                                        <option>Kalimat</option>
+                                        <option selected>Kategori & Tanda</option>
                                         <option>Kedudukan & Irob</option>
                                     </select>
                                 </div>
                                 <div class="float-right">
-                                    <form method="GET" action="{{ route('users.index') }}">
+                                    <form method="GET" action="{{ route('kategori.index') }}">
                                         <div class="input-group">
                                             <input type="text" class="form-control" placeholder="Search" name="name">
                                             <div class="input-group-append">
@@ -64,33 +64,57 @@
                                         <tr>
 
                                             <th>Id</th>
-                                            <th>Kalimat Arabic</th>
-                                            <th>Kalimat Arabic Musyakal</th>
-                                            <th>Kalimat Indonesia</th>
+                                            <th>Simbol</th>
+                                            <th>Kategori Arabic</th>
+                                            <th>Kategori Arabic Musyakal</th>
+                                            <th>Kategori Indonesia</th>
+                                            <th>Hukum</th>
+                                            <th>Rofa</th>
+                                            <th>Nashob</th>
+                                            <th>Jar</th>
+                                            <th>Jazm</th>
                                             <th>Action</th>
                                         </tr>
-                                        @foreach ($kalimats as $kalimat)
+                                        @foreach ($kategoris as $kategori)
                                             <tr>
-                                                <td>{{ $kalimat->id }}
+                                                <td>{{ $kategori->id }}
                                                 </td>
                                                 <td class="align-middle">
-                                                    <div class="text-center arabic-text">{{ $kalimat->kalimat_ar }}</div>
+                                                    <div class="text-center arabic-text">{{ $kategori->simbol }}</div>
+                                                </td>
+                                                <td class="align-middle">
+                                                    <div class="text-center arabic-text">{{ $kategori->kategori_ar }}</div>
                                                 </td>
                                                 <td class="text-center align-middle arabic-text">
-                                                    {{ $kalimat->kalimat_ar_musyakal ?? '' }}
+                                                    {{ $kategori->kategori_ar_musyakal ?? '' }}
+                                                </td>
+                                                <td class="text-center align-middle arabic-text">
+                                                    {{ $kategori->hukum ?? '' }}
+                                                </td>
+                                                <td class="text-center align-middle arabic-text">
+                                                    {{ $kategori->rofa ?? '' }}
+                                                </td>
+                                                <td class="text-center align-middle arabic-text">
+                                                    {{ $kategori->nashob ?? '' }}
+                                                </td>
+                                                <td class="text-center align-middle arabic-text">
+                                                    {{ $kategori->jar ?? '' }}
+                                                </td>
+                                                <td class="text-center align-middle arabic-text">
+                                                    {{ $kategori->jazm ?? '' }}
                                                 </td>
                                                 <td>
-                                                    {{ $kalimat->kalimat_in }}
+                                                    {{ $kategori->kategori_in }}
                                                 </td>
                                                 <td>
                                                     <div class="d-flex justify-content-left">
-                                                        <a href='{{ route('kalimat.edit', $kalimat->id) }}'
+                                                        <a href='{{ route('kategori.edit', $kategori->id) }}'
                                                             class="btn btn-sm btn-info btn-icon">
                                                             <i class="fas fa-edit"></i>
                                                             Edit
                                                         </a>
 
-                                                        <form action="{{ route('kalimat.destroy', $kalimat->id) }}"
+                                                        <form action="{{ route('kategori.destroy', $kategori->id) }}"
                                                             method="POST" class="ml-2">
                                                             <input type="hidden" name="_method" value="DELETE" />
                                                             <input type="hidden" name="_token"
@@ -129,8 +153,8 @@
                     let form = this.closest("form");
 
                     swal({
-                            title: "Hapus kalimat?",
-                            text: "Data user akan dihapus dan mereka tidak bisa mengakses akunnya kembali",
+                            title: "Hapus Kategori?",
+                            text: "Data kategori akan dihapus dan mereka tidak bisa mengakses akunnya kembali",
                             icon: "warning",
                             buttons: {
                                 cancel: {

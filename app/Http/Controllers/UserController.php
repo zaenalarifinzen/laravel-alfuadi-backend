@@ -36,7 +36,7 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success', 'User succesfully created');
     }
 
-    public function edit(STring $id)
+    public function edit(String $id)
     {
         $user = User::findOrFail($id);
         return view('pages.users.edit', compact('user'), ['type_menu' => '']);
