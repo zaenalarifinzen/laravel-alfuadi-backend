@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Kategori')
+@section('title', 'Edit Kedudukan')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -16,10 +16,10 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Edit Kategori</h1>
+                <h1>Edit Kedudukan</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="{{ route('home') }}">Dashboard</a></div>
-                    <div class="breadcrumb-item"><a href="#">Kategori</a></div>
+                    <div class="breadcrumb-item"><a href="#">Kedudukan</a></div>
                     <div class="breadcrumb-item">Edit</div>
                 </div>
             </div>
@@ -30,7 +30,7 @@
                     <div class="col-12 col-md-6 col-lg-6">
                         <div class="card">
                             <div class="card-header">
-                                <h4>Edit Kategori</h4>
+                                <h4>Edit Kedudukan</h4>
                             </div>
                             <div class="card-body">
                                 <div class="row">
@@ -39,14 +39,14 @@
                                     </div>
                                 </div>
 
-                                <form action="{{ route('skema-nahwu.kategori.update', $kategori) }}" method="POST" novalidate>
+                                <form action="{{ route('skema-nahwu.kedudukan.update', $kedudukan) }}" method="POST" novalidate>
                                     @csrf
                                     @method('PUT')
                                     <div class="form-group">
-                                        <label>Id Kategori</label>
+                                        <label>Id Kedudukan</label>
                                         <input type="text"
                                             class="form-control @error('id') is-invalid @enderror"
-                                            name="id" value="{{ $kategori->id }}" required readonly>
+                                            name="id" value="{{ $kedudukan->id }}" required readonly>
                                         @error('id')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
@@ -55,7 +55,7 @@
                                         <label>Order</label>
                                         <input type="number"
                                             class="form-control @error('order') is-invalid @enderror"
-                                            name="order" value="{{ $kategori->order }}" required>
+                                            name="order" value="{{ $kedudukan->order }}" required>
                                         @error('order')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
@@ -64,7 +64,7 @@
                                         <label>Id Kalimat</label>
                                         <input type="number"
                                             class="form-control @error('id_kalimat') is-invalid @enderror"
-                                            name="id_kalimat" value="{{ $kategori->id_kalimat }}" required>
+                                            name="id_kalimat" value="{{ $kedudukan->id_kalimat }}" required>
                                         @error('id_kalimat')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
@@ -72,72 +72,40 @@
                                     <div class="form-group">
                                         <label>Simbol</label>
                                         <input type="text" class="form-control arabic-text @error('simbol') is-invalid @enderror"
-                                            name="simbol" value="{{ $kategori->simbol }}" required>
+                                            name="simbol" value="{{ $kedudukan->simbol }}" required>
                                         @error('simbol')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label>Kategori Arabic</label>
-                                        <input type="text" class="form-control arabic-text @error('kategori_ar') is-invalid @enderror"
-                                            name="kategori_ar" value="{{ $kategori->kategori_ar }}" required>
-                                        @error('kategori_ar')
+                                        <label>Kedudukan Arabic</label>
+                                        <input type="text" class="form-control arabic-text @error('kedudukan_ar') is-invalid @enderror"
+                                            name="kedudukan_ar" value="{{ $kedudukan->kedudukan_ar }}" required>
+                                        @error('kedudukan_ar')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label>Kategori Arabic Musyakal</label>
-                                        <input type="text" class="form-control arabic-text @error('kategori_ar_musyakal') is-invalid @enderror"
-                                            name="kategori_ar_musyakal" value="{{ $kategori->kategori_ar_musyakal }}" required>
-                                        @error('kategori_ar_musyakal')
+                                        <label>Kedudukan Arabic Musyakal</label>
+                                        <input type="text" class="form-control arabic-text @error('kedudukan_ar_musyakal') is-invalid @enderror"
+                                            name="kedudukan_ar_musyakal" value="{{ $kedudukan->kedudukan_ar_musyakal }}" required>
+                                        @error('kedudukan_ar_musyakal')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label>Kategori Indonesia</label>
-                                        <input type="text" class="form-control @error('kategori_in') is-invalid @enderror"
-                                            name="kategori_in" value="{{ $kategori->kategori_in }}" required>
-                                        @error('kategori_in')
+                                        <label>Kedudukan Indonesia</label>
+                                        <input type="text" class="form-control @error('kedudukan_in') is-invalid @enderror"
+                                            name="kedudukan_in" value="{{ $kedudukan->kedudukan_in }}" required>
+                                        @error('kedudukan_in')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label>Hukum</label>
-                                        <input type="text" class="form-control arabic-text @error('hukum') is-invalid @enderror"
-                                            name="hukum" value="{{ $kategori->hukum }}" required>
-                                        @error('hukum')
-                                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Tanda Rofa</label>
-                                        <input type="text" class="form-control arabic-text @error('rofa') is-invalid @enderror"
-                                            name="rofa" value="{{ $kategori->rofa }}" required>
-                                        @error('rofa')
-                                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Tanda Nashob</label>
-                                        <input type="text" class="form-control arabic-text @error('nashob') is-invalid @enderror"
-                                            name="nashob" value="{{ $kategori->nashob }}" required>
-                                        @error('nashob')
-                                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Tanda Jar</label>
-                                        <input type="text" class="form-control arabic-text @error('jar') is-invalid @enderror"
-                                            name="jar" value="{{ $kategori->jar }}" required>
-                                        @error('jar')
-                                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Tanda Jazm</label>
-                                        <input type="text" class="form-control arabic-text @error('jazm') is-invalid @enderror"
-                                            name="jazm" value="{{ $kategori->jazm }}" required>
-                                        @error('jazm')
+                                        <label>Irob</label>
+                                        <input type="text" class="form-control arabic-text @error('irob') is-invalid @enderror"
+                                            name="irob" value="{{ $kedudukan->irob }}" required>
+                                        @error('irob')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
                                     </div>

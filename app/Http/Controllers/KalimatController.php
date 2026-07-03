@@ -36,7 +36,7 @@ class KalimatController extends Controller
         $data = $request->all();
 
         Kalimat::create($data);
-        return redirect()->route('kalimat.index')->with('success', '"' . $data['kalimat_in'] . '" succesfully created');
+        return redirect()->route('skema-nahwu.kalimat.index')->with('success', '"' . $data['kalimat_in'] . '" succesfully created');
     }
 
     /**
@@ -63,7 +63,7 @@ class KalimatController extends Controller
     {
         $data = $request->validated();
         $kalimat->update($data);
-        return redirect()->route('kalimat.index')->with('success', '"' . $data['kalimat_in'] . '" succesfully updated');
+        return redirect()->route('skema-nahwu.kalimat.index')->with('success', '"' . $data['kalimat_in'] . '" succesfully updated');
     }
 
     /**
@@ -72,6 +72,6 @@ class KalimatController extends Controller
     public function destroy(Kalimat $kalimat)
     {
         $kalimat->delete();
-        return redirect()->route('kalimat.index')->with('success', '"' . $kalimat['kalimat_in'] . '" succesfully deleted');
+        return redirect()->route('skema-nahwu.kalimat.index')->with('success', '"' . $kalimat['kalimat_in'] . '" succesfully deleted');
     }
 }

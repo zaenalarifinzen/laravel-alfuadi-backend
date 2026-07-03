@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreKategoriRequest extends FormRequest
+class UpdateKedudukanRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,21 +22,13 @@ class StoreKategoriRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required|unique:kategori,id',
             'id_kalimat' => 'required|exists:kalimat,id',
-
             'order' => 'required|integer',
             'simbol' => 'string|max:50',
-
-            'kategori_ar' => 'required|string',
-            'kategori_ar_musyakal' => 'required|string',
-            'kategori_in' => 'required|string',
-            'hukum' => 'nullable|string',
-
-            'rofa' => 'nullable|string',
-            'nashob' => 'nullable|string',
-            'jar' => 'nullable|string',
-            'jazm' => 'nullable|string',
+            'kedudukan_ar' => 'required|string',
+            'kedudukan_ar_musyakal' => 'required|string',
+            'kedudukan_in' => 'required|string',
+            'irob' => 'string',
         ];
     }
 }

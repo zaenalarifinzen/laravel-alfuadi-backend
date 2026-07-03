@@ -35,7 +35,7 @@ class KategoriController extends Controller
         $data = $request->all();
 
         Kategori::create($data);
-        return redirect()->route('kategori.index')->with('success', '"' . $data['kategori_in'] . '" succesfully created');
+        return redirect()->route('skema-nahwu.kategori.index')->with('success', '"' . $data['kategori_in'] . '" succesfully created');
     }
 
     /**
@@ -69,6 +69,6 @@ class KategoriController extends Controller
     public function destroy(Kategori $kategori)
     {
         $kategori->delete();
-        return redirect()->route('kategori.index')->with('success', '"' . $kategori['kategori_in'] . '" succesfully deleted');
+        return redirect()->route('skema-nahwu.kategori.index')->with('success', '"' . $kategori['kategori_in'] . '" succesfully deleted');
     }
 }

@@ -39,7 +39,7 @@
                                     </div>
                                 </div>
 
-                                <form action="{{ route('kalimat.store') }}" method="POST" novalidate>
+                                <form action="{{ route('skema-nahwu.kalimat.store') }}" method="POST" novalidate>
                                     @csrf
                                     <div class="form-group">
                                         <label>Id Kalimat</label>

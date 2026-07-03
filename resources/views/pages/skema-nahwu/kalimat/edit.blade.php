@@ -39,7 +39,7 @@
                                     </div>
                                 </div>
 
-                                <form action="{{ route('kalimat.update', $kalimat) }}" method="POST" novalidate>
+                                <form action="{{ route('skema-nahwu.kalimat.update', $kalimat) }}" method="POST" novalidate>
                                     @csrf
                                     @method('PUT')
                                     <div class="form-group">

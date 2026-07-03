@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\KalimatController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\KedudukanController;
 use App\Http\Controllers\QuestionLevelController;
 use App\Http\Controllers\NahwuDataController;
 use App\Http\Controllers\ProductController;
@@ -141,14 +142,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::middleware(['roles:administrator'])->group(function () {
         Route::resource('users', UserController::class);
         Route::resource('products', ProductController::class);
-        Route::resource('kalimat', KalimatController::class);
-        Route::resource('kategori', KategoriController::class);
-        Route::get('/skema-nahwu', function () {
-            return view('pages.Template.develop.skema-nahwu', ['type_menu' => '']);
-        })->name('page.skema-nahwu'); // Template Page
+
+        Route::prefix('skema-nahwu')->name('skema-nahwu.')->group(function () {
+            Route::get('/', [NahwuDataController::class, 'index'])->name('index');
+            Route::resource('kalimat', KalimatController::class);
+            Route::resource('kategori', KategoriController::class);
+            Route::resource('kedudukan', KedudukanController::class);
+        });
+
         Route::get('/example', function () {
             return view('pages.users.profile', ['type_menu' => '']);
-        })->name('page.templatepage'); // Template Page
+        })->name('page.templatepage');
     });
 
     // Administrator & Operator Only
@@ -186,7 +190,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->name('exercise.analysis');
 
         // Data Nahwu Resource
-        Route::get('/words/data/data-nahwu', [NahwuDataController::class, 'index']);
+        Route::get('/words/data/data-nahwu', [NahwuDataController::class, 'getAll']);
     });
 
     // User Profile

@@ -39,7 +39,7 @@
                                     </div>
                                 </div>
 
-                                <form action="{{ route('kategori.store') }}" method="POST" novalidate>
+                                <form action="{{ route('skema-nahwu.kategori.store') }}" method="POST" novalidate>
                                     @csrf
                                     <div class="form-group">
                                         <label>Id Kategori</label>
