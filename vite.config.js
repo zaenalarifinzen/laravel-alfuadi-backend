@@ -11,6 +11,7 @@ export default defineConfig({
                 'resources/js/page/words/create-new.js',
                 'resources/js/page/exercise/exercise.js',
                 'resources/js/utils/storage-helper.js',
+                'resources/js/page/modules-sweetalert.js'
             ],
             refresh: true,
         }),
