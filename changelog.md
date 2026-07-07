@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.2.1
+
+-   Perbaikan error di autofill
+-   Perbaikan error saat verifikasi
+-   Penambahan menu data nahwu untuk administrator
+
 ## 1.2.0
 
 -   Penambahan menu latihan
