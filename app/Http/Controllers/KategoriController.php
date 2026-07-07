@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreKategoriRequest;
 use App\Http\Requests\UpdateKategoriRequest;
+use App\Models\Kalimat;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
 
@@ -25,7 +26,8 @@ class KategoriController extends Controller
      */
     public function create()
     {
-        return view('pages.skema-nahwu.kategori.create', ['type_menu' => '']);
+        $kalimats = Kalimat::orderBy('id', 'asc')->get();
+        return view('pages.skema-nahwu.kategori.create', compact('kalimats'), ['type_menu' => '']);
     }
 
     /**
@@ -33,7 +35,8 @@ class KategoriController extends Controller
      */
     public function store(StoreKategoriRequest $request)
     {
-        $data = $request->all();
+        $data = $request->validated();
+        $data['order'] = (Kategori::max('order') ?? 0) + 1;
 
         Kategori::create($data);
         return redirect()->route('skema-nahwu.index')
@@ -55,7 +58,8 @@ class KategoriController extends Controller
     public function edit(string $id)
     {
         $kategori = Kategori::findOrFail($id);
-        return view('pages.skema-nahwu.kategori.edit', compact('kategori'), ['type_menu' => '']);
+        $kalimats = Kalimat::orderBy('id', 'asc')->get();
+        return view('pages.skema-nahwu.kategori.edit', compact('kategori', 'kalimats'), ['type_menu' => '']);
     }
 
     /**

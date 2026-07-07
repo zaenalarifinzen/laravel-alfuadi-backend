@@ -134,7 +134,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             'randomVerse' => $randomVerse,
             'latestTask' => $latestTask,
             'updated_at' => $updatedAt,
-            'latestExercise' => $latestExercise,
+            'latestExercise' => $latestExercise,      
         ]);
     })->name('home');
 

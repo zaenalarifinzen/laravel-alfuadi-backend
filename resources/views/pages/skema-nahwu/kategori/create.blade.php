@@ -43,34 +43,32 @@
                                     @csrf
                                     <div class="form-group">
                                         <label>Id Kategori</label>
-                                        <input type="text"
-                                            class="form-control @error('id') is-invalid @enderror"
+                                        <input type="text" class="form-control @error('id') is-invalid @enderror"
                                             name="id" value="{{ old('id') }}" required>
                                         @error('id')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label>Order</label>
-                                        <input type="number"
-                                            class="form-control @error('order') is-invalid @enderror"
-                                            name="order" value="{{ old('order') }}" required>
-                                        @error('order')
-                                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Id Kalimat</label>
-                                        <input type="number"
-                                            class="form-control @error('id_kalimat') is-invalid @enderror"
-                                            name="id_kalimat" value="{{ old('id_kalimat') }}" required>
+                                        <label>Kalimat</label>
+                                        <select class="form-control form-control-ar selectric arabic-text @error('id_kalimat') is-invalid @enderror"
+                                            name="id_kalimat" required>
+                                            <option value="">Pilih Kalimat</option>
+                                            @foreach ($kalimats as $kalimat)
+                                                <option value="{{ $kalimat->id }}" class="arabic-text"
+                                                    {{ old('id_kalimat') == $kalimat->id ? 'selected' : '' }}>
+                                                    {{ $kalimat->kalimat_ar_musyakal }}
+                                                </option>
+                                            @endforeach
+                                        </select>
                                         @error('id_kalimat')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="form-group">
                                         <label>Simbol</label>
-                                        <input type="text" class="form-control arabic-text @error('simbol') is-invalid @enderror"
+                                        <input type="text"
+                                            class="form-control arabic-text @error('simbol') is-invalid @enderror"
                                             name="simbol" value="{{ old('simbol') }}" required>
                                         @error('simbol')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -78,7 +76,8 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Kategori Arabic</label>
-                                        <input type="text" class="form-control arabic-text @error('kategori_ar') is-invalid @enderror"
+                                        <input type="text"
+                                            class="form-control arabic-text @error('kategori_ar') is-invalid @enderror"
                                             name="kategori_ar" value="{{ old('kategori_ar') }}" required>
                                         @error('kategori_ar')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -86,7 +85,8 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Kategori Arabic Musyakal</label>
-                                        <input type="text" class="form-control arabic-text @error('kategori_ar_musyakal') is-invalid @enderror"
+                                        <input type="text"
+                                            class="form-control arabic-text @error('kategori_ar_musyakal') is-invalid @enderror"
                                             name="kategori_ar_musyakal" value="{{ old('kategori_ar_musyakal') }}" required>
                                         @error('kategori_ar_musyakal')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -94,7 +94,8 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Kategori Indonesia</label>
-                                        <input type="text" class="form-control @error('kategori_in') is-invalid @enderror"
+                                        <input type="text"
+                                            class="form-control @error('kategori_in') is-invalid @enderror"
                                             name="kategori_in" value="{{ old('kategori_in') }}" required>
                                         @error('kategori_in')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -102,7 +103,8 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Hukum</label>
-                                        <input type="text" class="form-control arabic-text @error('hukum') is-invalid @enderror"
+                                        <input type="text"
+                                            class="form-control arabic-text @error('hukum') is-invalid @enderror"
                                             name="hukum" value="{{ old('hukum') }}" required>
                                         @error('hukum')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -110,7 +112,8 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Tanda Rofa</label>
-                                        <input type="text" class="form-control arabic-text @error('rofa') is-invalid @enderror"
+                                        <input type="text"
+                                            class="form-control arabic-text @error('rofa') is-invalid @enderror"
                                             name="rofa" value="{{ old('rofa') }}" required>
                                         @error('rofa')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -118,7 +121,8 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Tanda Nashob</label>
-                                        <input type="text" class="form-control arabic-text @error('nashob') is-invalid @enderror"
+                                        <input type="text"
+                                            class="form-control arabic-text @error('nashob') is-invalid @enderror"
                                             name="nashob" value="{{ old('nashob') }}" required>
                                         @error('nashob')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -126,7 +130,8 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Tanda Jar</label>
-                                        <input type="text" class="form-control arabic-text @error('jar') is-invalid @enderror"
+                                        <input type="text"
+                                            class="form-control arabic-text @error('jar') is-invalid @enderror"
                                             name="jar" value="{{ old('jar') }}" required>
                                         @error('jar')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -134,7 +139,8 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Tanda Jazm</label>
-                                        <input type="text" class="form-control arabic-text @error('jazm') is-invalid @enderror"
+                                        <input type="text"
+                                            class="form-control arabic-text @error('jazm') is-invalid @enderror"
                                             name="jazm" value="{{ old('jazm') }}" required>
                                         @error('jazm')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>

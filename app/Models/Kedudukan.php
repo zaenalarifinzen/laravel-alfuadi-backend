@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class Kedudukan extends Model
 {
@@ -22,4 +23,11 @@ class Kedudukan extends Model
         'kedudukan_in',
         'irob',
     ];
+
+    protected static function booted()
+    {
+        static::saved(fn() => Cache::forget('data-nahwu'));
+        static::deleted(fn() => Cache::forget('data-nahwu'));
+        static::restored(fn() => Cache::forget('data-nahwu'));
+    }
 }

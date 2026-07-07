@@ -62,9 +62,15 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Id Kalimat</label>
-                                        <input type="number"
-                                            class="form-control @error('id_kalimat') is-invalid @enderror"
-                                            name="id_kalimat" value="{{ $kategori->id_kalimat }}" required>
+                                        <select class="form-control form-control-ar selectric arabic-text @error('id_kalimat') is-invalid @enderror"
+                                            name="id_kalimat" value="{{ old('id_kalimat') }}" required>
+                                            @foreach ($kalimats as $kalimat)
+                                                <option value="{{ $kalimat->id }}" class="arabic-text"
+                                                    {{ old('id_kalimat', $kategori->id_kalimat ?? '') == $kalimat->id ? 'selected' : '' }}>
+                                                    {{ $kalimat->kalimat_ar_musyakal }}
+                                                </option>
+                                            @endforeach
+                                        </select>
                                         @error('id_kalimat')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror

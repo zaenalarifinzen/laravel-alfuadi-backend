@@ -43,34 +43,33 @@
                                     @csrf
                                     <div class="form-group">
                                         <label>Id Kedudukan</label>
-                                        <input type="text"
-                                            class="form-control @error('id') is-invalid @enderror"
+                                        <input type="text" class="form-control @error('id') is-invalid @enderror"
                                             name="id" value="{{ old('id') }}" required>
                                         @error('id')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label>Order</label>
-                                        <input type="number"
-                                            class="form-control @error('order') is-invalid @enderror"
-                                            name="order" value="{{ old('order') }}" required>
-                                        @error('order')
-                                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Id Kalimat</label>
-                                        <input type="number"
-                                            class="form-control @error('id_kalimat') is-invalid @enderror"
-                                            name="id_kalimat" value="{{ old('id_kalimat') }}" required>
+                                        <label>Kalimat</label>
+                                        <select
+                                            class="form-control form-control-ar selectric arabic-text @error('id_kalimat') is-invalid @enderror"
+                                            name="id_kalimat" required>
+                                            <option value="">Pilih Kalimat</option>
+                                            @foreach ($kalimats as $kalimat)
+                                                <option value="{{ $kalimat->id }}" class="arabic-text"
+                                                    {{ old('id_kalimat') == $kalimat->id ? 'selected' : '' }}>
+                                                    {{ $kalimat->kalimat_ar_musyakal }}
+                                                </option>
+                                            @endforeach
+                                        </select>
                                         @error('id_kalimat')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="form-group">
                                         <label>Simbol</label>
-                                        <input type="text" class="form-control arabic-text @error('simbol') is-invalid @enderror"
+                                        <input type="text"
+                                            class="form-control arabic-text @error('simbol') is-invalid @enderror"
                                             name="simbol" value="{{ old('simbol') }}" required>
                                         @error('simbol')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -78,7 +77,8 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Kedudukan Arabic</label>
-                                        <input type="text" class="form-control arabic-text @error('kedudukan_ar') is-invalid @enderror"
+                                        <input type="text"
+                                            class="form-control arabic-text @error('kedudukan_ar') is-invalid @enderror"
                                             name="kedudukan_ar" value="{{ old('kedudukan_ar') }}" required>
                                         @error('kedudukan_ar')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -86,15 +86,18 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Kedudukan Arabic Musyakal</label>
-                                        <input type="text" class="form-control arabic-text @error('kedudukan_ar_musyakal') is-invalid @enderror"
-                                            name="kedudukan_ar_musyakal" value="{{ old('kedudukan_ar_musyakal') }}" required>
+                                        <input type="text"
+                                            class="form-control arabic-text @error('kedudukan_ar_musyakal') is-invalid @enderror"
+                                            name="kedudukan_ar_musyakal" value="{{ old('kedudukan_ar_musyakal') }}"
+                                            required>
                                         @error('kedudukan_ar_musyakal')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="form-group">
                                         <label>Kedudukan Indonesia</label>
-                                        <input type="text" class="form-control @error('kedudukan_in') is-invalid @enderror"
+                                        <input type="text"
+                                            class="form-control @error('kedudukan_in') is-invalid @enderror"
                                             name="kedudukan_in" value="{{ old('kedudukan_in') }}" required>
                                         @error('kedudukan_in')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -102,8 +105,31 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Irob</label>
-                                        <input type="text" class="form-control arabic-text @error('irob') is-invalid @enderror"
+                                        {{-- <input type="text" class="form-control arabic-text @error('irob') is-invalid @enderror"
+                                            name="irob" value="{{ old('irob') }}" required> --}}
+                                        <select
+                                            class="form-control form-control-ar selectric arabic-text @error('irob') is-invalid @enderror"
                                             name="irob" value="{{ old('irob') }}" required>
+                                            <option
+                                                {{ old('irob', $kedudukan->irob ?? '') == '' ? 'selected' : '' }}>
+                                            </option>
+                                            <option class="arabic-text"
+                                                {{ old('irob', 'irob' ?? '') == 'مَرْفُوْعٌ' ? 'selected' : '' }}>
+                                                مَرْفُوْعٌ
+                                            </option>
+                                            <option class="arabic-text"
+                                                {{ old('irob', 'irob' ?? '') == 'مَنْصُوْبٌ' ? 'selected' : '' }}>
+                                                مَنْصُوْبٌ
+                                            </option>
+                                            <option class="arabic-text"
+                                                {{ old('irob', 'irob' ?? '') == 'مَجْرُوْرٌ' ? 'selected' : '' }}>
+                                                مَجْرُوْرٌ
+                                            </option>
+                                            <option class="arabic-text"
+                                                {{ old('irob', 'irob' ?? '') == 'مَجْرُوْرٌ' ? 'selected' : '' }}>
+                                                مَجْرُوْرٌ
+                                            </option>
+                                        </select>
                                         @error('irob')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror

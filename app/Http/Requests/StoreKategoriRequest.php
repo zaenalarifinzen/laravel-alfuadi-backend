@@ -25,7 +25,6 @@ class StoreKategoriRequest extends FormRequest
             'id' => 'required|unique:kategori,id',
             'id_kalimat' => 'required|exists:kalimat,id',
 
-            'order' => 'required|integer',
             'simbol' => 'string|max:50',
 
             'kategori_ar' => 'required|string',

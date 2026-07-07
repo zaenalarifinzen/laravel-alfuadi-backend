@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreKedudukanRequest;
 use App\Http\Requests\UpdateKedudukanRequest;
+use App\Models\Kalimat;
 use App\Models\Kedudukan;
 use Illuminate\Http\Request;
 
@@ -25,7 +26,8 @@ class KedudukanController extends Controller
      */
     public function create()
     {
-        return view('pages.skema-nahwu.kedudukan.create', ['type_menu' => '']);
+        $kalimats = Kalimat::orderBy('id', 'asc')->get();
+        return view('pages.skema-nahwu.kedudukan.create', compact('kalimats'), ['type_menu' => '']);
     }
 
     /**
@@ -33,7 +35,9 @@ class KedudukanController extends Controller
      */
     public function store(StoreKedudukanRequest $request)
     {
-        $data = $request->all();
+        $data = $request->validated();
+        $data['order'] = (Kedudukan::max('order') ?? 0) + 1;
+
         Kedudukan::create($data);
         return redirect()->route('skema-nahwu.index')
             ->with('success', '"' . $data['kedudukan_in'] . '" succesfully created')
@@ -54,7 +58,8 @@ class KedudukanController extends Controller
     public function edit(string $id)
     {
         $kedudukan = Kedudukan::findOrFail($id);
-        return view('pages.skema-nahwu.kedudukan.edit', compact('kedudukan'), ['type_menu' => '']);
+        $kalimats = Kalimat::orderBy('id', 'asc')->get();
+        return view('pages.skema-nahwu.kedudukan.edit', compact('kedudukan', 'kalimats'), ['type_menu' => '']);
     }
 
     /**

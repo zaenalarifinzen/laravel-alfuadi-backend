@@ -61,10 +61,16 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label>Id Kalimat</label>
-                                        <input type="number"
-                                            class="form-control @error('id_kalimat') is-invalid @enderror"
-                                            name="id_kalimat" value="{{ $kedudukan->id_kalimat }}" required>
+                                        <label>Kalimat</label>
+                                        <select class="form-control form-control-ar selectric arabic-text @error('id_kalimat') is-invalid @enderror"
+                                            name="id_kalimat" value="{{ old('id_kalimat') }}" required>
+                                            @foreach ($kalimats as $kalimat)
+                                                <option value="{{ $kalimat->id }}" class="arabic-text"
+                                                    {{ old('id_kalimat', $kategori->id_kalimat ?? '') == $kalimat->id ? 'selected' : '' }}>
+                                                    {{ $kalimat->kalimat_ar_musyakal }}
+                                                </option>
+                                            @endforeach
+                                        </select>
                                         @error('id_kalimat')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
@@ -103,8 +109,29 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Irob</label>
-                                        <input type="text" class="form-control arabic-text @error('irob') is-invalid @enderror"
-                                            name="irob" value="{{ $kedudukan->irob }}" required>
+                                        <select
+                                            class="form-control form-control-ar selectric arabic-text @error('irob') is-invalid @enderror"
+                                            name="irob" value="{{ old('irob') }}" required>
+                                            <option
+                                                {{ old('irob', $kedudukan->irob ?? '') == '' ? 'selected' : '' }}>
+                                            </option>
+                                            <option class="arabic-text"
+                                                {{ old('irob', $kedudukan->irob ?? '') == 'مَرْفُوْعٌ' ? 'selected' : '' }}>
+                                                مَرْفُوْعٌ
+                                            </option>
+                                            <option class="arabic-text"
+                                                {{ old('irob', $kedudukan->irob ?? '') == 'مَنْصُوْبٌ' ? 'selected' : '' }}>
+                                                مَنْصُوْبٌ
+                                            </option>
+                                            <option class="arabic-text"
+                                                {{ old('irob', $kedudukan->irob ?? '') == 'مَجْرُوْرٌ' ? 'selected' : '' }}>
+                                                مَجْرُوْرٌ
+                                            </option>
+                                            <option class="arabic-text"
+                                                {{ old('irob', $kedudukan->irob ?? '') == 'مَجْزُوْمٌ' ? 'selected' : '' }}>
+                                                مَجْزُوْمٌ
+                                            </option>
+                                        </select>
                                         @error('irob')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror

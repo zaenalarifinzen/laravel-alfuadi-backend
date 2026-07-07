@@ -24,7 +24,6 @@ class StoreKedudukanRequest extends FormRequest
         return [
             'id' => 'required|unique:kedudukan,id',
             'id_kalimat' => 'required|exists:kalimat,id',
-            'order' => 'required|integer',
             'simbol' => 'string|max:50',
             'kedudukan_ar' => 'required|string',
             'kedudukan_ar_musyakal' => 'required|string',
