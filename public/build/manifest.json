@@ -1,0 +1,39 @@
+{
+  "_nahwu-form-autofill-BBSJdS-2.js": {
+    "file": "assets/nahwu-form-autofill-BBSJdS-2.js",
+    "name": "nahwu-form-autofill"
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-BlWGbYH9.css",
+    "src": "resources/css/app.css",
+    "isEntry": true,
+    "name": "app",
+    "names": [
+      "app.css"
+    ]
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-CcNNqum8.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  },
+  "resources/js/page/exercise/exercise.js": {
+    "file": "assets/exercise-CxCXto1U.js",
+    "name": "exercise",
+    "src": "resources/js/page/exercise/exercise.js",
+    "isEntry": true,
+    "imports": [
+      "_nahwu-form-autofill-BBSJdS-2.js"
+    ]
+  },
+  "resources/js/page/words/create-new.js": {
+    "file": "assets/create-new-D-5UUsFi.js",
+    "name": "create-new",
+    "src": "resources/js/page/words/create-new.js",
+    "isEntry": true,
+    "imports": [
+      "_nahwu-form-autofill-BBSJdS-2.js"
+    ]
+  }
+}
