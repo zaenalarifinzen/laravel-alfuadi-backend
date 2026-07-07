@@ -23,6 +23,6 @@ class Kalimat extends Model
     {
         static::saved(fn() => Cache::forget('data-nahwu'));
         static::deleted(fn() => Cache::forget('data-nahwu'));
-        static::restored(fn() => Cache::forget('data-nahwu'));
+        // static::restored(fn() => Cache::forget('data-nahwu'));
     }
 }
