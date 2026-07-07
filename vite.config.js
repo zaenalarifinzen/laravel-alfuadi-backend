@@ -10,6 +10,7 @@ export default defineConfig({
                 'resources/js/app.js',
                 'resources/js/page/words/create-new.js',
                 'resources/js/page/exercise/exercise.js',
+                'resources/js/utils/storage-helper.js',
             ],
             refresh: true,
         }),

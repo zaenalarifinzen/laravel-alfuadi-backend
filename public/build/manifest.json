@@ -35,5 +35,11 @@
     "imports": [
       "_nahwu-form-autofill-BBSJdS-2.js"
     ]
+  },
+  "resources/js/utils/storage-helper.js": {
+    "file": "assets/storage-helper-l0sNRNKZ.js",
+    "name": "storage-helper",
+    "src": "resources/js/utils/storage-helper.js",
+    "isEntry": true
   }
 }
