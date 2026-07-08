@@ -18,6 +18,18 @@
     "src": "resources/js/app.js",
     "isEntry": true
   },
+  "resources/js/page/auth-register.js": {
+    "file": "assets/auth-register-CNV6uGcZ.js",
+    "name": "auth-register",
+    "src": "resources/js/page/auth-register.js",
+    "isEntry": true
+  },
+  "resources/js/page/auth/auth-form.js": {
+    "file": "assets/auth-form-DpReXf-i.js",
+    "name": "auth-form",
+    "src": "resources/js/page/auth/auth-form.js",
+    "isEntry": true
+  },
   "resources/js/page/exercise/exercise.js": {
     "file": "assets/exercise-CxCXto1U.js",
     "name": "exercise",
@@ -26,6 +38,30 @@
     "imports": [
       "_nahwu-form-autofill-BBSJdS-2.js"
     ]
+  },
+  "resources/js/page/features-post-create.js": {
+    "file": "assets/features-post-create-Bc95VQy-.js",
+    "name": "features-post-create",
+    "src": "resources/js/page/features-post-create.js",
+    "isEntry": true
+  },
+  "resources/js/page/features-posts.js": {
+    "file": "assets/features-posts-DAztbz3e.js",
+    "name": "features-posts",
+    "src": "resources/js/page/features-posts.js",
+    "isEntry": true
+  },
+  "resources/js/page/modules-toastr.js": {
+    "file": "assets/modules-toastr-ZgE94RFh.js",
+    "name": "modules-toastr",
+    "src": "resources/js/page/modules-toastr.js",
+    "isEntry": true
+  },
+  "resources/js/page/wordgroups/grouping-page.js": {
+    "file": "assets/grouping-page-Ch-opipN.js",
+    "name": "grouping-page",
+    "src": "resources/js/page/wordgroups/grouping-page.js",
+    "isEntry": true
   },
   "resources/js/page/words/create-new.js": {
     "file": "assets/create-new-D-5UUsFi.js",

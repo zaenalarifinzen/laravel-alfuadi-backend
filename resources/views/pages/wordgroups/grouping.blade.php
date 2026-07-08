@@ -273,8 +273,6 @@
     </script>
 
     <!-- Page Specific JS File -->
-
-    @vite(['resources/js/page/modules-sweetalert.js'])
     @vite(['resources/js/page/wordgroups/grouping-page.js'])
 
 @endpush
