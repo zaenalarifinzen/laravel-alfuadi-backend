@@ -1,6 +1,6 @@
 @extends('layouts.error')
 
-@section('title', '404')
+@section('title', '403')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -9,10 +9,9 @@
 @section('main')
     <div class="page-error">
         <div class="page-inner">
-            {{-- <img src="{{ asset('img/server-error.png') }}" alt="logo" width="300" class="mb-4"> --}}
-            <h1>404</h1>
+            <h1>403</h1>
             <div class="page-description">
-                Ups, Halaman tidak ditemukan.
+                Ups, Anda tidak memiliki akses ke halaman ini.
             </div>
             <div class="page-search">
                 <div class="mt-3">
