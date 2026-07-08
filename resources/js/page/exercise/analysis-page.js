@@ -236,7 +236,7 @@ export function initAnalysisPage({
                 content.questionId = dataQuestion.id;
                 content.passed = dataQuestion.passed;
 
-                wordTable.removeRefreshButton();
+                wordTable.removeUpdateButton();
                 currentQuestionId = dataQuestion?.id;
                 currentCompareResult = [];
                 currentCompareVerseId = null;
@@ -357,7 +357,7 @@ export function initAnalysisPage({
         wordTable.renderWordsDetails(cachedData.wordGroups[0]);
 
         if (cachedData.modified) {
-            wordTable.addRefreshButton();
+            wordTable.addUpdateButton();
             changeSubmitButton("btn-submit-answer", "Submit", "primary");
 
             iziToast.info({
