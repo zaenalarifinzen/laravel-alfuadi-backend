@@ -82,7 +82,7 @@
                                                                 <td class="text-center align-middle arabic-text">
                                                                     {{ $kalimat->kalimat_ar_musyakal ?? '' }}
                                                                 </td>
-                                                                <td>
+                                                                <td class="label_in">
                                                                     {{ $kalimat->kalimat_in }}
                                                                 </td>
                                                                 <td>
@@ -101,7 +101,8 @@
                                                                             <input type="hidden" name="_token"
                                                                                 value="{{ csrf_token() }}" />
                                                                             <button type="button"
-                                                                                class="btn btn-sm btn-danger btn-icon confirm-delete">
+                                                                                class="btn btn-sm btn-danger btn-icon confirm-delete"
+                                                                                data-delete-title="Kalimat">
                                                                                 <i class="fas fa-times"></i> Hapus
                                                                             </button>
                                                                         </form>
@@ -175,7 +176,7 @@
                                                                 <td class="text-center align-middle arabic-text">
                                                                     {{ $kategori->jazm ?? '' }}
                                                                 </td>
-                                                                <td>
+                                                                <td class="label_in">
                                                                     {{ $kategori->kategori_in }}
                                                                 </td>
                                                                 <td>
@@ -194,7 +195,8 @@
                                                                             <input type="hidden" name="_token"
                                                                                 value="{{ csrf_token() }}" />
                                                                             <button type="button"
-                                                                                class="btn btn-sm btn-danger btn-icon confirm-delete">
+                                                                                class="btn btn-sm btn-danger btn-icon confirm-delete"
+                                                                                data-delete-title="Kategori">
                                                                                 <i class="fas fa-times"></i> Hapus
                                                                             </button>
                                                                         </form>
@@ -248,8 +250,8 @@
                                                                 <td class="text-center align-middle arabic-text">
                                                                     {{ $kedudukan->kedudukan_ar_musyakal ?? '' }}
                                                                 </td>
-                                                                <td class="align-middle">
-                                                                    <div class="text-center arabic-text">
+                                                                <td class="align-middle" >
+                                                                    <div class="text-center arabic-text  label_in">
                                                                         {{ $kedudukan->kedudukan_in }}</div>
                                                                 </td>
                                                                 <td class="text-center align-middle arabic-text">
@@ -271,7 +273,8 @@
                                                                             <input type="hidden" name="_token"
                                                                                 value="{{ csrf_token() }}" />
                                                                             <button type="button"
-                                                                                class="btn btn-sm btn-danger btn-icon confirm-delete">
+                                                                                class="btn btn-sm btn-danger btn-icon confirm-delete"
+                                                                                data-delete-title="Kedudukan">
                                                                                 <i class="fas fa-times"></i> Hapus
                                                                             </button>
                                                                         </form>
@@ -306,10 +309,14 @@
             document.querySelectorAll(".confirm-delete").forEach(btn => {
                 btn.addEventListener("click", function(e) {
                     let form = this.closest("form");
+                    let deleteTitle = this.dataset.deleteTitle.toLowerCase() || 'data';
+                    let label = this.closest('tr').querySelector('.label_in').textContent.trim() || 'data';
+                    console.log(label);
+                    
 
                     swal({
-                            title: "Hapus Kedudukan?",
-                            text: "Data kedudukan akan dihapus dan mereka tidak bisa mengakses akunnya kembali",
+                            title: `Hapus ${deleteTitle}?`,
+                            text: `${label} akan dihapus dan tidak dapat dikembalikan.`,
                             icon: "warning",
                             buttons: {
                                 cancel: {
