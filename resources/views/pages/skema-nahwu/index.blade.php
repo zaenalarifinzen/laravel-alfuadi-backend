@@ -311,8 +311,6 @@
                     let form = this.closest("form");
                     let deleteTitle = this.dataset.deleteTitle.toLowerCase() || 'data';
                     let label = this.closest('tr').querySelector('.label_in').textContent.trim() || 'data';
-                    console.log(label);
-                    
 
                     swal({
                             title: `Hapus ${deleteTitle}?`,
