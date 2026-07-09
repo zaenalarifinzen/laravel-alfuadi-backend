@@ -11,7 +11,7 @@ class UpdateKategoriRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,19 @@ class UpdateKategoriRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'id_kalimat' => 'required|exists:kalimat,id',
+
+            'simbol' => 'nullable|string|max:50',
+
+            'kategori_ar' => 'required|string',
+            'kategori_ar_musyakal' => 'required|string',
+            'kategori_in' => 'required|string',
+            'hukum' => 'nullable|string',
+
+            'rofa' => 'nullable|string',
+            'nashob' => 'nullable|string',
+            'jar' => 'nullable|string',
+            'jazm' => 'nullable|string',
         ];
     }
 }
