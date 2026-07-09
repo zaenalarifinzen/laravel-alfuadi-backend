@@ -198,6 +198,9 @@ export function initAnalysisPage({
         $.ajax({
             url,
             type: "GET",
+            beforeSend: function () {
+                showLoading();
+            },
             success: function (response) {
                 const dataQuestion = response?.data;
                 const content = dataQuestion?.content;
@@ -229,8 +232,23 @@ export function initAnalysisPage({
                 const verseId = content.verse.id;
                 const answerKey = `answer_key_${verseId}`;
                 const userAnswer = `answer_user_${verseId}`;
+
+                // Compare response and cache
+                const cachedKey = storage.getActiveStorageKey(answerKey);
+                const cachedRaw = cachedKey
+                    ? localStorage.getItem(cachedKey)
+                    : null;
                 const wordTable = getWordTable();
                 const slider = getSlider();
+                const cachedData = JSON.parse(cachedRaw);
+
+                const oldTimestamp = cachedData.wordGroups[0].words[0].updated_at;
+                const newTimestamp = content.wordGroups[0].words[0].updated_at;
+                
+                if (oldTimestamp == newTimestamp) {
+                    loadCachedData();
+                    return;
+                }
 
                 content.modified = false;
                 content.questionId = dataQuestion.id;
@@ -272,7 +290,11 @@ export function initAnalysisPage({
                     });
 
                     wordTable.resetCard();
-                    changeSubmitButton("btn-submit-answer", "Submit", "primary");
+                    changeSubmitButton(
+                        "btn-submit-answer",
+                        "Submit",
+                        "primary",
+                    );
                 }
 
                 localStorage.setItem(userAnswer, JSON.stringify(cloned));
@@ -286,7 +308,11 @@ export function initAnalysisPage({
                 if (passed) {
                     wordTable.resetCard();
                     wordTable.updateCard("Selesai", "success");
-                    changeSubmitButton("btn-next-verse", "Selanjutnya", "primary");
+                    changeSubmitButton(
+                        "btn-next-verse",
+                        "Selanjutnya",
+                        "primary",
+                    );
                 }
 
                 history.pushState({}, "", `?verse_id=${verseId}`);
@@ -294,6 +320,9 @@ export function initAnalysisPage({
             error: function (xhr, status, error) {
                 console.error(error);
                 alert("Terjadi kesalahan");
+            },
+            complete: function () {
+                hideLoading();
             },
         });
     }
@@ -315,10 +344,16 @@ export function initAnalysisPage({
         }
 
         const stored = JSON.parse(localStorage.getItem(key));
-        const activeGroup = stored.wordGroups.find((wg) => wg.id == wordGroupId);
+        const activeGroup = stored.wordGroups.find(
+            (wg) => wg.id == wordGroupId,
+        );
         const wordTable = getWordTable();
 
-        if (!activeGroup || !activeGroup.words || activeGroup.words.length === 0) {
+        if (
+            !activeGroup ||
+            !activeGroup.words ||
+            activeGroup.words.length === 0
+        ) {
             const row = `
             <tr>
                 <td colspan="8" class="text-center text-muted">Tidak ada data</td>
@@ -335,21 +370,14 @@ export function initAnalysisPage({
         wordTable.renderWordsDetails(activeGroup);
     }
 
-    function boot() {
-        $(document).ajaxStart(showLoading);
-        $(document).ajaxStop(hideLoading);
-
+    function loadCachedData() {
         const cachedKey = storage.getActiveStorageKey(wordGroupsPrefix);
         const cachedRaw = cachedKey ? localStorage.getItem(cachedKey) : null;
         const wordTable = getWordTable();
         const slider = getSlider();
 
-        if (!cachedRaw) {
-            fetchWordGroups(null, null, elements.currentVerseId.value || 1);
-            return;
-        }
-
         const cachedData = JSON.parse(cachedRaw);
+        // console.log(cachedData.wordGroups[0].words[0].updated_at);
 
         currentQuestionId = cachedData.questionId;
         slider.renderOwlSlider(cachedData);
@@ -370,6 +398,10 @@ export function initAnalysisPage({
             changeSubmitButton("btn-next-verse", "Selanjutnya", "primary");
             wordTable.updateCard("Selesai", "success");
         }
+    }
+
+    function boot() {
+        fetchWordGroups(null, null, elements.currentVerseId.value || 1);
     }
 
     return {
