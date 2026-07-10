@@ -26,15 +26,15 @@ class UpdateKategoriRequest extends FormRequest
 
             'simbol' => 'nullable|string|max:50',
 
-            'kategori_ar' => 'required|string',
-            'kategori_ar_musyakal' => 'required|string',
-            'kategori_in' => 'required|string',
-            'hukum' => 'nullable|string',
+            'kategori_ar' => 'required|string|max:255',
+            'kategori_ar_musyakal' => 'required|string|max:255',
+            'kategori_in' => 'required|string|max:255',
+            'hukum' => 'nullable|string|max:255',
 
-            'rofa' => 'nullable|string',
-            'nashob' => 'nullable|string',
-            'jar' => 'nullable|string',
-            'jazm' => 'nullable|string',
+            'rofa' => 'nullable|string|max:255',
+            'nashob' => 'nullable|string|max:255',
+            'jar' => 'nullable|string|max:255',
+            'jazm' => 'nullable|string|max:255',
         ];
     }
 }

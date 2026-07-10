@@ -23,9 +23,9 @@ class StoreKalimatRequest extends FormRequest
     {
         return [
             'id' => 'required:unique:kalimats,id',
-            'kalimat_ar' => 'required',
-            'kalimat_ar_musyakal' => 'required',
-            'kalimat_in' => 'required',
+            'kalimat_ar' => 'required|string|max:255',
+            'kalimat_ar_musyakal' => 'required|string|max:255',
+            'kalimat_in' => 'required|string|max:255',
         ];
     }
 }

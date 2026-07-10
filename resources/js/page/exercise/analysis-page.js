@@ -242,19 +242,22 @@ export function initAnalysisPage({
                 const slider = getSlider();
                 const cachedData = JSON.parse(cachedRaw);
 
-                const oldTimestamp = cachedData.wordGroups[0].words[0].updated_at;
-                const newTimestamp = content.wordGroups[0].words[0].updated_at;
-                
-                if (oldTimestamp == newTimestamp) {
-                    loadCachedData();
-                    return;
-                }
+                // If cached data exists, compare timestamps to determine if the data has changed
+                if (cachedData && cachedData.wordGroups?.length > 0) {
+                    const oldTimestamp = cachedData.wordGroups[0].words[0].updated_at;
+                    const newTimestamp = content.wordGroups[0].words[0].updated_at;
 
+                    if (oldTimestamp === newTimestamp) {
+                        loadCachedData();
+                        return;
+                    }
+                }
+                
                 content.modified = false;
                 content.questionId = dataQuestion.id;
                 content.passed = dataQuestion.passed;
 
-                wordTable.removeUpdateButton();
+                // wordTable.removeUpdateButton();
                 currentQuestionId = dataQuestion?.id;
                 currentCompareResult = [];
                 currentCompareVerseId = null;
@@ -385,7 +388,7 @@ export function initAnalysisPage({
         wordTable.renderWordsDetails(cachedData.wordGroups[0]);
 
         if (cachedData.modified) {
-            wordTable.addUpdateButton();
+            // wordTable.addUpdateButton();
             changeSubmitButton("btn-submit-answer", "Submit", "primary");
 
             iziToast.info({
