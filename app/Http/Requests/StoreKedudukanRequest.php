@@ -24,11 +24,11 @@ class StoreKedudukanRequest extends FormRequest
         return [
             'id' => 'required|unique:kedudukan,id',
             'id_kalimat' => 'required|exists:kalimat,id',
-            'simbol' => 'string|max:50',
-            'kedudukan_ar' => 'required|string',
-            'kedudukan_ar_musyakal' => 'required|string',
-            'kedudukan_in' => 'required|string',
-            'irob' => 'string',
+            'simbol' => 'nullable|string|max:50',
+            'kedudukan_ar' => 'required|string|max:255',
+            'kedudukan_ar_musyakal' => 'required|string|max:255',
+            'kedudukan_in' => 'required|string|max:255',
+            'irob' => 'nullable|string|max:255',
         ];
     }
 }
