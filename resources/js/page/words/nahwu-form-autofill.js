@@ -606,7 +606,7 @@ class NahwuFormController {
             const isIsimFiil = selectedKategori?.kategori_ar === "اسم فعل";
 
             const shouldDisableIrobAndTanda =
-                selectedKedudukan.kedudukan_ar === "صلة" || // shilah
+                selectedKedudukan.kedudukan_ar === "صلة الموصول" || // shilah
                 selectedKedudukan.kedudukan_ar === "جواب" || // jawab
                 selectedKedudukan.kedudukan_ar === "فاعل مستتر" || // fail mustatir
                 selectedKedudukan.kedudukan_ar === "ضمير الفصل" || // dhomir fashl
