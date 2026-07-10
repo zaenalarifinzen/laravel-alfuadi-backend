@@ -244,15 +244,17 @@ export function initAnalysisPage({
 
                 // If cached data exists, compare timestamps to determine if the data has changed
                 if (cachedData && cachedData.wordGroups?.length > 0) {
-                    const oldTimestamp = cachedData.wordGroups[0].words[0].updated_at;
-                    const newTimestamp = content.wordGroups[0].words[0].updated_at;
+                    const oldTimestamp =
+                        cachedData.wordGroups[0].words[0].updated_at;
+                    const newTimestamp =
+                        content.wordGroups[0].words[0].updated_at;
 
                     if (oldTimestamp === newTimestamp) {
                         loadCachedData();
                         return;
                     }
                 }
-                
+
                 content.modified = false;
                 content.questionId = dataQuestion.id;
                 content.passed = dataQuestion.passed;
@@ -404,7 +406,12 @@ export function initAnalysisPage({
     }
 
     function boot() {
-        fetchWordGroups(null, null, elements.currentVerseId.value || 1);
+        const cachedKey = storage.getActiveStorageKey(wordGroupsPrefix);
+        const cachedRaw = cachedKey ? localStorage.getItem(cachedKey) : null;
+        const cachedData = JSON.parse(cachedRaw);
+        const cachedVerseId = cachedData?.verse?.id;
+
+        fetchWordGroups(null, null, cachedVerseId || 1);
     }
 
     return {

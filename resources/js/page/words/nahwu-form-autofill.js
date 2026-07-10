@@ -484,8 +484,9 @@ class NahwuFormController {
             
             // replace lafadz to this kalimat
             const lafadzInput = document.getElementById("input-lafadz");
-            if (selected === "41" || selected === "42") {
-                // set lafadz to kalimat_ar
+            if (selected === "41") {
+                lafadzInput.value = `(الجُمْلَةُ)`;
+            } else if (selected === "42") {
                 const kalimatData = MasterData.raw.kalimat.find((k) => k.id === selected);                
                 if (kalimatData) {
                     lafadzInput.value = `(${kalimatData.kalimat_ar_musyakal})`;
