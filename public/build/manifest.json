@@ -1,6 +1,6 @@
 {
-  "_nahwu-form-autofill-eVdmnZgX.js": {
-    "file": "assets/nahwu-form-autofill-eVdmnZgX.js",
+  "_nahwu-form-autofill-Be68Thlu.js": {
+    "file": "assets/nahwu-form-autofill-Be68Thlu.js",
     "name": "nahwu-form-autofill"
   },
   "resources/css/app.css": {
@@ -31,12 +31,12 @@
     "isEntry": true
   },
   "resources/js/page/exercise/exercise.js": {
-    "file": "assets/exercise-B6bkh3Ah.js",
+    "file": "assets/exercise-JaaCuJ_3.js",
     "name": "exercise",
     "src": "resources/js/page/exercise/exercise.js",
     "isEntry": true,
     "imports": [
-      "_nahwu-form-autofill-eVdmnZgX.js"
+      "_nahwu-form-autofill-Be68Thlu.js"
     ]
   },
   "resources/js/page/features-post-create.js": {
@@ -58,18 +58,18 @@
     "isEntry": true
   },
   "resources/js/page/wordgroups/grouping-page.js": {
-    "file": "assets/grouping-page-Ch-opipN.js",
+    "file": "assets/grouping-page-BgxuNlnJ.js",
     "name": "grouping-page",
     "src": "resources/js/page/wordgroups/grouping-page.js",
     "isEntry": true
   },
   "resources/js/page/words/create-new.js": {
-    "file": "assets/create-new-rTqL6DJ0.js",
+    "file": "assets/create-new-CDOFPctc.js",
     "name": "create-new",
     "src": "resources/js/page/words/create-new.js",
     "isEntry": true,
     "imports": [
-      "_nahwu-form-autofill-eVdmnZgX.js"
+      "_nahwu-form-autofill-Be68Thlu.js"
     ]
   },
   "resources/js/utils/storage-helper.js": {
