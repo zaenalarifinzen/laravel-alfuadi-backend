@@ -609,11 +609,13 @@ class NahwuFormController {
                 selectedKedudukan.kedudukan_ar === "صلة الموصول" || // shilah
                 selectedKedudukan.kedudukan_ar === "جواب" || // jawab
                 selectedKedudukan.kedudukan_ar === "فاعل مستتر" || // fail mustatir
+                selectedKedudukan.kedudukan_ar === "نائب الفاعل مستتر" || // naibul fail mustatir
                 selectedKedudukan.kedudukan_ar === "ضمير الفصل" || // dhomir fashl
                 isIsimFiil; // isim fiil
 
             const shouldDisableHukum =
-                selectedKedudukan.kedudukan_ar === "فاعل مستتر";
+                selectedKedudukan.kedudukan_ar === "فاعل مستتر" ||
+                selectedKedudukan.kedudukan_ar === "نائب الفاعل مستتر";
 
             if (shouldDisableIrobAndTanda) {
                 this.instances.irob?.disable();

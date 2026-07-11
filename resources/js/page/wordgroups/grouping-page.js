@@ -660,7 +660,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function (response) {
-                    nextVerseId = parseInt(currentVerseId.value) + 1;
+                    const nextVerseId = parseInt(currentVerseId.value) + 1;                   
 
                     fetchWordGroups(null, null, nextVerseId);
 

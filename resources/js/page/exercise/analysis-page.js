@@ -364,8 +364,12 @@ export function initAnalysisPage({
                 <td colspan="8" class="text-center text-muted">Tidak ada data</td>
             </tr>
         `;
-
-            $(".editor-kalimat a").contents().last()[0].textContent = " -";
+            var lastNode = $(".editor-kalimat a").contents().last()[0];
+            if (lastNode) {
+                lastNode.textContent += " -";
+            } else {
+                $(".editor-kalimat a").last().text(" -");
+            }
             tbodyWords.html(row);
             tbodyWordsDetail.html(row);
             return;
@@ -382,7 +386,6 @@ export function initAnalysisPage({
         const slider = getSlider();
 
         const cachedData = JSON.parse(cachedRaw);
-        // console.log(cachedData.wordGroups[0].words[0].updated_at);
 
         currentQuestionId = cachedData.questionId;
         slider.renderOwlSlider(cachedData);

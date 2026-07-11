@@ -85,6 +85,9 @@ export function initWordsPage({
         $.ajax({
             url,
             type: "GET",
+            beforeSend: function () {
+                showLoading();
+            },
             success: function (response) {
                 const data = response.data;
                 const verseId = data.verse.id;
@@ -92,8 +95,37 @@ export function initWordsPage({
                 const wordTable = getWordTable();
                 const slider = getSlider();
 
+                // Compare response and cache
+                const cachedKey = storage.getActiveStorageKey(storageKey);
+                const cachedRaw = cachedKey
+                    ? localStorage.getItem(cachedKey)
+                    : null;
+                const cachedData = JSON.parse(cachedRaw);
+                // find latest updated_at timestamp from data.wordGroups
+                const dataTimestampWordgroups = data.wordGroups.reduce(
+                    (latest, wg) => {
+                        const wgTimestamp = wg.updated_at;
+                        return wgTimestamp > latest ? wgTimestamp : latest;
+                    },
+                    "1970-01-01T00:00:00Z",
+                );
+
+                // If cached data exists, compare timestamps to determine if the data has changed
+                if (cachedData && cachedData.wordGroups?.length > 0) {
+                    const cachedTimestampWordgroups =
+                        cachedData.wordGroups.reduce((latest, wg) => {
+                            const wgTimestamp = wg.updated_at;
+                            return wgTimestamp > latest ? wgTimestamp : latest;
+                        }, "1970-01-01T00:00:00Z");
+
+                    if (cachedTimestampWordgroups === dataTimestampWordgroups) {
+                        loadCachedData();
+                        return;
+                    }
+                }
+
                 data.modified = false;
-                wordTable.removeUpdateButton();
+                // wordTable.removeUpdateButton();
 
                 if (config.pageType === "exercise") {
                     currentCompareResult = [];
@@ -156,6 +188,9 @@ export function initWordsPage({
             error: function () {
                 alert("Terjadi kesalahan");
             },
+            complete: function () {
+                hideLoading();
+            },
         });
     }
 
@@ -176,10 +211,16 @@ export function initWordsPage({
         }
 
         const stored = JSON.parse(localStorage.getItem(key));
-        const activeGroup = stored.wordGroups.find((wg) => wg.id == wordGroupId);
+        const activeGroup = stored.wordGroups.find(
+            (wg) => wg.id == wordGroupId,
+        );
         const wordTable = getWordTable();
 
-        if (!activeGroup || !activeGroup.words || activeGroup.words.length === 0) {
+        if (
+            !activeGroup ||
+            !activeGroup.words ||
+            activeGroup.words.length === 0
+        ) {
             const row = `
             <tr>
                 <td colspan="8" class="text-center text-muted">Tidak ada data</td>
@@ -318,19 +359,11 @@ export function initWordsPage({
         currentCompareVerseId = verseId;
     }
 
-    function boot() {
-        $(document).ajaxStart(showLoading);
-        $(document).ajaxStop(hideLoading);
-
+    function loadCachedData() {
         const cachedKey = storage.getActiveStorageKey(wordGroupsPrefix);
         const cachedRaw = cachedKey ? localStorage.getItem(cachedKey) : null;
         const wordTable = getWordTable();
         const slider = getSlider();
-
-        if (!cachedRaw) {
-            fetchWordGroups(null, null, elements.currentVerseId.value || 1);
-            return;
-        }
 
         const cachedData = JSON.parse(cachedRaw);
 
@@ -339,13 +372,28 @@ export function initWordsPage({
         wordTable.renderWordsDetails(cachedData.wordGroups[0]);
 
         if (cachedData.modified) {
-            wordTable.addUpdateButton();
+            changeSubmitButton("btn-submit-answer", "Submit", "primary");
 
             iziToast.info({
                 message: "Data sebelumnya berhasil dipulihkan",
                 position: "bottomCenter",
             });
         }
+
+        if (cachedData.passed) {
+            changeSubmitButton("btn-next-verse", "Selanjutnya", "primary");
+            wordTable.updateCard("Selesai", "success");
+        }
+    }
+
+    function boot() {
+        const cachedKey = storage.getActiveStorageKey(wordGroupsPrefix);
+        const cachedRaw = cachedKey ? localStorage.getItem(cachedKey) : null;
+
+        const cachedData = JSON.parse(cachedRaw);
+        const cachedVerseId = cachedData?.verse?.id;
+
+        fetchWordGroups(null, null, cachedVerseId || 1);
     }
 
     return {

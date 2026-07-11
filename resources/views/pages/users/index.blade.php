@@ -32,49 +32,47 @@
                     You can manage all Users, such as editing, deleting and more.
                 </p>
 
-
                 <div class="row mt-4">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4>All Users</h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="float-left">
-                                    <select class="form-control selectric">
-                                        <option>Action For Selected</option>
-                                        <option>Move to Draft</option>
-                                        <option>Move to Pending</option>
-                                        <option>Delete Pemanently</option>
-                                    </select>
-                                </div>
-                                <div class="float-right">
-                                    <form method="GET" action="{{ route('users.index') }}">
+                                <h4>Pengguna</h4>
+                                <div class="card-header-form">
+                                    <form>
                                         <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Search" name="name">
-                                            <div class="input-group-append">
+                                            <input type="text"
+                                                class="form-control"
+                                                placeholder="Cari" id="search-input">
+                                            <div class="input-group-btn">
+                                                {{-- make this button in not clickable --}}
                                                 <button class="btn btn-primary"><i class="fas fa-search"></i></button>
                                             </div>
                                         </div>
                                     </form>
                                 </div>
-
-                                <div class="clearfix mb-3"></div>
-
+                            </div>
+                            <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table-striped table">
+                                    <thead>
                                         <tr>
-
+                                            <th>ID</th>
                                             <th>Name</th>
                                             <th>Email</th>
                                             <th>Phone</th>
                                             <th>Roles</th>
-                                            <th>Created At</th>
+                                            <th>Verified</th>
                                             <th>Action</th>
                                         </tr>
+                                    </thead>
+                                    <tbody id="myTable">
                                         @foreach ($users as $user)
                                             <tr>
-                                                <td>{{ $user->name }}
+                                                <td>
+                                                    {{ $user->id }}
+                                                </td>
+                                                <td>
+                                                    {{ $user->name }}
                                                 </td>
                                                 <td>
                                                     {{ $user->email }}
@@ -85,13 +83,16 @@
                                                 <td>
                                                     {{ $user->roles }}
                                                 </td>
-                                                <td>{{ $user->created_at }}</td>
+                                                <td>
+                                                    <span class="badge {{ $user->email_verified_at ? 'badge-success' : '' }}">
+                                                        {{ $user->email_verified_at ? 'Terverifikasi' : '' }}
+                                                    </span>
+                                                </td>
                                                 <td>
                                                     <div class="d-flex justify-content-left">
                                                         <a href='{{ route('users.edit', $user->id) }}'
                                                             class="btn btn-sm btn-info btn-icon">
                                                             <i class="fas fa-edit"></i>
-                                                            Edit
                                                         </a>
 
                                                         <form action="{{ route('users.destroy', $user->id) }}"
@@ -101,13 +102,14 @@
                                                                 value="{{ csrf_token() }}" />
                                                             <button type="button"
                                                                 class="btn btn-sm btn-danger btn-icon confirm-delete">
-                                                                <i class="fas fa-times"></i> Hapus
+                                                                <i class="fas fa-trash"></i>
                                                             </button>
                                                         </form>
                                                     </div>
                                                 </td>
                                             </tr>
                                         @endforeach
+                                    </tbody>
 
 
                                     </table>
@@ -132,6 +134,15 @@
 
     <!-- Page Specific JS File -->
     <script>
+        $(document).ready(function() {
+            $("#search-input").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+
         document.addEventListener("DOMContentLoaded", function() {
             document.querySelectorAll(".confirm-delete").forEach(btn => {
                 btn.addEventListener("click", function(e) {
@@ -139,7 +150,7 @@
 
                     swal({
                             title: "Hapus user?",
-                            text: "Data user akan dihapus dan mereka tidak bisa mengakses akunnya kembali",
+                            text: "User akan dihapus permanen dan tindakan ini tidak bisa dibatalkan",
                             icon: "warning",
                             buttons: {
                                 cancel: {

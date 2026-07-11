@@ -34,89 +34,105 @@
                             <div class="card-body">
                                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link {{ session('activeTab') == 'kalimat' || !session('activeTab') ? 'active' : '' }}" id="kalimat-tab" data-toggle="tab" href="#kalimat"
-                                            role="tab" aria-controls="kalimat" aria-selected="true">Kalimat</a>
+                                        <a class="nav-link {{ session('activeTab') == 'kalimat' || !session('activeTab') ? 'active' : '' }}"
+                                            id="kalimat-tab" data-toggle="tab" href="#kalimat" role="tab"
+                                            aria-controls="kalimat" aria-selected="true">Kalimat</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link {{ session('activeTab') == 'kategori' ? 'active' : '' }}" id="kategori-tab" data-toggle="tab" href="#kategori"
-                                            role="tab" aria-controls="kategori" aria-selected="false">Kategori</a>
+                                        <a class="nav-link {{ session('activeTab') == 'kategori' ? 'active' : '' }}"
+                                            id="kategori-tab" data-toggle="tab" href="#kategori" role="tab"
+                                            aria-controls="kategori" aria-selected="false">Kategori</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link {{ session('activeTab') == 'kedudukan' ? 'active' : '' }}" id="kedudukan-tab" data-toggle="tab" href="#kedudukan"
-                                            role="tab" aria-controls="kedudukan" aria-selected="false">Kedudukan</a>
+                                        <a class="nav-link {{ session('activeTab') == 'kedudukan' ? 'active' : '' }}"
+                                            id="kedudukan-tab" data-toggle="tab" href="#kedudukan" role="tab"
+                                            aria-controls="kedudukan" aria-selected="false">Kedudukan</a>
                                     </li>
                                 </ul>
                                 <div class="tab-content" id="myTabContent">
-                                    <div class="tab-pane fade {{ session('activeTab') == 'kalimat' || !session('activeTab') ? 'show active' : '' }}" id="kalimat" role="tabpanel"
-                                        aria-labelledby="kalimat-tab">
+                                    <div class="tab-pane fade {{ session('activeTab') == 'kalimat' || !session('activeTab') ? 'show active' : '' }}"
+                                        id="kalimat" role="tabpanel" aria-labelledby="kalimat-tab">
                                         <div class="card">
-                                            <div class="card-body">
-                                                <div class="float-left">
-                                                    <h4>Kalimat</h4>
-                                                </div>
-                                                <div class="float-right">
+                                            <div class="card-header">
+                                                <h4>
                                                     <a href="{{ route('skema-nahwu.kalimat.create') }}"
                                                         class="btn btn-primary">Tambah</a>
+                                                </h4>
+                                                <div class="card-header-form">
+                                                    <form>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" placeholder="Cari"
+                                                                id="search-input">
+                                                            <div class="input-group-btn">
+                                                                {{-- make this button in not clickable --}}
+                                                                <button class="btn btn-primary"><i
+                                                                        class="fas fa-search"></i></button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
                                                 </div>
-
-                                                <div class="clearfix mb-3"></div>
-
+                                            </div>
+                                            <div class="card-body">
                                                 <div class="table-responsive">
                                                     <table class="table-striped table">
-                                                        <tr>
-                                                            <th>Id</th>
-                                                            <th>Kalimat Arabic</th>
-                                                            <th>Kalimat Arabic Musyakal</th>
-                                                            <th>Kalimat Indonesia</th>
-                                                            <th>Action</th>
-                                                        </tr>
-                                                        @foreach ($kalimats as $kalimat)
+                                                        <thead>
                                                             <tr>
-                                                                <td>{{ $kalimat->id }}
-                                                                </td>
-                                                                <td class="align-middle">
-                                                                    <div class="text-center arabic-text">
-                                                                        {{ $kalimat->kalimat_ar }}
-                                                                    </div>
-                                                                </td>
-                                                                <td class="text-center align-middle arabic-text">
-                                                                    {{ $kalimat->kalimat_ar_musyakal ?? '' }}
-                                                                </td>
-                                                                <td class="label_in">
-                                                                    {{ $kalimat->kalimat_in }}
-                                                                </td>
-                                                                <td>
-                                                                    <div class="d-flex justify-content-left">
-                                                                        <a href='{{ route('skema-nahwu.kalimat.edit', $kalimat->id) }}'
-                                                                            class="btn btn-sm btn-info btn-icon">
-                                                                            <i class="fas fa-edit"></i>
-                                                                            Edit
-                                                                        </a>
-
-                                                                        <form
-                                                                            action="{{ route('skema-nahwu.kalimat.destroy', $kalimat->id) }}"
-                                                                            method="POST" class="ml-2">
-                                                                            <input type="hidden" name="_method"
-                                                                                value="DELETE" />
-                                                                            <input type="hidden" name="_token"
-                                                                                value="{{ csrf_token() }}" />
-                                                                            <button type="button"
-                                                                                class="btn btn-sm btn-danger btn-icon confirm-delete"
-                                                                                data-delete-title="Kalimat">
-                                                                                <i class="fas fa-times"></i> Hapus
-                                                                            </button>
-                                                                        </form>
-                                                                    </div>
-                                                                </td>
+                                                                <th>Id</th>
+                                                                <th>Kalimat Arabic</th>
+                                                                <th>Kalimat Arabic Musyakal</th>
+                                                                <th>Kalimat Indonesia</th>
+                                                                <th>Action</th>
                                                             </tr>
-                                                        @endforeach
+                                                        </thead>
+                                                        <tbody id="myTable">
+                                                            @foreach ($kalimats as $kalimat)
+                                                                <tr>
+                                                                    <td>{{ $kalimat->id }}
+                                                                    </td>
+                                                                    <td class="align-middle">
+                                                                        <div class="text-center arabic-text">
+                                                                            {{ $kalimat->kalimat_ar }}
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="text-center align-middle arabic-text">
+                                                                        {{ $kalimat->kalimat_ar_musyakal ?? '' }}
+                                                                    </td>
+                                                                    <td class="label_in">
+                                                                        {{ $kalimat->kalimat_in }}
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="d-flex justify-content-left">
+                                                                            <a href='{{ route('skema-nahwu.kalimat.edit', $kalimat->id) }}'
+                                                                                class="btn btn-sm btn-info btn-icon">
+                                                                                <i class="fas fa-edit"></i>
+                                                                                Edit
+                                                                            </a>
+
+                                                                            <form
+                                                                                action="{{ route('skema-nahwu.kalimat.destroy', $kalimat->id) }}"
+                                                                                method="POST" class="ml-2">
+                                                                                <input type="hidden" name="_method"
+                                                                                    value="DELETE" />
+                                                                                <input type="hidden" name="_token"
+                                                                                    value="{{ csrf_token() }}" />
+                                                                                <button type="button"
+                                                                                    class="btn btn-sm btn-danger btn-icon confirm-delete"
+                                                                                    data-delete-title="Kalimat">
+                                                                                    <i class="fas fa-times"></i> Hapus
+                                                                                </button>
+                                                                            </form>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
                                                     </table>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tab-pane fade {{ session('activeTab') == 'kategori' ? 'show active' : '' }}" id="kategori" role="tabpanel"
-                                        aria-labelledby="kategori-tab">
+                                    <div class="tab-pane fade {{ session('activeTab') == 'kategori' ? 'show active' : '' }}"
+                                        id="kategori" role="tabpanel" aria-labelledby="kategori-tab">
                                         <div class="card">
                                             <div class="card-body">
                                                 <div class="float-left">
@@ -209,8 +225,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tab-pane fade {{ session('activeTab') == 'kedudukan' ? 'show active' : '' }}" id="kedudukan" role="tabpanel"
-                                        aria-labelledby="kedudukan-tab">
+                                    <div class="tab-pane fade {{ session('activeTab') == 'kedudukan' ? 'show active' : '' }}"
+                                        id="kedudukan" role="tabpanel" aria-labelledby="kedudukan-tab">
                                         <div class="card">
                                             <div class="card-body">
                                                 <div class="float-left">
@@ -250,7 +266,7 @@
                                                                 <td class="text-center align-middle arabic-text">
                                                                     {{ $kedudukan->kedudukan_ar_musyakal ?? '' }}
                                                                 </td>
-                                                                <td class="align-middle" >
+                                                                <td class="align-middle">
                                                                     <div class="text-center arabic-text  label_in">
                                                                         {{ $kedudukan->kedudukan_in }}</div>
                                                                 </td>
@@ -305,12 +321,22 @@
 
     <!-- Page Specific JS File -->
     <script>
+        $(document).ready(function() {
+            $("#search-input").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+        
         document.addEventListener("DOMContentLoaded", function() {
             document.querySelectorAll(".confirm-delete").forEach(btn => {
                 btn.addEventListener("click", function(e) {
                     let form = this.closest("form");
                     let deleteTitle = this.dataset.deleteTitle.toLowerCase() || 'data';
-                    let label = this.closest('tr').querySelector('.label_in').textContent.trim() || 'data';
+                    let label = this.closest('tr').querySelector('.label_in').textContent.trim() ||
+                        'data';
 
                     swal({
                             title: `Hapus ${deleteTitle}?`,

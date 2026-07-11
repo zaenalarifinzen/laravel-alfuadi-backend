@@ -64,6 +64,9 @@ class WordGroupController extends Controller
         if ($existing->isNotEmpty()) {
             $wordGroups = $existing;
             $isPersisted = true;
+
+            // find the lastest updated_at timestamp from wordgroups
+            $latestUpdated = $existing->max('updated_at');
         } else {
             $splitWords = preg_split('/\s+/', trim($currentVerse->text));
             $wordGroups = collect($splitWords)->map(function ($wordGroup, $index) use ($currentVerse) {
@@ -86,6 +89,7 @@ class WordGroupController extends Controller
                 'verse' => $currentVerse,
                 'wordGroups' => $wordGroups,
                 'isPersisted' => $isPersisted,
+                'latestUpdated' => $latestUpdated ?? null,
             ],
         ]);
     }
