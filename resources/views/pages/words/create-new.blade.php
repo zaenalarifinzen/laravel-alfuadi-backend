@@ -3,8 +3,6 @@
 @section('title', 'Input Irob')
 
 @push('style')
-    <!-- CSS Libraries -->
-    <!-- Swiper CSS dibundle lewat Vite (lihat resources/js/page/words/create-new.js) -->
     <link rel="stylesheet" href="{{ asset('library/ionicons201/css/ionicons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('library/izitoast/dist/css/iziToast.min.css') }}">
 
@@ -13,57 +11,7 @@
             animation: autofill-outline 1.8s ease forwards;
         }
 
-        /* Navigation buttons for owl slider */
-        .slider-nav-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 9999;
-            background: transparent;
-            border: none;
-            width: 44px;
-            height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-
-        .slider-nav-btn.prev { left: 8px; }
-        .slider-nav-btn.next { right: 8px; }
-
-        #slider-rtl.swiper {
-            padding: 20px 50px; /* ruang untuk tombol next/prev di kiri-kanan */
-        }
-
-        #slider-rtl .swiper-slide {
-            width: auto; /* WAJIB untuk slidesPerView:'auto' -> lebar mengikuti teks */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0.4;
-            transition: all 0.25s ease;
-            cursor: pointer;
-        }
-
-        #slider-rtl .swiper-slide .arabic-text {
-            font-size: 22px;
-            color: #6b7280;
-            transition: all 0.25s ease;
-            white-space: nowrap;
-        }
-
-        /* Slide yang benar-benar aktif (tengah) */
-        #slider-rtl .swiper-slide-active {
-            opacity: 1;
-        }
-
-        #slider-rtl .swiper-slide-active .arabic-text {
-            font-size: 34px;
-            color: #111827;
-            font-weight: 600;
-        }
-
+        /* Autofill Effect */
         @keyframes autofill-outline {
             0% {
                 border-color: #10b981;
@@ -142,7 +90,8 @@
                             <div class="swiper-wrapper">
                                 @foreach ($wordgroups as $wordgroup)
                                     <div class="swiper-slide">
-                                        <h4 class="arabic-text ar-title word-group text-center" wg-id="{{ $wordgroup->id }}">
+                                        <h4 class="arabic-text ar-title word-group text-center"
+                                            wg-id="{{ $wordgroup->id }}">
                                             {{ $wordgroup->text }}
                                         </h4>
                                     </div>

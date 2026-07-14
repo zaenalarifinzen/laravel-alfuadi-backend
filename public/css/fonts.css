@@ -1,0 +1,11 @@
+@font-face {
+    font-family: "Uthmani";
+    src: url("../fonts/UthmanicHafs1Ver18.ttf") format("truetype");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "LPMQ Isepmisbah";
+    src: url("../fonts/lpmq-isepmisbah.ttf") format("truetype");
+    font-display: swap;
+}

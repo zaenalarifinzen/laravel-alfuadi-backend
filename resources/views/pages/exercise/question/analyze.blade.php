@@ -4,37 +4,17 @@
 
 @push('style')
     <!-- CSS Libraries -->
-    <link rel="stylesheet" href="{{ asset('library/owl.carousel/dist/assets/owl.carousel.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('library/owl.carousel/dist/assets/owl.theme.default.min.css') }}">
     <link rel="stylesheet" href="{{ asset('library/ionicons201/css/ionicons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('library/izitoast/dist/css/iziToast.min.css') }}">
     <style>
+        /* correction */
         tr.is-wrong {
             background-color: #ffe6e6 !important;
         }
-
+        
         tr.is-correct {
             background-color: #e6ffe6 !important;
         }
-
-        /* Navigation buttons for owl slider */
-        .slider-nav-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 9999;
-            background: transparent;
-            border: none;
-            width: 44px;
-            height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-
-        .slider-nav-btn.prev { left: 8px; }
-        .slider-nav-btn.next { right: 8px; }
 
         td.is-wrong {
             background-color: #ffcccc !important;
@@ -86,11 +66,13 @@
                             <i class="fa fa-chevron-left"></i>
                         </button>
 
-                        <div class="owl-carousel owl-theme slider" id="slider-rtl">
-                            <div>
-                                <h4 class="arabic-text ar-title word-group text-center" wg-id="#">
+                        <div class="swiper slider" id="slider-rtl">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide">
+                                    <h4 class="arabic-text ar-title word-group text-center" wg-id="#">
                                     Pilih soal terlebih dahulu
                                 </h4>
+                                </div>
                             </div>
                         </div>
 
@@ -239,7 +221,6 @@
 @push('scripts')
     <!-- JS Libraies -->
     <script src="{{ asset('library/jquery-ui-dist/jquery-ui.min.js') }}"></script>
-    <script src="{{ asset('library/owl.carousel/dist/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('library/izitoast/dist/js/iziToast.min.js') }}"></script>
     <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
 

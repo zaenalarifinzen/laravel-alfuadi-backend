@@ -530,7 +530,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let verseId = parseInt(currentVerseId.value);
 
         if (verseId > 1) {
-            prevVerseId = verseId - 1;
+            const prevVerseId = verseId - 1;
             fetchWordGroups(null, null, prevVerseId);
             modified = false;
         }
