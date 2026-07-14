@@ -95,6 +95,15 @@
                                                             <i class="fas fa-edit"></i>
                                                         </a>
 
+                                                        @if (!$user->email_verified_at)
+                                                            <form action="{{ route('users.verify', $user->id) }}" method="POST" class="ml-2">
+                                                                @csrf
+                                                                <button type="button" class="btn btn-sm btn-success btn-icon confirm-verify">
+                                                                    <i class="fas fa-check"></i>
+                                                                </button>
+                                                            </form>
+                                                        @endif
+
                                                         <form action="{{ route('users.destroy', $user->id) }}"
                                                             method="POST" class="ml-2">
                                                             <input type="hidden" name="_method" value="DELETE" />
@@ -172,6 +181,33 @@
                         });
                 });
             })
+                document.querySelectorAll(".confirm-verify").forEach(btn => {
+                    btn.addEventListener("click", function(e) {
+                        let form = this.closest("form");
+
+                        swal({
+                                title: "Verifikasi user?",
+                                text: "User akan diverifikasi dan email dianggap telah terverifikasi.",
+                                icon: "info",
+                                buttons: {
+                                    cancel: {
+                                        text: 'Batal',
+                                        visible: true,
+                                    },
+                                    confirm: {
+                                        text: 'Ya, verifikasi',
+                                        visible: true,
+                                        className: 'btn-success'
+                                    }
+                                }
+                            })
+                            .then((willVerify) => {
+                                if (willVerify) {
+                                    form.submit();
+                                }
+                            });
+                    });
+                })
         });
     </script>
 @endpush

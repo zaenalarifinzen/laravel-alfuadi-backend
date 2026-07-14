@@ -141,6 +141,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Administrator Only
     Route::middleware(['roles:administrator'])->group(function () {
         Route::resource('users', UserController::class);
+        Route::post('users/{user}/verify', [UserController::class, 'verify'])->name('users.verify');
         Route::resource('products', ProductController::class);
 
         Route::prefix('skema-nahwu')->name('skema-nahwu.')->group(function () {
