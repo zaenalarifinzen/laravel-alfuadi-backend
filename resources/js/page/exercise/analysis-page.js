@@ -304,7 +304,7 @@ export function initAnalysisPage({
 
                 localStorage.setItem(userAnswer, JSON.stringify(cloned));
 
-                slider.renderOwlSlider(cloned);
+                slider.renderSwiperSlider(cloned);
 
                 const firstWordGroup = cloned.wordGroups[0];
                 wordTable.renderWordsTable(firstWordGroup);
@@ -388,7 +388,7 @@ export function initAnalysisPage({
         const cachedData = JSON.parse(cachedRaw);
 
         currentQuestionId = cachedData.questionId;
-        slider.renderOwlSlider(cachedData);
+        slider.renderSwiperSlider(cachedData);
         wordTable.renderWordsTable(cachedData.wordGroups[0]);
         wordTable.renderWordsDetails(cachedData.wordGroups[0]);
 

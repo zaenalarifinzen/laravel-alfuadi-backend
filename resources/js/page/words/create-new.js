@@ -1,7 +1,7 @@
 // resources/js/page/words/create-new.js
 import * as storage from "./storage-helper";
 import { initSearchVerse } from "../../utils/search-verse";
-import { initOwlSlider } from "../../utils/owl-slider";
+import { initSwiperSlider } from "../../utils/swiper-slider";
 import { initWordTable } from "../../utils/word-table";
 import { initWordsPage } from "./words-page";
 import { initComponentsTable } from "../../page/components-table";
@@ -57,7 +57,7 @@ wordTable = initWordTable({
     changeSubmitButton: wordsPage.changeSubmitButton,
 });
 
-slider = initOwlSlider({
+slider = initSwiperSlider({
     fetchWords: wordsPage.fetchWords,
     elements,
 });

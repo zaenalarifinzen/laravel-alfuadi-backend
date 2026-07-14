@@ -132,7 +132,7 @@ function renderWordsDetails(wordGroup) {
     tbody.empty();
 
     if (!wordGroup || !wordGroup.words || wordGroup.words.length === 0) {
-        console.log("Data tidak tersedia");
+        // console.log("Data tidak tersedia");
         tbody.append(`
             <tr>
                 <td colspan="8" class="text-center text-muted">Tidak ada data</td>

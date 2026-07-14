@@ -88,8 +88,6 @@ export function initWordCrud({
             (g) => g.id == activeWordGroupId,
         );
 
-        console.log(wordGroup);
-
         $("#input-id").val("");
         $("#input-lafadz").val(wordGroup.text);
         $("#input-kategori").val("");

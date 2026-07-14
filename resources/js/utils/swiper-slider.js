@@ -7,7 +7,7 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 
-export function initOwlSlider({ fetchWords, elements }) {
+export function initSwiperSlider({ fetchWords, elements }) {
     const swiper = new Swiper("#slider-rtl", {
         modules: [Navigation], // wajib didaftarkan di Swiper modular (v9+)
         rtl: true,
@@ -39,11 +39,11 @@ export function initOwlSlider({ fetchWords, elements }) {
     bindActiveSlideEvents();
 
     // Fetch kata pertama saat halaman pertama kali dimuat (data awal dari
-    // blade sudah ada di DOM sebelum initOwlSlider dipanggil)
+    // blade sudah ada di DOM sebelum initSwiperSlider dipanggil)
     const initialId = getActiveSlideId();
     if (initialId) fetchWords(initialId);
 
-    function renderOwlSlider(data) {
+    function renderSwiperSlider(data) {
         const wrapper = document.querySelector("#slider-rtl .swiper-wrapper");
         if (!wrapper) return;
 
@@ -51,7 +51,7 @@ export function initOwlSlider({ fetchWords, elements }) {
 
         const wordGroups = data.wordGroups || [];
 
-        // Urutan DOM TIDAK perlu dibalik seperti workaround Owl sebelumnya —
+        // Urutan DOM TIDAK perlu dibalik seperti workaround Swiper sebelumnya —
         // Swiper dengan rtl:true menangani urutan visual RTL dengan benar
         // dari urutan data aslinya (kata pertama ayat = slide pertama).
         wordGroups.forEach((wordGroup) => {
@@ -97,6 +97,6 @@ export function initOwlSlider({ fetchWords, elements }) {
     }
 
     return {
-        renderOwlSlider,
+        renderSwiperSlider,
     };
 }

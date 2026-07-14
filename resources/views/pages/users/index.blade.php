@@ -42,7 +42,7 @@
                                         <div class="input-group">
                                             <input type="text"
                                                 class="form-control"
-                                                placeholder="Cari" id="search-input">
+                                                placeholder="Cari" id="search-input" name="name">
                                             <div class="input-group-btn">
                                                 {{-- make this button in not clickable --}}
                                                 <button class="btn btn-primary"><i class="fas fa-search"></i></button>
