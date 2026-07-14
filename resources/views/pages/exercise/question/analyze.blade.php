@@ -17,6 +17,25 @@
             background-color: #e6ffe6 !important;
         }
 
+        /* Navigation buttons for owl slider */
+        .slider-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 9999;
+            background: transparent;
+            border: none;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .slider-nav-btn.prev { left: 8px; }
+        .slider-nav-btn.next { right: 8px; }
+
         td.is-wrong {
             background-color: #ffcccc !important;
             font-weight: bold;

@@ -1,31 +1,36 @@
 // =============================
-// OWL CAROUSEL INIT
+// SWIPER SLIDER INIT
 // =============================
+
+import Swiper from "swiper";
+import { Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+
 export function initOwlSlider({ fetchWords, elements }) {
-    const $slider = $("#slider-rtl").owlCarousel({
+    const swiper = new Swiper("#slider-rtl", {
+        modules: [Navigation], // wajib didaftarkan di Swiper modular (v9+)
         rtl: true,
-        items: 1,
-        dots: false,
-        nav: false,
-        loop: false,
+        slidesPerView: "auto", // lebar tiap slide mengikuti lebar teks kata
+        centeredSlides: true, // slide aktif otomatis di tengah
+        slideToClickedSlide: true,
+        spaceBetween: 8, // jarak antar kata
+        speed: 300,
+        navigation: {
+            nextEl: "#btn-next-slide",
+            prevEl: "#btn-prev-slide",
+        },
     });
 
-    $("#btn-next-slide").click(() => $slider.trigger("next.owl.carousel"));
-    $("#btn-prev-slide").click(() => $slider.trigger("prev.owl.carousel"));
-
     function getActiveSlideId() {
-        const $active = $slider.find(".owl-item.active").first();
-        const id = $active.find(".word-group").attr("wg-id");
+        const activeSlide = swiper.slides?.[swiper.activeIndex];
+        if (!activeSlide) return null;
+        const id = $(activeSlide).find(".word-group").attr("wg-id");
         return id || null;
     }
 
     function bindActiveSlideEvents() {
-        $slider.on("initialized.owl.carousel", () => {
-            const id = getActiveSlideId();
-            if (id) fetchWords(id);
-        });
-
-        $slider.on("translated.owl.carousel", () => {
+        swiper.on("slideChange", () => {
             const id = getActiveSlideId();
             if (id) fetchWords(id);
         });
@@ -33,22 +38,36 @@ export function initOwlSlider({ fetchWords, elements }) {
 
     bindActiveSlideEvents();
 
+    // Fetch kata pertama saat halaman pertama kali dimuat (data awal dari
+    // blade sudah ada di DOM sebelum initOwlSlider dipanggil)
+    const initialId = getActiveSlideId();
+    if (initialId) fetchWords(initialId);
+
     function renderOwlSlider(data) {
-        $slider.off("initialized.owl.carousel");
-        $slider.off("translated.owl.carousel");
+        const wrapper = document.querySelector("#slider-rtl .swiper-wrapper");
+        if (!wrapper) return;
 
-        $slider.trigger("destroy.owl.carousel");
-        $slider.html("");
+        wrapper.innerHTML = "";
 
-        data.wordGroups.forEach((wordGroup) => {
-            $slider.append(`
-      <div>
-        <h4 class="arabic-text ar-title word-group" wg-id="${wordGroup.id}">${wordGroup.text}</h4>
-      </div>`);
+        const wordGroups = data.wordGroups || [];
+
+        // Urutan DOM TIDAK perlu dibalik seperti workaround Owl sebelumnya —
+        // Swiper dengan rtl:true menangani urutan visual RTL dengan benar
+        // dari urutan data aslinya (kata pertama ayat = slide pertama).
+        wordGroups.forEach((wordGroup) => {
+            const slide = document.createElement("div");
+            slide.className = "swiper-slide";
+            slide.innerHTML = `<h4 class="arabic-text ar-title word-group" wg-id="${wordGroup.id}">${wordGroup.text}</h4>`;
+            wrapper.appendChild(slide);
         });
 
-        $slider.owlCarousel({ rtl: true, items: 1, dots: false, nav: false });
-        bindActiveSlideEvents();
+        swiper.update();
+        swiper.slideTo(0, 0); // mulai dari kata pertama ayat, tanpa animasi
+
+        // slideTo(0,0) tidak selalu memicu event slideChange kalau index
+        // sebelumnya juga 0, jadi fetch manual supaya tabel kata tetap sinkron
+        const id = getActiveSlideId();
+        if (id) fetchWords(id);
 
         elements.currentSurahId.value = data.surah.id;
         elements.currentVerseNumber.value = data.verse.number;
