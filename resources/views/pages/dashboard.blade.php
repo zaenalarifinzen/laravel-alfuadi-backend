@@ -17,7 +17,7 @@
 
             @auth
                 <div class="section-body">
-                    @if (request()->query('verified') == 1)
+                    @if (session('verified'))
                     <div class="alert alert-success alert-dismissible show fade">
                         <div class="alert-body">
                             <button class="close" data-dismiss="alert">
