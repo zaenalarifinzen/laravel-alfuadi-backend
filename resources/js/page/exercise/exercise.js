@@ -3,7 +3,7 @@ import { createNahwuFormController } from "../../page/words/nahwu-form-autofill"
 import { initAnalysisAnswerHandler } from "./analysis-answer-handler";
 import { initAnalysisPage } from "./analysis-page";
 import { initSearchVerse } from "../../utils/search-verse";
-import { initOwlSlider } from "../../utils/owl-slider";
+import { initSwiperSlider } from "../../utils/swiper-slider";
 import { initWordTable } from "../../utils/word-table";
 import { initComponentsTable } from "../../page/components-table";
 
@@ -61,7 +61,7 @@ wordTable = initWordTable({
     changeSubmitButton: analysisPage.changeSubmitButton,
 });
 
-slider = initOwlSlider({
+slider = initSwiperSlider({
     fetchWords: analysisPage.fetchWords,
     elements,
 });

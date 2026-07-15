@@ -167,7 +167,7 @@ export function initWordsPage({
                     }
 
                     localStorage.setItem(userAnswer, JSON.stringify(cloned));
-                    slider.renderOwlSlider(cloned);
+                    slider.renderSwiperSlider(cloned);
                     if (cloned.wordGroups && cloned.wordGroups.length > 0) {
                         wordTable.renderWordsTable(cloned.wordGroups[0]);
                         wordTable.renderWordsDetails(cloned.wordGroups[0]);
@@ -178,7 +178,7 @@ export function initWordsPage({
                         .forEach((k) => localStorage.removeItem(k));
 
                     localStorage.setItem(storageKey, JSON.stringify(data));
-                    slider.renderOwlSlider(data);
+                    slider.renderSwiperSlider(data);
                     wordTable.renderWordsTable(data.wordGroups[0]);
                     wordTable.renderWordsDetails(data.wordGroups[0]);
                 }
@@ -367,7 +367,7 @@ export function initWordsPage({
 
         const cachedData = JSON.parse(cachedRaw);
 
-        slider.renderOwlSlider(cachedData);
+        slider.renderSwiperSlider(cachedData);
         wordTable.renderWordsTable(cachedData.wordGroups[0]);
         wordTable.renderWordsDetails(cachedData.wordGroups[0]);
 

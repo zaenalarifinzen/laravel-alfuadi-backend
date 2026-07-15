@@ -40,9 +40,8 @@
                                 <div class="card-header-form">
                                     <form>
                                         <div class="input-group">
-                                            <input type="text"
-                                                class="form-control"
-                                                placeholder="Cari" id="search-input">
+                                            <input type="text" class="form-control" placeholder="Cari" id="search-input"
+                                                name="name">
                                             <div class="input-group-btn">
                                                 {{-- make this button in not clickable --}}
                                                 <button class="btn btn-primary"><i class="fas fa-search"></i></button>
@@ -54,64 +53,78 @@
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table-striped table">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Phone</th>
-                                            <th>Roles</th>
-                                            <th>Verified</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="myTable">
-                                        @foreach ($users as $user)
+                                        <thead>
                                             <tr>
-                                                <td>
-                                                    {{ $user->id }}
-                                                </td>
-                                                <td>
-                                                    {{ $user->name }}
-                                                </td>
-                                                <td>
-                                                    {{ $user->email }}
-                                                </td>
-                                                <td>
-                                                    {{ $user->phone ?? '' }}
-                                                </td>
-                                                <td>
-                                                    {{ $user->roles }}
-                                                </td>
-                                                <td>
-                                                    <span class="badge {{ $user->email_verified_at ? 'badge-success' : '' }}">
-                                                        {{ $user->email_verified_at ? 'Terverifikasi' : '' }}
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex justify-content-left">
-                                                        <a href='{{ route('users.edit', $user->id) }}'
-                                                            class="btn btn-sm btn-info btn-icon">
-                                                            <i class="fas fa-edit"></i>
-                                                        </a>
-
-                                                        <form action="{{ route('users.destroy', $user->id) }}"
-                                                            method="POST" class="ml-2">
-                                                            <input type="hidden" name="_method" value="DELETE" />
-                                                            <input type="hidden" name="_token"
-                                                                value="{{ csrf_token() }}" />
-                                                            <button type="button"
-                                                                class="btn btn-sm btn-danger btn-icon confirm-delete">
-                                                                <i class="fas fa-trash"></i>
-                                                            </button>
-                                                        </form>
-                                                    </div>
-                                                </td>
+                                                <th>ID</th>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Phone</th>
+                                                <th>Roles</th>
+                                                <th>Verified</th>
+                                                <th>Action</th>
                                             </tr>
-                                        @endforeach
-                                    </tbody>
+                                        </thead>
+                                        <tbody class="filterable-table">
+                                            @foreach ($users as $user)
+                                                <tr>
+                                                    <td>
+                                                        {{ $user->id }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $user->name }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $user->email }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $user->phone ?? '' }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $user->roles }}
+                                                    </td>
+                                                    <td>
+                                                        <span
+                                                            class="badge {{ $user->email_verified_at ? 'badge-success' : '' }}">
+                                                            {{ $user->email_verified_at ? 'Terverifikasi' : '' }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex justify-content-left">
+                                                            <a href='{{ route('users.edit', $user->id) }}'
+                                                                class="btn btn-sm btn-info btn-icon">
+                                                                <i class="fas fa-edit" data-toggle="tooltip"
+                                                                    data-original-title="Edit"></i>
+                                                            </a>
 
+                                                            @if (!$user->email_verified_at)
+                                                                <form action="{{ route('users.verify', $user->id) }}"
+                                                                    method="POST" class="ml-2">
+                                                                    @csrf
+                                                                    <button type="button"
+                                                                        class="btn btn-sm btn-success btn-icon confirm-verify"
+                                                                        data-toggle="tooltip"
+                                                                        data-original-title="Verifikasi">
+                                                                        <i class="fas fa-check"></i>
+                                                                    </button>
+                                                                </form>
+                                                            @endif
 
+                                                            <form action="{{ route('users.destroy', $user->id) }}"
+                                                                method="POST" class="ml-2">
+                                                                <input type="hidden" name="_method" value="DELETE" />
+                                                                <input type="hidden" name="_token"
+                                                                    value="{{ csrf_token() }}" />
+                                                                <button type="button"
+                                                                    class="btn btn-sm btn-danger btn-icon confirm-delete"
+                                                                    data-toggle="tooltip" data-original-title="Hapus">
+                                                                    <i class="fas fa-trash"></i>
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
                                     </table>
                                 </div>
                                 <div class="float-right">
@@ -137,8 +150,12 @@
         $(document).ready(function() {
             $("#search-input").on("keyup", function() {
                 var value = $(this).val().toLowerCase();
-                $("#myTable tr").filter(function() {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                document.querySelectorAll(".filterable-table tr").forEach(function(row) {
+                    if (row.textContent.toLowerCase().indexOf(value) > -1) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
                 });
             });
         });
@@ -167,6 +184,33 @@
                         })
                         .then((willDelete) => {
                             if (willDelete) {
+                                form.submit();
+                            }
+                        });
+                });
+            });
+            document.querySelectorAll(".confirm-verify").forEach(btn => {
+                btn.addEventListener("click", function(e) {
+                    let form = this.closest("form");
+
+                    swal({
+                            title: "Verifikasi user?",
+                            text: "User akan diverifikasi dan email dianggap telah terverifikasi.",
+                            icon: "info",
+                            buttons: {
+                                cancel: {
+                                    text: 'Batal',
+                                    visible: true,
+                                },
+                                confirm: {
+                                    text: 'Ya, verifikasi',
+                                    visible: true,
+                                    className: 'btn-success'
+                                }
+                            }
+                        })
+                        .then((willVerify) => {
+                            if (willVerify) {
                                 form.submit();
                             }
                         });

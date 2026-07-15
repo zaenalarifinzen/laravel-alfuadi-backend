@@ -14,7 +14,7 @@ use App\Http\Controllers\WordController;
 use App\Http\Controllers\WordGroupController;
 use App\Http\Controllers\QuestionController;
 use App\Models\Surah;
-use App\Models\UserAnswer;
+// use App\Models\UserAnswer;
 use App\Models\Verse;
 use App\Models\Word;
 use App\Models\WordGroups;
@@ -141,6 +141,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Administrator Only
     Route::middleware(['roles:administrator'])->group(function () {
         Route::resource('users', UserController::class);
+        Route::post('users/{user}/verify', [UserController::class, 'verify'])->name('users.verify');
         Route::resource('products', ProductController::class);
 
         Route::prefix('skema-nahwu')->name('skema-nahwu.')->group(function () {

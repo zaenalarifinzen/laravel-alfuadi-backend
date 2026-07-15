@@ -19,7 +19,7 @@ class UserController extends Controller
                 return $query->where('name', 'like', '%'.$name.'%');
             })
             ->orderBy('id', 'desc')
-            ->paginate(10);
+            ->paginate(50);
         return view('pages.users.index', compact('users'), ['type_menu' => '']);
     }
 
@@ -63,9 +63,19 @@ class UserController extends Controller
         return redirect()->route('profile')->with('success', 'Profil berhasil diperbarui');
     }
 
+    public function verify(User $user)
+    {
+        if (!$user->email_verified_at) {
+            $user->email_verified_at = now();
+            $user->save();
+        }
+
+        return redirect()->route('users.index')->with('success', $user->name . ' berhasil diverifikasi');
+    }
+
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect()->route('users.index')->with('success', 'User deleted');
+        return redirect()->route('users.index')->with('success', $user->name . ' deleted');
     }
 }

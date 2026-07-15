@@ -3,9 +3,6 @@
 @section('title', 'Input Irob')
 
 @push('style')
-    <!-- CSS Libraries -->
-    <link rel="stylesheet" href="{{ asset('library/owl.carousel/dist/assets/owl.carousel.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('library/owl.carousel/dist/assets/owl.theme.default.min.css') }}">
     <link rel="stylesheet" href="{{ asset('library/ionicons201/css/ionicons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('library/izitoast/dist/css/iziToast.min.css') }}">
 
@@ -14,20 +11,24 @@
             animation: autofill-outline 1.8s ease forwards;
         }
 
+        /* Autofill Effect */
         @keyframes autofill-outline {
             0% {
                 border-color: #10b981;
                 box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.45);
             }
+
             20% {
                 border-color: #10b981;
                 box-shadow: 0 0 0 5px rgba(16, 185, 129, 0.18);
-                
+
             }
+
             45% {
                 border-color: #10b981;
                 box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
             }
+
             100% {
                 border-color: #EAECFC;
                 box-shadow: none;
@@ -85,14 +86,17 @@
                             <i class="fa fa-chevron-left"></i>
                         </button>
 
-                        <div class="owl-carousel owl-theme slider" id="slider-rtl">
-                            @foreach ($wordgroups as $wordgroup)
-                                <div>
-                                    <h4 class="arabic-text ar-title word-group text-center" wg-id="{{ $wordgroup->id }}">
-                                        {{ $wordgroup->text }}
-                                    </h4>
-                                </div>
-                            @endforeach
+                        <div class="swiper slider" id="slider-rtl">
+                            <div class="swiper-wrapper">
+                                @foreach ($wordgroups as $wordgroup)
+                                    <div class="swiper-slide">
+                                        <h4 class="arabic-text ar-title word-group text-center"
+                                            wg-id="{{ $wordgroup->id }}">
+                                            {{ $wordgroup->text }}
+                                        </h4>
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
 
                         <button id="btn-prev-slide" class="slider-nav-btn next">
@@ -344,10 +348,10 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                <label for="input-kategori">Kategori / Alasan mabni</label>
-                                <select id="input-kategori" class="custom-dropdown" name="kategori">
-                                </select>
-                            </div>
+                                    <label for="input-kategori">Kategori / Alasan mabni</label>
+                                    <select id="input-kategori" class="custom-dropdown" name="kategori">
+                                    </select>
+                                </div>
                                 <div class="form-group col-md-6">
                                     <label for="input-kedudukan">Kedudukan</label>
                                     <select id="input-kedudukan" class="custom-dropdown" name="kedudukan">
@@ -408,10 +412,8 @@
 @push('scripts')
     <!-- JS Libraies -->
     <script src="{{ asset('library/jquery-ui-dist/jquery-ui.min.js') }}"></script>
-    <script src="{{ asset('library/owl.carousel/dist/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('library/izitoast/dist/js/iziToast.min.js') }}"></script>
     <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
-    {{-- <script src="{{ asset('library/select2/dist/js/select2.full.min.js') }}"></script> --}}
 
     <script type="application/json" id="page-config">
         {!! json_encode([

@@ -81,7 +81,7 @@ export function initWordCrud({
         const stored = JSON.parse(localStorage.getItem(currentKey));
 
         // get active wordgroup
-        const activeWordGroupId = $(".owl-item.active .word-group").attr(
+        const activeWordGroupId = $(".swiper-slide-active .word-group").attr(
             "wg-id",
         );
         const wordGroup = stored.wordGroups.find(
@@ -133,7 +133,7 @@ export function initWordCrud({
         const stored = JSON.parse(localStorage.getItem(currentKey));
 
         // get active wordgroup
-        const activeWordGroupId = $(".owl-item.active .word-group").attr(
+        const activeWordGroupId = $(".swiper-slide-active .word-group").attr(
             "wg-id",
         );
         const wordGroup = stored.wordGroups.find(
@@ -287,7 +287,7 @@ export function initWordCrud({
             const stored = JSON.parse(localStorage.getItem(currentKey));
 
             // get active wordgroup
-            const activeWordGroupId = $(".owl-item.active .word-group").attr(
+            const activeWordGroupId = $(".swiper-slide-active .word-group").attr(
                 "wg-id",
             );
             // console.log('activeWordGroupId: ', activeWordGroupId);
@@ -330,7 +330,7 @@ export function initWordCrud({
             k.startsWith(getPrefix()),
         );
         const stored = JSON.parse(localStorage.getItem(currentKey));
-        const activeWordGroupId = $(".owl-item.active .word-group").attr(
+        const activeWordGroupId = $(".swiper-slide-active .word-group").attr(
             "wg-id",
         );
         const groupIndex = stored.wordGroups.findIndex(

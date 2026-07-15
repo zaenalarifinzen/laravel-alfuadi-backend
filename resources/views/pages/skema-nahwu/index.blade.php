@@ -61,12 +61,11 @@
                                                 <div class="card-header-form">
                                                     <form>
                                                         <div class="input-group">
-                                                            <input type="text" class="form-control" placeholder="Cari"
-                                                                id="search-input">
+                                                            <input type="text" class="form-control search-input"
+                                                                placeholder="Cari" data-target="#table-kalimat">
                                                             <div class="input-group-btn">
-                                                                {{-- make this button in not clickable --}}
-                                                                <button class="btn btn-primary"><i
-                                                                        class="fas fa-search"></i></button>
+                                                                <div class="btn btn-primary"><i class="fas fa-search"></i>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </form>
@@ -84,7 +83,7 @@
                                                                 <th>Action</th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody id="myTable">
+                                                        <tbody class="filterable-table" id="table-kalimat">
                                                             @foreach ($kalimats as $kalimat)
                                                                 <tr>
                                                                     <td>{{ $kalimat->id }}
@@ -103,9 +102,10 @@
                                                                     <td>
                                                                         <div class="d-flex justify-content-left">
                                                                             <a href='{{ route('skema-nahwu.kalimat.edit', $kalimat->id) }}'
-                                                                                class="btn btn-sm btn-info btn-icon">
+                                                                                class="btn btn-sm btn-info btn-icon"
+                                                                                data-toggle="tooltip"
+                                                                                data-original-title="Edit">
                                                                                 <i class="fas fa-edit"></i>
-                                                                                Edit
                                                                             </a>
 
                                                                             <form
@@ -117,8 +117,10 @@
                                                                                     value="{{ csrf_token() }}" />
                                                                                 <button type="button"
                                                                                     class="btn btn-sm btn-danger btn-icon confirm-delete"
-                                                                                    data-delete-title="Kalimat">
-                                                                                    <i class="fas fa-times"></i> Hapus
+                                                                                    data-delete-title="Kalimat"
+                                                                                    data-toggle="tooltip"
+                                                                                    data-original-title="Hapus">
+                                                                                    <i class="fas fa-trash"></i>
                                                                                 </button>
                                                                             </form>
                                                                         </div>
@@ -134,92 +136,106 @@
                                     <div class="tab-pane fade {{ session('activeTab') == 'kategori' ? 'show active' : '' }}"
                                         id="kategori" role="tabpanel" aria-labelledby="kategori-tab">
                                         <div class="card">
-                                            <div class="card-body">
-                                                <div class="float-left">
-                                                    <h4>Kategori</h4>
-                                                </div>
-                                                <div class="float-right">
+                                            <div class="card-header">
+                                                <h4>
                                                     <a href="{{ route('skema-nahwu.kategori.create') }}"
                                                         class="btn btn-primary">Tambah</a>
+                                                </h4>
+                                                <div class="card-header-form">
+                                                    <form>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control search-input"
+                                                                placeholder="Cari" data-target="#table-kategori">
+                                                            <div class="input-group-btn">
+                                                                <div class="btn btn-primary"><i class="fas fa-search"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
                                                 </div>
-
-                                                <div class="clearfix mb-3"></div>
-
+                                            </div>
+                                            <div class="card-body">
                                                 <div class="table-responsive">
                                                     <table class="table-striped table">
-                                                        <tr>
-
-                                                            <th>Id</th>
-                                                            <th>Simbol</th>
-                                                            <th>Kategori Arabic</th>
-                                                            <th>Kategori Arabic Musyakal</th>
-                                                            <th>Kategori Indonesia</th>
-                                                            <th>Hukum</th>
-                                                            <th>Rofa</th>
-                                                            <th>Nashob</th>
-                                                            <th>Jar</th>
-                                                            <th>Jazm</th>
-                                                            <th>Action</th>
-                                                        </tr>
-                                                        @foreach ($kategoris as $kategori)
+                                                        <thead>
                                                             <tr>
-                                                                <td>{{ $kategori->id }}
-                                                                </td>
-                                                                <td class="align-middle">
-                                                                    <div class="text-center arabic-text">
-                                                                        {{ $kategori->simbol }}
-                                                                    </div>
-                                                                </td>
-                                                                <td class="align-middle">
-                                                                    <div class="text-center arabic-text">
-                                                                        {{ $kategori->kategori_ar }}</div>
-                                                                </td>
-                                                                <td class="text-center align-middle arabic-text">
-                                                                    {{ $kategori->kategori_ar_musyakal ?? '' }}
-                                                                </td>
-                                                                <td class="text-center align-middle arabic-text">
-                                                                    {{ $kategori->hukum ?? '' }}
-                                                                </td>
-                                                                <td class="text-center align-middle arabic-text">
-                                                                    {{ $kategori->rofa ?? '' }}
-                                                                </td>
-                                                                <td class="text-center align-middle arabic-text">
-                                                                    {{ $kategori->nashob ?? '' }}
-                                                                </td>
-                                                                <td class="text-center align-middle arabic-text">
-                                                                    {{ $kategori->jar ?? '' }}
-                                                                </td>
-                                                                <td class="text-center align-middle arabic-text">
-                                                                    {{ $kategori->jazm ?? '' }}
-                                                                </td>
-                                                                <td class="label_in">
-                                                                    {{ $kategori->kategori_in }}
-                                                                </td>
-                                                                <td>
-                                                                    <div class="d-flex justify-content-left">
-                                                                        <a href='{{ route('skema-nahwu.kategori.edit', $kategori->id) }}'
-                                                                            class="btn btn-sm btn-info btn-icon">
-                                                                            <i class="fas fa-edit"></i>
-                                                                            Edit
-                                                                        </a>
-
-                                                                        <form
-                                                                            action="{{ route('skema-nahwu.kategori.destroy', $kategori->id) }}"
-                                                                            method="POST" class="ml-2">
-                                                                            <input type="hidden" name="_method"
-                                                                                value="DELETE" />
-                                                                            <input type="hidden" name="_token"
-                                                                                value="{{ csrf_token() }}" />
-                                                                            <button type="button"
-                                                                                class="btn btn-sm btn-danger btn-icon confirm-delete"
-                                                                                data-delete-title="Kategori">
-                                                                                <i class="fas fa-times"></i> Hapus
-                                                                            </button>
-                                                                        </form>
-                                                                    </div>
-                                                                </td>
+                                                                <th>Id</th>
+                                                                <th>Simbol</th>
+                                                                <th>Kategori Arabic</th>
+                                                                <th>Kategori Arabic Musyakal</th>
+                                                                <th>Kategori Indonesia</th>
+                                                                <th>Hukum</th>
+                                                                <th>Rofa</th>
+                                                                <th>Nashob</th>
+                                                                <th>Jar</th>
+                                                                <th>Jazm</th>
+                                                                <th>Action</th>
                                                             </tr>
-                                                        @endforeach
+                                                        </thead>
+                                                        <tbody class="filterable-table" id="table-kategori">
+                                                            @foreach ($kategoris as $kategori)
+                                                                <tr>
+                                                                    <td>{{ $kategori->id }}
+                                                                    </td>
+                                                                    <td class="align-middle">
+                                                                        <div class="text-center arabic-text">
+                                                                            {{ $kategori->simbol }}
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="align-middle">
+                                                                        <div class="text-center arabic-text">
+                                                                            {{ $kategori->kategori_ar }}</div>
+                                                                    </td>
+                                                                    <td class="text-center align-middle arabic-text">
+                                                                        {{ $kategori->kategori_ar_musyakal ?? '' }}
+                                                                    </td>
+                                                                    <td class="text-center align-middle arabic-text">
+                                                                        {{ $kategori->hukum ?? '' }}
+                                                                    </td>
+                                                                    <td class="text-center align-middle arabic-text">
+                                                                        {{ $kategori->rofa ?? '' }}
+                                                                    </td>
+                                                                    <td class="text-center align-middle arabic-text">
+                                                                        {{ $kategori->nashob ?? '' }}
+                                                                    </td>
+                                                                    <td class="text-center align-middle arabic-text">
+                                                                        {{ $kategori->jar ?? '' }}
+                                                                    </td>
+                                                                    <td class="text-center align-middle arabic-text">
+                                                                        {{ $kategori->jazm ?? '' }}
+                                                                    </td>
+                                                                    <td class="label_in">
+                                                                        {{ $kategori->kategori_in }}
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="d-flex justify-content-left">
+                                                                            <a href='{{ route('skema-nahwu.kategori.edit', $kategori->id) }}'
+                                                                                class="btn btn-sm btn-info btn-icon"
+                                                                                data-toggle="tooltip"
+                                                                                data-original-title="Edit">
+                                                                                <i class="fas fa-edit"></i>
+                                                                            </a>
+
+                                                                            <form
+                                                                                action="{{ route('skema-nahwu.kategori.destroy', $kategori->id) }}"
+                                                                                method="POST" class="ml-2">
+                                                                                <input type="hidden" name="_method"
+                                                                                    value="DELETE" />
+                                                                                <input type="hidden" name="_token"
+                                                                                    value="{{ csrf_token() }}" />
+                                                                                <button type="button"
+                                                                                    class="btn btn-sm btn-danger btn-icon confirm-delete"
+                                                                                    data-delete-title="Kategori"
+                                                                                    data-toggle="tooltip"
+                                                                                    data-original-title="Hapus">
+                                                                                    <i class="fas fa-trash"></i>
+                                                                                </button>
+                                                                            </form>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
                                                     </table>
                                                 </div>
                                             </div>
@@ -228,76 +244,91 @@
                                     <div class="tab-pane fade {{ session('activeTab') == 'kedudukan' ? 'show active' : '' }}"
                                         id="kedudukan" role="tabpanel" aria-labelledby="kedudukan-tab">
                                         <div class="card">
-                                            <div class="card-body">
-                                                <div class="float-left">
-                                                    <h4>Kedudukan</h4>
-                                                </div>
-                                                <div class="float-right">
+                                            <div class="card-header">
+                                                <h4>
                                                     <a href="{{ route('skema-nahwu.kedudukan.create') }}"
                                                         class="btn btn-primary">Tambah</a>
+                                                </h4>
+                                                <div class="card-header-form">
+                                                    <form>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control search-input"
+                                                                placeholder="Cari" data-target="#table-kedudukan">
+                                                            <div class="input-group-btn">
+                                                                <div class="btn btn-primary"><i class="fas fa-search"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
                                                 </div>
-
-                                                <div class="clearfix mb-3"></div>
+                                            </div>
+                                            <div class="card-body">
                                                 <div class="table-responsive">
                                                     <table class="table-striped table">
-                                                        <tr>
-
-                                                            <th>Id</th>
-                                                            <th>Simbol</th>
-                                                            <th>Kedudukan Arabic</th>
-                                                            <th>Kedudukan Arabic Musyakal</th>
-                                                            <th>Kedudukan Indonesia</th>
-                                                            <th>Irob</th>
-                                                            <th>Action</th>
-                                                        </tr>
-                                                        @foreach ($kedudukans as $kedudukan)
+                                                        <thead>
                                                             <tr>
-                                                                <td>{{ $kedudukan->id }}
-                                                                </td>
-                                                                <td class="align-middle">
-                                                                    <div class="text-center arabic-text">
-                                                                        {{ $kedudukan->simbol }}
-                                                                    </div>
-                                                                </td>
-                                                                <td class="align-middle">
-                                                                    <div class="text-center arabic-text">
-                                                                        {{ $kedudukan->kedudukan_ar }}</div>
-                                                                </td>
-                                                                <td class="text-center align-middle arabic-text">
-                                                                    {{ $kedudukan->kedudukan_ar_musyakal ?? '' }}
-                                                                </td>
-                                                                <td class="align-middle">
-                                                                    <div class="text-center arabic-text  label_in">
-                                                                        {{ $kedudukan->kedudukan_in }}</div>
-                                                                </td>
-                                                                <td class="text-center align-middle arabic-text">
-                                                                    {{ $kedudukan->irob ?? '' }}
-                                                                </td>
-                                                                <td>
-                                                                    <div class="d-flex justify-content-left">
-                                                                        <a href='{{ route('skema-nahwu.kedudukan.edit', $kedudukan->id) }}'
-                                                                            class="btn btn-sm btn-info btn-icon">
-                                                                            <i class="fas fa-edit"></i>
-                                                                            Edit
-                                                                        </a>
-
-                                                                        <form
-                                                                            action="{{ route('skema-nahwu.kedudukan.destroy', $kedudukan->id) }}"
-                                                                            method="POST" class="ml-2">
-                                                                            <input type="hidden" name="_method"
-                                                                                value="DELETE" />
-                                                                            <input type="hidden" name="_token"
-                                                                                value="{{ csrf_token() }}" />
-                                                                            <button type="button"
-                                                                                class="btn btn-sm btn-danger btn-icon confirm-delete"
-                                                                                data-delete-title="Kedudukan">
-                                                                                <i class="fas fa-times"></i> Hapus
-                                                                            </button>
-                                                                        </form>
-                                                                    </div>
-                                                                </td>
+                                                                <th>Id</th>
+                                                                <th>Simbol</th>
+                                                                <th>Kedudukan Arabic</th>
+                                                                <th>Kedudukan Arabic Musyakal</th>
+                                                                <th>Kedudukan Indonesia</th>
+                                                                <th>Irob</th>
+                                                                <th>Action</th>
                                                             </tr>
-                                                        @endforeach
+                                                        </thead>
+                                                        <tbody class="filterable-table" id="table-kedudukan">
+                                                            @foreach ($kedudukans as $kedudukan)
+                                                                <tr>
+                                                                    <td>{{ $kedudukan->id }}
+                                                                    </td>
+                                                                    <td class="align-middle">
+                                                                        <div class="text-center arabic-text">
+                                                                            {{ $kedudukan->simbol }}
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="align-middle">
+                                                                        <div class="text-center arabic-text">
+                                                                            {{ $kedudukan->kedudukan_ar }}</div>
+                                                                    </td>
+                                                                    <td class="text-center align-middle arabic-text">
+                                                                        {{ $kedudukan->kedudukan_ar_musyakal ?? '' }}
+                                                                    </td>
+                                                                    <td class="align-middle">
+                                                                        <div class="text-center arabic-text  label_in">
+                                                                            {{ $kedudukan->kedudukan_in }}</div>
+                                                                    </td>
+                                                                    <td class="text-center align-middle arabic-text">
+                                                                        {{ $kedudukan->irob ?? '' }}
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="d-flex justify-content-left">
+                                                                            <a href='{{ route('skema-nahwu.kedudukan.edit', $kedudukan->id) }}'
+                                                                                class="btn btn-sm btn-info btn-icon"
+                                                                                data-toggle="tooltip"
+                                                                                data-original-title="Edit">
+                                                                                <i class="fas fa-edit"></i>
+                                                                            </a>
+
+                                                                            <form
+                                                                                action="{{ route('skema-nahwu.kedudukan.destroy', $kedudukan->id) }}"
+                                                                                method="POST" class="ml-2">
+                                                                                <input type="hidden" name="_method"
+                                                                                    value="DELETE" />
+                                                                                <input type="hidden" name="_token"
+                                                                                    value="{{ csrf_token() }}" />
+                                                                                <button type="button"
+                                                                                    class="btn btn-sm btn-danger btn-icon confirm-delete"
+                                                                                    data-delete-title="Kedudukan"
+                                                                                    data-toggle="tooltip"
+                                                                                    data-original-title="Hapus">
+                                                                                    <i class="fas fa-trash"></i>
+                                                                                </button>
+                                                                            </form>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
                                                     </table>
                                                 </div>
                                             </div>
@@ -322,14 +353,20 @@
     <!-- Page Specific JS File -->
     <script>
         $(document).ready(function() {
-            $("#search-input").on("keyup", function() {
-                var value = $(this).val().toLowerCase();
-                $("#myTable tr").filter(function() {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            $(".search-input").on("keyup", function() {
+                let value = $(this).val().toLowerCase();
+                let target = $(this).data("target");
+
+                document.querySelectorAll(target + " tr").forEach(function(row) {
+                    if (row.textContent.toLowerCase().indexOf(value) > -1) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
                 });
             });
         });
-        
+
         document.addEventListener("DOMContentLoaded", function() {
             document.querySelectorAll(".confirm-delete").forEach(btn => {
                 btn.addEventListener("click", function(e) {
