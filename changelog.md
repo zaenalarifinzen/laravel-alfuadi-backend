@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.2.2
+
+-   Pembaruan tampilan slider grup lafadz
+-   Perbaikan masalah rate limiter pada verifikasi email
+-   Penambahan fitur pencarian pada tabel user dan data nahwu (Administrator only)
+
 ## 1.2.1
 
 -   Perbaikan error di autofill
