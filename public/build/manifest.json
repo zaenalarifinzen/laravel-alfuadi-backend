@@ -1,7 +1,14 @@
 {
-  "_nahwu-form-autofill-Be68Thlu.js": {
-    "file": "assets/nahwu-form-autofill-Be68Thlu.js",
-    "name": "nahwu-form-autofill"
+  "_nahwu-form-autofill-BJPu9yXy.css": {
+    "file": "assets/nahwu-form-autofill-BJPu9yXy.css",
+    "src": "_nahwu-form-autofill-BJPu9yXy.css"
+  },
+  "_nahwu-form-autofill-DNBd4eFx.js": {
+    "file": "assets/nahwu-form-autofill-DNBd4eFx.js",
+    "name": "nahwu-form-autofill",
+    "css": [
+      "assets/nahwu-form-autofill-BJPu9yXy.css"
+    ]
   },
   "resources/css/app.css": {
     "file": "assets/app-BlWGbYH9.css",
@@ -10,6 +17,15 @@
     "name": "app",
     "names": [
       "app.css"
+    ]
+  },
+  "resources/css/custom.css": {
+    "file": "assets/custom-BnFnRuK1.css",
+    "src": "resources/css/custom.css",
+    "isEntry": true,
+    "name": "custom",
+    "names": [
+      "custom.css"
     ]
   },
   "resources/js/app.js": {
@@ -31,12 +47,12 @@
     "isEntry": true
   },
   "resources/js/page/exercise/exercise.js": {
-    "file": "assets/exercise-JaaCuJ_3.js",
+    "file": "assets/exercise-C9jNF7r7.js",
     "name": "exercise",
     "src": "resources/js/page/exercise/exercise.js",
     "isEntry": true,
     "imports": [
-      "_nahwu-form-autofill-Be68Thlu.js"
+      "_nahwu-form-autofill-DNBd4eFx.js"
     ]
   },
   "resources/js/page/features-post-create.js": {
@@ -58,18 +74,18 @@
     "isEntry": true
   },
   "resources/js/page/wordgroups/grouping-page.js": {
-    "file": "assets/grouping-page-BgxuNlnJ.js",
+    "file": "assets/grouping-page-B6KNj7qS.js",
     "name": "grouping-page",
     "src": "resources/js/page/wordgroups/grouping-page.js",
     "isEntry": true
   },
   "resources/js/page/words/create-new.js": {
-    "file": "assets/create-new-CDOFPctc.js",
+    "file": "assets/create-new-8zJGJfMX.js",
     "name": "create-new",
     "src": "resources/js/page/words/create-new.js",
     "isEntry": true,
     "imports": [
-      "_nahwu-form-autofill-Be68Thlu.js"
+      "_nahwu-form-autofill-DNBd4eFx.js"
     ]
   },
   "resources/js/utils/storage-helper.js": {
