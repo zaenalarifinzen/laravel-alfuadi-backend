@@ -77,9 +77,9 @@
                                                         <thead>
                                                             <tr>
                                                                 <th>Id</th>
+                                                                <th>Kalimat Indonesia</th>
                                                                 <th>Kalimat Arabic</th>
                                                                 <th>Kalimat Arabic Musyakal</th>
-                                                                <th>Kalimat Indonesia</th>
                                                                 <th>Action</th>
                                                             </tr>
                                                         </thead>
@@ -88,16 +88,16 @@
                                                                 <tr>
                                                                     <td>{{ $kalimat->id }}
                                                                     </td>
+                                                                    <td class="label_in">
+                                                                        {{ $kalimat->kalimat_in }}
+                                                                    </td>
                                                                     <td class="align-middle">
-                                                                        <div class="text-center arabic-text">
+                                                                        <div class="arabic-text ar-symbol">
                                                                             {{ $kalimat->kalimat_ar }}
                                                                         </div>
                                                                     </td>
-                                                                    <td class="text-center align-middle arabic-text">
+                                                                    <td class="arabic-text ar-symbol">
                                                                         {{ $kalimat->kalimat_ar_musyakal ?? '' }}
-                                                                    </td>
-                                                                    <td class="label_in">
-                                                                        {{ $kalimat->kalimat_in }}
                                                                     </td>
                                                                     <td>
                                                                         <div class="d-flex justify-content-left">
@@ -160,15 +160,15 @@
                                                         <thead>
                                                             <tr>
                                                                 <th>Id</th>
-                                                                <th>Simbol</th>
+                                                                <th>Kategori Indonesia</th>
                                                                 <th>Kategori Arabic</th>
                                                                 <th>Kategori Arabic Musyakal</th>
-                                                                <th>Kategori Indonesia</th>
                                                                 <th>Hukum</th>
                                                                 <th>Rofa</th>
                                                                 <th>Nashob</th>
                                                                 <th>Jar</th>
                                                                 <th>Jazm</th>
+                                                                <th>Simbol</th>
                                                                 <th>Action</th>
                                                             </tr>
                                                         </thead>
@@ -177,35 +177,36 @@
                                                                 <tr>
                                                                     <td>{{ $kategori->id }}
                                                                     </td>
-                                                                    <td class="align-middle">
-                                                                        <div class="text-center arabic-text">
-                                                                            {{ $kategori->simbol }}
-                                                                        </div>
-                                                                    </td>
-                                                                    <td class="align-middle">
-                                                                        <div class="text-center arabic-text">
-                                                                            {{ $kategori->kategori_ar }}</div>
-                                                                    </td>
-                                                                    <td class="text-center align-middle arabic-text">
-                                                                        {{ $kategori->kategori_ar_musyakal ?? '' }}
-                                                                    </td>
-                                                                    <td class="text-center align-middle arabic-text">
-                                                                        {{ $kategori->hukum ?? '' }}
-                                                                    </td>
-                                                                    <td class="text-center align-middle arabic-text">
-                                                                        {{ $kategori->rofa ?? '' }}
-                                                                    </td>
-                                                                    <td class="text-center align-middle arabic-text">
-                                                                        {{ $kategori->nashob ?? '' }}
-                                                                    </td>
-                                                                    <td class="text-center align-middle arabic-text">
-                                                                        {{ $kategori->jar ?? '' }}
-                                                                    </td>
-                                                                    <td class="text-center align-middle arabic-text">
-                                                                        {{ $kategori->jazm ?? '' }}
-                                                                    </td>
                                                                     <td class="label_in">
                                                                         {{ $kategori->kategori_in }}
+                                                                    </td>
+                                                                    <td class="align-middle">
+                                                                        <div class="arabic-text ar-symbol">
+                                                                            {{ $kategori->kategori_ar }}
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="arabic-text ar-symbol">
+                                                                        {{ $kategori->kategori_ar_musyakal ?? '' }}
+                                                                    </td>
+                                                                    <td class="arabic-text ar-symbol">
+                                                                        {{ $kategori->hukum ?? '' }}
+                                                                    </td>
+                                                                    <td class="arabic-text ar-symbol">
+                                                                        {{ $kategori->rofa ?? '' }}
+                                                                    </td>
+                                                                    <td class="arabic-text ar-symbol">
+                                                                        {{ $kategori->nashob ?? '' }}
+                                                                    </td>
+                                                                    <td class="arabic-text ar-symbol">
+                                                                        {{ $kategori->jar ?? '' }}
+                                                                    </td>
+                                                                    <td class="arabic-text ar-symbol">
+                                                                        {{ $kategori->jazm ?? '' }}
+                                                                    </td>
+                                                                    <td class="align-middle">
+                                                                        <div class="arabic-text ar-symbol">
+                                                                            {{ $kategori->simbol }}
+                                                                        </div>
                                                                     </td>
                                                                     <td>
                                                                         <div class="d-flex justify-content-left">
@@ -268,37 +269,39 @@
                                                         <thead>
                                                             <tr>
                                                                 <th>Id</th>
-                                                                <th>Simbol</th>
+                                                                <th>Kedudukan Indonesia</th>
                                                                 <th>Kedudukan Arabic</th>
                                                                 <th>Kedudukan Arabic Musyakal</th>
-                                                                <th>Kedudukan Indonesia</th>
                                                                 <th>Irob</th>
+                                                                <th>Simbol</th>
                                                                 <th>Action</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody class="filterable-table" id="table-kedudukan">
                                                             @foreach ($kedudukans as $kedudukan)
                                                                 <tr>
-                                                                    <td>{{ $kedudukan->id }}
+                                                                    <td>
+                                                                        {{ $kedudukan->id }}
                                                                     </td>
                                                                     <td class="align-middle">
-                                                                        <div class="text-center arabic-text">
-                                                                            {{ $kedudukan->simbol }}
+                                                                        <div class="label_in">
+                                                                            {{ $kedudukan->kedudukan_in }}
                                                                         </div>
                                                                     </td>
                                                                     <td class="align-middle">
-                                                                        <div class="text-center arabic-text">
+                                                                        <div class="arabic-text ar-symbol">
                                                                             {{ $kedudukan->kedudukan_ar }}</div>
                                                                     </td>
-                                                                    <td class="text-center align-middle arabic-text">
+                                                                    <td class="arabic-text ar-symbol">
                                                                         {{ $kedudukan->kedudukan_ar_musyakal ?? '' }}
                                                                     </td>
-                                                                    <td class="align-middle">
-                                                                        <div class="text-center arabic-text  label_in">
-                                                                            {{ $kedudukan->kedudukan_in }}</div>
-                                                                    </td>
-                                                                    <td class="text-center align-middle arabic-text">
+                                                                    <td class="arabic-text ar-symbol">
                                                                         {{ $kedudukan->irob ?? '' }}
+                                                                    </td>
+                                                                    <td class="align-middle">
+                                                                        <div class="arabic-text ar-symbol">
+                                                                            {{ $kedudukan->simbol }}
+                                                                        </div>
                                                                     </td>
                                                                     <td>
                                                                         <div class="d-flex justify-content-left">

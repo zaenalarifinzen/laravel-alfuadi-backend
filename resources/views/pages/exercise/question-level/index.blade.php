@@ -110,7 +110,6 @@
 @push('scripts')
     <!-- JS Libraies -->
     <script src="{{ asset('library/jquery-ui-dist/jquery-ui.min.js') }}"></script>
-    <script src="{{ asset('library/owl.carousel/dist/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('library/izitoast/dist/js/iziToast.min.js') }}"></script>
     <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
 
@@ -119,12 +118,16 @@
 @endpush
 
 @push('scripts')
-    <script>
+    <script type="module">
+        import { getActiveStorageKey } from '{{ Vite::asset("resources/js/utils/storage-helper.js") }}';
+
         document.addEventListener("DOMContentLoaded", () => {
             const STORAGE_PREFIX = "answer_user_";
 
             const lastOpenedEl = document.getElementById("last-opened-info");
             const labelEl = document.getElementById("info-label");
+
+            if (!lastOpenedEl || !labelEl) return;
 
             function getLastExerciseData() {
                 try {
@@ -139,12 +142,12 @@
             }
 
             function renderLastOpened(data) {
-                const isVisible = !!(data?.surah.name && data?.verse?.number);
+                const isVisible = !!(data?.surah?.name && data?.verse?.number);
 
                 lastOpenedEl.style.display = isVisible ? "inline-block" : "none";
 
                 if (isVisible) {
-                    labelEl.textContent = `${cachedData.surah.name} ayat ${cachedData.verse.number}`;
+                    labelEl.textContent = `${data.surah.name} ayat ${data.verse.number}`;
                 }
             }
 

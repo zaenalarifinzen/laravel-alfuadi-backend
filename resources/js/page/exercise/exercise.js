@@ -72,6 +72,7 @@ initSearchVerse({
     isModified: storage.isModified,
     showEditConfirmation: analysisPage.showEditConfirmation,
     fetchWordGroups: analysisPage.fetchWordGroups,
+    config,
 }).fetchSurahList();
 
 initComponentsTable({

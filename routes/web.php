@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AnalysisSettingController;
 use App\Http\Controllers\KalimatController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\KedudukanController;
@@ -154,6 +155,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/example', function () {
             return view('pages.users.profile', ['type_menu' => '']);
         })->name('page.templatepage');
+
+        Route::get('/admin/analysis-settings', [AnalysisSettingController::class, 'index'])->name('admin.analysis-settings.index');
+        Route::post('/admin/analysis-settings', [AnalysisSettingController::class, 'store'])->name('admin.analysis-settings.store');
     });
 
     // Administrator & Operator Only

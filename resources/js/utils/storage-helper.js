@@ -2,7 +2,7 @@
 // STORAGE HELPER
 // ==========================
 
-function getActiveStorageKey(prefix) {
+export function getActiveStorageKey(prefix) {
     return Object.keys(localStorage).find((k) => k.startsWith(prefix)) ?? null;
 }
 

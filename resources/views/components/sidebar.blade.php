@@ -84,6 +84,11 @@
 
                 <li class="menu-header">Organize</li>
                 <li class="{{ Request::is('skema-nahwu') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('admin.analysis-settings.index') }}">
+                        <i class="fas fa-gear"></i>
+                        <span>Pengaturan</span></a>
+                </li>
+                <li class="{{ Request::is('skema-nahwu') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('skema-nahwu.index') }}">
                         <i class="fas fa-sitemap"></i>
                         <span>Skema Nahwu</span></a>
