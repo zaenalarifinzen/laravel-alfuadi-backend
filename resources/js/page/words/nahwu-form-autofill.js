@@ -481,17 +481,6 @@ class NahwuFormController {
             } else {
                 this.updateKategoriOptions(selected);
             }
-            
-            // replace lafadz to this kalimat
-            const lafadzInput = document.getElementById("input-lafadz");
-            if (selected === "41") {
-                lafadzInput.value = `(الجُمْلَةُ)`;
-            } else if (selected === "42") {
-                const kalimatData = MasterData.raw.kalimat.find((k) => k.id === selected);                
-                if (kalimatData) {
-                    lafadzInput.value = `(${kalimatData.kalimat_ar_musyakal})`;
-                }
-            }
 
             this.updateHukumOptions(selected);
             this.enableAllRelationFields();
@@ -517,7 +506,8 @@ class NahwuFormController {
                 this.resetDropdown(this.instances.simbol);
             }
 
-            const selectedKalimat = this.instances.kalimat?.select.value || null;
+            const selectedKalimat =
+                this.instances.kalimat?.select.value || null;
             const selectedHukum = hukum.select.value || null;
 
             this.updateKategoriOptions(selectedKalimat, selectedHukum);
@@ -668,6 +658,20 @@ class NahwuFormController {
     // =============================================================
     // Updater Data Options
     // =============================================================
+    updateLafadzByKalimat(selectedKalimat) {
+        // replace lafadz to this kalimat
+        const lafadzInput = document.getElementById("input-lafadz");
+        if (selectedKalimat === "41") {
+            lafadzInput.value = `(الجُمْلَةُ)`;
+        } else if (selectedKalimat === "42") {
+            const kalimatData = MasterData.raw.kalimat.find(
+                (k) => k.id === selectedKalimat,
+            );
+            if (kalimatData) {
+                lafadzInput.value = `(${kalimatData.kalimat_ar_musyakal})`;
+            }
+        }
+    }
 
     updateHukumOptions(selectedKalimat) {
         const hukum = this.instances.hukum;
@@ -687,7 +691,7 @@ class NahwuFormController {
         hukum.setData(filteredHukum);
     }
 
-    updateKategoriOptions(selectedKalimat = null, selectedHukum = null) {        
+    updateKategoriOptions(selectedKalimat = null, selectedHukum = null) {
         const kategori = this.instances.kategori;
         if (!kategori) return;
 
@@ -732,7 +736,7 @@ class NahwuFormController {
                     k.kategori_ar,
                     k.kategori_in,
                 ),
-            );            
+            );
         kategori.setData(filteredKategori);
     }
 
@@ -857,13 +861,18 @@ class NahwuFormController {
 
     // AUTOFILL LOGIC
     bindAutoFill() {
-        const hukum = this.instances.hukum;
-        const kedudukan = this.instances.kedudukan;
+        const kalimat = this.instances.kalimat;
+        kalimat?.select.addEventListener("change", (e) => {
+            const selectedKalimat = kalimat.select.value;
+            this.updateLafadzByKalimat(selectedKalimat);
+        });
 
+        const hukum = this.instances.hukum;
         hukum?.select.addEventListener("change", (e) =>
             this.autoHandleHukumRelation(e),
         );
 
+        const kedudukan = this.instances.kedudukan;
         kedudukan?.select.addEventListener("change", (e) =>
             this.autoHandleKedudukanRelation(e),
         );

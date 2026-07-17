@@ -12,7 +12,7 @@
             <div class="section-body">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Batasi daftar soal dan ayat yang muncul untuk user</h4>
+                        <h4>Batasi daftar soal dan ayat untuk analisa</h4>
                     </div>
                     <div class="card-body">
                         @if (session('success'))
