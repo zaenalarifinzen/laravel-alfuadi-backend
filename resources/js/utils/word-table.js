@@ -233,7 +233,7 @@ function updateCard(label, type) {
     const cardHeader = document.getElementById('input-table-header');
     const headerContainer = cardHeader.querySelector(".d-flex");
 
-    const parent = cardHeader.parentElement;
+    const parent = cardHeader.closest('.card');
     parent.classList.add(`card-${type}`)
     
     const bagdeWrapper = document.createElement('div');
@@ -250,7 +250,7 @@ function resetCard() {
     const cardHeader = document.getElementById('input-table-header');
     const headerContainer = cardHeader.querySelector(".d-flex");
 
-    const parent = cardHeader.parentElement;
+    const parent = cardHeader.closest('.card');
     parent.classList.remove(`card-success`, `card-danger`, `card-warning`, `card-info`);
     
     const bagdeWrapper = headerContainer.querySelector(".badge");

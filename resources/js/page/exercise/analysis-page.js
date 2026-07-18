@@ -308,7 +308,9 @@ export function initAnalysisPage({
 
                 const firstWordGroup = cloned.wordGroups[0];
                 wordTable.renderWordsTable(firstWordGroup);
-                wordTable.renderWordsDetails(firstWordGroup);
+
+                const answerKeyWordGroup = content.wordGroups[0];
+                wordTable.renderWordsDetails(answerKeyWordGroup);
 
                 if (passed) {
                     wordTable.resetCard();
@@ -319,7 +321,6 @@ export function initAnalysisPage({
                         "primary",
                     );
                 }
-
                 history.pushState({}, "", `?verse_id=${verseId}`);
             },
             error: function (xhr, status, error) {
@@ -337,60 +338,98 @@ export function initAnalysisPage({
         const tbodyWordsDetail = $("#detail-kalimat-table tbody");
         const key = storage.getActiveStorageKey(wordGroupsPrefix);
 
-        if (!key) {
-            const row = `
-            <tr>
-                <td colspan="8" class="text-center text-muted">Memuat...</td>
-            </tr>
-        `;
+        const setEmpty = (text) => {
+            const row = `<tr><td colspan="8" class="text-center text-muted">${text}</td></tr>`;
             tbodyWords.html(row);
             tbodyWordsDetail.html(row);
+        }
+
+        if (!key) {
+            setEmpty("Memuat data")
             return;
         }
 
-        const stored = JSON.parse(localStorage.getItem(key));
+        let stored;
+        try {
+            stored = JSON.parse(localStorage.getItem(key));
+        } catch (e) {
+            console.error("Gagal parse data kata:", e);
+            setEmpty("Terjadi kesalahan memuat data");
+            return;
+        }
+
+        if (!stored || !Array.isArray(stored.wordGroups)) {
+            setEmpty("Tidak ada data");
+            return;
+        }
+        
         const activeGroup = stored.wordGroups.find(
             (wg) => wg.id == wordGroupId,
         );
         const wordTable = getWordTable();
 
-        if (
-            !activeGroup ||
-            !activeGroup.words ||
-            activeGroup.words.length === 0
+        if (!activeGroup || !activeGroup.words || activeGroup.words.length === 0
         ) {
-            const row = `
-            <tr>
-                <td colspan="8" class="text-center text-muted">Tidak ada data</td>
-            </tr>
-        `;
+            setEmpty("Tidak ada data");
             var lastNode = $(".editor-kalimat a").contents().last()[0];
             if (lastNode) {
                 lastNode.textContent += " -";
             } else {
                 $(".editor-kalimat a").last().text(" -");
             }
-            tbodyWords.html(row);
-            tbodyWordsDetail.html(row);
             return;
         }
 
         wordTable.renderWordsTable(activeGroup);
-        wordTable.renderWordsDetails(activeGroup);
+
+        if (!stored.verse || !stored.verse.id) return;
+        
+        // Load Aswer Key
+        const answerKeyRaw = localStorage.getItem(`answer_key_${stored.verse.id}`);
+        if (!answerKeyRaw) return;
+
+        try {
+            const answerKeyData = JSON.parse(answerKeyRaw);
+            const answerGroup = answerKeyData.wordGroups.find(
+                (wg) => wg.id == wordGroupId,
+            );
+            if (answerGroup) {
+                wordTable.renderWordsDetails(answerGroup);
+            }
+        } catch (e) {
+            console.error("Gagal parse answer key:", e);
+        }
     }
 
     function loadCachedData() {
         const cachedKey = storage.getActiveStorageKey(wordGroupsPrefix);
         const cachedRaw = cachedKey ? localStorage.getItem(cachedKey) : null;
+
+        if (!cachedRaw) return;
+
+        let cachedData;
+        try {
+            cachedData = JSON.parse(cachedRaw);
+        } catch (e) {
+            console.error("Failed parse cache:", e);
+        }
+
+        if (!cachedData) return;
+
         const wordTable = getWordTable();
         const slider = getSlider();
 
-        const cachedData = JSON.parse(cachedRaw);
-
-        currentQuestionId = cachedData.questionId;
+        const currentQuestionId = cachedData.questionId;
         slider.renderSwiperSlider(cachedData);
         wordTable.renderWordsTable(cachedData.wordGroups[0]);
-        wordTable.renderWordsDetails(cachedData.wordGroups[0]);
+
+        // if exercise mode, get wordGroup from answer_key to WordDetails Table
+        const answerKey = `answer_key_${cachedData.verse.id}`;
+        const answerKeyRaw = localStorage.getItem(answerKey);
+        if (answerKeyRaw) {
+            const answerKeyData = JSON.parse(answerKeyRaw);
+            wordTable.renderWordsDetails(answerKeyData.wordGroups[0]);
+        }
 
         if (cachedData.modified) {
             // wordTable.addUpdateButton();

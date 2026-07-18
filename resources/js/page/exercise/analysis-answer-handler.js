@@ -191,12 +191,31 @@ export function initAnalysisAnswerHandler({
         markModified(getPrefix());
         changeSubmitButton("btn-submit-answer", "Submit", "primary");
 
-        // re render word table & details
+        // re render word table
         renderWordsTable(wordGroup);
-        renderWordsDetails(wordGroup);
+
+        // re render word details, if exercise has answer key, render answer key instead of user answer
+        const answerKey = `answer_key_${stored.verse.id}`;
+        const answerKeyRaw = localStorage.getItem(answerKey);
+        if (answerKeyRaw) {
+            const answerKeyData = JSON.parse(answerKeyRaw);
+
+            const answerGroupIndex = answerKeyData.wordGroups.findIndex(
+                (g) => g.id == activeWordGroupId,
+            );
+            if (answerGroupIndex === -1) {
+                alert("WordGroup tidak ditemukan");
+                return;
+            }
+
+            renderWordsDetails(answerKeyData.wordGroups[answerGroupIndex]);
+        } else {
+            renderWordsDetails(wordGroup);
+        }
 
         if (getCurrentCompareResult().length !== 0) {
             const compareResult = compareAnswers(stored.verse.id);
+            setCurrentCompareResult(compareResult, stored.verse.id);
             highlightErrors(compareResult);
         }
 
