@@ -264,18 +264,40 @@ export function initAnalysisPage({
                 currentCompareResult = [];
                 currentCompareVerseId = null;
 
+                // Remove cached answer_key_/answer_user_ entries for OTHER verses only.
+                // Preserves any user-edited data for the current verse so it won't be
+                // unexpectedly overwritten when navigating between wordgroups.
                 Object.keys(localStorage)
-                    .filter(
-                        (k) =>
-                            k.startsWith("answer_key_") ||
-                            k.startsWith("answer_user_"),
+                    .filter((k) =>
+                        k.startsWith("answer_key_") || k.startsWith("answer_user_"),
                     )
+                    .filter((k) => k !== `answer_key_${content.verse.id}` && k !== `answer_user_${content.verse.id}`)
                     .forEach((k) => localStorage.removeItem(k));
 
                 const cloned = structuredClone(content);
                 const passed = dataQuestion.passed;
 
                 localStorage.setItem(answerKey, JSON.stringify(cloned));
+
+                // Write user answer only if there is no existing user answer for
+                // this verse, or if the existing one is not marked as modified.
+                // This avoids clobbering local user edits when reloading/fetching
+                // the same verse from the server.
+                const existingUserRaw = localStorage.getItem(userAnswer);
+                if (existingUserRaw) {
+                    try {
+                        const existingUser = JSON.parse(existingUserRaw);
+                        if (!existingUser.modified) {
+                            localStorage.setItem(userAnswer, JSON.stringify(cloned));
+                        }
+                        // otherwise preserve user's modified data
+                    } catch (e) {
+                        // fallback: overwrite if parsing fails
+                        localStorage.setItem(userAnswer, JSON.stringify(cloned));
+                    }
+                } else {
+                    localStorage.setItem(userAnswer, JSON.stringify(cloned));
+                }
 
                 if (!passed) {
                     cloned.wordGroups.forEach((wg) => {
@@ -301,8 +323,6 @@ export function initAnalysisPage({
                         "primary",
                     );
                 }
-
-                localStorage.setItem(userAnswer, JSON.stringify(cloned));
 
                 slider.renderSwiperSlider(cloned);
 

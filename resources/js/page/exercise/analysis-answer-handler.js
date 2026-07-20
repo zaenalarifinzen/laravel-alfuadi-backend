@@ -215,6 +215,8 @@ export function initAnalysisAnswerHandler({
 
         if (getCurrentCompareResult().length !== 0) {
             const compareResult = compareAnswers(stored.verse.id);
+            console.log("CompareResult:", compareResult);
+            
             setCurrentCompareResult(compareResult, stored.verse.id);
             highlightErrors(compareResult);
         }
