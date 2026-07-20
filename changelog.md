@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.2.3
+
+-   Perbaikan error lafadz "Jumlah" dan "Sibhul Jumlah" pada form latihan analisa
+-   Penambahan tab kunci jawaban pada lembar latihan analisa
+-   Pembatasan akses soal untuk ayat tertentu
+
 ## 1.2.2
 
 -   Pembaruan tampilan slider grup lafadz
