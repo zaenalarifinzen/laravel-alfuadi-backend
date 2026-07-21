@@ -269,15 +269,26 @@
     <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
 
     <script type="application/json" id="page-config">
+        @php
+            $allowedSurahConfig = \App\Models\Setting::getJson('analysis_allowed_surah_config', []);
+            $allowedSurahIds = [];
+            $allowedVerseNumbersBySurah = [];
+
+            foreach ($allowedSurahConfig as $surahId => $config) {
+                if (!empty($config['enabled']) && !empty($config['max_verse'])) {
+                    $allowedSurahIds[] = (int) $surahId;
+                    $allowedVerseNumbersBySurah[(string) $surahId] = range(1, (int) $config['max_verse']);
+                }
+            }
+        @endphp
+
         {!! json_encode([
             'pageType' => 'exercise',
             'wordgroupGetUrl' => route('exercise.analysis', ['verseId' => ':id']),
             'csrfToken' => csrf_token(),
-            'allowedSurahIds' => array_values(array_filter(array_map(function ($value) {
-                $value = trim((string) $value);
-                return $value !== '' ? (int) $value : null;
-            }, preg_split('/\s*,\s*/', \App\Models\Setting::getValue('analysis_allowed_surah_ids', ''), -1, PREG_SPLIT_NO_EMPTY)))),
-            'allowedVerseNumbersBySurah' => \App\Models\Setting::getValue('analysis_allowed_verses_by_surah', []),
+            'allowedSurahIds' => $allowedSurahIds,
+            'allowedVerseNumbersBySurah' => $allowedVerseNumbersBySurah,
+            'allowedSurahConfig' => $allowedSurahConfig,
         ]) !!}
     </script>
 
