@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.2.3
+
+-   Perbaikan masalah pada saat menyimpan jawaban analisa
+-   Penambahan menu pengaturan (untuk administrator)
+-   Penambahan tab kunci jawaban di halaman latihan analisa
+
 ## 1.2.2
 
 -   Pembaruan tampilan slider grup lafadz
