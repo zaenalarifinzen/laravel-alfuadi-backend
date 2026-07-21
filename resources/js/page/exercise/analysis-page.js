@@ -260,7 +260,7 @@ export function initAnalysisPage({
                 content.passed = dataQuestion.passed;
 
                 // wordTable.removeUpdateButton();
-                currentQuestionId = dataQuestion?.id;
+                currentQuestionId = dataQuestion?.id ?? null;
                 currentCompareResult = [];
                 currentCompareVerseId = null;
 

@@ -8,7 +8,23 @@ export function initSearchVerse({
 }) {
     let verseCount = 0;
 
+    function getAllowedSurahConfig() {
+        if (config.allowedSurahConfig && typeof config.allowedSurahConfig === "object") {
+            return config.allowedSurahConfig;
+        }
+
+        return null;
+    }
+
     function getAllowedSurahIds() {
+        const surahConfig = getAllowedSurahConfig();
+        if (surahConfig) {
+            return Object.entries(surahConfig)
+                .filter(([, data]) => data && data.enabled === true)
+                .map(([surahId]) => Number(surahId))
+                .filter((value) => Number.isInteger(value) && value > 0);
+        }
+
         if (!Array.isArray(config.allowedSurahIds)) {
             return [];
         }
@@ -19,6 +35,21 @@ export function initSearchVerse({
     }
 
     function getAllowedVersesForSurah(surahId) {
+        const surahConfig = getAllowedSurahConfig();
+        if (surahConfig) {
+            const entry = surahConfig[surahId] ?? surahConfig[String(surahId)] ?? null;
+            if (!entry || entry.enabled !== true) {
+                return [];
+            }
+
+            const maxVerse = Number(entry.max_verse);
+            if (!Number.isInteger(maxVerse) || maxVerse <= 0) {
+                return [];
+            }
+
+            return Array.from({ length: maxVerse }, (_, index) => index + 1);
+        }
+
         const bySurah = config.allowedVerseNumbersBySurah || {};
         const allowed = bySurah[surahId] ?? bySurah[String(surahId)] ?? null;
 

@@ -14,6 +14,7 @@ use App\Http\Controllers\VerseController;
 use App\Http\Controllers\WordController;
 use App\Http\Controllers\WordGroupController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\SettingsController;
 use App\Models\Surah;
 // use App\Models\UserAnswer;
 use App\Models\Verse;
@@ -135,7 +136,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             'randomVerse' => $randomVerse,
             'latestTask' => $latestTask,
             'updated_at' => $updatedAt,
-            'latestExercise' => $latestExercise,      
+            'latestExercise' => $latestExercise,
         ]);
     })->name('home');
 
@@ -156,8 +157,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
             return view('pages.users.profile', ['type_menu' => '']);
         })->name('page.templatepage');
 
-        Route::get('/admin/analysis-settings', [AnalysisSettingController::class, 'index'])->name('admin.analysis-settings.index');
-        Route::post('/admin/analysis-settings', [AnalysisSettingController::class, 'store'])->name('admin.analysis-settings.store');
+        Route::prefix('admin')->name('admin.')->group(function () {
+            Route::get('/analysis-settings', [SettingsController::class, 'index'])->name('analysis-settings.index');
+            Route::post('/analysis-settings', [SettingsController::class, 'store'])->name('analysis-settings.store');
+            Route::resource('settings', SettingsController::class);
+        });
     });
 
     // Administrator & Operator Only

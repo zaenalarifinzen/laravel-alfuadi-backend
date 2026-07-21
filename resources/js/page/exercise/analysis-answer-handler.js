@@ -351,9 +351,15 @@ export function initAnalysisAnswerHandler({
         const score = Math.round((correctAnswers / totalAnswers) * 100);
 
         if (score === 100) {
-            const questionId = getCurrentQuestionId();
+            const currentKey = Object.keys(localStorage).find((k) =>
+                k.startsWith(getPrefix()),
+            );
+            const currentStored = currentKey ? JSON.parse(localStorage.getItem(currentKey)) : null;
+            const storedQuestionId = currentStored?.questionId ?? null;
+            const questionId = storedQuestionId !== null && storedQuestionId !== "" ? parseInt(storedQuestionId, 10) : null;
+
             const payload = {
-                question_id: parseInt(questionId),
+                question_id: questionId,
                 level: 1,
                 pass: true,
                 score: score,
