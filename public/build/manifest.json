@@ -11,7 +11,7 @@
     ]
   },
   "resources/css/app.css": {
-    "file": "assets/app-BoqnCnql.css",
+    "file": "assets/app-CaloLl5e.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "name": "app",
@@ -35,7 +35,7 @@
     "isEntry": true
   },
   "resources/js/page/auth-register.js": {
-    "file": "assets/auth-register-CNV6uGcZ.js",
+    "file": "assets/auth-register-DapzYe_W.js",
     "name": "auth-register",
     "src": "resources/js/page/auth-register.js",
     "isEntry": true

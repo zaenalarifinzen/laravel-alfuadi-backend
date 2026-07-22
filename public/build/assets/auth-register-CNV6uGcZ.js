@@ -1,1 +1,0 @@
-$(".pwstrength").pwstrength();
