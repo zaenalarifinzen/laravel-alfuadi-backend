@@ -3,8 +3,8 @@
     "file": "assets/nahwu-form-autofill-BJPu9yXy.css",
     "src": "_nahwu-form-autofill-BJPu9yXy.css"
   },
-  "_nahwu-form-autofill-D-3u_atX.js": {
-    "file": "assets/nahwu-form-autofill-D-3u_atX.js",
+  "_nahwu-form-autofill-CL_2symh.js": {
+    "file": "assets/nahwu-form-autofill-CL_2symh.js",
     "name": "nahwu-form-autofill",
     "css": [
       "assets/nahwu-form-autofill-BJPu9yXy.css"
@@ -29,63 +29,63 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-DFGZW02m.js",
+    "file": "assets/app-CwS68nGd.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true
   },
   "resources/js/page/auth-register.js": {
-    "file": "assets/auth-register-DapzYe_W.js",
+    "file": "assets/auth-register-Dl2Vo2gy.js",
     "name": "auth-register",
     "src": "resources/js/page/auth-register.js",
     "isEntry": true
   },
   "resources/js/page/auth/auth-form.js": {
-    "file": "assets/auth-form-DpReXf-i.js",
+    "file": "assets/auth-form-DbVP5aEy.js",
     "name": "auth-form",
     "src": "resources/js/page/auth/auth-form.js",
     "isEntry": true
   },
   "resources/js/page/exercise/exercise.js": {
-    "file": "assets/exercise-Dpmr6wbn.js",
+    "file": "assets/exercise-CUHH-6FC.js",
     "name": "exercise",
     "src": "resources/js/page/exercise/exercise.js",
     "isEntry": true,
     "imports": [
-      "_nahwu-form-autofill-D-3u_atX.js"
+      "_nahwu-form-autofill-CL_2symh.js"
     ]
   },
   "resources/js/page/features-post-create.js": {
-    "file": "assets/features-post-create-Bc95VQy-.js",
+    "file": "assets/features-post-create-Dg-FN2Wj.js",
     "name": "features-post-create",
     "src": "resources/js/page/features-post-create.js",
     "isEntry": true
   },
   "resources/js/page/features-posts.js": {
-    "file": "assets/features-posts-DAztbz3e.js",
+    "file": "assets/features-posts-LK-9QVEP.js",
     "name": "features-posts",
     "src": "resources/js/page/features-posts.js",
     "isEntry": true
   },
   "resources/js/page/modules-toastr.js": {
-    "file": "assets/modules-toastr-ZgE94RFh.js",
+    "file": "assets/modules-toastr-Co_2tTsd.js",
     "name": "modules-toastr",
     "src": "resources/js/page/modules-toastr.js",
     "isEntry": true
   },
   "resources/js/page/wordgroups/grouping-page.js": {
-    "file": "assets/grouping-page-B6KNj7qS.js",
+    "file": "assets/grouping-page-B9rCoU5t.js",
     "name": "grouping-page",
     "src": "resources/js/page/wordgroups/grouping-page.js",
     "isEntry": true
   },
   "resources/js/page/words/create-new.js": {
-    "file": "assets/create-new-BGaKIcLX.js",
+    "file": "assets/create-new-C-aJ9JGR.js",
     "name": "create-new",
     "src": "resources/js/page/words/create-new.js",
     "isEntry": true,
     "imports": [
-      "_nahwu-form-autofill-D-3u_atX.js"
+      "_nahwu-form-autofill-CL_2symh.js"
     ]
   },
   "resources/js/utils/storage-helper.js": {

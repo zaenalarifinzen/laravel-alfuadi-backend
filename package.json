@@ -16,6 +16,7 @@
     },
     "dependencies": {
         "@sentry/browser": "^10.67.0",
+        "@sentry/vite-plugin": "^5.4.0",
         "swiper": "^14.0.5"
     }
 }

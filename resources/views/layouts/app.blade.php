@@ -23,6 +23,20 @@
     <link rel="stylesheet" href="{{ asset('css/fonts.css') }}">
     @vite(['resources/css/custom.css'])
 
+    @auth
+        <script>
+            window.addEventListener('DOMContentLoaded', () => {
+                if (window.Sentry) {
+                    Sentry.setUser({
+                        id: "{{ auth()->id() }}",
+                        email: "{{ auth()->user()->email }}",
+                        username: "{{ auth()->user()->name }}",
+                    });
+                }
+            });
+        </script>
+    @endauth
+
     <!-- Start GA -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
     <script>
@@ -36,7 +50,6 @@
         gtag('config', 'UA-94034622-3');
     </script>
     <!-- END GA -->
-</head>
 </head>
 
 <body>
