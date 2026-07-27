@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.2.4
+
+-   Menambah soft delete pada tabel user
+-   Memperbaiki github action
+
 ## 1.2.3
 
 -   Perbaikan masalah pada saat menyimpan jawaban analisa
