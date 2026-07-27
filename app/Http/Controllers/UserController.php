@@ -13,13 +13,14 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        // $users = User::paginate(10);
-        $users = DB::table('users')
-            ->when($request->input('name'), function ($query, $name) {
-                return $query->where('name', 'like', '%'.$name.'%');
+        $users = User::query()
+            ->when($request->filled('name'), function ($query) use ($request) {
+                $query->where('name', 'like', '%' . $request->name . '%');
             })
-            ->orderBy('id', 'desc')
-            ->paginate(50);
+            ->orderByDesc('id')
+            ->paginate(50)
+            ->withQueryString();
+
         return view('pages.users.index', compact('users'), ['type_menu' => '']);
     }
 

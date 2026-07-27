@@ -32,7 +32,8 @@
                         <div class="col-12 mb-4">
                             <div class="hero bg-primary text-white">
                                 <div class="hero-inner">
-                                    <h2>Selamat datang, {{ auth()->user()->name }}!</h2>
+                                    {{-- capitalize user name --}}
+                                    <h2>Selamat datang, {{ ucwords(strtolower(auth()->user()->name)) }}!</h2>
                                     <p class="lead">Senang melihat Anda kembali.</p>
                                 </div>
                             </div>

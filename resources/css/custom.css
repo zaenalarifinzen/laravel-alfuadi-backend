@@ -606,8 +606,8 @@ table tr:hover .table-links {
         display: block;
     }
     .main-content {
-        padding-left: 15px;
-        padding-right: 15px;
+        padding-left: 8px;
+        padding-right: 8px;
         width: 100% !important;
     }
     .main-footer {
@@ -816,7 +816,7 @@ table tr:hover .table-links {
 }
 
 .custom-dropdown.active .select-btn {
-    border-color: #b7d8d5;
+    border: 2px solid #b7d8d5;
 }
 
 .custom-dropdown.active .select-btn i {
@@ -898,7 +898,7 @@ table tr:hover .table-links {
     outline: none;
     font-size: 15px;
     padding: 0 15px 0 32px;
-    border: 1px solid #f1f1f1;
+    border: 2px solid #f1f1f1;
     border-radius: 5px;
 }
 
