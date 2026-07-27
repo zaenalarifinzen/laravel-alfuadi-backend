@@ -601,6 +601,7 @@ class NahwuFormController {
                 selectedKedudukan.kedudukan_ar === "فاعل مستتر" || // fail mustatir
                 selectedKedudukan.kedudukan_ar === "نائب الفاعل مستتر" || // naibul fail mustatir
                 selectedKedudukan.kedudukan_ar === "ضمير الفصل" || // dhomir fashl
+                selectedKedudukan.kedudukan_ar === "لا محل له من الإعراب" || // la mahal
                 isIsimFiil; // isim fiil
 
             const shouldDisableHukum =
@@ -971,8 +972,8 @@ class NahwuFormController {
             kalimatId === "21" ||
             kalimatId === "23" ||
             kalimatId === "30" ||
-            (kalimatId === "22" &&
-                this.instances.hukum.data?.[0]?.value !== "مُعْرَبٌ") ||
+            (kalimatId === "22" && this.instances.hukum.data?.[0]?.value !== "مُعْرَبٌ") ||
+            (kalimatId === "10" && selectedKategori.kategori_ar === "المركب العددى") ||
             selectedKategori.kategori_ar === "اسم فعل"
         ) {
             if (this.instances.simbol && selectedKategori.simbol) {
@@ -982,6 +983,7 @@ class NahwuFormController {
                         selectedKategori.simbol,
                     ),
                 ]);
+                console.log("execute")
                 this.instances.simbol.setValue(selectedKategori.simbol, true);
                 this.instances.simbol.flashAutofillHighlight();
             }
