@@ -99,7 +99,7 @@
                                 aria-labelledby="input-tab">
                                 <div class="card-header" id="input-table-header">
                                     <div class="d-flex justify-content-between align-items-center w-100">
-                                        <h4 class="mb-0">Input Jawaban</h4>
+                                        <h4 class="mb-0">Lembar Jawaban</h4>
                                     </div>
                                 </div>
                                 <div class="table-responsive" style="direction: rtl;">
@@ -159,12 +159,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="d-flex justify-content-end align-items-center">
-                    <div hidden>
-                        <button type="button" class="btn btn-outline-primary btn-lg" id="btn-next-verse">
-                            <i class="ion-chevron-left" data-pack="default" data-tags="arrow, right"></i></button>
-                        <button type="button" class="btn btn-outline-primary btn-lg mr-2" id="btn-prev-verse"><i
-                                class="ion-chevron-right" data-pack="default" data-tags="arrow, left"></i></button>
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <button type="button" class="btn btn-outline-primary btn-lg mr-2" id="btn-prev-verse">Sebelumnya</button>
                     </div>
                     <div>
                         <button class="btn btn-icon icon-left btn-primary btn-lg" name="btn-submit"

@@ -193,8 +193,8 @@ export function initSearchVerse({
         if (id < 6236) fetchWordGroups(null, null, id + 1);
     }
 
-    elements.btnPrevVerse.addEventListener("click", goToPrevVerse);
-    elements.btnNextVerse.addEventListener("click", goToNextVerse);
+    elements.btnPrevVerse?.addEventListener("click", goToPrevVerse);
+    elements.btnNextVerse?.addEventListener("click", goToNextVerse);
 
     return {
         fetchSurahList,
