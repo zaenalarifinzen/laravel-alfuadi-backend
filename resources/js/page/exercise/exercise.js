@@ -1,4 +1,4 @@
-import * as storage from "../../page/words/storage-helper";
+import * as storage from "../../utils/storage-helper";
 import { createNahwuFormController } from "../../page/words/nahwu-form-autofill";
 import { initAnalysisAnswerHandler } from "./analysis-answer-handler";
 import { initAnalysisPage } from "./analysis-page";

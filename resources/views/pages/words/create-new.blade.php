@@ -45,8 +45,7 @@
                 <div class="float-right">
                     <form method="GET" action="{{ route('wordgroups.grouping') }}" id="search-verse-form" class="mb-0">
                         <div class="input-group">
-                            <select class="form-control {{-- select2 --}} form-control-sm" name="surah-option"
-                                id="surah-option"
+                            <select class="form-control form-control-sm" name="surah-option" id="surah-option"
                                 style="flex: 3; border-top-left-radius: 0.5rem; border-bottom-left-radius: 0.5rem;"
                                 required>
                                 <option value="">Pilih Surah</option>

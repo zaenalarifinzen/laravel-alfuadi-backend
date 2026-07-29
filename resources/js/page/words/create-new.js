@@ -1,5 +1,5 @@
 // resources/js/page/words/create-new.js
-import * as storage from "./storage-helper";
+import * as storage from "../../utils/storage-helper";
 import { initSearchVerse } from "../../utils/search-verse";
 import { initSwiperSlider } from "../../utils/swiper-slider";
 import { initWordTable } from "../../utils/word-table";

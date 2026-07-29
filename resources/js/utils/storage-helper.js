@@ -21,11 +21,11 @@ function getStoredObject(prefix) {
     }
 }
 
-function getStoredData(prefix) {
+export function getStoredData(prefix) {
     return getStoredObject(prefix);
 }
 
-function updateStoredData(prefix, updater) {
+export function updateStoredData(prefix, updater) {
     const key = getActiveStorageKey(prefix);
     if (!key) return null;
 
@@ -44,17 +44,17 @@ function updateStoredData(prefix, updater) {
     return stored;
 }
 
-function markModified(prefix) {
+export function markModified(prefix) {
     updateStoredData(prefix, (stored) => {
         stored.modified = true;
     });    
 }
 
-function isModified(prefix) {
+export function isModified(prefix) {
     return getStoredData(prefix)?.modified === true;
 }
 
-function resetModified(prefix) {
+export function resetModified(prefix) {
     updateStoredData(prefix, (stored) => {
         stored.modified = false;
     });
