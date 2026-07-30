@@ -983,7 +983,6 @@ class NahwuFormController {
                         selectedKategori.simbol,
                     ),
                 ]);
-                console.log("execute")
                 this.instances.simbol.setValue(selectedKategori.simbol, true);
                 this.instances.simbol.flashAutofillHighlight();
             }
@@ -1077,8 +1076,12 @@ class NahwuFormController {
         // Lookup kategori_id from text
         let kategori_id = word.kategori_id || null;
         if (!kategori_id && word.kategori) {
+            const kalimat = data.kalimat.find(
+                (k) => k.kalimat_ar_musyakal === word.kalimat,
+            );            
+
             const found = data.kategori.find(
-                (k) => k.kategori_ar_musyakal === word.kategori,
+                (k) => k.kategori_ar_musyakal === word.kategori && k.id_kalimat === kalimat.id,
             );
             kategori_id = found?.id || null;
         }
