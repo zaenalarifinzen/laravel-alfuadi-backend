@@ -505,7 +505,7 @@ class NahwuFormController {
                 this.resetDropdown(this.instances.tanda);
                 this.resetDropdown(this.instances.simbol);
             }
-
+            
             const selectedKalimat =
                 this.instances.kalimat?.select.value || null;
             const selectedHukum = hukum.select.value || null;
@@ -660,10 +660,13 @@ class NahwuFormController {
     // Updater Data Options
     // =============================================================
     updateLafadzByKalimat(selectedKalimat) {
+        
         // replace lafadz to this kalimat
         const lafadzInput = document.getElementById("input-lafadz");
         if (selectedKalimat === "41") {
             lafadzInput.value = `(الجُمْلَةُ)`;
+        } else if (selectedKalimat === "50") {
+            lafadzInput.value = `(الإِِسْمُ الْمُؤَوَّلُ)`;
         } else if (selectedKalimat === "42") {
             const kalimatData = MasterData.raw.kalimat.find(
                 (k) => k.id === selectedKalimat,

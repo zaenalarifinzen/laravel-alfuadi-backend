@@ -53,7 +53,7 @@ export function initComponentsTable({ getPrefix, markModified, renderWordsDetail
         );
         const stored = JSON.parse(localStorage.getItem(currentKey));
 
-        const activeWordGroupId = $(".owl-item.active .word-group").attr("wg-id");
+        const activeWordGroupId = $(".swiper-slide-active .word-group").attr("wg-id");
         const activeWordGroup = stored.wordGroups.find(
             (wg) => wg.id == activeWordGroupId,
         );
