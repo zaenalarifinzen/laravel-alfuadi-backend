@@ -10,42 +10,42 @@ export function initWordTable({
     applyComparisonHighlights = () => {},
     changeSubmitButton = () => {},
 }) {
-function renderWordsTable(wordGroup) {
-    const tbody = $("#sortable-table tbody");
-    tbody.empty();
+    function renderWordsTable(wordGroup) {
+        const tbody = $("#sortable-table tbody");
+        tbody.empty();
 
-    if (!wordGroup || !wordGroup.words || wordGroup.words.length === 0) {
-        tbody.append(`
+        if (!wordGroup || !wordGroup.words || wordGroup.words.length === 0) {
+            tbody.append(`
             <tr>
                 <td colspan="8" class="text-center text-muted">Tidak ada data</td>
             </tr>
         `);
 
-        const editorInfo = $(".editor-kalimat a").contents().last()[0];
-        if (editorInfo) {
-            editorInfo.textContent = ` -`;
+            const editorInfo = $(".editor-kalimat a").contents().last()[0];
+            if (editorInfo) {
+                editorInfo.textContent = ` -`;
+            }
+            return;
         }
-        return;
-    }
 
-    // sort word based on order_number
-    wordGroup.words.sort(
-        (a, b) => (a.order_number || 0) - (b.order_number || 0),
-    );
+        // sort word based on order_number
+        wordGroup.words.sort(
+            (a, b) => (a.order_number || 0) - (b.order_number || 0),
+        );
 
-    wordGroup.words.forEach((word) => {
-        let simbolClass = "text-dark";
-        if (word.color === "red") simbolClass = "text-huruf";
-        else if (word.color === "green") simbolClass = "text-fiil";
-        else if (word.color === "blue") simbolClass = "text-isim";
+        wordGroup.words.forEach((word) => {
+            let simbolClass = "text-dark";
+            if (word.color === "red") simbolClass = "text-huruf";
+            else if (word.color === "green") simbolClass = "text-fiil";
+            else if (word.color === "blue") simbolClass = "text-isim";
 
-        const prefix = getPrefix();
-        const isAnswerMode = prefix === "answer_user_";
-        const actionButtons = isAnswerMode
-            ? `<button class="btn btn-sm btn-icon btn-warning word-edit" title="Edit">Edit 
+            const prefix = getPrefix();
+            const isAnswerMode = prefix === "answer_user_";
+            const actionButtons = isAnswerMode
+                ? `<button class="btn btn-sm btn-icon btn-warning word-edit" title="Edit">Edit 
                    <i class="fa-solid fa-edit"></i>
                </button>`
-            : `<button class="btn btn-sm btn-icon btn-warning word-edit" title="Edit">
+                : `<button class="btn btn-sm btn-icon btn-warning word-edit" title="Edit">
                    <i class="fa-solid fa-edit"></i>
                </button>
                <button class="btn btn-sm btn-icon btn-danger word-delete" title="Hapus">
@@ -58,7 +58,7 @@ function renderWordsTable(wordGroup) {
                    <i class="fa-solid fa-arrow-down"></i>
                </button>`;
 
-        const row = `
+            const row = `
             <tr>
             <td class="align-middle col-action">
                     <div class="d-flex justify-content-center action-buttons">
@@ -100,72 +100,75 @@ function renderWordsTable(wordGroup) {
                 </td>
             </tr>
         `;
-        tbody.append(row);
-    });
+            tbody.append(row);
+        });
 
-    const firstWord = wordGroup.words[0];
-    const editorName = firstWord.editor_info
-        ? firstWord.editor_info.name
-        : " -";
+        const firstWord = wordGroup.words[0];
+        const editorName = firstWord.editor_info
+            ? firstWord.editor_info.name
+            : " -";
 
-    const editorInfo = $(".editor-kalimat a").contents().last()[0];
-    
-    if (editorInfo) {
-        editorInfo.textContent = ` ${editorName}`;
+        const editorInfo = $(".editor-kalimat a").contents().last()[0];
+
+        if (editorInfo) {
+            editorInfo.textContent = ` ${editorName}`;
+        }
+
+        const modified = isModified(getPrefix());
+        if (modified) {
+            $("#btn-save-all").show();
+        } else {
+            $("#btn-save-all").hide();
+        }
+
+        applyComparisonHighlights();
     }
 
-    const modified = isModified(getPrefix());
-    if (modified) {
-        $("#btn-save-all").show();
-    } else {
-        $("#btn-save-all").hide();
-    }
+    // =============================
+    // RENDER WORDS DETAILS
+    // =============================
+    function renderWordsDetails(wordGroup) {
+        const tbody = $("#detail-kalimat-table tbody");
+        tbody.empty();
 
-    applyComparisonHighlights();
-}
-
-// =============================
-// RENDER WORDS DETAILS
-// =============================
-function renderWordsDetails(wordGroup) {
-    const tbody = $("#detail-kalimat-table tbody");
-    tbody.empty();
-
-    if (!wordGroup || !wordGroup.words || wordGroup.words.length === 0) {
-        // console.log("Data tidak tersedia");
-        tbody.append(`
+        if (!wordGroup || !wordGroup.words || wordGroup.words.length === 0) {
+            // console.log("Data tidak tersedia");
+            tbody.append(`
             <tr>
                 <td colspan="8" class="text-center text-muted">Tidak ada data</td>
             </tr>
         `);
-        return;
-    }
+            return;
+        }
 
-    // sort word based on order_number
-    wordGroup.words.sort(
-        (a, b) => (a.order_number || 0) - (b.order_number || 0),
-    );
+        // sort word based on order_number
+        wordGroup.words.sort(
+            (a, b) => (a.order_number || 0) - (b.order_number || 0),
+        );
 
-    wordGroup.words.forEach((word) => {
-        let simbolClass = "text-dark";
-        if (word.color === "red") simbolClass = "text-huruf";
-        else if (word.color === "green") simbolClass = "text-fiil";
-        else if (word.color === "blue") simbolClass = "text-isim";
+        wordGroup.words.forEach((word) => {
+            let simbolClass = "text-dark";
+            if (word.color === "red") simbolClass = "text-huruf";
+            else if (word.color === "green") simbolClass = "text-fiil";
+            else if (word.color === "blue") simbolClass = "text-isim";
 
-        const parts = [
-            word.kalimat,
-            word.hukum,
-            word.kategori,
-            word.kedudukan,
-            word.irob,
-            word.tanda,
-        ]
-            .filter(
-                (p) => p !== null && p !== undefined && String(p).trim() !== "",
-            )
-            .join(" - ");
+            const parts = [
+                word.kalimat,
+                word.hukum,
+                word.kategori,
+                word.kedudukan,
+                word.irob,
+                word.tanda,
+            ]
+                .filter(
+                    (p) =>
+                        p !== null &&
+                        p !== undefined &&
+                        String(p).trim() !== "",
+                )
+                .join(" - ");
 
-        const row = `
+            const row = `
             <tr class="text-center kalimat-detail-row">
                 <td>
                     <div class="text-right arabic-text ar-subtitle">
@@ -186,89 +189,94 @@ function renderWordsDetails(wordGroup) {
              </tr>
              
         `;
-        tbody.append(row);
-    });
-}
+            tbody.append(row);
+        });
+    }
 
-function addUpdateButton() {
-    const cardHeader = document.getElementById("word");
+    function addUpdateButton() {
+        const cardHeader = document.getElementById("word");
 
-    // update button
-    const wrapper = document.createElement("div");
-    wrapper.innerHTML = `
+        // update button
+        const wrapper = document.createElement("div");
+        wrapper.innerHTML = `
         <button class="btn btn-icon icon-left btn-info btn-lg" id="btn-reload-wordgroups">
             <i class="fa-solid fa-rotate"></i> Update
         </button>
     `;
 
-    const updateBtn = wrapper.querySelector("#btn-reload-wordgroups");
+        const updateBtn = wrapper.querySelector("#btn-reload-wordgroups");
 
-    // event listener
-    updateBtn.addEventListener("click", async function (e) {
-        e.preventDefault();
+        // event listener
+        updateBtn.addEventListener("click", async function (e) {
+            e.preventDefault();
 
-        const confirmed = await showEditConfirmation();
-        if (!confirmed) return;
+            const confirmed = await showEditConfirmation();
+            if (!confirmed) return;
 
-        fetchWordGroups(null, null, getCurrentVerseId());
-    });
+            fetchWordGroups(null, null, getCurrentVerseId());
+        });
 
-    const headerContainer = cardHeader.querySelector(".d-flex");
-    if (headerContainer) {
-        headerContainer.appendChild(wrapper);
-    } else {
-        cardHeader.appendChild(updateBtn);
+        const headerContainer = cardHeader.querySelector(".d-flex");
+        if (headerContainer) {
+            headerContainer.appendChild(wrapper);
+        } else {
+            cardHeader.appendChild(updateBtn);
+        }
     }
-}
 
-function removeUpdateButton() {
-    const btn = document.getElementById("btn-reload-wordgroups");
+    function removeUpdateButton() {
+        const btn = document.getElementById("btn-reload-wordgroups");
 
-    if (btn) {
-        btn.remove();
+        if (btn) {
+            btn.remove();
+        }
     }
-}
 
-function updateCard(label, type) {
-    const cardHeader = document.getElementById('input-table-header');
-    const headerContainer = cardHeader.querySelector(".d-flex");
+    function updateCard(label, type) {
+        const cardHeader = document.getElementById("input-table-header");
+        const headerContainer = cardHeader.querySelector(".d-flex");
 
-    const parent = cardHeader.closest('.card');
-    parent.classList.add(`card-${type}`)
-    
-    const bagdeWrapper = document.createElement('div');
-    bagdeWrapper.innerHTML = `
+        const parent = cardHeader.closest(".card");
+        parent.classList.add(`card-${type}`);
+
+        const bagdeWrapper = document.createElement("div");
+        bagdeWrapper.innerHTML = `
         <span class="badge badge-${type}"><i class="fas fa-check mr-1"></i>${label}</span>
     `;
 
-    if (headerContainer) {
-        headerContainer.appendChild(bagdeWrapper);
-    }
-}
-
-function resetCard() {
-    const cardHeader = document.getElementById('input-table-header');
-    const headerContainer = cardHeader.querySelector(".d-flex");
-
-    const parent = cardHeader.closest('.card');
-    parent.classList.remove(`card-success`, `card-danger`, `card-warning`, `card-info`);
-    
-    const bagdeWrapper = headerContainer.querySelector(".badge");
-
-    if (bagdeWrapper) {
-        bagdeWrapper.remove();
+        if (headerContainer) {
+            headerContainer.appendChild(bagdeWrapper);
+        }
     }
 
-    // update submit button
-    changeSubmitButton('btn-submit-answer', 'Submit', 'primary');
-}
+    function resetCard() {
+        const cardHeader = document.getElementById("input-table-header");
+        const headerContainer = cardHeader.querySelector(".d-flex");
 
-return {
-    renderWordsTable,
-    renderWordsDetails,
-    addUpdateButton,
-    removeUpdateButton,
-    updateCard,
-    resetCard,
-};
+        const parent = cardHeader.closest(".card");
+        parent.classList.remove(
+            `card-success`,
+            `card-danger`,
+            `card-warning`,
+            `card-info`,
+        );
+
+        const bagdeWrapper = headerContainer.querySelector(".badge");
+
+        if (bagdeWrapper) {
+            bagdeWrapper.remove();
+        }
+
+        // update submit button
+        changeSubmitButton("btn-submit-answer", "Submit", "primary");
+    }
+
+    return {
+        renderWordsTable,
+        renderWordsDetails,
+        addUpdateButton,
+        removeUpdateButton,
+        updateCard,
+        resetCard,
+    };
 }
