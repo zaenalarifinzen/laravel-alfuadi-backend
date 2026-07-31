@@ -3,7 +3,7 @@ name: Build & Deploy to Hostinger
 on:
   push:
     branches:
-      - master   # sesuaikan dengan branch produksi kamu
+      - master   # sesuaikan dengan branch produksi
 
 jobs:
   build-and-deploy:
@@ -59,3 +59,13 @@ jobs:
             **/public/library/**
             **/tests/**
             **/.env
+      
+      # 6. Copy public/build to public_html/build
+      - name: Deploy build assets to public_html
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER_PUBLIC }}
+          username: ${{ secrets.FTP_USERNAME_PUBLIC }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./public/build/
+          server-dir: /build/
