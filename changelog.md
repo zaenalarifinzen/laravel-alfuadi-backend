@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.2.5
+
+-   Memperbaiki urutan yang tidak tersimpan ketika reordering tabel kalimat
+-   Penambahan lafadz otomatis untuk Isim Muawwal
+
 ## 1.2.4
 
 -   Menambah soft delete pada tabel user
