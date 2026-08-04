@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Surah;
 use App\Models\Word;
-use App\Models\WordGroups;
+use App\Models\WordGroup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -44,11 +44,11 @@ class WordController extends Controller
      */
     public function create(Request $request)
     {
-        $surahs = Surah::select('id', 'name', 'verse_count')->get();
+        $surahs = Surah::select(['id', 'name', 'verse_count'])->get();
         $verseId = $request->input('verse_id', 1);
         $wordGroupId = $request->input('word_group_id', 1);
 
-        $wordgroups = WordGroups::where('verse_id', $verseId)
+        $wordgroups = WordGroup::where('verse_id', $verseId)
             ->with([
                 'editorInfo:id,name',
                 'words' => function ($query) {

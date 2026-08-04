@@ -13,23 +13,9 @@
             </li>
 
             <li class="menu-header">Qur'an Alfuadi</li>
-            <li class="nav-item dropdown {{ $type_menu === 'Al-Fuadi Database' ? 'active' : '' }}">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-book-quran"></i>
+            <li class="{{ Request::is('surahs') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('quran.index') }}"><i class="fas fa-book-quran"></i>
                     <span>Al-Quran</span></a>
-                <ul class="dropdown-menu">
-                    <li class="{{ Request::is('surahs') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('surahs.index') }}">Surah</a>
-                    </li>
-                    <li class="{{ Request::is('verses') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('verses.index') }}">Ayat</a>
-                    </li>
-                    {{-- <li class="{{ Request::is('wordgroups') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('wordgroups.index') }}">Grup Kalimat</a>
-                    </li>
-                    <li class="{{ Request::is('words') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('words.index') }}">Kalimat</a>
-                    </li> --}}
-                </ul>
             </li>
 
             @if (auth()->check())
@@ -103,8 +89,8 @@
                         <span>Products</span></a>
                 </li> --}}
                 <li class="{{ Request::is('example') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('page.templatepage') }}"><i class="fas fa-file-lines"></i>
-                        <span>Develop Page</span></a>
+                    <a class="nav-link" href="{{ route('quran.index') }}"><i class="fas fa-file-lines"></i>
+                        <span>Test Page</span></a>
                 </li>
             @endif
 </aside>

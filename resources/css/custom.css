@@ -29,7 +29,7 @@ a {
     font-size: 1rem !important;
 }
 .ar-symbol {
-    font-size: 1.0rem !important;
+    font-size: 1rem !important;
     font-weight: 500;
 }
 .ar-symbol-mini {
@@ -76,6 +76,17 @@ a {
     left: 0;
     width: 100%;
     height: 115px;
+    background-color: #138a84;
+    z-index: -1;
+}
+
+.layout-3 .navbar-bg {
+    content: " ";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
     background-color: #138a84;
     z-index: -1;
 }
@@ -270,6 +281,16 @@ ul.nav-tabs li.nav-item a.nav-link.active i {
     font-size: 1.5rem;
     font-weight: 700;
     color: #1d948e;
+}
+
+.navbar .navbar-brand {
+    font-family: "Cinzel Decorative" !important;
+    text-decoration: none;
+    text-transform: none;
+    letter-spacing: 1.5px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
 }
 
 /* 3.9 Nav */
@@ -610,6 +631,11 @@ table tr:hover .table-links {
         padding-right: 8px;
         width: 100% !important;
     }
+    body.layout-3 .main-content {
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 100px;
+    }
     .main-footer {
         padding-left: 15px;
     }
@@ -865,13 +891,13 @@ table tr:hover .table-links {
 
 /* CUSTOM SWITCH */
 .custom-switch-input:checked ~ .custom-switch-indicator {
-  background: #33bc47;
+    background: #33bc47;
 }
 .custom-switch-input:checked ~ .custom-switch-indicator:before {
-  left: calc(1rem + 1px);
+    left: calc(1rem + 1px);
 }
 .custom-switch-input:focus ~ .custom-switch-indicator {
-  border-color: #33bc47;
+    border-color: #33bc47;
 }
 
 .error-message {

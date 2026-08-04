@@ -17,9 +17,9 @@ class SurahController extends Controller
                 return $query->where('name', 'like', '%'.$name.'%');
             })
             ->orderBy('id', 'asc')
-            ->paginate(50);
+            ->get();
 
-        return view('pages.surahs.index', compact('surahs'), ['type_menu' => 'Al-Fuadi Database']);
+        return view('pages.surahs.index-new', compact('surahs'), ['type_menu' => 'Al-Fuadi Database']);
     }
 
     /**

@@ -14,12 +14,13 @@ use App\Http\Controllers\VerseController;
 use App\Http\Controllers\WordController;
 use App\Http\Controllers\WordGroupController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\QuranController;
 use App\Http\Controllers\SettingsController;
 use App\Models\Surah;
 // use App\Models\UserAnswer;
 use App\Models\Verse;
 use App\Models\Word;
-use App\Models\WordGroups;
+use App\Models\WordGroup;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
@@ -52,7 +53,7 @@ Route::get('/home', function () {
                 ->first();
 
             if ($latestProgres) {
-                $wordgroup = WordGroups::query()
+                $wordgroup = WordGroup::query()
                     ->where('id', $latestProgres->word_group_id)
                     ->latest('updated_at')
                     ->first();
@@ -111,7 +112,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
                     ->first();
 
                 if ($latestProgres) {
-                    $wordgroup = WordGroups::query()
+                    $wordgroup = WordGroup::query()
                         ->where('id', $latestProgres->word_group_id)
                         ->latest('updated_at')
                         ->first();
@@ -153,10 +154,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::resource('kedudukan', KedudukanController::class);
         });
 
-        Route::get('/example', function () {
-            return view('pages.users.profile', ['type_menu' => '']);
-        })->name('page.templatepage');
-
         Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/analysis-settings', [SettingsController::class, 'index'])->name('analysis-settings.index');
             Route::post('/analysis-settings', [SettingsController::class, 'store'])->name('analysis-settings.store');
@@ -188,6 +185,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Administrator, Operator and User Only
     Route::middleware(['roles:administrator,operator,user'])->group(function () {
+        Route::get('quran', [QuranController::class, 'index'])->name('quran.index');
+        Route::get('quran/surah', [QuranController::class, 'versesOfSurah'])->name('quran.surah');
+
         Route::get('/metode-al-fuadi/jilid-1', function () {
             return view('pages.modul.nahwu.jilid-1', ['type_menu' => 'metode-al-fuadi']);
         })->name('metode-al-fuadi.jilid-1');

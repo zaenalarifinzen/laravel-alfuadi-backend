@@ -38,6 +38,6 @@ class Word extends Model
 
     public function wordGroup()
     {
-        return $this->belongsTo(WordGroups::class, 'word_group_id', 'id');
+        return $this->belongsTo(Wordgroup::class, 'word_group_id', 'id');
     }
 }

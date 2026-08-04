@@ -25,7 +25,7 @@ class Verse extends Model
      */
     public function surah()
     {
-        return $this->belongsTo(Surah::Class, 'surah_id');
+        return $this->belongsTo(Surah::class, 'surah_id');
     }
 
     /**
@@ -33,6 +33,6 @@ class Verse extends Model
      */
     public function wordGroups()
     {
-        return $this->hasMany(WordGroups::class, 'verse_id', 'id');
+        return $this->hasMany(WordGroup::class, 'verse_id', 'id');
     }
 }

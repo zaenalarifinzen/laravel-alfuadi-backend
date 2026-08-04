@@ -2,8 +2,8 @@
 
 ## 1.2.5
 
--   Memperbaiki urutan yang tidak tersimpan ketika reordering tabel kalimat
--   Penambahan lafadz otomatis untuk Isim Muawwal
+-   Redesign halaman Al-Quran (trial)
+-   Perbaikan urutan grup di halaman latihan
 
 ## 1.2.4
 
