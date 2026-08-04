@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.2.5
+
+-   Redesign halaman Al-Quran (trial)
+-   Perbaikan urutan grup di halaman latihan
+
 ## 1.2.4
 
 -   Menambah soft delete pada tabel user
