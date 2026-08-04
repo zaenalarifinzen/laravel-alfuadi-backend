@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Surah extends Model
 {
@@ -20,4 +21,10 @@ class Surah extends Model
     ];
 
     public $timestamps = false;
+
+    // get the verses of the surah
+    public function verses(): HasMany
+    {
+        return $this->hasMany(Verse::class, 'surah_id', 'id');
+    } 
 }

@@ -139,7 +139,7 @@ class QuestionController extends Controller
                     'text',
                     'translation_indo'
                 ]),
-                'wordGroups' => $verse->wordGroups->map(function ($group) {
+                'wordGroups' => $verse->wordGroups->sortBy('order_number')->map(function ($group) {
                     $groupData = $group->only([
                         'id', 
                         'surah_id',

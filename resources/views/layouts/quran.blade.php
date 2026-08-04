@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
     <title>@yield('title') &verbar; Al-Fuadi Development</title>
 
@@ -15,9 +16,26 @@
     @stack('style')
 
     <!-- Template CSS -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Cinzel+Decorative:wght@400;700;900&family=Scheherazade+New:wght@400;500;600;700&display=swap">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/components.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/fonts.css') }}">
+    @vite(['resources/css/custom.css'])
+
+    @auth
+        <script>
+            window.addEventListener('DOMContentLoaded', () => {
+                if (window.Sentry) {
+                    Sentry.setUser({
+                        id: "{{ auth()->id() }}",
+                        email: "{{ auth()->user()->email }}",
+                        username: "{{ auth()->user()->name }}",
+                    });
+                }
+            });
+        </script>
+    @endauth
 
     <!-- Start GA -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
@@ -31,20 +49,24 @@
 
         gtag('config', 'UA-94034622-3');
     </script>
-    <!-- /END GA -->
+    <!-- END GA -->
 </head>
 
-<body>
+<body class="layout-3">
     <div id="app">
-        <section class="section">
-            <div class="container mt-5">
-                <!-- Content -->
-                @yield('main')
+        <div class="main-wrapper container">
+            <!-- Header -->
+            @include('components.topnav')
 
-                <!-- Footer -->
-                @include('components.error-footer')
-            </div>
-        </section>
+            <!-- Secondary Navigation Menu -->
+            {{-- @include('components.navbar') --}}
+
+            <!-- Content -->
+            @yield('main')
+
+            <!-- Footer -->
+            @include('components.footer')
+        </div>
     </div>
 
     <!-- General JS Scripts -->
@@ -61,5 +83,11 @@
     <!-- Template JS File -->
     <script src="{{ asset('js/scripts.js') }}"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
+
+    @vite(['resources/js/app.js'])
+</body>
+<div id="loading-overlay">
+    <div class="spinner-border text-primary" role="status"></div>
+</div>
 
 </html>

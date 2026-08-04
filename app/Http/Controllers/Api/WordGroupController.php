@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\WordGroups;
+use App\Models\WordGroup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -82,7 +82,7 @@ class WordGroupController extends Controller
         // }
 
         // 🔹 Ambil data word group berdasarkan ID
-        $wordGroups = WordGroups::whereIn('id', $ids)
+        $wordGroups = WordGroup::whereIn('id', $ids)
             ->orderBy('id')
             ->get();
 
@@ -113,12 +113,12 @@ class WordGroupController extends Controller
         // 🔹 Jalankan transaksi database
         DB::transaction(function () use ($first, $ids, $mergedText) {
             // Update baris pertama
-            WordGroups::where('id', $first->id)->update([
+            WordGroup::where('id', $first->id)->update([
                 'text' => $mergedText,
             ]);
 
             // Hapus baris lainnya
-            WordGroups::whereIn('id', array_slice($ids, 1))->delete();
+            WordGroup::whereIn('id', array_slice($ids, 1))->delete();
         });
 
         return response()->json([

@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\SaveWordGroupsRequest;
 use App\Models\Surah;
 use App\Models\Verse;
 use App\Models\Word;
-use App\Models\WordGroups;
+use App\Models\WordGroup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -17,7 +16,7 @@ class WordGroupController extends Controller
      */
     public function index()
     {
-        $wordgroups = WordGroups::orderBy('verse_id', 'asc')
+        $wordgroups = WordGroup::orderBy('verse_id', 'asc')
             ->orderBy('order_number', 'asc')
             ->paginate(50);
 
@@ -51,7 +50,7 @@ class WordGroupController extends Controller
 
         $currentSurah = Surah::find($currentVerse->surah_id);
 
-        $existing = WordGroups::where('verse_id', $currentVerse->id)
+        $existing = WordGroup::where('verse_id', $currentVerse->id)
             ->with([
                 'editorInfo:id,name',
                 'words' => function ($query) {
@@ -118,7 +117,7 @@ class WordGroupController extends Controller
 
         $currentSurah = $currentSurah = Surah::where('id', $currentVerse->surah_id)->first();
 
-        $existing = WordGroups::where('verse_id', $currentVerse->id)
+        $existing = WordGroup::where('verse_id', $currentVerse->id)
             ->with(['editorInfo:id,name'])
             ->orderBy('order_number', 'asc')
             ->get();
@@ -175,7 +174,7 @@ class WordGroupController extends Controller
         ]);
 
         // create word group
-        WordGroups::create($request->only('surah_id', 'verse_number', 'text'));
+        WordGroup::create($request->only('surah_id', 'verse_number', 'text'));
 
         return redirect()->back()->with('success', 'Word group berhasil ditambahkan.');
     }
@@ -200,10 +199,10 @@ class WordGroupController extends Controller
                 }
 
                 // hapus dulu word group lama dari ayat ini
-                WordGroups::where('verse_id', $verse->id)->delete();
+                WordGroup::where('verse_id', $verse->id)->delete();
 
                 foreach ($validated['groups'] as $order => $group) {
-                    WordGroups::create([
+                    WordGroup::create([
                         'surah_id' => $validated['surah_id'],
                         'verse_number' => $validated['verse_number'],
                         'verse_id' => $verse->id,
@@ -235,7 +234,7 @@ class WordGroupController extends Controller
 
             // update foreign key in words
             foreach ($mergedMap as $oldId => $newId) {
-                $validNew = WordGroups::where('id', $newId)
+                $validNew = WordGroup::where('id', $newId)
                     ->where('verse_id', $verseId)
                     ->exists();
 
@@ -249,7 +248,7 @@ class WordGroupController extends Controller
 
             // create or edit wordgroups
             foreach ($editedGroups as $i => $eg) {
-                WordGroups::updateOrCreate(
+                WordGroup::updateOrCreate(
                     [
                         'id' => $eg['id'] ?? null,
                     ],
@@ -265,7 +264,7 @@ class WordGroupController extends Controller
 
             // delete wordgroups from deletedIds
             if (!empty($deletedIds)) {
-                WordGroups::whereIn('id', $deletedIds)
+                WordGroup::whereIn('id', $deletedIds)
                     ->where('verse_id', $verseId)
                     ->delete();
             }
@@ -304,7 +303,7 @@ class WordGroupController extends Controller
     public function destroy(string $id)
     {
         // remove word group by id
-        $wordGroup = WordGroups::find($id);
+        $wordGroup = WordGroup::find($id);
         if (! $wordGroup) {
             return redirect()->back()->with('error', 'Word group tidak ditemukan.');
         }
