@@ -33,6 +33,6 @@ class Verse extends Model
      */
     public function wordGroups()
     {
-        return $this->hasMany(WordGroup::class, 'verse_id', 'id');
+        return $this->hasMany(WordGroup::class, 'verse_id', 'id')->orderBy('order_number', 'asc');
     }
 }
