@@ -89,7 +89,7 @@ initAnalysisAnswerHandler({
     getNahwuController: () => nahwuFormController,
     getCurrentCompareResult: analysisPage.getCurrentCompareResult,
     setCurrentCompareResult: analysisPage.setCurrentCompareResult,
-    getCurrentQuestionId: analysisPage.getCurrentQuestionId,
+    getCurrentExerciseId: analysisPage.getCurrentExerciseId,
     getCurrentVerseId: analysisPage.getCurrentVerseId,
     fetchWordGroups: analysisPage.fetchWordGroups,
     compareAnswers: analysisPage.compareAnswers,

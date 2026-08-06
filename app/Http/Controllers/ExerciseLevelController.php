@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\QuestionLevel;
+use App\Models\ExerciseLevel;
 use Illuminate\Http\Request;
 
-class QuestionLevelController extends Controller
+class ExerciseLevelController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $questionLevel = QuestionLevel::orderBy('level_number', 'asc')
+        $exerciseLevel = ExerciseLevel::orderBy('level_number', 'asc')
             ->get();
         
-        return view('pages.exercise.question-level.index', ['questionLevel' => $questionLevel, 'type_menu' => '']);
+        return view('pages.exercise.exercise-level.index', ['exerciseLevel' => $exerciseLevel, 'type_menu' => '']);
     }
 
     /**
@@ -23,7 +23,7 @@ class QuestionLevelController extends Controller
      */
     public function create()
     {
-        return view('pages.exercise.question-level.create', ['type_menu' => 'exercise']);
+        return view('pages.exercise.exercise-level.create', ['type_menu' => 'exercise']);
     }
 
     /**
@@ -33,13 +33,13 @@ class QuestionLevelController extends Controller
     {
         // Validasi input
         $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:question_levels,name',
-            'level_number' => 'required|integer|unique:question_levels,level_number',
+            'name' => 'required|string|max:255|unique:exercise_levels,name',
+            'level_number' => 'required|integer|unique:exercise_levels,level_number',
             'description' => 'nullable|string',
         ]);
 
         try {
-            QuestionLevel::create($validated);
+            ExerciseLevel::create($validated);
             return redirect()->route('exercise-level.index')->with('success', 'Level berhasil ditambahkan');
         } catch (\Exception $e) {
             return redirect()

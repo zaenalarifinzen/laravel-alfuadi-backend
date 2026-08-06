@@ -4,7 +4,7 @@ use App\Http\Controllers\Admin\AnalysisSettingController;
 use App\Http\Controllers\KalimatController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\KedudukanController;
-use App\Http\Controllers\QuestionLevelController;
+use App\Http\Controllers\ExerciseLevelController;
 use App\Http\Controllers\NahwuDataController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SurahController;
@@ -13,7 +13,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerseController;
 use App\Http\Controllers\WordController;
 use App\Http\Controllers\WordGroupController;
-use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\QuranController;
 use App\Http\Controllers\SettingsController;
 use App\Models\Surah;
@@ -172,8 +172,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/wordgroups/complete', [WordGroupController::class, 'completeOrderNumber'])->name('wordgroups.complete');
 
         // Exercise
-        Route::get('/exercise/new', [QuestionLevelController::class, 'create'])->name('exercise-level.create');
-        Route::post('/exercise/new', [QuestionLevelController::class, 'store'])->name('exercise-level.store');
+        Route::get('/exercise/new', [ExerciseLevelController::class, 'create'])->name('exercise-level.create');
+        Route::post('/exercise/new', [ExerciseLevelController::class, 'store'])->name('exercise-level.store');
 
         // Custom words routes
         Route::post('words/sync', [WordController::class, 'sync'])->name('words.sync');
@@ -191,11 +191,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/metode-al-fuadi/jilid-1', function () {
             return view('pages.modul.nahwu.jilid-1', ['type_menu' => 'metode-al-fuadi']);
         })->name('metode-al-fuadi.jilid-1');
-        Route::get('/exercise', [QuestionLevelController::class, 'index'])->name('exercise-level.index');
+        Route::get('/exercise', [ExerciseLevelController::class, 'index'])->name('exercise-level.index');
         Route::get('/exercise/alquran', function () {
-            return view('pages.exercise.question.analyze', ['type_menu' => '']);
+            return view('pages.exercise.analyze', ['type_menu' => '']);
         })->name('exercise.alquran');
-        Route::get('/exercise/analysis/{verseId?}', [QuestionController::class, 'getAnalysisQuestion'])
+        Route::get('/exercise/analysis/{verseId?}', [ExerciseController::class, 'getAnalysisExercise'])
             ->name('exercise.analysis');
 
         // Data Nahwu Resource

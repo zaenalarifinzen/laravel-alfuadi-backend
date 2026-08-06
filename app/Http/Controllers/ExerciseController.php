@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Question;
-use App\Models\QuestionLevel;
+use App\Models\Exercise;
+use App\Models\ExerciseLevel;
 use App\Models\UserAnswer;
 use App\Models\Verse;
 use Illuminate\Http\Request;
 
-class QuestionController extends Controller
+class ExerciseController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -69,21 +69,21 @@ class QuestionController extends Controller
     /**
      * CUSTOM FUNCTION
      */
-    public function getAnalysisQuestion(Request $request, $verseId = null)
+    public function getAnalysisExercise(Request $request, $verseId = null)
     {
         try {
             $level = 99;
 
             if ($request->filled('level_slug')) {
-                $questionLevel = QuestionLevel::where('slug', $request->query('level_slug'))->active()->first();
+                $exerciseLevel = ExerciseLevel::where('slug', $request->query('level_slug'))->active()->first();
 
-                if (!$questionLevel) {
+                if (!$exerciseLevel) {
                     return response()->json([
                         'success' => false,
                         'message' => 'Level soal tidak ditemukan',
                     ], 404);
                 }
-                $level = $questionLevel->level_number;
+                $level = $exerciseLevel->level_number;
             } elseif ($request->filled('level')) {
                 $level = (int) $request->query('level');
             }
@@ -121,10 +121,10 @@ class QuestionController extends Controller
                 }
             }
 
-            $question = Question::findOrCreateAnalysisQuestion($verseId, $level);
-            $question->load('verse');
+            $exercise = Exercise::findOrCreateAnalysisExercise($verseId, $level);
+            $exercise->load('verse');
 
-            $question->content = [
+            $exercise->content = [
                 'surah' => $verse->surah ? $verse->surah->only([
                     'id',
                     'name',
@@ -177,18 +177,18 @@ class QuestionController extends Controller
 
             if (auth()->check()) {
                 $ua = UserAnswer::where('user_id', auth()->id())
-                    ->where('question_id', $question->id)
+                    ->where('exercise_id', $exercise->id)
                     ->where('passed', true)
                     ->latest()
                     ->first();
 
-                $question['passed'] = $ua ? (bool) $ua->passed : false;
+                $exercise['passed'] = $ua ? (bool) $ua->passed : false;
             }
 
             return response()->json([
                 'success' => true,
                 'message' => 'Soal analisa ayat',
-                'data' => $question,
+                'data' => $exercise,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([

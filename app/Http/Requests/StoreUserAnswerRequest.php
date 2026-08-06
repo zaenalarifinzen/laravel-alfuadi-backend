@@ -22,7 +22,7 @@ class StoreUserAnswerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'question_id' => 'required|exists:questions,id',
+            'exercise_id' => 'required|exists:exercises,id',
             'level' => 'required|integer|in:1,2,3',
             'pass' => 'nullable|boolean',
             'score' => 'nullable|numeric|min:0|max:100',
@@ -38,8 +38,8 @@ class StoreUserAnswerRequest extends FormRequest
     public function messages()
     {
         return [
-            'question_id.required' => 'question_id wajib diisi',
-            'question_id.exists' => 'question_id tidak ditemukan di tabel questions',
+            'exercise_id.required' => 'exercise_id wajib diisi',
+            'exercise_id.exists' => 'exercise_id tidak ditemukan di tabel exercises',
             'level.required' => 'level wajib diisi',
             'level.in' => 'level harus 1, 2, atau 3',
             'score.numeric' => 'score harus berupa angka',

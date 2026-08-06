@@ -367,7 +367,7 @@
 
                 <div class="levels-wrapper">
 
-                    @foreach ($questionLevel as $index => $level)
+                    @foreach ($exerciseLevel as $index => $level)
                         @php
                             $status = data_get($level, 'status', data_get($level, 'is_active', false) ? 'active' : 'locked');
                             $isFinal = data_get($level, 'is_final', false);

@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class QuestionLevel extends Model
+class ExerciseLevel extends Model
 {
     use HasFactory;
 
-    protected $table = 'question_levels';
+    protected $table = 'exercise_levels';
 
     protected $fillable = [
         'name',
@@ -27,11 +27,11 @@ class QuestionLevel extends Model
     ];
 
     /**
-     * Relasi ke Question - satu level bisa punya banyak soal
+     * Relasi ke Exercise - satu level bisa punya banyak soal
      */
-    public function questions()
+    public function exercises()
     {
-        return $this->hasMany(Question::class, 'level', 'level_number');
+        return $this->hasMany(Exercise::class, 'level', 'level_number');
     }
 
     /**

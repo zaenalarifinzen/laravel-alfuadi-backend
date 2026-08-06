@@ -8,7 +8,7 @@ export function initAnalysisAnswerHandler({
     getNahwuController,
     getCurrentCompareResult,
     setCurrentCompareResult,
-    getCurrentQuestionId,
+    getCurrentExerciseId,
     getCurrentVerseId,
     fetchWordGroups,
     compareAnswers,
@@ -355,11 +355,11 @@ export function initAnalysisAnswerHandler({
                 k.startsWith(getPrefix()),
             );
             const currentStored = currentKey ? JSON.parse(localStorage.getItem(currentKey)) : null;
-            const storedQuestionId = currentStored?.questionId ?? null;
-            const questionId = storedQuestionId !== null && storedQuestionId !== "" ? parseInt(storedQuestionId, 10) : null;
+            const storedExerciseId = currentStored?.exerciseId ?? null;
+            const exerciseId = storedExerciseId !== null && storedExerciseId !== "" ? parseInt(storedExerciseId, 10) : null;
 
             const payload = {
-                question_id: questionId,
+                exercise_id: exerciseId,
                 level: 1,
                 pass: true,
                 score: score,

@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 
-class Question extends Model
+class Exercise extends Model
 {
     use HasFactory;
 
-    protected $table = 'questions';
+    protected $table = 'exercises';
 
     protected $fillable = [
         'title',
@@ -41,7 +41,7 @@ class Question extends Model
         'display_correct_answer',
     ];
 
-    public static function findOrCreateAnalysisQuestion($verseId, $level = 1)
+    public static function findOrCreateAnalysisExercise($verseId, $level = 1)
     {
         $admin = User::where('roles', 'administrator')->first();
         $adminId = $admin ? $admin->id : 1;
@@ -89,11 +89,11 @@ class Question extends Model
     }
 
     /**
-     * Relasi ke QuestionLevel
+     * Relasi ke Exercise Level
      */
-    public function questionLevel()
+    public function exerciseLevel()
     {
-        return $this->belongsTo(QuestionLevel::class, 'level', 'level_number');
+        return $this->belongsTo(ExerciseLevel::class, 'level', 'level_number');
     }
 
     public function getDisplayContentAttribute()

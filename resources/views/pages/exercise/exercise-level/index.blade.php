@@ -43,7 +43,7 @@
 
                 <div class="row">
                     <div class="col-12">
-                        @foreach ($questionLevel as $level)
+                        @foreach ($exerciseLevel as $level)
                             @if ($level->slug === 'alquran')
                                 @continue
                             @endif

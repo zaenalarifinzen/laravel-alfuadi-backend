@@ -13,7 +13,7 @@ class UserAnswer extends Model
 
     protected $fillable = [
         'user_id',
-        'question_id',
+        'exercise_id',
         'level',
         'passed',
         'score',
@@ -52,11 +52,11 @@ class UserAnswer extends Model
     }
 
     /**
-     * Relasi ke Question
+     * Relasi ke Exercise
      */
-    public function question()
+    public function exercise()
     {
-        return $this->belongsTo(Question::class);
+        return $this->belongsTo(Exercise::class);
     }
 
     /**

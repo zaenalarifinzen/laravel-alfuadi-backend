@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreUserAnswerRequest;
 use App\Models\UserAnswer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class UserAnswerController extends Controller
 {
@@ -12,11 +13,12 @@ class UserAnswerController extends Controller
     {
         try {
             $userId = auth()->id();
-            $questionId = $request->question_id;
+            // Hapus $request->question_id pada versi selanjutnya !!
+            $exerciseId = $request->exercise_id ?? $request->question_id;
             $level = $request->level;
 
             $existingAnswer = UserAnswer::where('user_id', $userId)
-                ->where('question_id', $questionId)
+                ->where('exercise_id', $exerciseId)
                 ->where('level', $level)
                 ->first();
 
@@ -34,14 +36,14 @@ class UserAnswerController extends Controller
                 return response()->json([
                     'success' => true,
                     'message' => 'Status penyelesaian berhasil diperbarui',
-                    'data' => $existingAnswer->load(['user', 'question']),
+                    'data' => $existingAnswer->load(['user', 'exercise']),
                 ], 200);
             }
 
             // Save new
             $userAnswer = UserAnswer::create([
                 'user_id' => $userId,
-                'question_id' => $questionId,
+                'exercise_id' => $exerciseId,
                 'level' => $level,
                 'passed' => $request->pass ?? false,
                 'score' => $request->score,
@@ -54,7 +56,7 @@ class UserAnswerController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Status penyelesaian berhasil disimpan',
-                'data' => $userAnswer->load(['user', 'question']),
+                'data' => $userAnswer->load(['user', 'exercise']),
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
@@ -64,13 +66,13 @@ class UserAnswerController extends Controller
         }
     }
 
-    public function show($questionId)
+    public function show($exerciseId)
     {
         try {
             $userId = auth()->id();
             
             $userAnswer = UserAnswer::where('user_id', $userId)
-                ->where('question_id', $questionId)
+                ->where('exercise_id', $exerciseId)
                 ->where('is_latest', true)
                 ->first();
 
@@ -84,7 +86,7 @@ class UserAnswerController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Detail status penyelesaian',
-                'data' => $userAnswer->load(['user', 'question']),
+                'data' => $userAnswer->load(['user', 'exercise']),
             ], 200);
         } catch (\Exception $e) {
             return response()->json([

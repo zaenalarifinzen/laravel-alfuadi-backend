@@ -12,7 +12,7 @@ export function initAnalysisPage({
     const wordGroupsPrefix =
         config.pageType === "exercise" ? "answer_user_" : "wordgroups_";
 
-    let currentQuestionId = null;
+    let currentExerciseId = null;
     let currentCompareResult = [];
     let currentCompareVerseId = null;
 
@@ -202,8 +202,8 @@ export function initAnalysisPage({
                 showLoading();
             },
             success: function (response) {
-                const dataQuestion = response?.data;
-                const content = dataQuestion?.content;
+                const dataExercise = response?.data;
+                const content = dataExercise?.content;
 
                 if (!content || !content.verse) {
                     console.error("Invalid response data");
@@ -256,11 +256,11 @@ export function initAnalysisPage({
                 }
 
                 content.modified = false;
-                content.questionId = dataQuestion.id;
-                content.passed = dataQuestion.passed;
+                content.exerciseId = dataExercise.id;
+                content.passed = dataExercise.passed;
 
                 // wordTable.removeUpdateButton();
-                currentQuestionId = dataQuestion?.id ?? null;
+                currentExerciseId = dataExercise?.id ?? null;
                 currentCompareResult = [];
                 currentCompareVerseId = null;
 
@@ -273,7 +273,7 @@ export function initAnalysisPage({
                     .forEach((k) => localStorage.removeItem(k));
 
                 const cloned = structuredClone(content);
-                const passed = dataQuestion.passed;
+                const passed = dataExercise.passed;
 
                 localStorage.setItem(answerKey, JSON.stringify(cloned));
 
@@ -419,7 +419,7 @@ export function initAnalysisPage({
         const wordTable = getWordTable();
         const slider = getSlider();
 
-        const currentQuestionId = cachedData.questionId;
+        const currentExerciseId = cachedData.exerciseId;
         slider.renderSwiperSlider(cachedData);
         wordTable.renderWordsTable(cachedData.wordGroups[0]);
 
@@ -466,7 +466,7 @@ export function initAnalysisPage({
         applyComparisonHighlights,
         showEditConfirmation,
         changeSubmitButton,
-        getCurrentQuestionId: () => currentQuestionId,
+        getCurrentExerciseId: () => currentExerciseId,
         getCurrentCompareResult: () => currentCompareResult,
         setCurrentCompareResult: (compareResult, verseId = null) => {
             currentCompareResult = compareResult;
