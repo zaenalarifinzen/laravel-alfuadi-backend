@@ -7,6 +7,7 @@ use App\Models\ExerciseLevel;
 use App\Models\UserAnswer;
 use App\Models\Verse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ExerciseController extends Controller
 {
@@ -69,27 +70,91 @@ class ExerciseController extends Controller
     /**
      * CUSTOM FUNCTION
      */
-    public function getAnalysisExercise(Request $request, $verseId = null)
+    public function getExercise(Request $request, $level = null, $exerciseOrderNumber = null)
+    {
+        if ($level === 'alquran') {
+            return $this->getQuranExercise($request, $level, $exerciseOrderNumber);
+        } else {
+            return $this->getBasicExercise($level, $exerciseOrderNumber);
+        }
+    }
+
+    public function getBasicExercise($level = null, $exerciseOrderNumber = null)
+    {
+        $exerciseLevel = ExerciseLevel::where('slug', $level)->active()->first();
+        $levelNumber = $exerciseLevel ? $exerciseLevel->level_number : (int) $level;
+
+        $exercise = Exercise::with('verse')
+            ->where('level', $levelNumber)
+            ->where('display_order', $exerciseOrderNumber)
+            ->first();
+
+        if (!$exercise) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Exercise tidak ditemukan',
+            ], 404);
+        }
+
+        if (auth()->check()) {
+            $ua = UserAnswer::where('user_id', auth()->id())
+                ->where('exercise_id', $exercise->id)
+                ->where('passed', true)
+                ->latest()
+                ->first();
+
+            $exercise->setAttribute('passed', $ua ? (bool) $ua->passed : false);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'OK',
+            'data' => $this->formatExerciseResponse($exercise),
+        ], 200);
+    }
+
+    public function getQuranExercise(Request $request, $level = null, $exerciseOrderNumber = null)
     {
         try {
-            $level = 99;
+            $validLevels = ExerciseLevel::active()->pluck('slug')->toArray();
 
-            if ($request->filled('level_slug')) {
-                $exerciseLevel = ExerciseLevel::where('slug', $request->query('level_slug'))->active()->first();
+            if (!in_array($level, $validLevels)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid level',
+                ], 400);
+            }
+
+            if ($request->filled('slug')) {
+                $exerciseLevel = ExerciseLevel::where('slug', $request->query('slug'))->active()->first();
 
                 if (!$exerciseLevel) {
                     return response()->json([
                         'success' => false,
-                        'message' => 'Level soal tidak ditemukan',
+                        'message' => 'Invalid level',
                     ], 404);
                 }
-                $level = $exerciseLevel->level_number;
+                $levelNumber = $exerciseLevel->level_number;
             } elseif ($request->filled('level')) {
-                $level = (int) $request->query('level');
+                $levelNumber = (int) $request->query('level');
+            } elseif ($level) {
+                $exerciseLevel = ExerciseLevel::where('slug', $level)->active()->first();
+                $levelNumber = $exerciseLevel ? $exerciseLevel->level_number : (int) $level;
             }
 
-            // If verseId not provided, try to find verse by surah_id and verse_number
-            if (!$verseId) {
+            $verse = null;
+            $resolvedExerciseOrderNumber = $exerciseOrderNumber;
+
+            if ($exerciseLevel->slug === 'alquran' && $exerciseOrderNumber) {
+                $verse = Verse::with(['surah', 'wordGroups.words'])->find($exerciseOrderNumber);
+                if (!$verse) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Ayat tidak ditemukan',
+                    ], 404);
+                }
+                $resolvedExerciseOrderNumber = $verse->id;
+            } elseif ($exerciseLevel->slug === 'alquran' && !$exerciseOrderNumber) {
                 $surahId = $request->query('surah_id');
                 $verseNumber = $request->query('verse_number');
 
@@ -104,26 +169,19 @@ class ExerciseController extends Controller
                             'message' => 'Ayat tidak ditemukan',
                         ], 404);
                     }
-                    $verseId = $verse->id;
+                    $resolvedExerciseOrderNumber = $verse->id;
                 } else {
                     return response()->json([
                         'success' => false,
                         'message' => 'Parameter verseId atau (surah_id dan verse_number) diperlukan',
                     ], 400);
                 }
-            } else {
-                $verse = Verse::with(['surah', 'wordGroups.words'])->find($verseId);
-                if (!$verse) {
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'Ayat tidak ditemukan',
-                    ], 404);
-                }
             }
 
-            $exercise = Exercise::findOrCreateAnalysisExercise($verseId, $level);
-            $exercise->load('verse');
+            $exercise = Exercise::findOrCreateQuranExercise($resolvedExerciseOrderNumber, $levelNumber);
+            $exerciseLevel = $exercise->exerciseLevel;
 
+            $exercise->load('verse');
             $exercise->content = [
                 'surah' => $verse->surah ? $verse->surah->only([
                     'id',
@@ -134,14 +192,15 @@ class ExerciseController extends Controller
                     'verse_count'
                 ]) : null,
                 'verse' => $verse->only([
-                    'id', 'surah_id', 
+                    'id',
+                    'surah_id',
                     'number',
                     'text',
                     'translation_indo'
                 ]),
                 'wordGroups' => $verse->wordGroups->map(function ($group) {
                     $groupData = $group->only([
-                        'id', 
+                        'id',
                         'surah_id',
                         'verse_number',
                         'verse_id',
@@ -182,13 +241,13 @@ class ExerciseController extends Controller
                     ->latest()
                     ->first();
 
-                $exercise['passed'] = $ua ? (bool) $ua->passed : false;
+                $exercise->setAttribute('passed', $ua ? (bool) $ua->passed : false);
             }
 
             return response()->json([
                 'success' => true,
-                'message' => 'Soal analisa ayat',
-                'data' => $exercise,
+                'message' => 'OK',
+                'data' => $this->formatExerciseResponse($exercise),
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -196,5 +255,24 @@ class ExerciseController extends Controller
                 'message' => 'Terjadi kesalahan: ' . $e->getMessage(),
             ], 500);
         }
+    }
+
+    protected function formatExerciseResponse(Exercise $exercise): array
+    {
+        if ($exercise->verse_id && ! $exercise->relationLoaded('verse')) {
+            $exercise->load('verse');
+        }
+
+        if (! $exercise->relationLoaded('exerciseLevel')) {
+            $exercise->load('exerciseLevel');
+        }
+
+        $response = $exercise->toArray();
+
+        if (! empty($exercise->content) && is_array($exercise->content)) {
+            $response['content'] = $exercise->content;
+        }
+
+        return $response;
     }
 }

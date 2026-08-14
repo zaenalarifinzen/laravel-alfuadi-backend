@@ -23,9 +23,8 @@ function readPageConfig() {
 
 function collectElements() {
     return {
-        currentVerseLabel: document.getElementById("current-verse-label"),
-        currentSurahId: document.getElementById("surah-id"),
-        currentVerseNumber: document.getElementById("verse-number"),
+        currentExerciseOrderNumber: document.getElementById("exercise-id"),
+        currentWordGroupLabel: document.getElementById("current-wordgroup-label"),
         currentVerseId: document.getElementById("verse-id"),
         surahOption: document.getElementById("surah-option"),
         verseOption: document.getElementById("verse-option"),
@@ -72,6 +71,8 @@ initSearchVerse({
     isModified: storage.isModified,
     showEditConfirmation: analysisPage.showEditConfirmation,
     fetchWordGroups: analysisPage.fetchWordGroups,
+    onSearch: analysisPage.searchVersebyNumber,
+    onNavigate: analysisPage.fetchExercise,
     config,
 }).fetchSurahList();
 
@@ -89,9 +90,9 @@ initAnalysisAnswerHandler({
     getNahwuController: () => nahwuFormController,
     getCurrentCompareResult: analysisPage.getCurrentCompareResult,
     setCurrentCompareResult: analysisPage.setCurrentCompareResult,
-    getCurrentExerciseId: analysisPage.getCurrentExerciseId,
+    getCurrentExerciseOrderNumber: analysisPage.getCurrentExerciseOrderNumber,
     getCurrentVerseId: analysisPage.getCurrentVerseId,
-    fetchWordGroups: analysisPage.fetchWordGroups,
+    fetchExercise: analysisPage.fetchExercise,
     compareAnswers: analysisPage.compareAnswers,
     highlightErrors: analysisPage.highlightErrors,
     changeSubmitButton: analysisPage.changeSubmitButton,

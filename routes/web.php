@@ -25,12 +25,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return redirect()->route('home');
-});
-
 // Public routes
-Route::get('/home', function () {
+Route::get('/', function () {
+    return view('homepage');
+})->name('home');
+
+Route::get('/dashboard', function () {
     dd(request()->all());
     $user = Auth::user();
 
@@ -80,7 +80,7 @@ Route::get('/home', function () {
         'updated_at' => $updatedAt,
         'latestExercise' => $latestExercise,
     ]);
-})->middleware(['auth'])->name('home');
+})->middleware(['auth'])->name('dashboard');
 
 Route::resource('surahs', SurahController::class);
 Route::resource('verses', VerseController::class);
@@ -90,7 +90,7 @@ Route::get('/wordgroups/get/{id?}', [WordGroupController::class, 'getWordGroup']
 Route::get('/words/get/{id}', [WordController::class, 'getWord'])->name('words.get');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/home', function () {
+    Route::get('/dashboard', function () {
         $user = Auth::user();
 
         $randomVerse = Cache::remember('daily_verse', now()->endOfDay(), function () {
@@ -139,7 +139,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             'updated_at' => $updatedAt,
             'latestExercise' => $latestExercise,
         ]);
-    })->name('home');
+    })->name('dashboard');
 
     // Administrator Only
     Route::middleware(['roles:administrator'])->group(function () {
@@ -191,12 +191,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/metode-al-fuadi/jilid-1', function () {
             return view('pages.modul.nahwu.jilid-1', ['type_menu' => 'metode-al-fuadi']);
         })->name('metode-al-fuadi.jilid-1');
+
         Route::get('/exercise', [ExerciseLevelController::class, 'index'])->name('exercise-level.index');
-        Route::get('/exercise/alquran', function () {
-            return view('pages.exercise.analyze', ['type_menu' => '']);
-        })->name('exercise.alquran');
-        Route::get('/exercise/analysis/{verseId?}', [ExerciseController::class, 'getAnalysisExercise'])
-            ->name('exercise.analysis');
+        Route::get('/exercise/get/{level}/{exerciseId?}', [ExerciseController::class, 'getExercise'])
+            ->name('exercise.get');
+        Route::get('/exercise/{level}/{exerciseId?}', function ($level) {
+            return view('pages.exercise.analyze', ['type_menu' => $level]);
+        })->name('exercise.analyze');
 
         // Data Nahwu Resource
         Route::get('/words/data/data-nahwu', [NahwuDataController::class, 'getAll']);

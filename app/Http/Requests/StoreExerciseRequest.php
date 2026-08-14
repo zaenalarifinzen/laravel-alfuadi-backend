@@ -27,7 +27,7 @@ class StoreExerciseRequest extends FormRequest
             'description' => 'nullable|string',
             'content' => [
                 Rule::requiredIf(fn () => $this->input('type') !== 'analysis'),
-                'string',
+                'array',
                 Rule::prohibitedIf(fn () => $this->input('type') === 'analysis'),
             ],
             'level' => 'required|integer|in:1,2,3',

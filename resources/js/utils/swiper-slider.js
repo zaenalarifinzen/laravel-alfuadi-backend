@@ -38,22 +38,18 @@ export function initSwiperSlider({ fetchWords, elements }) {
 
     bindActiveSlideEvents();
 
-    // Fetch kata pertama saat halaman pertama kali dimuat (data awal dari
-    // blade sudah ada di DOM sebelum initSwiperSlider dipanggil)
     const initialId = getActiveSlideId();
     if (initialId) fetchWords(initialId);
 
-    function renderSwiperSlider(data) {
+    function renderSwiperSlider(data) {        
         const wrapper = document.querySelector("#slider-rtl .swiper-wrapper");
         if (!wrapper) return;
 
         wrapper.innerHTML = "";
 
         const wordGroups = data.wordGroups || [];
+        const label = data.title ? data.title : `${data.surah.id}. ${data.surah.name} - Ayat ${data.verse.number}`;
 
-        // Urutan DOM TIDAK perlu dibalik seperti workaround Swiper sebelumnya —
-        // Swiper dengan rtl:true menangani urutan visual RTL dengan benar
-        // dari urutan data aslinya (kata pertama ayat = slide pertama).
         wordGroups.forEach((wordGroup) => {
             const slide = document.createElement("div");
             slide.className = "swiper-slide";
@@ -69,14 +65,14 @@ export function initSwiperSlider({ fetchWords, elements }) {
         const id = getActiveSlideId();
         if (id) fetchWords(id);
 
-        elements.currentSurahId.value = data.surah.id;
-        elements.currentVerseNumber.value = data.verse.number;
-        elements.currentVerseId.value = data.verse.id;
+        // elements.currentSurahId.value = data.surah?.id ?? '';
+        // elements.currentVerseNumber.value = data.verse?.number ?? '';
+        elements.currentVerseId.value = data.verse?.id ?? '';
 
         elements.surahOption.value = "";
         elements.verseOption.value = "";
 
-        elements.currentVerseLabel.textContent = `${data.surah.id}. ${data.surah.name} - Ayat ${data.verse.number}`;
+        elements.currentWordGroupLabel.textContent = label;
 
         const firstWordGroup = data?.wordGroups?.[0];
         const editorName = firstWordGroup?.editor_info

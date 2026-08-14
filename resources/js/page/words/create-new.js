@@ -19,7 +19,7 @@ function readPageConfig() {
 
 function collectElements() {
     return {
-        currentVerseLabel: document.getElementById("current-verse-label"),
+        currentWordGroupLabel: document.getElementById("current-wordgroup-label"),
         currentSurahId: document.getElementById("surah-id"),
         currentVerseNumber: document.getElementById("verse-number"),
         currentVerseId: document.getElementById("verse-id"),

@@ -80,4 +80,10 @@ class ExerciseLevelController extends Controller
     {
         //
     }
+
+    /**
+     * Custom Function
+     */
+    
+
 }

@@ -53,10 +53,11 @@
                     <input type="hidden" id="surah-id" value="">
                     <input type="hidden" id="verse-number" value="">
                     <input type="hidden" id="verse-id" value="">
+                    <input type="hidden" id="exercise-id" value="">
 
                     <div class="card-header" id="word">
                         <div class="d-flex justify-content-between align-items-center w-100">
-                            <h4 id="current-verse-label">Nama Soal</h4>
+                            <h4 id="current-wordgroup-label">Nama Soal</h4>
                         </div>
                     </div>
 
@@ -281,7 +282,7 @@
 
         {!! json_encode([
             'pageType' => 'exercise',
-            'wordgroupGetUrl' => route('exercise.analysis', ['verseId' => ':id']),
+            'exerciseGetUrl' => route('exercise.get', ['level' => ':level', 'exerciseId' => ':id']),
             'csrfToken' => csrf_token(),
             'allowedSurahIds' => $allowedSurahIds,
             'allowedVerseNumbersBySurah' => $allowedVerseNumbersBySurah,

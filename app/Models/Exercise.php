@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class Exercise extends Model
 {
@@ -31,6 +32,7 @@ class Exercise extends Model
     ];
 
     protected $casts = [
+        'content' => 'json',
         'options' => 'json',
         'metadata' => 'json',
         'is_active' => 'boolean',
@@ -41,25 +43,29 @@ class Exercise extends Model
         'display_correct_answer',
     ];
 
-    public static function findOrCreateAnalysisExercise($verseId, $level = 1)
+    public static function findOrCreateQuranExercise($exerciseOrderNumber, $levelNumber = 1)
     {
         $admin = User::where('roles', 'administrator')->first();
         $adminId = $admin ? $admin->id : 1;
 
+        $verse = Verse::find($exerciseOrderNumber);
+        $surah = $verse->surah;
+
         return self::firstOrCreate(
             [
-                'verse_id' => $verseId,
+                'verse_id' => $exerciseOrderNumber,
                 'type' => 'analysis',
-                'level' => $level,
+                'level' => $levelNumber,
             ],
             [
-                'title' => "Analisa ayat {$verseId}",
-                'description' => 'Soal analisa dari ayat',
+                'title' => "Surat {$surah->name}" . " ayat {$verse->number}",
+                'description' => $verse->text,
                 'content' => null,
                 'correct_answer' => null,
                 'type' => 'analysis',
-                'level' => $level,
+                'level' => $levelNumber,
                 'is_active' => true,
+                'display_order' => $verse->id,
                 'created_by' => $adminId,
             ]
         );
@@ -102,7 +108,7 @@ class Exercise extends Model
             return $this->verse->text;
         }
 
-        return $this->content;
+        return $this->description;
     }
 
     public function getDisplayCorrectAnswerAttribute()

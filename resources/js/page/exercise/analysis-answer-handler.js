@@ -195,7 +195,7 @@ export function initAnalysisAnswerHandler({
         renderWordsTable(wordGroup);
 
         // re render word details, if exercise has answer key, render answer key instead of user answer
-        const answerKey = `answer_key_${stored.verse.id}`;
+        const answerKey = `ak_${stored.levelSlug}_${stored.exerciseOrderNumber}`;
         const answerKeyRaw = localStorage.getItem(answerKey);
         if (answerKeyRaw) {
             const answerKeyData = JSON.parse(answerKeyRaw);

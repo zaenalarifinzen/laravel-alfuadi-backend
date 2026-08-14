@@ -4,9 +4,13 @@ export function initSearchVerse({
     isModified,
     showEditConfirmation,
     fetchWordGroups,
+    onSearch,
+    onNavigate,
     config = {},
 }) {
     let verseCount = 0;
+    const searchAction = onSearch || fetchWordGroups;
+    const navigateAction = onNavigate || searchAction;
 
     function getAllowedSurahConfig() {
         if (config.allowedSurahConfig && typeof config.allowedSurahConfig === "object") {
@@ -155,7 +159,9 @@ export function initSearchVerse({
             if (!confirmed) return;
         }
 
-        fetchWordGroups(elements.surahOption.value, elements.verseOption.value);
+        if (typeof searchAction === "function") {
+            searchAction(elements.surahOption.value, elements.verseOption.value);
+        }
     }
 
     elements.surahOption.addEventListener("change", () => {
@@ -178,7 +184,9 @@ export function initSearchVerse({
         }
 
         const id = parseInt(elements.currentVerseId.value);
-        if (id > 1) fetchWordGroups(null, null, id - 1);
+        if (id > 1 && typeof navigateAction === "function") {
+            navigateAction(null, null, id - 1);            
+        }
     }
 
     async function goToNextVerse() {
@@ -190,7 +198,9 @@ export function initSearchVerse({
         }
 
         const id = parseInt(elements.currentVerseId.value);
-        if (id < 6236) fetchWordGroups(null, null, id + 1);
+        if (id < 6236 && typeof navigateAction === "function") {
+            navigateAction(null, null, id + 1);
+        }
     }
 
     elements.btnPrevVerse?.addEventListener("click", goToPrevVerse);

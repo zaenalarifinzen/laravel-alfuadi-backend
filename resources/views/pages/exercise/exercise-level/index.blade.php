@@ -47,7 +47,7 @@
                             @if ($level->slug === 'alquran')
                                 @continue
                             @endif
-                            <a href="#" class="text-decoration-none">
+                            <a href="{{ route('exercise.analyze', $level->slug) }}" class="text-decoration-none">
                                 <div class="card">
                                     <div class="card-header">
                                         <figure class="avatar bg-secondary mr-2 text-white"
@@ -73,7 +73,7 @@
                     </div>
                 </div>
 
-                <a href="{{ route('exercise.alquran') }}" class="text-decoration-none">
+                <a href="{{ route('exercise.analyze', 'alquran') }}" class="text-decoration-none">
                     <div class="card card-hero">
                         <div class="card-header">
                             <div class="card-icon">
@@ -84,7 +84,7 @@
                         </div>
                         <div class="card-body p-0" id="last-opened-info" style="display: none">
                             <div class="tickets-list">
-                                <a href="{{ route('exercise.alquran') }}" class="ticket-item">
+                                <a href="{{ route('exercise.analyze', 'alquran') }}" class="ticket-item">
                                     {{-- <div class="ticket-title">
                                         <h4>My order hasn't arrived yet</h4>
                                     </div> --}}

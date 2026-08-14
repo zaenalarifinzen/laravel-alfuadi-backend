@@ -74,7 +74,7 @@
 
                     <div class="card-header" id="word">
                         <div class="d-flex justify-content-between align-items-center w-100">
-                            <h4 id="current-verse-label">{{ $surahId }}. {{ $surahName }} - Ayat
+                            <h4 id="current-wordgroup-label">{{ $surahId }}. {{ $surahName }} - Ayat
                                 {{ $verseNumber }}</h4>
                             {{-- refresh button akan tampil disini setelah fetch dari lokal --}}
                         </div>

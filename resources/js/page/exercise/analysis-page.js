@@ -10,9 +10,9 @@ export function initAnalysisPage({
     getSlider,
 }) {
     const wordGroupsPrefix =
-        config.pageType === "exercise" ? "answer_user_" : "wordgroups_";
+        config.pageType === "exercise" ? "au_" : "wordgroups_";
 
-    let currentExerciseId = null;
+    let currentExercisOrderNumber = null;
     let currentCompareResult = [];
     let currentCompareVerseId = null;
 
@@ -20,9 +20,9 @@ export function initAnalysisPage({
         return wordGroupsPrefix;
     }
 
-    function compareAnswers(verseId) {
-        const answerKeyRaw = localStorage.getItem(`answer_key_${verseId}`);
-        const answerUserRaw = localStorage.getItem(`answer_user_${verseId}`);
+    function compareAnswers(exerciseOrderNumber) {
+        const answerKeyRaw = localStorage.getItem(`ak_${exerciseOrderNumber}`);
+        const answerUserRaw = localStorage.getItem(`au_${exerciseOrderNumber}`);
 
         if (!answerKeyRaw || !answerUserRaw) {
             console.warn("Answer key atau user answer tidak ditemukan");
@@ -180,156 +180,276 @@ export function initAnalysisPage({
         submitBtn.classList.add(`btn-${type}`);
     }
 
-    function fetchWordGroups(surahId, verseNumber, verseId) {
-        let url;
+    // ---------------------------------------------------------------------------
+    // Search Verse Helper
+    // ---------------------------------------------------------------------------
+    function searchVersebyNumber(surahNumber, verseNumber) {
+        fetchExercise("alquran", null, surahNumber, verseNumber);
+    }
 
-        if (verseId) {
-            url = config.wordgroupGetUrl.replace(":id", verseId);
-        } else if (surahId && verseNumber) {
-            url = config.wordgroupGetUrl.replace(
-                "/:id",
-                `?surah_id=${surahId}&verse_number=${verseNumber}`,
-            );
+    // ---------------------------------------------------------------------------
+    // URL building
+    // ---------------------------------------------------------------------------
+
+    function buildExerciseUrl(
+        levelSlug,
+        exerciseOrderNumber,
+        surahId,
+        verseNumber,
+    ) {
+        if (levelSlug === "alquran") {
+            if (exerciseOrderNumber) {
+                return config.exerciseGetUrl
+                    .replace(":level", "alquran")
+                    .replace(":id", exerciseOrderNumber);
+            }
+
+            if (surahId && verseNumber) {
+                const base = config.exerciseGetUrl
+                    .replace(":level", "alquran")
+                    .replace("/:id", "");
+                return `${base}?surah_id=${surahId}&verse_number=${verseNumber}`;
+            }
+
+            return null; // caller decides how to handle "missing parameter"
+        }
+
+        if (exerciseOrderNumber) {
+            return config.exerciseGetUrl
+                .replace(":level", levelSlug)
+                .replace(":id", exerciseOrderNumber);
+        }
+
+        return null;
+    }
+
+    // ---------------------------------------------------------------------------
+    // Response validation / parsing helpers
+    // ---------------------------------------------------------------------------
+
+    function isValidExerciseContent(content) {
+        return (
+            !!content &&
+            Array.isArray(content.wordGroups?.[0]?.words) &&
+            content.wordGroups[0].words.length > 0
+        );
+    }
+
+    function resolveOrderNumber(exerciseData) {
+        return exerciseData.display_order
+            ? exerciseData.display_order
+            : exerciseData.verse_id;
+    }
+
+    // ---------------------------------------------------------------------------
+    // Cache handling
+    // ---------------------------------------------------------------------------
+
+    function getCachedExercise(answerKey) {
+        const cachedKey = storage.getActiveStorageKey(answerKey);
+        if (!cachedKey) return null;
+
+        const cachedRaw = localStorage.getItem(cachedKey);
+        if (!cachedRaw) return null;
+
+        try {
+            return JSON.parse(cachedRaw);
+        } catch (e) {
+            console.error("Failed to parse cached exercise data", e);
+            return null;
+        }
+    }
+
+    function isCacheStillValid(cachedData, freshContent) {
+        const cachedWords = cachedData?.wordGroups?.[0]?.words;
+        const freshWords = freshContent?.wordGroups?.[0]?.words;
+
+        if (!cachedWords?.length || !freshWords?.length) return false;
+
+        return cachedWords[0].updated_at === freshWords[0].updated_at;
+    }
+
+    function clearExerciseStorage() {
+        Object.keys(localStorage)
+            .filter((k) => k.startsWith("ak_") || k.startsWith("au_"))
+            .forEach((k) => localStorage.removeItem(k));
+    }
+
+    // ---------------------------------------------------------------------------
+    // Answer payload building / persistence
+    // ---------------------------------------------------------------------------
+
+    function buildAnswerPayload(content, exerciseData, orderNumber) {
+        const cloned = structuredClone(content);
+        cloned.modified = false;
+        cloned.levelSlug = exerciseData.exercise_level.slug;
+        cloned.exerciseOrderNumber = orderNumber;
+        cloned.passed = exerciseData.passed;
+        cloned.title = exerciseData.title;
+        return cloned;
+    }
+
+    function stripAnswerFields(clonedContent) {
+        clonedContent.wordGroups.forEach((wg) => {
+            if (!Array.isArray(wg.words)) return;
+
+            wg.words.forEach((w) => {
+                Object.assign(w, {
+                    color: null,
+                    kalimat: null,
+                    hukum: null,
+                    kategori: null,
+                    kedudukan: null,
+                    irob: null,
+                    tanda: null,
+                });
+            });
+        });
+    }
+
+    function persistExerciseData(answerKey, userAnswerKey, clonedContent) {
+        localStorage.setItem(answerKey, JSON.stringify(clonedContent));
+        localStorage.setItem(userAnswerKey, JSON.stringify(clonedContent));
+    }
+
+    // ---------------------------------------------------------------------------
+    // Rendering / UI state
+    // ---------------------------------------------------------------------------
+
+    function renderExercise(clonedContent, answerKeyContent) {
+        const slider = getSlider();
+        const wordTable = getWordTable();
+
+        slider.renderSwiperSlider(clonedContent);
+        wordTable.renderWordsTable(clonedContent.wordGroups[0]);
+        wordTable.renderWordsDetails(answerKeyContent.wordGroups[0]);
+
+        return wordTable;
+    }
+
+    function updateSubmitState(wordTable, passed) {
+        wordTable.resetCard();
+
+        if (passed) {
+            wordTable.updateCard("Selesai", "success");
+            changeSubmitButton("btn-next-verse", "Selanjutnya", "primary");
         } else {
-            alert("Parameter tidak lengkap");
+            changeSubmitButton("btn-submit-answer", "Submit", "primary");
+        }
+    }
+
+    function syncUrlToHistory(levelSlug, orderNumber) {
+        history.replaceState(null, "", `/exercise/${levelSlug}/${orderNumber}`);
+    }
+
+    // ---------------------------------------------------------------------------
+    // Error / empty-state UI
+    // ---------------------------------------------------------------------------
+
+    function showExerciseUnavailableDialog() {
+        swal({
+            title: "Soal belum tersedia",
+            text: "Silakan coba soal lainnya",
+            icon: "error",
+            buttons: {
+                confirm: {
+                    text: "Tutup",
+                    visible: true,
+                },
+            },
+        });
+    }
+
+    function handleExerciseError(error) {
+        console.error(error);
+        showExerciseUnavailableDialog();
+    }
+
+    // ---------------------------------------------------------------------------
+    // Response orchestration (still one function, but now just coordinates
+    // the pieces above instead of doing everything inline)
+    // ---------------------------------------------------------------------------
+
+    function handleExerciseResponse(response) {
+        const exerciseData = response?.data;
+        const content = exerciseData?.content;
+
+        if (!content) {
+            console.error("Invalid response data");
+            return;
+        }
+
+        if (!isValidExerciseContent(content)) {
+            showExerciseUnavailableDialog();
+            return;
+        }
+
+        const orderNumber = resolveOrderNumber(exerciseData);
+        const answerKey = `ak_${exerciseData.exercise_level.slug}_${orderNumber}`;
+        const userAnswerKey = `au_${exerciseData.exercise_level.slug}_${orderNumber}`;
+
+        const cachedData = getCachedExercise(answerKey);
+        if (isCacheStillValid(cachedData, content)) {
+            loadCachedData();
+            return;
+        }
+
+        // Reset any in-memory comparison state left over from a previous exercise
+        currentCompareResult = [];
+        currentCompareVerseId = null;
+
+        clearExerciseStorage();
+
+        const answerKeyPayload = buildAnswerPayload(
+            content,
+            exerciseData,
+            orderNumber,
+        );
+        localStorage.setItem(answerKey, JSON.stringify(answerKeyPayload));
+
+        const userAnswerPayload = structuredClone(answerKeyPayload);
+        const passed = exerciseData.passed;
+
+        if (!passed) {
+            stripAnswerFields(userAnswerPayload);
+        }
+
+        localStorage.setItem(userAnswerKey, JSON.stringify(userAnswerPayload));
+
+        const wordTable = renderExercise(userAnswerPayload, answerKeyPayload);
+        updateSubmitState(wordTable, passed);
+        syncUrlToHistory(exerciseData.exercise_level.slug, orderNumber);
+    }
+
+    // ---------------------------------------------------------------------------
+    // Public entry point
+    // ---------------------------------------------------------------------------
+
+    function fetchExercise(
+        levelSlug,
+        exerciseOrderNumber = null,
+        surahId = null,
+        verseNumber = null,
+    ) {
+        const url = buildExerciseUrl(
+            levelSlug,
+            exerciseOrderNumber,
+            surahId,
+            verseNumber,
+        );
+
+        if (!url) {
+            alert("Missing parameter");
             return;
         }
 
         $.ajax({
             url,
             type: "GET",
-            beforeSend: function () {
-                showLoading();
-            },
-            success: function (response) {
-                const dataExercise = response?.data;
-                const content = dataExercise?.content;
-
-                if (!content || !content.verse) {
-                    console.error("Invalid response data");
-                    return;
-                }
-
-                const hasWords =
-                    Array.isArray(content.wordGroups[0]?.words) &&
-                    content.wordGroups[0]?.words.length > 0;
-
-                if (!hasWords) {
-                    swal({
-                        title: "Ayat belum tersedia",
-                        text: "Silakan coba ayat lainnya",
-                        icon: "error",
-                        buttons: {
-                            confirm: {
-                                text: "Tutup",
-                                visible: true,
-                            },
-                        },
-                    });
-                    return;
-                }
-
-                const verseId = content.verse.id;
-                const answerKey = `answer_key_${verseId}`;
-                const userAnswer = `answer_user_${verseId}`;
-
-                // Compare response and cache
-                const cachedKey = storage.getActiveStorageKey(answerKey);
-                const cachedRaw = cachedKey
-                    ? localStorage.getItem(cachedKey)
-                    : null;
-                const wordTable = getWordTable();
-                const slider = getSlider();
-                const cachedData = JSON.parse(cachedRaw);
-
-                // If cached data exists, compare timestamps to determine if the data has changed
-                if (cachedData && cachedData.wordGroups?.length > 0) {
-                    const oldTimestamp =
-                        cachedData.wordGroups[0].words[0].updated_at;
-                    const newTimestamp =
-                        content.wordGroups[0].words[0].updated_at;
-
-                    if (oldTimestamp === newTimestamp) {
-                        loadCachedData();
-                        return;
-                    }
-                }
-
-                content.modified = false;
-                content.exerciseId = dataExercise.id;
-                content.passed = dataExercise.passed;
-
-                // wordTable.removeUpdateButton();
-                currentExerciseId = dataExercise?.id ?? null;
-                currentCompareResult = [];
-                currentCompareVerseId = null;
-
-                Object.keys(localStorage)
-                    .filter(
-                        (k) =>
-                            k.startsWith("answer_key_") ||
-                            k.startsWith("answer_user_"),
-                    )
-                    .forEach((k) => localStorage.removeItem(k));
-
-                const cloned = structuredClone(content);
-                const passed = dataExercise.passed;
-
-                localStorage.setItem(answerKey, JSON.stringify(cloned));
-
-                if (!passed) {
-                    cloned.wordGroups.forEach((wg) => {
-                        if (!Array.isArray(wg.words)) return;
-
-                        wg.words.forEach((w) => {
-                            Object.assign(w, {
-                                color: null,
-                                kalimat: null,
-                                hukum: null,
-                                kategori: null,
-                                kedudukan: null,
-                                irob: null,
-                                tanda: null,
-                            });
-                        });
-                    });
-
-                    wordTable.resetCard();
-                    changeSubmitButton(
-                        "btn-submit-answer",
-                        "Submit",
-                        "primary",
-                    );
-                }
-
-                localStorage.setItem(userAnswer, JSON.stringify(cloned));
-
-                slider.renderSwiperSlider(cloned);
-
-                const firstWordGroup = cloned.wordGroups[0];
-                wordTable.renderWordsTable(firstWordGroup);
-
-                const answerKeyWordGroup = content.wordGroups[0];
-                wordTable.renderWordsDetails(answerKeyWordGroup);
-
-                if (passed) {
-                    wordTable.resetCard();
-                    wordTable.updateCard("Selesai", "success");
-                    changeSubmitButton(
-                        "btn-next-verse",
-                        "Selanjutnya",
-                        "primary",
-                    );
-                }
-                history.pushState({}, "", `?verse_id=${verseId}`);
-            },
-            error: function (xhr, status, error) {
-                console.error(error);
-                alert("Terjadi kesalahan");
-            },
-            complete: function () {
-                hideLoading();
-            },
+            beforeSend: showLoading,
+            success: handleExerciseResponse,
+            error: (xhr, status, error) => handleExerciseError(error),
+            complete: hideLoading,
         });
     }
 
@@ -342,10 +462,10 @@ export function initAnalysisPage({
             const row = `<tr><td colspan="8" class="text-center text-muted">${text}</td></tr>`;
             tbodyWords.html(row);
             tbodyWordsDetail.html(row);
-        }
+        };
 
         if (!key) {
-            setEmpty("Memuat data")
+            setEmpty("Memuat data");
             return;
         }
 
@@ -362,13 +482,16 @@ export function initAnalysisPage({
             setEmpty("Tidak ada data");
             return;
         }
-        
+
         const activeGroup = stored.wordGroups.find(
             (wg) => wg.id == wordGroupId,
         );
         const wordTable = getWordTable();
 
-        if (!activeGroup || !activeGroup.words || activeGroup.words.length === 0
+        if (
+            !activeGroup ||
+            !activeGroup.words ||
+            activeGroup.words.length === 0
         ) {
             setEmpty("Tidak ada data");
             var lastNode = $(".editor-kalimat a").contents().last()[0];
@@ -383,9 +506,9 @@ export function initAnalysisPage({
         wordTable.renderWordsTable(activeGroup);
 
         if (!stored.verse || !stored.verse.id) return;
-        
+
         // Load Aswer Key
-        const answerKeyRaw = localStorage.getItem(`answer_key_${stored.verse.id}`);
+        const answerKeyRaw = localStorage.getItem(`ak_${stored.verse.id}`);
         if (!answerKeyRaw) return;
 
         try {
@@ -419,12 +542,12 @@ export function initAnalysisPage({
         const wordTable = getWordTable();
         const slider = getSlider();
 
-        const currentExerciseId = cachedData.exerciseId;
+        const currentExerciseOrderNumber = cachedData.exerciseOrderNumber;
         slider.renderSwiperSlider(cachedData);
         wordTable.renderWordsTable(cachedData.wordGroups[0]);
 
-        // if exercise mode, get wordGroup from answer_key to WordDetails Table
-        const answerKey = `answer_key_${cachedData.verse.id}`;
+        // if exercise mode, get wordGroup from ak_ to WordDetails Table
+        const answerKey = `ak_${cachedData.verse?.id}`;
         const answerKeyRaw = localStorage.getItem(answerKey);
         if (answerKeyRaw) {
             const answerKeyData = JSON.parse(answerKeyRaw);
@@ -447,26 +570,42 @@ export function initAnalysisPage({
         }
     }
 
-    function boot() {
-        const cachedKey = storage.getActiveStorageKey(wordGroupsPrefix);
-        const cachedRaw = cachedKey ? localStorage.getItem(cachedKey) : null;
-        const cachedData = JSON.parse(cachedRaw);
-        const cachedVerseId = cachedData?.verse?.id;
+    // ---------------------------------------------------------------------------
+    // Navigation
+    // ---------------------------------------------------------------------------
+    function nextExercise(levelSlug, currentExerciseOrderNumber) {
+        const nextExerciseOrderNumber = currentExercisOrderNumber + 1;
+        fetchExercise(levelSlug, nextExerciseOrderNumber);
+    }
 
-        fetchWordGroups(null, null, cachedVerseId || 1);
+    function prevExercise(levelSlug, currentExerciseOrderNumber) {
+        const prevExerciseOrderNumber = currentExercisOrderNumber - 1;
+        fetchExercise(levelSlug, prevExerciseOrderNumber);
+    }
+
+
+    // ---------------------------------------------------------------------------
+    // Search Verse Helper
+    // ---------------------------------------------------------------------------
+    function boot() {
+        const urlParts = window.location.pathname.split("/");
+        const levelSlug = urlParts[2] || "beginner";
+        const exerciseOrderNumber = urlParts[3] || 1;
+        fetchExercise(levelSlug, exerciseOrderNumber);
     }
 
     return {
         boot,
         getPrefix,
-        fetchWordGroups,
+        fetchExercise,
+        searchVersebyNumber,
         fetchWords,
         compareAnswers,
         highlightErrors,
         applyComparisonHighlights,
         showEditConfirmation,
         changeSubmitButton,
-        getCurrentExerciseId: () => currentExerciseId,
+        getCurrentExerciseOrderNumber: () => currentExerciseOrderNumber,
         getCurrentCompareResult: () => currentCompareResult,
         setCurrentCompareResult: (compareResult, verseId = null) => {
             currentCompareResult = compareResult;
