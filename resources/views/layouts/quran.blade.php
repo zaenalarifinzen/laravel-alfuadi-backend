@@ -53,21 +53,21 @@
 </head>
 
 <body class="layout-3">
-    <div id="app">
-        <div class="main-wrapper container">
-            <!-- Header -->
-            @include('components.topnav')
+    <div class="main-wrapper container">
+        <!-- Header -->
+        @include('components.header-general')
 
-            <!-- Secondary Navigation Menu -->
-            {{-- @include('components.navbar') --}}
+        <!-- Secondary Navigation Menu -->
+        @include('components.navbar')
 
-            <!-- Content -->
-            @yield('main')
+        <!-- Content -->
+        @yield('main')
 
-            <!-- Footer -->
-            @include('components.footer')
-        </div>
+        <!-- Footer -->
+        @include('components.footer')
     </div>
+    {{-- <div id="app">
+    </div> --}}
 
     <!-- General JS Scripts -->
     <script src="{{ asset('library/jquery/dist/jquery.min.js') }}"></script>
@@ -86,8 +86,5 @@
 
     @vite(['resources/js/app.js'])
 </body>
-<div id="loading-overlay">
-    <div class="spinner-border text-primary" role="status"></div>
-</div>
 
 </html>
