@@ -22,13 +22,11 @@ class StoreExerciseLevelRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:100',
-            'level_number' => 'required|integer|unique:exercise_levels,level_number',
+            'name' => 'sometimes|required|string|max:100',
+            'slug' => 'sometimes|required|string|max:100',
+            'level_number' => 'sometimes|required|integer',
+            'order_number' => 'sometimes|required|integer',
             'description' => 'nullable|string',
-            'color' => 'nullable|string|max:50',
-            'icon' => 'nullable|string|max:100',
-            'min_score' => 'nullable|integer|min:0',
-            'exercise_count' => 'nullable|integer|min:1',
             'is_active' => 'boolean',
             'metadata' => 'nullable|json',
         ];

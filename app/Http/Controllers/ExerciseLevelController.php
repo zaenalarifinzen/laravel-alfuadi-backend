@@ -2,20 +2,34 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreExerciseLevelRequest;
+use App\Http\Requests\UpdateExerciseLevelRequest;
 use App\Models\ExerciseLevel;
 use Illuminate\Http\Request;
 
 class ExerciseLevelController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display the admin listing of exercise levels.
      */
     public function index()
     {
-        $exerciseLevel = ExerciseLevel::orderBy('level_number', 'asc')
-            ->get();
-        
-        return view('pages.exercise.exercise-level.index', ['exerciseLevel' => $exerciseLevel, 'type_menu' => '']);
+        $levels = ExerciseLevel::orderBy('level_number', 'asc')->get();
+
+        return view('pages.admin.exercise-level.index', ['levels' => $levels, 'type_menu' => 'exercise']);
+    }
+
+    /**
+     * Display the user-facing level list page.
+     */
+    public function userIndex()
+    {
+        $exerciseLevel = ExerciseLevel::orderBy('level_number', 'asc')->get();
+
+        return view('pages.exercise.exercise-level.index', [
+            'exerciseLevel' => $exerciseLevel,
+            'type_menu' => 'exercise',
+        ]);
     }
 
     /**
@@ -23,24 +37,21 @@ class ExerciseLevelController extends Controller
      */
     public function create()
     {
-        return view('pages.exercise.exercise-level.create', ['type_menu' => 'exercise']);
+        return view('pages.admin.exercise-level.create', ['type_menu' => 'exercise']);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreExerciseLevelRequest $request)
     {
         // Validasi input
-        $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:exercise_levels,name',
-            'level_number' => 'required|integer|unique:exercise_levels,level_number',
-            'description' => 'nullable|string',
-        ]);
+        $data = $request->validated();
+        $data['display_order'] = $data['level_number'] . 0; 
 
         try {
-            ExerciseLevel::create($validated);
-            return redirect()->route('exercise-level.index')->with('success', 'Level berhasil ditambahkan');
+            ExerciseLevel::create($data);
+            return redirect()->route('admin.exercise-levels.index')->with('success', $request->name . ' berhasil ditambahkan');
         } catch (\Exception $e) {
             return redirect()
                 ->back()
@@ -62,15 +73,28 @@ class ExerciseLevelController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $level = ExerciseLevel::findOrFail($id);
+        return view('pages.admin.exercise-level.edit', ['level' => $level, 'type_menu' => 'exercise']);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateExerciseLevelRequest $request, string $id)
     {
-        //
+        // Validasi input
+        $data = $request->validated();
+
+        try {
+            $level = ExerciseLevel::findOrFail($id);
+            $level->update($data);
+            return redirect()->route('admin.exercise-levels.index')->with('success', 'Level berhasil diperbarui');
+        } catch (\Exception $e) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Gagal memperbarui level: ' . $e->getMessage());
+        }
     }
 
     /**

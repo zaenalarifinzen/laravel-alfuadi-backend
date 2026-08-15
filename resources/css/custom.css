@@ -288,11 +288,11 @@ ul.nav-tabs li.nav-item a.nav-link.active i {
         padding-left: 32px !important;
         padding-right: 32px !important;
     }
-    
+
     .navbar .form-inline {
         padding: 0 16px;
     }
-    
+
     .navbar .navbar-right {
         padding-right: 16px;
     }
@@ -1011,6 +1011,147 @@ table tr:hover .table-links {
     /* font-size: 12px; */
 }
 
+.custom-dropdown.autofill-highlight .select-btn {
+    animation: autofill-outline 1.8s ease forwards;
+}
+
+/* Grouping */
+.arabic-container {
+    direction: rtl;
+    text-align: right;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+/* Pastikan form tetap LTR */
+.ltr-container {
+    direction: ltr !important;
+    text-align: left !important;
+}
+
+/* Reset untuk tampilan select agar tidak terpengaruh selectric.css */
+.ltr-container select.form-control {
+    border-radius: 0 !important;
+    height: calc(2.25rem + 2px) !important;
+}
+
+/* Agar input-group tidak ada overflow tersembunyi */
+.ltr-container .input-group {
+    overflow: visible !important;
+    flex-wrap: nowrap !important;
+}
+
+/* Supaya tombol tidak menumpuk di atas border input */
+.ltr-container .btn {
+    z-index: 1;
+}
+
+/* Sesuaikan chip agar proporsional dengan tinggi huruf Arab */
+.selectgroup.selectgroup-pills .selectgroup-item .selectgroup-button {
+    border-radius: 8px !important;
+    padding: 0.4rem 0.8rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    min-height: 2.4rem;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Saat terpilih */
+.selectgroup-input:checked + .selectgroup-button {
+    background-color: #d6f7f0 !important;
+    color: #1a1a1a !important;
+    border-color: #259980;
+    border-width: 1px;
+}
+
+/* Supaya chip rapi dalam arah kanan ke kiri */
+.selectgroup.selectgroup-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    justify-content: flex-start;
+}
+
+/* Batasi efek RTL hanya untuk teks Arab */
+.arabic-container {
+    direction: rtl;
+    text-align: right;
+}
+
+/* Wrapper untuk form agar tidak ikut RTL */
+.ltr-container {
+    direction: ltr !important;
+    text-align: left !important;
+}
+
+/* Pastikan input group tetap gaya Bootstrap */
+.ltr-container .input-group {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    /* biarkan Bootstrap handle */
+}
+
+.card-header .input-group {
+    display: flex !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+}
+
+#button-bar {
+    transition:
+        opacity 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+#button-bar:not(.floating) {
+    opacity: 1;
+}
+
+#button-bar.floating {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0.95;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    width: auto;
+    max-width: fit-content;
+    padding: 8px 10px;
+    display: flex;
+    flex-wrap: nowrap;
+    z-index: 999;
+}
+
+/* Autofill Effect */
+@keyframes autofill-outline {
+    0% {
+        border-color: #10b981;
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.45);
+    }
+
+    20% {
+        border-color: #10b981;
+        box-shadow: 0 0 0 5px rgba(16, 185, 129, 0.18);
+    }
+
+    45% {
+        border-color: #10b981;
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+    }
+
+    100% {
+        border-color: #eaecfc;
+        box-shadow: none;
+    }
+}
+
 input.invalid,
 textarea.invalid {
     border-color: #e74c3c !important;
@@ -1024,7 +1165,6 @@ textarea.invalid {
 }
 
 @media (max-width: 768px) {
-    
     .col-symbol,
     .col-translation {
         display: none;

@@ -171,9 +171,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/wordgroups/split', [WordGroupController::class, 'split'])->name('wordgroups.split');
         Route::post('/wordgroups/complete', [WordGroupController::class, 'completeOrderNumber'])->name('wordgroups.complete');
 
-        // Exercise
-        Route::get('/exercise/new', [ExerciseLevelController::class, 'create'])->name('exercise-level.create');
-        Route::post('/exercise/new', [ExerciseLevelController::class, 'store'])->name('exercise-level.store');
+        // Admin exercise managemen
+        Route::prefix('admin')->name('admin.')->group(function () {
+            Route::resource('exercise-levels', ExerciseLevelController::class);
+            Route::resource('exercises', ExerciseController::class);
+        });
+
+        // Legacy.
+        Route::get('/exercise-level/new', [ExerciseLevelController::class, 'create'])->name('exercise-level.create');
+        Route::post('/exercise-level/new', [ExerciseLevelController::class, 'store'])->name('exercise-level.store');
+        Route::resource('new-exercise', ExerciseController::class);
 
         // Custom words routes
         Route::post('words/sync', [WordController::class, 'sync'])->name('words.sync');
@@ -192,7 +199,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             return view('pages.modul.nahwu.jilid-1', ['type_menu' => 'metode-al-fuadi']);
         })->name('metode-al-fuadi.jilid-1');
 
-        Route::get('/exercise', [ExerciseLevelController::class, 'index'])->name('exercise-level.index');
+        Route::get('/exercise', [ExerciseLevelController::class, 'userIndex'])->name('exercise-level.index');
         Route::get('/exercise/get/{level}/{exerciseId?}', [ExerciseController::class, 'getExercise'])
             ->name('exercise.get');
         Route::get('/exercise/{level}/{exerciseId?}', function ($level) {

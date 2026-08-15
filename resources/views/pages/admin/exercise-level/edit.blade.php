@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Tambah level')
+@section('title', 'Edit level')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -16,11 +16,11 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Tambah Level</h1>
+                <h1>Edit Level</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="{{ route('home') }}">Dashboard</a></div>
                     <div class="breadcrumb-item"><a href="{{ route('exercise-level.index') }}">Latihan</a></div>
-                    <div class="breadcrumb-item">Create level</div>
+                    <div class="breadcrumb-item">Edit level</div>
                 </div>
             </div>
 
@@ -30,7 +30,7 @@
                     <div class="col-12 col-md-6 col-lg-6">
                         <div class="card">
                             <div class="card-header">
-                                <h4>Level baru</h4>
+                                <h4>Edit Level</h4>
                             </div>
                             <div class="card-body">
                                 <div class="row">
@@ -39,12 +39,21 @@
                                     </div>
                                 </div>
 
-                                <form action="{{ route('exercise-level.store') }}" method="POST" novalidate>
+                                <form action="{{ route('admin.exercise-levels.update', $level->id) }}" method="POST" novalidate>
                                     @csrf
+                                    @method('PUT')
+                                    <div class="form-group">
+                                        <label>Slug</label>
+                                        <input type="text" class="form-control @error('slug') is-invalid @enderror"
+                                            name="slug" value="{{ $level->slug }}" required>
+                                        @error('slug')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                     <div class="form-group">
                                         <label>Nama level</label>
                                         <input type="text" class="form-control @error('name') is-invalid @enderror"
-                                            name="name" value="{{ old('name') }}" required>
+                                            name="name" value="{{ $level->name }}" required>
                                         @error('name')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
@@ -53,14 +62,14 @@
                                         <label>Nomor level</label>
                                         <input type="number"
                                             class="form-control @error('level_number') is-invalid @enderror"
-                                            name="level_number" value="{{ old('level_number') }}" required>
+                                            name="level_number" value="{{ $level->level_number }}" required>
                                         @error('level_number')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="form-group">
                                         <label>Deskripsi level</label>
-                                        <textarea class="form-control @error('description') is-invalid @enderror" name="description" data-height="100">{{ old('description') }}</textarea>
+                                        <textarea class="form-control @error('description') is-invalid @enderror" name="description" data-height="100">{{ $level->description }}</textarea>
                                         @error('description')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror

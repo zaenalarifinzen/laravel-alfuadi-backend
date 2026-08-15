@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreExerciseRequest;
 use App\Models\Exercise;
 use App\Models\ExerciseLevel;
 use App\Models\UserAnswer;
@@ -24,15 +25,26 @@ class ExerciseController extends Controller
      */
     public function create()
     {
-        //
+        $levels = ExerciseLevel::orderBy('level_number', 'asc')->get();
+        return view('pages.exercise.create', compact('levels'), ['type_menu' => 'exercise']);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreExerciseRequest $request)
     {
-        //
+        $data = $request->validated();
+        $data['created_by'] = auth()->id();
+        $data['type'] = 'analysis';
+
+        if (!isset($data['display_order'])) {
+            $maxDisplayOrder = Exercise::where('level', $data['level'])->max('display_order');
+            $data['display_order'] = $maxDisplayOrder ? $maxDisplayOrder + 1 : 1;
+        }
+        
+        Exercise::create($data);
+        return redirect()->route('admin.exercises.create')->with('success', 'exercise created succesfully');
     }
 
     /**
