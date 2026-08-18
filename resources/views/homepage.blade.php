@@ -6,16 +6,24 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Al-Fuadi</title>
-    <!-- Material Symbols -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-        rel="stylesheet" />
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com" rel="preconnect" />
-    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600&amp;family=Manrope:wght@600;700&amp;family=Noto+Serif:wght@400&amp;display=swap"
-        rel="stylesheet" />
+
+    <!-- General CSS Files -->
+    <link rel="stylesheet" href="{{ asset('library/bootstrap/dist/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    @stack('style')
+
+    <!-- Template CSS -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Cinzel+Decorative:wght@400;700;900&family=Scheherazade+New:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/components.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/fonts.css') }}">
+    @vite(['resources/css/custom.css'])
+
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <style>
@@ -156,29 +164,10 @@
     </style>
 </head>
 
-<body class="bg-animated-mesh">
-    <!-- TopNavBar -->
-    <header class="sticky-top top-nav shadow-sm">
-        <div class="container py-3">
-            <div class="d-flex justify-content-between align-items-center">
-                <!-- Brand -->
-                <a class="text-decoration-none text-primary-custom font-headline fs-4 fw-semibold d-flex align-items-center gap-2"
-                    href="{{ route('home') }}">Al-Fuadi
-                </a>
-                <!-- Navigation Links (Desktop) -->
-                <nav class="d-none d-md-flex gap-4">
-                    <a class="text-decoration-none text-secondary fw-medium opacity-75" href="#">Program</a>
-                    <a class="text-decoration-none text-secondary fw-medium opacity-75" href="#">Kurikulum</a>
-                    <a class="text-decoration-none text-secondary fw-medium opacity-75" href="#">Ulama</a>
-                    <a class="text-decoration-none text-secondary fw-medium opacity-75" href="#">Sumber Daya</a>
-                </nav>
-                <!-- Actions -->
-                <div class="d-flex align-items-center gap-3">
-                    <a class="btn bg-primary-custom rounded-pill px-4 fw-medium" href="{{ route('login') }}">Masuk</a>
-                </div>
-            </div>
-        </div>
-    </header>
+<body class="bg-animated-mesh layout-3">
+    <!-- Header -->
+    @include('components.header-general')
+
     <!-- Main Content Canvas -->
     <main class="flex-grow-1">
         <!-- Hero Section -->
@@ -191,7 +180,8 @@
                 Lingkungan yang tenang dirancang untuk fokus yang mendalam dan pemahaman yang sebenarnya.
             </p>
             <div class="d-flex flex-column flex-sm-row justify-content-center align-items-center gap-3 mb-5">
-                <a class="btn bg-primary-custom rounded-pill px-5 py-2 fs-5 font-headline" href="{{ route('register') }}">
+                <a class="btn bg-primary-custom rounded-pill px-5 py-2 fs-5 font-headline"
+                    href="{{ route('register') }}">
                     Mulai Gratis
                 </a>
                 <a class="text-decoration-none text-primary-custom fw-medium d-flex align-items-center gap-1"
@@ -292,11 +282,13 @@
                     style="width: 250px; height: 250px; right: -50px; top: -50px; filter: blur(50px);"></div>
                 <div class="position-relative z-1">
                     <h2 class="font-headline fs-2 mb-2">Mulai Perjalanan Anda Hari Ini</h2>
-                    <p class="text-secondary mb-0">Bergabunglah dengan ribuan siswa yang mengungkap keindahan linguistik
+                    <p class="text-secondary mb-0">Bergabunglah dengan ribuan siswa yang mengungkap keindahan
+                        linguistik
                         Al-Qur'an.</p>
                 </div>
                 <div class="position-relative z-1">
-                    <a class="btn bg-primary-custom rounded-pill px-5 py-3 font-headline fs-5 shadow-sm" href="{{ route('register') }}">
+                    <a class="btn bg-primary-custom rounded-pill px-5 py-3 font-headline fs-5 shadow-sm"
+                        href="{{ route('register') }}">
                         Buat Akun Gratis
                     </a>
                 </div>
@@ -309,10 +301,12 @@
             <div class="text-center text-md-start">
                 <span
                     class="font-headline fs-4 text-primary-custom d-flex align-items-center justify-content-center justify-content-md-start gap-2 mb-2">
-                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">menu_book</span>
+                    <span class="material-symbols-outlined"
+                        style="font-variation-settings: 'FILL' 1;">menu_book</span>
                     Pusat Pembelajaran Al-Fuadi
                 </span>
-                <p class="text-secondary mb-0" style="font-size: 0.75rem;">© 2024 Pusat Pembelajaran Al-Fuadi. Semua hak
+                <p class="text-secondary mb-0" style="font-size: 0.75rem;">© 2024 Pusat Pembelajaran Al-Fuadi. Semua
+                    hak
                     cipta dilindungi undang-undang.</p>
             </div>
             <nav class="d-flex flex-wrap justify-content-center gap-4">
@@ -327,8 +321,25 @@
             </nav>
         </div>
     </footer>
+
+    <!-- General JS Scripts -->
+    <script src="{{ asset('library/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset('library/popper.js/dist/umd/popper.js') }}"></script>
+    <script src="{{ asset('library/tooltip.js/dist/umd/tooltip.js') }}"></script>
+    <script src="{{ asset('library/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('library/jquery.nicescroll/dist/jquery.nicescroll.min.js') }}"></script>
+    <script src="{{ asset('library/moment/min/moment.min.js') }}"></script>
+    <script src="{{ asset('js/stisla.js') }}"></script>
+
+    @stack('scripts')
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Template JS File -->
+    <script src="{{ asset('js/scripts.js') }}"></script>
+    <script src="{{ asset('js/custom.js') }}"></script>
+
+    @vite(['resources/js/app.js'])
 </body>
 
 </html>

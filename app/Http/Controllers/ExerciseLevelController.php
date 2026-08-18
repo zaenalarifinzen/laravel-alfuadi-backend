@@ -16,7 +16,7 @@ class ExerciseLevelController extends Controller
     {
         $levels = ExerciseLevel::orderBy('level_number', 'asc')->get();
 
-        return view('pages.admin.exercise-level.index', ['levels' => $levels, 'type_menu' => 'exercise']);
+        return view('pages.admin.exercise-level.index', ['levels' => $levels, 'type_menu' => 'admin.exercises.exercise-level']);
     }
 
     /**
@@ -37,7 +37,7 @@ class ExerciseLevelController extends Controller
      */
     public function create()
     {
-        return view('pages.admin.exercise-level.create', ['type_menu' => 'exercise']);
+        return view('pages.admin.exercise-level.create', ['type_menu' => 'exercise', 'mode' => 'create']);
     }
 
     /**
@@ -74,7 +74,7 @@ class ExerciseLevelController extends Controller
     public function edit(string $id)
     {
         $level = ExerciseLevel::findOrFail($id);
-        return view('pages.admin.exercise-level.edit', ['level' => $level, 'type_menu' => 'exercise']);
+        return view('pages.admin.exercise-level.edit', ['level' => $level, 'type_menu' => 'exercise', 'mode' => 'edit']);
     }
 
     /**
@@ -100,9 +100,10 @@ class ExerciseLevelController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(ExerciseLevel $exerciseLevel)
     {
-        //
+        $exerciseLevel->delete();
+        return redirect()->route('admin.exercise-levels.index')->with('success', '"' . $exerciseLevel['name'] . '" succesfully deleted');
     }
 
     /**

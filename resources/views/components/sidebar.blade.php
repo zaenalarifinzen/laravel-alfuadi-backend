@@ -69,18 +69,18 @@
                 </li>
 
                 <li class="menu-header">Organize</li>
-                <li class="nav-item dropdown {{ $type_menu === 'metode-al-fuadi' ? 'active' : '' }}">
+                <li class="nav-item dropdown {{ Request::is('admin/exercises') ? 'active' : '' }}">
                     <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
                             class="fas fa-lightbulb"></i>
                         <span>Exercise</span></a>
                     <ul class="dropdown-menu">
-                        <li class="{{ Request::is('metode-al-fuadi/jilid-1') ? 'active' : '' }}">
+                        <li class="{{ $type_menu === 'admin.exercises.exercise-level' ? 'active' : '' }}">
                             <a class="nav-link" href="{{ route('admin.exercise-levels.index') }}">
                                 <span>Level</span>
                             </a>
                         </li>
-                        <li class="{{ Request::is('modul/jilid-2') ? 'active' : '' }}">
-                            <a class="nav-link" href="#">
+                        <li class="{{ $type_menu === 'admin.exercises.exercise' ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('admin.exercises.index') }}">
                                 <span>Soal</span>
                             </a>
                         </li>

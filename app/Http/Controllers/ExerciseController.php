@@ -17,7 +17,13 @@ class ExerciseController extends Controller
      */
     public function index()
     {
-        //
+        $exercises = Exercise::with('exerciseLevel')->orderBy('level', 'asc')->orderBy('display_order', 'asc')->get();
+        foreach ($exercises as $exercise) {
+            $exercise->load('exerciseLevel');
+        }
+        Log::info('Exercises retrieved: ', $exercises->toArray());
+
+        return view('pages.admin.exercise.index', ['exercises' => $exercises, 'type_menu' => 'admin.exercises.exercise']);
     }
 
     /**
@@ -26,7 +32,7 @@ class ExerciseController extends Controller
     public function create()
     {
         $levels = ExerciseLevel::orderBy('level_number', 'asc')->get();
-        return view('pages.exercise.create', compact('levels'), ['type_menu' => 'exercise']);
+        return view('pages.admin.exercise.create', compact('levels'), ['type_menu' => 'exercise', 'mode' => 'edit']);
     }
 
     /**
@@ -60,7 +66,9 @@ class ExerciseController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $exercise = Exercise::findOrFail($id);
+        $levels = ExerciseLevel::orderBy('level_number', 'asc')->get();
+        return view('pages.admin.exercise.edit', compact('exercise', 'levels'), ['type_menu' => 'admin.exercises.exercise']);
     }
 
     /**

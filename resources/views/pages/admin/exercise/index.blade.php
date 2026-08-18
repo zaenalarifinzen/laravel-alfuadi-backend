@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Kelola Level')
+@section('title', 'Soal Latihan')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -16,18 +16,20 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Kelola Level</h1>
+                <h1>Soal Latihan</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="{{ route('home') }}">Dashboard</a></div>
                     <div class="breadcrumb-item"><a href="{{ route('exercise-level.index') }}">Admin</a></div>
-                    <div class="breadcrumb-item">Kelola Level</div>
+                    <div class="breadcrumb-item">Soal Latihan</div>
                 </div>
             </div>
 
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h2 class="section-title">Level Latihan</h2>
-                <a href="{{ route('admin.exercise-levels.create') }}" class="btn btn-icon icon-left btn-primary">
-                    <i class="fas fa-plus"></i>Tambah Level</a>
+                <h2 class="section-title">Soal Latihan</h2>
+                <a href="{{ route('admin.exercises.create') }}" class="btn btn-icon icon-left btn-primary">
+                    <i class="fas fa-plus"></i>
+                    Tambah Soal
+                </a>
             </div>
             <div class="section-body">
                 <div class="row">
@@ -45,45 +47,28 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Nama</th>
-                                        <th>Deskripsi</th>
-                                        <th>Jumlah Soal</th>
+                                        <th>Judul</th>
+                                        <th>Soal</th>
+                                        <th>Level</th>
                                         <th>Status</th>
                                         <th>Opsi</th>
                                     </tr>
                                 </thead>
-                                @foreach ($levels as $level)
+                                @foreach ($exercises as $exercise)
                                     <tr>
-                                        <td>{{ $level->level_number }}</td>
-                                        <td>{{ $level->name }}</td>
-                                        <td>{{ $level->description }}</td>
-                                        <td>10</td>
+                                        <td>{{ $exercise->display_order }}</td>
+                                        <td>{{ $exercise->title }}</td>
+                                        <td>{{ $exercise->description }}</td>
+                                        <td>{{ $exercise->exerciseLevel->name }}</td>
                                         <td>
-                                            @if ($level->is_active)
+                                            @if ($exercise->is_active)
                                                 <div class="badge badge-success">Aktif</div>
                                             @else
                                                 <div class="badge badge-warning">Tidak Aktif</div>
                                             @endif
                                         </td>
-                                        <td>
-                                            <div class="d-flex justify-content-left">
-                                                <a href='{{ route('admin.exercise-levels.edit', $level->id) }}'
-                                                    class="btn btn-sm btn-info btn-icon">
-                                                    <i class="fas fa-edit" data-toggle="tooltip"
-                                                        data-original-title="Edit"></i>
-                                                </a>
-                                                <form action="{{ route('admin.exercise-levels.destroy', $level->id) }}"
-                                                    method="POST" class="ml-2">
-                                                    <input type="hidden" name="_method" value="DELETE" />
-                                                    <input type="hidden" name="_token" value="{{ csrf_token() }}" />
-                                                    <button type="button"
-                                                        class="btn btn-sm btn-danger btn-icon confirm-delete"
-                                                        data-toggle="tooltip" data-original-title="Hapus">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </td>
+                                        <td><a href="{{ route('admin.exercises.edit', $exercise->id) }}"
+                                                class="btn btn-primary">Edit</a></td>
                                     </tr>
                                 @endforeach
                             </table>
@@ -91,7 +76,7 @@
                     </div>
                     <div class="card-footer d-flex justify-content-between align-items-center">
                         <div class="">
-                            <div class="p">Menampilkan {{ $levels->count() }} dari {{ $levels->count() }} hasil</div>
+                            {{-- <div class="p">Menampilkan {{ $levels->count() }} dari {{ $levels->count() }} hasil</div> --}}
                         </div>
                         {{-- <nav class="d-inline-block">
                             <ul class="pagination mb-0">
@@ -120,40 +105,6 @@
 
 @push('scripts')
     <!-- JS Libraies -->
-    <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
 
     <!-- Page Specific JS File -->
-    <!-- Page Specific JS File -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            document.querySelectorAll(".confirm-delete").forEach(btn => {
-                btn.addEventListener("click", function(e) {
-                    let form = this.closest("form");
-
-                    swal({
-                            title: "Hapus level?",
-                            text: "Level akan dihapus permanen beserta daftar soal yang terkait",
-                            icon: "warning",
-                            buttons: {
-                                cancel: {
-                                    text: 'Batal',
-                                    visible: true,
-                                },
-                                confirm: {
-                                    text: 'Ya, hapus',
-                                    visible: true,
-                                    className: 'btn-danger'
-                                }
-                            },
-                            dangerMode: true,
-                        })
-                        .then((willDelete) => {
-                            if (willDelete) {
-                                form.submit();
-                            }
-                        });
-                });
-            });
-        });
-    </script>
 @endpush
