@@ -4,12 +4,6 @@
 
 @push('style')
     <!-- CSS Libraries -->
-    <link rel="stylesheet" href="{{ asset('library/bootstrap-daterangepicker/daterangepicker.css') }}">
-    <link rel="stylesheet" href="{{ asset('library/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('library/select2/dist/css/select2.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('library/selectric/public/selectric.css') }}">
-    <link rel="stylesheet" href="{{ asset('library/bootstrap-timepicker/css/bootstrap-timepicker.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('library/bootstrap-tagsinput/dist/bootstrap-tagsinput.css') }}">
 @endpush
 
 @section('main')
@@ -39,36 +33,92 @@
                 </div>
                 <div class="card">
                     <div class="card-header">
-                        <h4>Level Latihan</h4>
+                        <div class="selectric-wrapper selectric-form-control selectric-selectric selectric-below">
+                            <div class="selectric-hide-select">
+                                <select class="form-control selectric" tabindex="-1">
+                                    <option>Semua Level</option>
+                                    <option>Pemula</option>
+                                    <option>Menengah</option>
+                                    <option>Lanjutan</option>
+                                    <option>Al-Quran</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table-striped table-md table">
+                            <table class="table-striped table-md table table-hover">
                                 <thead>
                                     <tr>
                                         <th>No</th>
+                                        <th>Level</th>
+                                        <th>Urutan</th>
                                         <th>Judul</th>
                                         <th>Soal</th>
-                                        <th>Level</th>
                                         <th>Status</th>
-                                        <th>Opsi</th>
                                     </tr>
                                 </thead>
                                 @foreach ($exercises as $exercise)
                                     <tr>
-                                        <td>{{ $exercise->display_order }}</td>
-                                        <td>{{ $exercise->title }}</td>
-                                        <td>{{ $exercise->description }}</td>
+                                        <td>{{ $loop->iteration }}</td>
                                         <td>{{ $exercise->exerciseLevel->name }}</td>
+                                        <td>{{ $exercise->display_order }}</td>
+                                        <td>
+                                            <div class="btn-group mb-2">
+                                                <a href="#" class="font-weight-600" data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                                    {{ $exercise->title }}</a>
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('admin.exercises.edit', $exercise->id) }}">Edit</a>
+                                                    <a class="dropdown-item" href="{{ route('admin.exercises.grouping', $exercise->id) }}">Grouping</a>
+                                                    <a class="dropdown-item" href="#">Input I'rob</a>
+                                                    @if ($exercise->is_active)
+                                                        <a href="#" class="dropdown-item"
+                                                            onclick="event.preventDefault(); document.getElementById('deactivate-form-{{ $exercise->id }}').submit();">
+                                                            Nonaktifkan
+                                                        </a>
+
+                                                        <form id="deactivate-form-{{ $exercise->id }}"
+                                                            action="{{ route('admin.exercises.deactivate', $exercise->id) }}"
+                                                            method="POST" class="d-none">
+                                                            @csrf
+                                                        </form>
+                                                    @else
+                                                        <a href="#" class="dropdown-item"
+                                                            onclick="event.preventDefault(); document.getElementById('activate-form-{{ $exercise->id }}').submit();">
+                                                            Aktifkan
+                                                        </a>
+
+                                                        <form id="activate-form-{{ $exercise->id }}"
+                                                            action="{{ route('admin.exercises.activate', $exercise->id) }}"
+                                                            method="POST" class="d-none">
+                                                            @csrf
+                                                        </form>
+                                                    @endif
+                                                    <div class="dropdown-divider"></div>
+                                                    <a href="#" class="dropdown-item text-danger"
+                                                        onclick="event.preventDefault(); document.getElementById('delete-form-{{ $exercise->id }}').submit();">
+                                                        Hapus
+                                                    </a>
+
+                                                    <form id="delete-form-{{ $exercise->id }}"
+                                                        action="{{ route('admin.exercises.destroy', $exercise->id) }}"
+                                                        method="POST" class="d-none">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="arabic-text ar-symbol">{{ $exercise->description }}</td>
                                         <td>
                                             @if ($exercise->is_active)
                                                 <div class="badge badge-success">Aktif</div>
                                             @else
-                                                <div class="badge badge-warning">Tidak Aktif</div>
+                                                <div class="badge badge-warning">Nonaktif</div>
                                             @endif
                                         </td>
-                                        <td><a href="{{ route('admin.exercises.edit', $exercise->id) }}"
-                                                class="btn btn-primary">Edit</a></td>
                                     </tr>
                                 @endforeach
                             </table>

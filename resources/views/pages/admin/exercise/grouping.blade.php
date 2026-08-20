@@ -14,25 +14,21 @@
             </div>
 
             <div class="section-body">
-                <div class="card">
+                <div class="card grouping">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h4>Label</h4>
+                        <h4 id="grouping-title">{{ $exercise->title }}</h4>
                     </div>
 
                     <div class="card-body">
                         <div class="selectgroup selectgroup-pills arabic-container" dir="rtl" id="wordgroup-list"
                             data-is-persisted="">
-                            {{-- @foreach ($words as $index => $word)
+                            @foreach ($exercise->content['wordGroups'] as $index => $wordGroup)
                                 <label class="selectgroup-item arabic-pill">
-                                    <input type="checkbox" name="ids[]" value="{{ $word->id }}"
+                                    <input type="checkbox" name="ids[]" value="{{ $wordGroup['id'] }}"
                                         class="selectgroup-input row-checkbox">
-                                    <span class="selectgroup-button arabic-text ar-title">{{ $word->text }}</span>
+                                    <span class="selectgroup-button arabic-text ar-title">{{ $wordGroup['text'] }}</span>
                                 </label>
-                            @endforeach --}}
-                            <label class="selectgroup-item arabic-pill">
-                                <input type="checkbox" name="ids[]" value="" class="selectgroup-input row-checkbox">
-                                <span class="selectgroup-button arabic-text ar-title">الَفْظُ</span>
-                            </label>
+                            @endforeach
                         </div>
 
                         <div class="clearfix mb-3"></div>
@@ -72,7 +68,7 @@
             </div>
             <div class="d-flex justify-content-end align-items-center">
                 <div>
-                    <form id="complete-form" action="{{ route('wordgroups.save') }}" method="POST" class="ml-auto">
+                    <form id="complete-form" action="{{ route('admin.exercises.grouping.update', $exercise->id) }}" method="POST" class="ml-auto">
                         @csrf
                         <button type="submit" class="btn btn-primary btn-lg" id="btn-complete">
                             Simpan
@@ -101,6 +97,5 @@
     </script>
 
     <!-- Page Specific JS File -->
-    @vite(['resources/js/page/words/create-new.js'])
-    @vite(['resources/js/page/wordgroups/grouping-page.js'])
+    @vite(['resources/js/page/admin/exercise/grouping.js'])
 @endpush

@@ -19,6 +19,7 @@ export default defineConfig({
             'resources/js/page/features-posts.js',
             'resources/js/page/modules-toastr.js',
             'resources/js/page/wordgroups/grouping-page.js',
+            'resources/js/page/admin/exercise/grouping.js',
         ],
         refresh: true,
     }), tailwindcss(), sentryVitePlugin({

@@ -87,7 +87,7 @@ export function initSearchVerse({
 
                     const allowedVerses = getAllowedVersesForSurah(surah.id);
                     const verseCountValue = allowedVerses ? allowedVerses.length : surah.verse_count;
-                    elements.surahOption.insertAdjacentHTML(
+                    elements.surahOption?.insertAdjacentHTML(
                         "beforeend",
                         `<option value="${surah.id}" data-verse-count="${verseCountValue}" data-allowed-verses="${allowedVerses ? allowedVerses.join(',') : ''}">${surah.id}. ${surah.name}</option>`,
                     );
@@ -98,7 +98,7 @@ export function initSearchVerse({
 
     function updateVerseCount() {
         const selected =
-            elements.surahOption.options[elements.surahOption.selectedIndex];
+            elements.surahOption?.options[elements.surahOption?.selectedIndex];
         const allowedVerses = selected
             ? selected.getAttribute("data-allowed-verses")
             : "";
@@ -121,7 +121,7 @@ export function initSearchVerse({
 
     function normalizeVerseNumber() {
         const selected =
-            elements.surahOption.options[elements.surahOption.selectedIndex];
+            elements.surahOption?.options[elements.surahOption?.selectedIndex];
         const allowedVerses = selected
             ? selected.getAttribute("data-allowed-verses")
             : "";
@@ -160,20 +160,20 @@ export function initSearchVerse({
         }
 
         if (typeof searchAction === "function") {
-            searchAction(elements.surahOption.value, elements.verseOption.value);
+            searchAction(elements.surahOption?.value, elements.verseOption.value);
         }
     }
 
-    elements.surahOption.addEventListener("change", () => {
+    elements.surahOption?.addEventListener("change", () => {
         updateVerseCount();
         elements.verseOption.value = 1;
     });
 
-    elements.verseOption.addEventListener("change", () => {
+    elements.verseOption?.addEventListener("change", () => {
         normalizeVerseNumber();
     });
 
-    elements.searchForm.addEventListener("submit", searchVerse);
+    elements.searchForm?.addEventListener("submit", searchVerse);
 
     async function goToPrevVerse() {
         const prefix = getPrefix();

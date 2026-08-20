@@ -348,8 +348,8 @@ export function initAnalysisPage({
 
     function showExerciseUnavailableDialog() {
         swal({
-            title: "Soal belum tersedia",
-            text: "Silakan coba soal lainnya",
+            title: "Soal tidak tersedia",
+            text: "Silakan coba soal lainnya.",
             icon: "error",
             buttons: {
                 confirm: {

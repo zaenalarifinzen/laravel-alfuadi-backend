@@ -15,8 +15,9 @@ class ExerciseLevelController extends Controller
     public function index()
     {
         $levels = ExerciseLevel::orderBy('level_number', 'asc')->get();
+        $type_menu = 'admin.exercises.exercise-level';
 
-        return view('pages.admin.exercise-level.index', ['levels' => $levels, 'type_menu' => 'admin.exercises.exercise-level']);
+        return view('pages.admin.exercise-level.index', compact('levels', 'type_menu'));
     }
 
     /**
@@ -25,11 +26,9 @@ class ExerciseLevelController extends Controller
     public function userIndex()
     {
         $exerciseLevel = ExerciseLevel::orderBy('level_number', 'asc')->get();
+        $type_menu = 'exercise';
 
-        return view('pages.exercise.exercise-level.index', [
-            'exerciseLevel' => $exerciseLevel,
-            'type_menu' => 'exercise',
-        ]);
+        return view('pages.exercise.exercise-level.index', compact('exerciseLevel', 'type_menu'));
     }
 
     /**
@@ -37,7 +36,10 @@ class ExerciseLevelController extends Controller
      */
     public function create()
     {
-        return view('pages.admin.exercise-level.create', ['type_menu' => 'exercise', 'mode' => 'create']);
+        return view('pages.admin.exercise-level.create', [
+            'type_menu' => 'exercise',
+            'mode' => 'create'
+        ]);
     }
 
     /**
@@ -47,11 +49,13 @@ class ExerciseLevelController extends Controller
     {
         // Validasi input
         $data = $request->validated();
-        $data['display_order'] = $data['level_number'] . 0; 
+        $data['display_order'] = $data['level_number'] . 0;
 
         try {
             ExerciseLevel::create($data);
-            return redirect()->route('admin.exercise-levels.index')->with('success', $request->name . ' berhasil ditambahkan');
+            return redirect()
+                ->route('admin.exercise-levels.index')
+                ->with('success', $request->name . ' berhasil ditambahkan');
         } catch (\Exception $e) {
             return redirect()
                 ->back()
@@ -74,7 +78,9 @@ class ExerciseLevelController extends Controller
     public function edit(string $id)
     {
         $level = ExerciseLevel::findOrFail($id);
-        return view('pages.admin.exercise-level.edit', ['level' => $level, 'type_menu' => 'exercise', 'mode' => 'edit']);
+        $type_menu = 'exercise';
+
+        return view('pages.admin.exercise-level.edit', compact('level', 'type_menu'));
     }
 
     /**
@@ -82,13 +88,15 @@ class ExerciseLevelController extends Controller
      */
     public function update(UpdateExerciseLevelRequest $request, string $id)
     {
-        // Validasi input
         $data = $request->validated();
 
         try {
             $level = ExerciseLevel::findOrFail($id);
             $level->update($data);
-            return redirect()->route('admin.exercise-levels.index')->with('success', 'Level berhasil diperbarui');
+            
+            return redirect()
+                ->route('admin.exercise-levels.index')
+                ->with('success', '"' . $level['name'] . '" berhasil diperbarui');
         } catch (\Exception $e) {
             return redirect()
                 ->back()
@@ -103,12 +111,8 @@ class ExerciseLevelController extends Controller
     public function destroy(ExerciseLevel $exerciseLevel)
     {
         $exerciseLevel->delete();
-        return redirect()->route('admin.exercise-levels.index')->with('success', '"' . $exerciseLevel['name'] . '" succesfully deleted');
+        return redirect()
+            ->back()
+            ->with('success', '"' . $exerciseLevel['name'] . '" berhasil dihapus');
     }
-
-    /**
-     * Custom Function
-     */
-    
-
 }

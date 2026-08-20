@@ -173,8 +173,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Admin exercise managemen
         Route::prefix('admin')->name('admin.')->group(function () {
+            // Exercise Level
             Route::resource('exercise-levels', ExerciseLevelController::class);
             Route::resource('exercises', ExerciseController::class);
+
+            // Exercise Items
+            Route::get('exercises/{id}/grouping', [ExerciseController::class, 'grouping'])->name('exercises.grouping');
+            Route::put('exercises/{id}/grouping', [ExerciseController::class, 'updateGrouping'])->name('exercises.grouping.update');
+            Route::post('exercises/{id}/activate', [ExerciseController::class, 'activate'])->name('exercises.activate');
+            Route::post('exercises/{id}/deactivate', [ExerciseController::class, 'deactivate'])->name('exercises.deactivate');
         });
 
         // Legacy.

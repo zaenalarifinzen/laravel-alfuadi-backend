@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreExerciseRequest;
+use App\Http\Requests\UpdateExerciseRequest;
 use App\Models\Exercise;
 use App\Models\ExerciseLevel;
 use App\Models\UserAnswer;
 use App\Models\Verse;
 use Illuminate\Http\Request;
+use Illuminate\Mail\Mailables\Content;
 use Illuminate\Support\Facades\Log;
 
 class ExerciseController extends Controller
@@ -17,13 +19,18 @@ class ExerciseController extends Controller
      */
     public function index()
     {
-        $exercises = Exercise::with('exerciseLevel')->orderBy('level', 'asc')->orderBy('display_order', 'asc')->get();
+        $exercises = Exercise::with('exerciseLevel')
+            ->orderBy('level', 'asc')
+            ->orderBy('display_order', 'asc')
+            ->get();
+
         foreach ($exercises as $exercise) {
             $exercise->load('exerciseLevel');
         }
-        Log::info('Exercises retrieved: ', $exercises->toArray());
 
-        return view('pages.admin.exercise.index', ['exercises' => $exercises, 'type_menu' => 'admin.exercises.exercise']);
+        $type_menu = 'admin.exercises.exercise';
+
+        return view('pages.admin.exercise.index', compact('exercises', 'type_menu'));
     }
 
     /**
@@ -32,7 +39,9 @@ class ExerciseController extends Controller
     public function create()
     {
         $levels = ExerciseLevel::orderBy('level_number', 'asc')->get();
-        return view('pages.admin.exercise.create', compact('levels'), ['type_menu' => 'exercise', 'mode' => 'edit']);
+        $type_menu = 'admin.exercises.exercise';
+
+        return view('pages.admin.exercise.create', compact('levels', 'type_menu'));
     }
 
     /**
@@ -43,14 +52,17 @@ class ExerciseController extends Controller
         $data = $request->validated();
         $data['created_by'] = auth()->id();
         $data['type'] = 'analysis';
+        $data['is_active'] = false;
 
         if (!isset($data['display_order'])) {
             $maxDisplayOrder = Exercise::where('level', $data['level'])->max('display_order');
             $data['display_order'] = $maxDisplayOrder ? $maxDisplayOrder + 1 : 1;
         }
-        
+
         Exercise::create($data);
-        return redirect()->route('admin.exercises.create')->with('success', 'exercise created succesfully');
+        return redirect()
+            ->route('admin.exercises.index')
+            ->with('success', '"' . $data['title'] . '" created succesfully');
     }
 
     /**
@@ -68,23 +80,33 @@ class ExerciseController extends Controller
     {
         $exercise = Exercise::findOrFail($id);
         $levels = ExerciseLevel::orderBy('level_number', 'asc')->get();
-        return view('pages.admin.exercise.edit', compact('exercise', 'levels'), ['type_menu' => 'admin.exercises.exercise']);
+        $type_menu = 'admin.exercises.exercise';
+
+        return view('pages.admin.exercise.edit', compact('exercise', 'levels', 'type_menu'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateExerciseRequest $request, string $id)
     {
-        //
+        Log::info('Update Exercise Request: ', $request->all());
+        $data = $request->validated();
+
+        $exercise = Exercise::findOrFail($id);
+        $exercise->update($data);
+
+        return redirect()->route('admin.exercises.index')
+            ->with('success', '"' . $data['title'] . '" succesfully updated');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Exercise $exercise)
     {
-        //
+        $exercise->delete();
+        return redirect()->back()->with('success', '"' . $exercise['title'] . '" succesfully deleted');
     }
 
     /**
@@ -105,14 +127,17 @@ class ExerciseController extends Controller
         $levelNumber = $exerciseLevel ? $exerciseLevel->level_number : (int) $level;
 
         $exercise = Exercise::with('verse')
+            ->active()
             ->where('level', $levelNumber)
             ->where('display_order', $exerciseOrderNumber)
             ->first();
 
-        if (!$exercise) {
+        $content = $exercise->content ?? null;
+
+        if (!$exercise || !$content) {
             return response()->json([
                 'success' => false,
-                'message' => 'Exercise tidak ditemukan',
+                'message' => 'Exercise not found',
             ], 404);
         }
 
@@ -170,7 +195,7 @@ class ExerciseController extends Controller
                 if (!$verse) {
                     return response()->json([
                         'success' => false,
-                        'message' => 'Ayat tidak ditemukan',
+                        'message' => 'Verse not found',
                     ], 404);
                 }
                 $resolvedExerciseOrderNumber = $verse->id;
@@ -186,19 +211,38 @@ class ExerciseController extends Controller
                     if (!$verse) {
                         return response()->json([
                             'success' => false,
-                            'message' => 'Ayat tidak ditemukan',
+                            'message' => 'Verse not found',
                         ], 404);
                     }
                     $resolvedExerciseOrderNumber = $verse->id;
                 } else {
                     return response()->json([
                         'success' => false,
-                        'message' => 'Parameter verseId atau (surah_id dan verse_number) diperlukan',
+                        'message' => 'verseId or (surah_id and verse_number) required',
                     ], 400);
                 }
             }
 
+            $hasWords = $verse->wordGroups->contains(function ($wordGroup) {
+                return $wordGroup->words->isNotEmpty();
+            });
+
+            if (! $hasWords) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Words unavailable',
+                ], 422);
+            }
+
             $exercise = Exercise::findOrCreateQuranExercise($resolvedExerciseOrderNumber, $levelNumber);
+
+            if (! $exercise->is_active) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Exercise not found',
+                ], 422);
+            }
+
             $exerciseLevel = $exercise->exerciseLevel;
 
             $exercise->load('verse');
@@ -277,6 +321,9 @@ class ExerciseController extends Controller
         }
     }
 
+    /**
+     * Format Exercise Response
+     */
     protected function formatExerciseResponse(Exercise $exercise): array
     {
         if ($exercise->verse_id && ! $exercise->relationLoaded('verse')) {
@@ -294,5 +341,87 @@ class ExerciseController extends Controller
         }
 
         return $response;
+    }
+
+    /**
+     * Activate Exercise.
+     */
+    public function activate(Request $request, $exerciseId)
+    {
+        $exercise = Exercise::findOrFail($exerciseId);
+        $exercise->is_active = true;
+        $exercise->save();
+
+        return redirect()->back()->with('success', '"' . $exercise['title'] . '" succesfully activated');
+    }
+
+    /**
+     * Deactivate Exercise
+     */
+    public function deactivate(Request $request, $exerciseId)
+    {
+        $exercise = Exercise::findOrFail($exerciseId);
+        $exercise->is_active = false;
+        $exercise->save();
+
+        return redirect()->back()->with('success', '"' . $exercise['title'] . '" succesfully deactivated');
+    }
+
+    /**
+     * Grouping Words
+     */
+    public function grouping(string $id)
+    {
+        $exercise = Exercise::findOrFail($id);
+
+        $wordGroups = $exercise->content['wordGroups'] ?? null;
+        if (!$wordGroups) {
+            $splitWords = preg_split('/\s+/', trim($exercise->description));
+            $wordGroups = collect($splitWords)->map(function ($wordGroup, $index) {
+                return [
+                    'id' => $index + 1,
+                    'text' => $wordGroup,
+                ];
+            });
+
+            $content = $exercise->content;
+            $content['wordGroups'] = $wordGroups;
+            $exercise->content = $content;
+            // $exercise->save();
+        }
+
+        $type_menu = 'admin.exercises';
+        return view('pages.admin.exercise.grouping', compact('exercise', 'type_menu'));
+    }
+
+    /**
+     * Update content->wordGroup
+    */
+    public function updateGrouping(Request $request, string $id)
+    {
+        $validated = $request->validate([
+            'groups' => ['required', 'array'],
+            'groups.*.text' => ['required', 'string'],
+        ]);
+
+        $exercise = Exercise::findOrFail($id);
+        $content = $exercise->content ?? [];
+        $content['wordGroups'] = collect($validated['groups'])
+            ->values()
+            ->map(function (array $group, int $index) {
+                return [
+                    'id' => $group['id'] ?? $index + 1,
+                    'text' => $group['text'],
+                    'order_number' => $index + 1,
+                ];
+            })
+            ->all();
+
+        $exercise->update(['content' => $content]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Soal latihan berhasil diperbarui.',
+        ]);
     }
 }

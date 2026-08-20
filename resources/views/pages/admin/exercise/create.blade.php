@@ -46,7 +46,7 @@
                                         <select class="form-control @error('level') is-invalid @enderror" name="level" required>
                                             <option value="">Pilih Level</option>
                                             @foreach ($levels as $level)
-                                                <option value="{{ $level->id }}" {{ old('level') == $level->id ? 'selected' : '' }}>
+                                                <option value="{{ $level->level_number }}" {{ old('level') == $level->level_number ? 'selected' : '' }}>
                                                     {{ $level->name }}
                                                 </option>
                                             @endforeach
@@ -66,7 +66,7 @@
                                     <div class="form-group">
                                         <label>Isi</label>
                                         {{-- required description --}} 
-                                        <textarea class="form-control @error('description') is-invalid @enderror"
+                                        <textarea class="form-control arabic-text @error('description') is-invalid @enderror"
                                         name="description" data-height="100" required >{{ old('description') }}</textarea>
                                         @error('description')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
