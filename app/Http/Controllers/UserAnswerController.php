@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserAnswerRequest;
+use App\Models\Exercise;
+use App\Models\ExerciseLevel;
 use App\Models\UserAnswer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -13,9 +15,16 @@ class UserAnswerController extends Controller
     {
         try {
             $userId = auth()->id();
-            // Hapus $request->question_id pada versi selanjutnya !!
-            $exerciseId = $request->exercise_id ?? $request->question_id;
+            $exerciseNumber = $request->exercise_number;
             $level = $request->level;
+
+            $exerciseLevel = ExerciseLevel::where('slug', $level)->first();
+            $exerciseLevelNumber = $exerciseLevel->level_number;
+
+            $exercise = Exercise::where('display_order', $exerciseNumber)
+                ->where('level', $exerciseLevelNumber)
+                ->first();
+            $exerciseId = $exercise->id;
 
             $existingAnswer = UserAnswer::where('user_id', $userId)
                 ->where('exercise_id', $exerciseId)
@@ -44,7 +53,7 @@ class UserAnswerController extends Controller
             $userAnswer = UserAnswer::create([
                 'user_id' => $userId,
                 'exercise_id' => $exerciseId,
-                'level' => $level,
+                'level' => $exerciseLevelNumber,
                 'passed' => $request->pass ?? false,
                 'score' => $request->score,
                 'attempt_count' => $request->attempt_count ??  1,

@@ -180,6 +180,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
             // Exercise Items
             Route::get('exercises/{id}/grouping', [ExerciseController::class, 'grouping'])->name('exercises.grouping');
             Route::put('exercises/{id}/grouping', [ExerciseController::class, 'updateGrouping'])->name('exercises.grouping.update');
+            Route::get('exercises/{id}/irob', [ExerciseController::class, 'irob'])->name('exercises.irob');
+            Route::put('exercises/{id}/irob', [ExerciseController::class, 'updateIrob'])->name('exercises.irob.update');
             Route::post('exercises/{id}/activate', [ExerciseController::class, 'activate'])->name('exercises.activate');
             Route::post('exercises/{id}/deactivate', [ExerciseController::class, 'deactivate'])->name('exercises.deactivate');
         });

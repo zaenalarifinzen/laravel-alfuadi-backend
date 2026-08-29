@@ -9,28 +9,27 @@ export function initAnalysisPage({
     getWordTable,
     getSlider,
 }) {
-    const wordGroupsPrefix =
-        config.pageType === "exercise" ? "au_" : "wordgroups_";
-
+    let exerciseCacheKey = null;
     let currentExercisOrderNumber = null;
     let currentCompareResult = [];
-    let currentCompareVerseId = null;
+    let currentCompareExerciseId = null;
 
     function getPrefix() {
-        return wordGroupsPrefix;
+        return exerciseCacheKey;
     }
 
-    function compareAnswers(exerciseOrderNumber) {
-        const answerKeyRaw = localStorage.getItem(`ak_${exerciseOrderNumber}`);
-        const answerUserRaw = localStorage.getItem(`au_${exerciseOrderNumber}`);
+    function compareAnswers() {
+        const exerciseRaw = localStorage.getItem(getPrefix());
 
-        if (!answerKeyRaw || !answerUserRaw) {
+        if (!exerciseRaw) {
             console.warn("Answer key atau user answer tidak ditemukan");
             return [];
         }
 
-        const answerKey = JSON.parse(answerKeyRaw);
-        const answerUser = JSON.parse(answerUserRaw);
+        const exerciseData = JSON.parse(exerciseRaw);
+
+        const correctAnswer = exerciseData.wordGroups;
+        const userAnswer = exerciseData.userAnswer;
         const fields = [
             "kalimat",
             "hukum",
@@ -42,16 +41,15 @@ export function initAnalysisPage({
         ];
         const result = [];
 
-        answerKey.wordGroups.forEach((keyGroup) => {
-            const userGroup = answerUser.wordGroups.find(
-                (g) => g.id === keyGroup.id,
-            );
+        correctAnswer.forEach((keyGroup) => {
+            const userGroup = userAnswer.find((g) => g.id === keyGroup.id);
             if (!userGroup) return;
 
             keyGroup.words.forEach((keyWord) => {
                 const userWord = userGroup.words.find(
-                    (w) => w.id === keyWord.id,
+                    (w) => String(w.id) === String(keyWord.id),
                 );
+
                 if (!userWord) return;
 
                 const fieldsResult = fields.map((field) => {
@@ -260,6 +258,15 @@ export function initAnalysisPage({
         }
     }
 
+    function getCurrentExerciseState() {
+        const cachedData = getCachedExercise(exerciseCacheKey);
+
+        return {
+            orderNumber: cachedData?.exerciseOrderNumber ?? null,
+            levelSlug: cachedData?.levelSlug ?? null,
+        };
+    }
+
     function isCacheStillValid(cachedData, freshContent) {
         const cachedWords = cachedData?.wordGroups?.[0]?.words;
         const freshWords = freshContent?.wordGroups?.[0]?.words;
@@ -271,7 +278,7 @@ export function initAnalysisPage({
 
     function clearExerciseStorage() {
         Object.keys(localStorage)
-            .filter((k) => k.startsWith("ak_") || k.startsWith("au_"))
+            .filter((k) => k.startsWith("ex_"))
             .forEach((k) => localStorage.removeItem(k));
     }
 
@@ -281,16 +288,21 @@ export function initAnalysisPage({
 
     function buildAnswerPayload(content, exerciseData, orderNumber) {
         const cloned = structuredClone(content);
+        const wordGroups = structuredClone(cloned.wordGroups);
+
         cloned.modified = false;
         cloned.levelSlug = exerciseData.exercise_level.slug;
         cloned.exerciseOrderNumber = orderNumber;
         cloned.passed = exerciseData.passed;
         cloned.title = exerciseData.title;
+        cloned.userAnswer = cloned.passed
+            ? wordGroups
+            : stripAnswerFields(wordGroups);
         return cloned;
     }
 
-    function stripAnswerFields(clonedContent) {
-        clonedContent.wordGroups.forEach((wg) => {
+    function stripAnswerFields(wordGroups) {
+        wordGroups.forEach((wg) => {
             if (!Array.isArray(wg.words)) return;
 
             wg.words.forEach((w) => {
@@ -305,6 +317,8 @@ export function initAnalysisPage({
                 });
             });
         });
+
+        return wordGroups;
     }
 
     function persistExerciseData(answerKey, userAnswerKey, clonedContent) {
@@ -316,13 +330,13 @@ export function initAnalysisPage({
     // Rendering / UI state
     // ---------------------------------------------------------------------------
 
-    function renderExercise(clonedContent, answerKeyContent) {
+    function renderExercise(clonedContent) {
         const slider = getSlider();
         const wordTable = getWordTable();
 
         slider.renderSwiperSlider(clonedContent);
-        wordTable.renderWordsTable(clonedContent.wordGroups[0]);
-        wordTable.renderWordsDetails(answerKeyContent.wordGroups[0]);
+        wordTable.renderWordsTable(clonedContent.userAnswer[0]);
+        wordTable.renderWordsDetails(clonedContent.wordGroups[0]);
 
         return wordTable;
     }
@@ -384,41 +398,36 @@ export function initAnalysisPage({
             return;
         }
 
-        const orderNumber = resolveOrderNumber(exerciseData);
-        const answerKey = `ak_${exerciseData.exercise_level.slug}_${orderNumber}`;
-        const userAnswerKey = `au_${exerciseData.exercise_level.slug}_${orderNumber}`;
+        const exerciseLevel = exerciseData.exercise_level.slug;
+        const exerciseNumber = resolveOrderNumber(exerciseData);
+        exerciseCacheKey = `ex_${exerciseLevel}_${exerciseNumber}`;
 
-        const cachedData = getCachedExercise(answerKey);
+        const cachedData = getCachedExercise(exerciseCacheKey);
+        const passed = exerciseData.passed;
+
         if (isCacheStillValid(cachedData, content)) {
             loadCachedData();
             return;
         }
 
-        // Reset any in-memory comparison state left over from a previous exercise
         currentCompareResult = [];
-        currentCompareVerseId = null;
+        currentCompareExerciseId = null;
 
         clearExerciseStorage();
 
-        const answerKeyPayload = buildAnswerPayload(
+        const exerciseKeyPayload = buildAnswerPayload(
             content,
             exerciseData,
-            orderNumber,
+            exerciseNumber,
         );
-        localStorage.setItem(answerKey, JSON.stringify(answerKeyPayload));
+        localStorage.setItem(
+            exerciseCacheKey,
+            JSON.stringify(exerciseKeyPayload),
+        );
 
-        const userAnswerPayload = structuredClone(answerKeyPayload);
-        const passed = exerciseData.passed;
-
-        if (!passed) {
-            stripAnswerFields(userAnswerPayload);
-        }
-
-        localStorage.setItem(userAnswerKey, JSON.stringify(userAnswerPayload));
-
-        const wordTable = renderExercise(userAnswerPayload, answerKeyPayload);
+        const wordTable = renderExercise(exerciseKeyPayload);
         updateSubmitState(wordTable, passed);
-        syncUrlToHistory(exerciseData.exercise_level.slug, orderNumber);
+        syncUrlToHistory(exerciseLevel, exerciseNumber);
     }
 
     // ---------------------------------------------------------------------------
@@ -456,7 +465,7 @@ export function initAnalysisPage({
     function fetchWords(wordGroupId) {
         const tbodyWords = $("#sortable-table tbody");
         const tbodyWordsDetail = $("#detail-kalimat-table tbody");
-        const key = storage.getActiveStorageKey(wordGroupsPrefix);
+        const cachedData = getCachedExercise(exerciseCacheKey);
 
         const setEmpty = (text) => {
             const row = `<tr><td colspan="8" class="text-center text-muted">${text}</td></tr>`;
@@ -464,34 +473,21 @@ export function initAnalysisPage({
             tbodyWordsDetail.html(row);
         };
 
-        if (!key) {
-            setEmpty("Memuat data");
-            return;
-        }
-
-        let stored;
-        try {
-            stored = JSON.parse(localStorage.getItem(key));
-        } catch (e) {
-            console.error("Gagal parse data kata:", e);
-            setEmpty("Terjadi kesalahan memuat data");
-            return;
-        }
-
-        if (!stored || !Array.isArray(stored.wordGroups)) {
+        if (!cachedData || !Array.isArray(cachedData.wordGroups)) {
             setEmpty("Tidak ada data");
             return;
         }
 
-        const activeGroup = stored.wordGroups.find(
+        // Render User Answer
+        const activeUserAnswerGroup = cachedData.userAnswer.find(
             (wg) => wg.id == wordGroupId,
         );
         const wordTable = getWordTable();
 
         if (
-            !activeGroup ||
-            !activeGroup.words ||
-            activeGroup.words.length === 0
+            !activeUserAnswerGroup ||
+            !activeUserAnswerGroup.words ||
+            activeUserAnswerGroup.words.length === 0
         ) {
             setEmpty("Tidak ada data");
             var lastNode = $(".editor-kalimat a").contents().last()[0];
@@ -502,30 +498,20 @@ export function initAnalysisPage({
             }
             return;
         }
+        wordTable.renderWordsTable(activeUserAnswerGroup);
 
-        wordTable.renderWordsTable(activeGroup);
+        // Render Aswer Key
+        const answerKeyGroup = cachedData.wordGroups.find(
+            (wg) => wg.id == wordGroupId,
+        );
 
-        if (!stored.verse || !stored.verse.id) return;
-
-        // Load Aswer Key
-        const answerKeyRaw = localStorage.getItem(`ak_${stored.verse.id}`);
-        if (!answerKeyRaw) return;
-
-        try {
-            const answerKeyData = JSON.parse(answerKeyRaw);
-            const answerGroup = answerKeyData.wordGroups.find(
-                (wg) => wg.id == wordGroupId,
-            );
-            if (answerGroup) {
-                wordTable.renderWordsDetails(answerGroup);
-            }
-        } catch (e) {
-            console.error("Gagal parse answer key:", e);
+        if (answerKeyGroup) {
+            wordTable.renderWordsDetails(answerKeyGroup);
         }
     }
 
     function loadCachedData() {
-        const cachedKey = storage.getActiveStorageKey(wordGroupsPrefix);
+        const cachedKey = storage.getActiveStorageKey(exerciseCacheKey);
         const cachedRaw = cachedKey ? localStorage.getItem(cachedKey) : null;
 
         if (!cachedRaw) return;
@@ -542,17 +528,9 @@ export function initAnalysisPage({
         const wordTable = getWordTable();
         const slider = getSlider();
 
-        const currentExerciseOrderNumber = cachedData.exerciseOrderNumber;
         slider.renderSwiperSlider(cachedData);
-        wordTable.renderWordsTable(cachedData.wordGroups[0]);
-
-        // if exercise mode, get wordGroup from ak_ to WordDetails Table
-        const answerKey = `ak_${cachedData.verse?.id}`;
-        const answerKeyRaw = localStorage.getItem(answerKey);
-        if (answerKeyRaw) {
-            const answerKeyData = JSON.parse(answerKeyRaw);
-            wordTable.renderWordsDetails(answerKeyData.wordGroups[0]);
-        }
+        wordTable.renderWordsTable(cachedData.userAnswer[0]);
+        wordTable.renderWordsDetails(cachedData.wordGroups[0]);
 
         if (cachedData.modified) {
             // wordTable.addUpdateButton();
@@ -583,7 +561,6 @@ export function initAnalysisPage({
         fetchExercise(levelSlug, prevExerciseOrderNumber);
     }
 
-
     // ---------------------------------------------------------------------------
     // Search Verse Helper
     // ---------------------------------------------------------------------------
@@ -607,11 +584,10 @@ export function initAnalysisPage({
         changeSubmitButton,
         getCurrentExerciseOrderNumber: () => currentExerciseOrderNumber,
         getCurrentCompareResult: () => currentCompareResult,
-        setCurrentCompareResult: (compareResult, verseId = null) => {
+        setCurrentCompareResult: (compareResult) => {
             currentCompareResult = compareResult;
-            currentCompareVerseId = verseId;
         },
-        getCurrentCompareVerseId: () => currentCompareVerseId,
-        getCurrentVerseId: () => elements.currentVerseId.value,
+        getCurrentCompareVerseId: () => currentCompareExerciseId,
+        getCurrentExerciseState,
     };
 }

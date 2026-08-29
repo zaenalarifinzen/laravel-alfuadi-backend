@@ -3,8 +3,8 @@ import { createNahwuFormController } from "../../page/words/nahwu-form-autofill"
 import { initAnalysisAnswerHandler } from "./analysis-answer-handler";
 import { initAnalysisPage } from "./analysis-page";
 import { initSearchVerse } from "../../utils/search-verse";
-import { initSwiperSlider } from "../../utils/swiper-slider";
-import { initWordTable } from "../../utils/word-table";
+import { initSwiperSlider } from "../../components/swiper-slider";
+import { initWordTable } from "../../components/word-table";
 import { initComponentsTable } from "../../page/components-table";
 
 function readPageConfig() {
@@ -51,10 +51,11 @@ analysisPage = initAnalysisPage({
 });
 
 wordTable = initWordTable({
+    mode: 'exercise',
     getPrefix: analysisPage.getPrefix,
     isModified: storage.isModified,
     showEditConfirmation: analysisPage.showEditConfirmation,
-    fetchWordGroups: analysisPage.fetchWordGroups,
+    fetchExercise: analysisPage.fetchExercise,
     getCurrentVerseId: analysisPage.getCurrentVerseId,
     applyComparisonHighlights: analysisPage.applyComparisonHighlights,
     changeSubmitButton: analysisPage.changeSubmitButton,
@@ -70,7 +71,7 @@ initSearchVerse({
     getPrefix: analysisPage.getPrefix,
     isModified: storage.isModified,
     showEditConfirmation: analysisPage.showEditConfirmation,
-    fetchWordGroups: analysisPage.fetchWordGroups,
+    fetchExercise: analysisPage.fetchExercise,
     onSearch: analysisPage.searchVersebyNumber,
     onNavigate: analysisPage.fetchExercise,
     config,
@@ -91,7 +92,7 @@ initAnalysisAnswerHandler({
     getCurrentCompareResult: analysisPage.getCurrentCompareResult,
     setCurrentCompareResult: analysisPage.setCurrentCompareResult,
     getCurrentExerciseOrderNumber: analysisPage.getCurrentExerciseOrderNumber,
-    getCurrentVerseId: analysisPage.getCurrentVerseId,
+    getCurrentExerciseState: analysisPage.getCurrentExerciseState,
     fetchExercise: analysisPage.fetchExercise,
     compareAnswers: analysisPage.compareAnswers,
     highlightErrors: analysisPage.highlightErrors,

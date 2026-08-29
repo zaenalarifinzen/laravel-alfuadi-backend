@@ -90,7 +90,6 @@ class ExerciseController extends Controller
      */
     public function update(UpdateExerciseRequest $request, string $id)
     {
-        Log::info('Update Exercise Request: ', $request->all());
         $data = $request->validated();
 
         $exercise = Exercise::findOrFail($id);
@@ -396,7 +395,7 @@ class ExerciseController extends Controller
 
     /**
      * Update content->wordGroup
-    */
+     */
     public function updateGrouping(Request $request, string $id)
     {
         $validated = $request->validate([
@@ -413,6 +412,64 @@ class ExerciseController extends Controller
                     'id' => $group['id'] ?? $index + 1,
                     'text' => $group['text'],
                     'order_number' => $index + 1,
+                ];
+            })
+            ->all();
+
+        $exercise->update(['content' => $content]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Soal latihan berhasil diperbarui.',
+        ]);
+    }
+
+    /**
+     * Input Irob
+     */
+    public function irob(string $id)
+    {
+        $exercise = Exercise::findOrFail($id);
+        $type_menu = 'admin.exercises';
+
+        return view('pages.admin.exercise.irob', compact('exercise', 'type_menu'));
+    }
+
+    public function updateIrob(Request $request, string $id)
+    {
+        $validated = $request->validate([
+            'wordGroups' => ['required', 'array'],
+        ]);
+
+        $exercise = Exercise::findOrFail($id);
+        $content = $exercise->content ?? [];
+        $content['wordGroups'] = collect($validated['wordGroups'])
+            ->values()
+            ->map(function (array $group, int $index) {
+                return [
+                    'id' => $group['id'] ?? $index + 1,
+                    'text' => $group['text'],
+                    'order_number' => $index + 1,
+                    'words' => collect($group['words'])
+                        ->values()
+                        ->map(function (array $word, int $wordIndex) {
+                            return [
+                                'id' => $word['id'] ?? null,
+                                'word_group_id' => $word['word_group_id'] ?? null,
+                                'order_number' => $wordIndex + 1,
+                                'text' => $word['text'] ?? '',
+                                'color' => $word['color'] ?? '',
+                                'translation' => $word['translation'] ?? '',
+                                'kalimat' => $word['kalimat'] ?? null,
+                                'hukum' => $word['hukum'] ?? null,
+                                'kategori' => $word['kategori'] ?? null,
+                                'kedudukan' => $word['kedudukan'] ?? null,
+                                'irob' => $word['irob'] ?? null,
+                                'tanda' => $word['tanda'] ?? null,
+                                'simbol' => $word['simbol'] ?? null,
+                            ];
+                        })
+                        ->all(),
                 ];
             })
             ->all();

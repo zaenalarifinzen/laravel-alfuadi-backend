@@ -20,6 +20,9 @@ export default defineConfig({
             'resources/js/page/modules-toastr.js',
             'resources/js/page/wordgroups/grouping-page.js',
             'resources/js/page/admin/exercise/grouping.js',
+            'resources/js/page/admin/exercise/irob-init.js',
+
+            // Components
         ],
         refresh: true,
     }), tailwindcss(), sentryVitePlugin({

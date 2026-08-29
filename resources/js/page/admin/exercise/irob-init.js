@@ -1,12 +1,12 @@
 // resources/js/page/words/create-new.js
-import * as storage from "../../utils/storage-helper";
-import { initSearchVerse } from "../../utils/search-verse";
-import { initSwiperSlider } from "../../components/swiper-slider";
-import { initWordTable } from "../../components/word-table";
+import * as storage from "../../../utils/storage-helper";
+import { initSearchVerse } from "../../../utils/search-verse";
+import { initSwiperSlider } from "../../../components/swiper-slider";
+import { initWordTable } from "../../../components/word-table";
 import { initWordsPage } from "./words-page";
-import { initComponentsTable } from "../../page/components-table";
+import { initComponentsTable } from "../../../page/components-table";
 import { initWordCrud } from "./word-crud";
-import { createNahwuFormController } from "./nahwu-form-autofill";
+import { createNahwuFormController } from "../../../utils/nahwu-form-autofill";
 
 function readPageConfig() {
     const configEl = document.getElementById("page-config");
@@ -47,6 +47,8 @@ wordsPage = initWordsPage({
     getSlider: () => slider,
 });
 
+wordsPage.boot();
+
 wordTable = initWordTable({
     getPrefix: wordsPage.getPrefix,
     isModified: storage.isModified,
@@ -60,6 +62,7 @@ wordTable = initWordTable({
 slider = initSwiperSlider({
     fetchWords: wordsPage.fetchWords,
     elements,
+    root: document.getElementById("irob-wordgroup-swiper"),
 });
 
 initSearchVerse({
@@ -88,9 +91,9 @@ initWordCrud({
     getCurrentCompareResult: wordsPage.getCurrentCompareResult,
     compareAnswers: wordsPage.compareAnswers,
     highlightErrors: wordsPage.highlightErrors,
+    getSlider: () => slider,
 });
 
 document.addEventListener("DOMContentLoaded", () => {
     nahwuFormController = createNahwuFormController();
-    wordsPage.boot();
 });

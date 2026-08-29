@@ -22,8 +22,8 @@ class StoreUserAnswerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'exercise_id' => 'required|exists:exercises,id',
-            'level' => 'required|integer|in:1,2,3',
+            'exercise_number' => 'required|exists:exercises,display_order',
+            'level' => 'required|string',
             'pass' => 'nullable|boolean',
             'score' => 'nullable|numeric|min:0|max:100',
             'attempt_count' => 'nullable|integer|min:1',

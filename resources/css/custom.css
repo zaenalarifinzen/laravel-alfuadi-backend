@@ -731,7 +731,8 @@ table tr:hover .table-links {
 /* ====================== */
 
 /* Slider */
-#slider-rtl {
+#slider-rtl,
+.wordgroup-swiper [data-wordgroup-slider] {
     direction: rtl;
 }
 
@@ -766,11 +767,13 @@ table tr:hover .table-links {
     right: 8px;
 }
 
-#slider-rtl.swiper {
+#slider-rtl.swiper,
+.wordgroup-swiper [data-wordgroup-slider].swiper {
     padding: 20px 50px;
 }
 
-#slider-rtl .swiper-slide {
+#slider-rtl .swiper-slide,
+.wordgroup-swiper [data-wordgroup-slider] .swiper-slide {
     width: auto;
     max-width: min(70vw, 700px);
     display: flex;
@@ -781,7 +784,8 @@ table tr:hover .table-links {
     cursor: pointer;
 }
 
-#slider-rtl .swiper-slide .arabic-text {
+#slider-rtl .swiper-slide .arabic-text,
+.wordgroup-swiper [data-wordgroup-slider] .swiper-slide .arabic-text {
     font-size: 22px;
     color: #6b7280;
     transition: all 0.25s ease;
@@ -789,7 +793,8 @@ table tr:hover .table-links {
     word-break: keep-all;
 }
 
-#slider-rtl .swiper-slide-active {
+#slider-rtl .swiper-slide-active,
+.wordgroup-swiper [data-wordgroup-slider] .swiper-slide-active {
     opacity: 1;
     font-size: 34px;
     color: #111827;
@@ -801,20 +806,23 @@ table tr:hover .table-links {
     padding: 0px 4px;
 }
 
-#slider-rtl .swiper-slide-active .arabic-text {
+#slider-rtl .swiper-slide-active .arabic-text,
+.wordgroup-swiper [data-wordgroup-slider] .swiper-slide-active .arabic-text {
     font-size: 34px;
     color: #111827;
     font-weight: 600;
 }
 
-#slider-rtl .slide-current {
+#slider-rtl .slide-current,
+.wordgroup-swiper [data-wordgroup-slider] .slide-current {
     opacity: 1;
     background-color: #d6f7f0;
     border-radius: 10px;
     box-shadow: 0 0 0 1px #259980;
 }
 
-#slider-rtl .slide-current .arabic-text {
+#slider-rtl .slide-current .arabic-text,
+.wordgroup-swiper [data-wordgroup-slider] .slide-current .arabic-text {
     font-size: 34px;
     color: #111827;
     font-weight: 600;

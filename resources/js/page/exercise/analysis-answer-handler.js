@@ -8,9 +8,9 @@ export function initAnalysisAnswerHandler({
     getNahwuController,
     getCurrentCompareResult,
     setCurrentCompareResult,
-    getCurrentExerciseId,
+    getCurrentExerciseState,
     getCurrentVerseId,
-    fetchWordGroups,
+    fetchExercise,
     compareAnswers,
     highlightErrors,
     changeSubmitButton,
@@ -78,30 +78,30 @@ export function initAnalysisAnswerHandler({
         const numericWordId = wordId ? Number(wordId) : null;
 
         // Logic
-        // get key from local storage
+        // get data from local storage
         const currentKey = Object.keys(localStorage).find((k) =>
             k.startsWith(getPrefix()),
         );
 
         const stored = JSON.parse(localStorage.getItem(currentKey));
 
-        // get active wordgroup
+        // get active user answer wordgroup
         const activeWordGroupId = $(".swiper-slide-active .word-group").attr(
             "wg-id",
         );
-        const wordGroup = stored.wordGroups.find(
+        const userAnswerWordGroup = stored.userAnswer.find(
             (g) => g.id == activeWordGroupId,
         );
 
-        const groupIndex = stored.wordGroups.findIndex(
+        const userAnswerWordGroupIndex = stored.userAnswer.findIndex(
             (g) => g.id == activeWordGroupId,
         );
-        if (groupIndex === -1) {
+        if (userAnswerWordGroupIndex === -1) {
             alert("WordGroup tidak ditemukan");
             return;
         }
 
-        const newOrder = (wordGroup.words?.length || 0) + 1;
+        const newOrder = (userAnswerWordGroup.words?.length || 0) + 1;
         let color;
         if (lafadz === "-") {
             color = "black";
@@ -166,21 +166,23 @@ export function initAnalysisAnswerHandler({
         // get mode
         if (wordId) {
             // MODE EDIT
-            const words = stored.wordGroups[groupIndex].words || [];
+            const words =
+                stored.userAnswer[userAnswerWordGroupIndex].words || [];
             const wordIndex = words.findIndex((w) => w.id == wordId);
 
             if (wordIndex !== -1) {
-                stored.wordGroups[groupIndex].words[wordIndex] = newWord;
+                stored.userAnswer[userAnswerWordGroupIndex].words[wordIndex] =
+                    newWord;
             } else {
                 console.warn("Word tidak ditemukan, menambahkan sebagai baru");
                 words.push(newWord);
             }
         } else {
             // MODE ADD
-            if (!stored.wordGroups[groupIndex].words) {
-                stored.wordGroups[groupIndex].words = [];
+            if (!stored.userAnswer[userAnswerWordGroupIndex].words) {
+                stored.userAnswer[userAnswerWordGroupIndex].words = [];
             }
-            stored.wordGroups[groupIndex].words.push(newWord);
+            stored.userAnswer[userAnswerWordGroupIndex].words.push(newWord);
         }
 
         // save to local storage
@@ -192,30 +194,12 @@ export function initAnalysisAnswerHandler({
         changeSubmitButton("btn-submit-answer", "Submit", "primary");
 
         // re render word table
-        renderWordsTable(wordGroup);
-
-        // re render word details, if exercise has answer key, render answer key instead of user answer
-        const answerKey = `ak_${stored.levelSlug}_${stored.exerciseOrderNumber}`;
-        const answerKeyRaw = localStorage.getItem(answerKey);
-        if (answerKeyRaw) {
-            const answerKeyData = JSON.parse(answerKeyRaw);
-
-            const answerGroupIndex = answerKeyData.wordGroups.findIndex(
-                (g) => g.id == activeWordGroupId,
-            );
-            if (answerGroupIndex === -1) {
-                alert("WordGroup tidak ditemukan");
-                return;
-            }
-
-            renderWordsDetails(answerKeyData.wordGroups[answerGroupIndex]);
-        } else {
-            renderWordsDetails(wordGroup);
-        }
+        renderWordsTable(userAnswerWordGroup);
+        renderWordsDetails(stored.wordGroups[userAnswerWordGroupIndex]);
 
         if (getCurrentCompareResult().length !== 0) {
-            const compareResult = compareAnswers(stored.verse.id);
-            setCurrentCompareResult(compareResult, stored.verse.id);
+            const compareResult = compareAnswers();
+            setCurrentCompareResult(compareResult);
             highlightErrors(compareResult);
         }
 
@@ -244,10 +228,10 @@ export function initAnalysisAnswerHandler({
         const activeWordGroupId = $(".swiper-slide-active .word-group").attr(
             "wg-id",
         );
-        const groupIndex = stored.wordGroups.findIndex(
+        const groupIndex = stored.userAnswer.findIndex(
             (g) => g.id == activeWordGroupId,
         );
-        const word = stored.wordGroups[groupIndex].words.find(
+        const word = stored.userAnswer[groupIndex].words.find(
             (w) => w.id == wordId,
         );
 
@@ -315,10 +299,13 @@ export function initAnalysisAnswerHandler({
     $(document).on("click", "button[name='btn-submit']", function (e) {
         e.preventDefault();
 
-        const verseId = getCurrentVerseId();
-        if (!verseId) {
+        const exerciseState = getCurrentExerciseState();
+        const exerciseNumber = exerciseState.orderNumber ?? null;
+        const exerciseLevelSlug = exerciseState.orderNumber ?? null;
+
+        if (!exerciseNumber) {
             iziToast.warning({
-                message: "Verse ID tidak ditemukan",
+                message: "Exercise tidak ditemukan",
                 position: "topRight",
             });
             return;
@@ -327,12 +314,12 @@ export function initAnalysisAnswerHandler({
         // passed check
         const btnId = this.id;
         if (btnId === "btn-next-verse") {
-            const nextVerse = Number(getCurrentVerseId()) + 1;
-            fetchWordGroups(null, null, nextVerse);
+            const nextExercise = exerciseNumber + 1;
+            fetchExercise(exerciseLevelSlug, nextExercise);
             return;
         }
 
-        const compareResult = compareAnswers(verseId);
+        const compareResult = compareAnswers();
         if (compareResult.length === 0) {
             iziToast.warning({
                 message: "Tidak ada data untuk dibandingkan",
@@ -341,8 +328,7 @@ export function initAnalysisAnswerHandler({
             return;
         }
 
-        setCurrentCompareResult(compareResult, verseId);
-
+        setCurrentCompareResult(compareResult);
         highlightErrors(compareResult);
 
         const totalAnswers = compareResult.length;
@@ -354,13 +340,15 @@ export function initAnalysisAnswerHandler({
             const currentKey = Object.keys(localStorage).find((k) =>
                 k.startsWith(getPrefix()),
             );
-            const currentStored = currentKey ? JSON.parse(localStorage.getItem(currentKey)) : null;
-            const storedExerciseId = currentStored?.exerciseId ?? null;
-            const exerciseId = storedExerciseId !== null && storedExerciseId !== "" ? parseInt(storedExerciseId, 10) : null;
+            const currentStored = currentKey
+                ? JSON.parse(localStorage.getItem(currentKey))
+                : null;
+            const exerciseNumber = currentStored?.exerciseOrderNumber ?? null;
+            const exerciseLevelSlug = currentStored?.levelSlug ?? null;
 
             const payload = {
-                exercise_id: exerciseId,
-                level: 1,
+                exercise_number: exerciseNumber,
+                level: exerciseLevelSlug,
                 pass: true,
                 score: score,
                 attempt_count: 1,
@@ -413,8 +401,8 @@ export function initAnalysisAnswerHandler({
                         }).then((willSave) => {
                             if (!willSave) return;
 
-                            const nextVerse = Number(getCurrentVerseId()) + 1;
-                            fetchWordGroups(null, null, nextVerse);
+                            const nextExercise = exerciseNumber + 1;
+                            fetchExercise(exerciseLevelSlug, nextExercise);
                         });
                     } else {
                         iziToast.error({

@@ -2,6 +2,7 @@
 // RENDER WORDS TABLE
 // =============================
 export function initWordTable({
+    mode,
     getPrefix,
     isModified,
     showEditConfirmation,
@@ -39,8 +40,8 @@ export function initWordTable({
             else if (word.color === "green") simbolClass = "text-fiil";
             else if (word.color === "blue") simbolClass = "text-isim";
 
-            const prefix = getPrefix();
-            const isAnswerMode = prefix === "answer_user_";
+            const isAnswerMode = mode === 'exercise';
+                         
             const actionButtons = isAnswerMode
                 ? `<button class="btn btn-sm btn-icon btn-warning word-edit" title="Edit">Edit 
                    <i class="fa-solid fa-edit"></i>
