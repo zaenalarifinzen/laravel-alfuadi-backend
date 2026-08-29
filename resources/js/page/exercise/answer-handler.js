@@ -9,7 +9,8 @@ export function initAnalysisAnswerHandler({
     getCurrentCompareResult,
     setCurrentCompareResult,
     getCurrentExerciseState,
-    getCurrentVerseId,
+    getCachedExerciseData,
+    saveCachedExerciseData,
     fetchExercise,
     compareAnswers,
     highlightErrors,
@@ -79,11 +80,11 @@ export function initAnalysisAnswerHandler({
 
         // Logic
         // get data from local storage
-        const currentKey = Object.keys(localStorage).find((k) =>
-            k.startsWith(getPrefix()),
-        );
-
-        const stored = JSON.parse(localStorage.getItem(currentKey));
+        const stored = getCachedExerciseData();
+        if (!stored) {
+            alert("Data soal tidak ditemukan");
+            return;
+        }
 
         // get active user answer wordgroup
         const activeWordGroupId = $(".swiper-slide-active .word-group").attr(
@@ -186,7 +187,7 @@ export function initAnalysisAnswerHandler({
         }
 
         // save to local storage
-        localStorage.setItem(currentKey, JSON.stringify(stored));
+        saveCachedExerciseData(stored);
 
         // track modification
         // modified = true;
@@ -221,10 +222,9 @@ export function initAnalysisAnswerHandler({
         const wordId = tr.find(".words").attr("id");
 
         // get data from local storage
-        const currentKey = Object.keys(localStorage).find((k) =>
-            k.startsWith(getPrefix()),
-        );
-        const stored = JSON.parse(localStorage.getItem(currentKey));
+        const stored = getCachedExerciseData();
+        if (!stored) return;
+
         const activeWordGroupId = $(".swiper-slide-active .word-group").attr(
             "wg-id",
         );
@@ -301,7 +301,7 @@ export function initAnalysisAnswerHandler({
 
         const exerciseState = getCurrentExerciseState();
         const exerciseNumber = exerciseState.orderNumber ?? null;
-        const exerciseLevelSlug = exerciseState.orderNumber ?? null;
+        const exerciseLevelSlug = exerciseState.levelSlug ?? null;
 
         if (!exerciseNumber) {
             iziToast.warning({
@@ -337,15 +337,6 @@ export function initAnalysisAnswerHandler({
         const score = Math.round((correctAnswers / totalAnswers) * 100);
 
         if (score === 100) {
-            const currentKey = Object.keys(localStorage).find((k) =>
-                k.startsWith(getPrefix()),
-            );
-            const currentStored = currentKey
-                ? JSON.parse(localStorage.getItem(currentKey))
-                : null;
-            const exerciseNumber = currentStored?.exerciseOrderNumber ?? null;
-            const exerciseLevelSlug = currentStored?.levelSlug ?? null;
-
             const payload = {
                 exercise_number: exerciseNumber,
                 level: exerciseLevelSlug,

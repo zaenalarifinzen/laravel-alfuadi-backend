@@ -160,10 +160,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <button type="button" class="btn btn-outline-primary btn-lg mr-2" id="btn-prev-verse">Sebelumnya</button>
-                    </div>
+                <div class="d-flex justify-content-end">
                     <div>
                         <button class="btn btn-icon icon-left btn-primary btn-lg" name="btn-submit"
                             id="btn-submit-answer">Submit</button>

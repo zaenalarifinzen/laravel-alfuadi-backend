@@ -1,6 +1,6 @@
 import * as storage from "../../utils/storage-helper";
 import { createNahwuFormController } from "../../page/words/nahwu-form-autofill";
-import { initAnalysisAnswerHandler } from "./analysis-answer-handler";
+import { initAnalysisAnswerHandler } from "./answer-handler";
 import { initAnalysisPage } from "./analysis-page";
 import { initSearchVerse } from "../../utils/search-verse";
 import { initSwiperSlider } from "../../components/swiper-slider";
@@ -91,8 +91,9 @@ initAnalysisAnswerHandler({
     getNahwuController: () => nahwuFormController,
     getCurrentCompareResult: analysisPage.getCurrentCompareResult,
     setCurrentCompareResult: analysisPage.setCurrentCompareResult,
-    getCurrentExerciseOrderNumber: analysisPage.getCurrentExerciseOrderNumber,
     getCurrentExerciseState: analysisPage.getCurrentExerciseState,
+    getCachedExerciseData: analysisPage.getCachedExerciseData,
+    saveCachedExerciseData: analysisPage.saveCachedExerciseData,
     fetchExercise: analysisPage.fetchExercise,
     compareAnswers: analysisPage.compareAnswers,
     highlightErrors: analysisPage.highlightErrors,

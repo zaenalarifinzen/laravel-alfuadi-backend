@@ -28,7 +28,7 @@ class UserAnswerController extends Controller
 
             $existingAnswer = UserAnswer::where('user_id', $userId)
                 ->where('exercise_id', $exerciseId)
-                ->where('level', $level)
+                ->where('level', $exerciseLevelNumber)
                 ->first();
 
             // Update
