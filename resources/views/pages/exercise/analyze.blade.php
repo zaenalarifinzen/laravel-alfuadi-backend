@@ -29,23 +29,25 @@
             <div class="section-header d-flex justify-content-between align-items-center">
                 <h1>Latihan analisa</h1>
 
-                <div class="float-right">
-                    <form method="GET" action="{{ route('wordgroups.grouping') }}" id="search-verse-form" class="mb-0">
-                        <div class="input-group">
-                            <select class="form-control form-control-sm" name="surah-option" id="surah-option"
-                                style="flex: 3; border-top-left-radius: 0.5rem; border-bottom-left-radius: 0.5rem;"
-                                required>
-                                <option value="">Pilih Soal</option>
-                            </select>
-                            <input type="number" class="form-control" placeholder="Ayat" name="verse-option"
-                                id="verse-option" value="" style="flex: 1;" required>
+                @if (request()->segment(2) === 'alquran')
+                    <div class="float-right">
+                        <form method="GET" action="{{ route('wordgroups.grouping') }}" id="search-verse-form" class="mb-0">
+                            <div class="input-group">
+                                <select class="form-control form-control-sm" name="surah-option" id="surah-option"
+                                    style="flex: 3; border-top-left-radius: 0.5rem; border-bottom-left-radius: 0.5rem;"
+                                    required>
+                                    <option value="">Pilih Soal</option>
+                                </select>
+                                <input type="number" class="form-control" placeholder="Ayat" name="verse-option"
+                                    id="verse-option" value="" style="flex: 1;" required>
 
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="submit">Buka</button>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="submit">Buka</button>
+                                </div>
                             </div>
-                        </div>
-                    </form>
-                </div>
+                        </form>
+                    </div>
+                @endif
             </div>
 
             <div class="section-body exercise">
@@ -141,13 +143,6 @@
                                                     <th style="width:110px;">Lafadz</th>
                                                 </tr>
                                             </thead>
-                                            {{-- @php
-                                                $firstGroup = $wordgroups->first();
-                                                $words =
-                                                    $firstGroup && isset($firstGroup->words)
-                                                        ? $firstGroup->words
-                                                        : collect();
-                                            @endphp --}}
                                             <tbody>
                                                 <tr>
                                                     <td colspan="5" class="text-center text-muted">Tidak ada data</td>

@@ -73,7 +73,7 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label>Penjelasan</label>
+                                        <label>Penjelasan <em class="text-muted">(Opsional)</em></label>
                                         <textarea class="form-control @error('explanation') is-invalid @enderror"
                                         name="explanation" data-height="100">{{ old('explanation') }}</textarea>
                                         @error('explanation')

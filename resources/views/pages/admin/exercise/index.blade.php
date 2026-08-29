@@ -69,13 +69,15 @@
                                                     aria-haspopup="true" aria-expanded="false">
                                                     {{ $exercise->title }}</a>
                                                 <div class="dropdown-menu">
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('admin.exercises.edit', $exercise->id) }}">Edit</a>
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('admin.exercises.grouping', $exercise->id) }}">Grouping</a>
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('admin.exercises.irob', $exercise->id) }}">Input
-                                                        I'rob</a>
+                                                    @if ($exercise->exerciseLevel->slug !== 'alquran')
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('admin.exercises.edit', $exercise->id) }}">Edit</a>
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('admin.exercises.grouping', $exercise->id) }}">Grouping</a>
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('admin.exercises.irob', $exercise->id) }}">Input
+                                                            I'rob</a>
+                                                    @endif
                                                     @if ($exercise->is_active)
                                                         <a href="#" class="dropdown-item"
                                                             onclick="event.preventDefault(); document.getElementById('deactivate-form-{{ $exercise->id }}').submit();">

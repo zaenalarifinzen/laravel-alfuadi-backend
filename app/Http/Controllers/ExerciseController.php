@@ -93,6 +93,14 @@ class ExerciseController extends Controller
         $data = $request->validated();
 
         $exercise = Exercise::findOrFail($id);
+        $exerciseDescription = $exercise->description ?? [];
+        $newDescription = $data['description'] ?? [];
+
+        if ($exerciseDescription !== $newDescription) {
+            $data['content'] = null;
+            $data['is_active'] = false;
+        }
+
         $exercise->update($data);
 
         return redirect()->route('admin.exercises.index')
@@ -345,9 +353,18 @@ class ExerciseController extends Controller
     /**
      * Activate Exercise.
      */
-    public function activate(Request $request, $exerciseId)
+    public function activate(string $exerciseId)
     {
         $exercise = Exercise::findOrFail($exerciseId);
+        $exerciseWordGroups = $exercise->content['wordGroups'] ?? null;
+        $exerciseWords = collect($exerciseWordGroups)->flatMap(function ($group) {
+            return $group['words'] ?? [];
+        });
+
+        if (!$exerciseWordGroups || $exerciseWords->isEmpty()) {
+            return redirect()->back()->with('error', 'Cannot activate "' . $exercise['title'] . '" because it has no wordgroups or words.');
+        }
+
         $exercise->is_active = true;
         $exercise->save();
 
@@ -357,7 +374,7 @@ class ExerciseController extends Controller
     /**
      * Deactivate Exercise
      */
-    public function deactivate(Request $request, $exerciseId)
+    public function deactivate(string $exerciseId)
     {
         $exercise = Exercise::findOrFail($exerciseId);
         $exercise->is_active = false;
