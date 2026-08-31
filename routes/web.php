@@ -121,7 +121,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/wordgroups/split', [WordGroupController::class, 'split'])->name('wordgroups.split');
         Route::post('/wordgroups/complete', [WordGroupController::class, 'completeOrderNumber'])->name('wordgroups.complete');
 
-        // Admin exercise management
+        // Dashboard exercise management
         Route::prefix('dashboard')->name('dashboard.')->group(function () {
             // Exercise Level
             Route::resource('exercise-levels', ExerciseLevelController::class);
@@ -134,12 +134,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('exercises/{id}/irob', [ExerciseController::class, 'updateIrob'])->name('exercises.irob.update');
             Route::post('exercises/{id}/activate', [ExerciseController::class, 'activate'])->name('exercises.activate');
             Route::post('exercises/{id}/deactivate', [ExerciseController::class, 'deactivate'])->name('exercises.deactivate');
+            
+            // Exercise Levels.
+            Route::get('/exercise-level/new', [ExerciseLevelController::class, 'create'])->name('exercise-level.create');
+            Route::post('/exercise-level/new', [ExerciseLevelController::class, 'store'])->name('exercise-level.store');
+            Route::post('/exercise-level/{id}/activate', [ExerciseLevelController::class, 'activate'])->name('exercise-level.activate');
+            Route::post('/exercise-level/{id}/deactivate', [ExerciseLevelController::class, 'deactivate'])->name('exercise-level.deactivate');
+            Route::resource('new-exercise', ExerciseController::class);
         });
 
-        // Legacy.
-        Route::get('/exercise-level/new', [ExerciseLevelController::class, 'create'])->name('exercise-level.create');
-        Route::post('/exercise-level/new', [ExerciseLevelController::class, 'store'])->name('exercise-level.store');
-        Route::resource('new-exercise', ExerciseController::class);
 
         // Custom words routes
         Route::post('words/sync', [WordController::class, 'sync'])->name('words.sync');

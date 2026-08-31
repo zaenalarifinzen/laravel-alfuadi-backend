@@ -39,7 +39,7 @@
                                     </div>
                                 </div>
 
-                                <form action="{{ route('exercise-level.store') }}" method="POST" novalidate>
+                                <form action="{{ route('dashboard.exercise-level.store') }}" method="POST" novalidate>
                                     @csrf
                                     <div class="form-group">
                                         <label>Slug</label>

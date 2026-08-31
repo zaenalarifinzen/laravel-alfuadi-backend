@@ -115,4 +115,31 @@ class ExerciseLevelController extends Controller
             ->back()
             ->with('success', '"' . $exerciseLevel['name'] . '" berhasil dihapus');
     }
+
+    /**
+     * Activate the resource
+     */
+    public function activate(string $exerciseId)
+    {
+        return $this->setActiveStatus($exerciseId, true);
+    }
+
+    /**
+     * Deactivate the resource
+     */
+    public function deactivate(string $exerciseId)
+    {
+        return $this->setActiveStatus($exerciseId, false);
+    }
+
+    /**
+     * Status Setter
+     */
+    private function setActiveStatus(string $exerciseId, bool $status) {
+        $exerciseLevel = ExerciseLevel::findOrFail($exerciseId);
+        $exerciseLevel->update(['is_active' => $status]);
+        $action = $status ? 'diaktifkan' : 'dinonaktifkan';
+
+        return redirect()->back()->with('success', "\"{$exerciseLevel->name}\" berhasil {$action}");
+    }
 }

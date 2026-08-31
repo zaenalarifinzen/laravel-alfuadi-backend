@@ -49,13 +49,57 @@
                                         <th>Deskripsi</th>
                                         <th>Jumlah Soal</th>
                                         <th>Status</th>
-                                        <th>Opsi</th>
                                     </tr>
                                 </thead>
                                 @foreach ($levels as $level)
                                     <tr>
                                         <td>{{ $level->level_number }}</td>
-                                        <td>{{ $level->name }}</td>
+                                        <td>
+                                            <div class="btn-group mb-2">
+                                                <a href="#" class="font-weight-600" data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                                    {{ $level->name }}</a>
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('dashboard.exercise-levels.edit', $level->id) }}">Edit</a>
+                                                    @if ($level->is_active)
+                                                        <a href="#" class="dropdown-item"
+                                                            onclick="event.preventDefault(); document.getElementById('deactivate-form-{{ $level->id }}').submit();">
+                                                            Nonaktifkan
+                                                        </a>
+
+                                                        <form id="deactivate-form-{{ $level->id }}"
+                                                            action="{{ route('dashboard.exercise-level.deactivate', $level->id) }}"
+                                                            method="POST" class="d-none">
+                                                            @csrf
+                                                        </form>
+                                                    @else
+                                                        <a href="#" class="dropdown-item"
+                                                            onclick="event.preventDefault(); document.getElementById('activate-form-{{ $level->id }}').submit();">
+                                                            Aktifkan
+                                                        </a>
+
+                                                        <form id="activate-form-{{ $level->id }}"
+                                                            action="{{ route('dashboard.exercise-level.activate', $level->id) }}"
+                                                            method="POST" class="d-none">
+                                                            @csrf
+                                                        </form>
+                                                    @endif
+                                                    <div class="dropdown-divider"></div>
+                                                    <a href="#" class="dropdown-item text-danger"
+                                                        onclick="event.preventDefault(); document.getElementById('delete-form-{{ $level->id }}').submit();">
+                                                        Hapus
+                                                    </a>
+
+                                                    <form id="delete-form-{{ $level->id }}"
+                                                        action="{{ route('dashboard.exercise-levels.destroy', $level->id) }}"
+                                                        method="POST" class="d-none">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </td>
                                         <td>{{ $level->description }}</td>
                                         <td>10</td>
                                         <td>
@@ -65,7 +109,7 @@
                                                 <div class="badge badge-warning">Tidak Aktif</div>
                                             @endif
                                         </td>
-                                        <td>
+                                        {{-- <td>
                                             <div class="d-flex justify-content-left">
                                                 <a href='{{ route('dashboard.exercise-levels.edit', $level->id) }}'
                                                     class="btn btn-sm btn-info btn-icon">
@@ -83,7 +127,7 @@
                                                     </button>
                                                 </form>
                                             </div>
-                                        </td>
+                                        </td> --}}
                                     </tr>
                                 @endforeach
                             </table>
