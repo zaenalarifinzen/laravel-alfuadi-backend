@@ -18,12 +18,6 @@
                     <i class="fas fa-chalkboard-teacher"></i><span>Metode Al-Fuadi</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a href="{{ route('exercise-level.index') }}"
-                    class="nav-link {{ request()->routeIs('exercise-level.*') ? 'active' : '' }}">
-                    <i class="fas fa-pencil-alt"></i><span>Latihan</span>
-                </a>
-            </li>
         </ul>
     </div>
 </nav>

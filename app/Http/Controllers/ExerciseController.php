@@ -28,9 +28,9 @@ class ExerciseController extends Controller
             $exercise->load('exerciseLevel');
         }
 
-        $type_menu = 'admin.exercises.exercise';
+        $type_menu = 'dashboard.exercises.exercise';
 
-        return view('pages.admin.exercise.index', compact('exercises', 'type_menu'));
+        return view('pages.dashboard.exercise.index', compact('exercises', 'type_menu'));
     }
 
     /**
@@ -39,9 +39,9 @@ class ExerciseController extends Controller
     public function create()
     {
         $levels = ExerciseLevel::orderBy('level_number', 'asc')->get();
-        $type_menu = 'admin.exercises.exercise';
+        $type_menu = 'dashboard.exercises.exercise';
 
-        return view('pages.admin.exercise.create', compact('levels', 'type_menu'));
+        return view('pages.dashboard.exercise.create', compact('levels', 'type_menu'));
     }
 
     /**
@@ -61,7 +61,7 @@ class ExerciseController extends Controller
 
         Exercise::create($data);
         return redirect()
-            ->route('admin.exercises.index')
+            ->route('dashboard.exercises.index')
             ->with('success', '"' . $data['title'] . '" created succesfully');
     }
 
@@ -80,9 +80,9 @@ class ExerciseController extends Controller
     {
         $exercise = Exercise::findOrFail($id);
         $levels = ExerciseLevel::orderBy('level_number', 'asc')->get();
-        $type_menu = 'admin.exercises.exercise';
+        $type_menu = 'dashboard.exercises.exercise';
 
-        return view('pages.admin.exercise.edit', compact('exercise', 'levels', 'type_menu'));
+        return view('pages.dashboard.exercise.edit', compact('exercise', 'levels', 'type_menu'));
     }
 
     /**
@@ -103,7 +103,7 @@ class ExerciseController extends Controller
 
         $exercise->update($data);
 
-        return redirect()->route('admin.exercises.index')
+        return redirect()->route('dashboard.exercises.index')
             ->with('success', '"' . $data['title'] . '" succesfully updated');
     }
 
@@ -406,8 +406,8 @@ class ExerciseController extends Controller
             // $exercise->save();
         }
 
-        $type_menu = 'admin.exercises';
-        return view('pages.admin.exercise.grouping', compact('exercise', 'type_menu'));
+        $type_menu = 'dashboard.exercises';
+        return view('pages.dashboard.exercise.grouping', compact('exercise', 'type_menu'));
     }
 
     /**
@@ -447,9 +447,9 @@ class ExerciseController extends Controller
     public function irob(string $id)
     {
         $exercise = Exercise::findOrFail($id);
-        $type_menu = 'admin.exercises';
+        $type_menu = 'dashboard.exercises';
 
-        return view('pages.admin.exercise.irob', compact('exercise', 'type_menu'));
+        return view('pages.dashboard.exercise.irob', compact('exercise', 'type_menu'));
     }
 
     public function updateIrob(Request $request, string $id)

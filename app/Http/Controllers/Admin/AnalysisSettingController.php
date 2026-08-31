@@ -10,7 +10,7 @@ class AnalysisSettingController extends Controller
 {
     public function index()
     {
-        return view('pages.admin.analysis-settings', [
+        return view('pages.dashboard.analysis-settings', [
             'type_menu' => 'admin',
             'allowedSurahIds' => Setting::getValue('analysis_allowed_surah_ids', ''),
             'allowedVersesBySurah' => Setting::getValue('analysis_allowed_verses_by_surah', []),

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.dashboard')
 
 @section('title', 'Grouping')
 
@@ -68,7 +68,7 @@
             </div>
             <div class="d-flex justify-content-end align-items-center">
                 <div>
-                    <form id="complete-form" action="{{ route('admin.exercises.grouping.update', $exercise->id) }}" method="POST" class="ml-auto">
+                    <form id="complete-form" action="{{ route('dashboard.exercises.grouping.update', $exercise->id) }}" method="POST" class="ml-auto">
                         @csrf
                         <button type="submit" class="btn btn-primary btn-lg" id="btn-complete">
                             Simpan

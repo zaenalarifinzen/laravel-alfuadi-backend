@@ -56,10 +56,10 @@
     <div id="app">
         <div class="main-wrapper">
             <!-- Header -->
-            @include('components.header')
+            @include('components.header-dashboard')
 
             <!-- Sidebar -->
-            @include('components.admin-sidebar')
+            @include('components.sidebar-dashboard')
 
             <!-- Content -->
             @yield('main')
@@ -85,9 +85,9 @@
     <script src="{{ asset('js/custom.js') }}"></script>
 
     @vite(['resources/js/app.js'])
+    <div id="loading-overlay">
+        <div class="spinner-border text-primary" role="status"></div>
+    </div>
 </body>
-<div id="loading-overlay">
-    <div class="spinner-border text-primary" role="status"></div>
-</div>
 
 </html>

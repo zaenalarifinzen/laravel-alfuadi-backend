@@ -70,7 +70,7 @@
 
                 <li class="menu-header">Organize</li>
                 <li class="{{ Request::is('skema-nahwu') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('admin.analysis-settings.index') }}">
+                    <a class="nav-link" href="{{ route('dashboard.analysis-settings.index') }}">
                         <i class="fas fa-gear"></i>
                         <span>Pengaturan</span></a>
                 </li>

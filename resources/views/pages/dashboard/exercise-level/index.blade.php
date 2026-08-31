@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.dashboard')
 
 @section('title', 'Kelola Level')
 
@@ -26,7 +26,7 @@
 
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h2 class="section-title">Level Latihan</h2>
-                <a href="{{ route('admin.exercise-levels.create') }}" class="btn btn-icon icon-left btn-primary">
+                <a href="{{ route('dashboard.exercise-levels.create') }}" class="btn btn-icon icon-left btn-primary">
                     <i class="fas fa-plus"></i>Tambah Level</a>
             </div>
             <div class="section-body">
@@ -67,12 +67,12 @@
                                         </td>
                                         <td>
                                             <div class="d-flex justify-content-left">
-                                                <a href='{{ route('admin.exercise-levels.edit', $level->id) }}'
+                                                <a href='{{ route('dashboard.exercise-levels.edit', $level->id) }}'
                                                     class="btn btn-sm btn-info btn-icon">
                                                     <i class="fas fa-edit" data-toggle="tooltip"
                                                         data-original-title="Edit"></i>
                                                 </a>
-                                                <form action="{{ route('admin.exercise-levels.destroy', $level->id) }}"
+                                                <form action="{{ route('dashboard.exercise-levels.destroy', $level->id) }}"
                                                     method="POST" class="ml-2">
                                                     <input type="hidden" name="_method" value="DELETE" />
                                                     <input type="hidden" name="_token" value="{{ csrf_token() }}" />

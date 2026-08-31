@@ -9,13 +9,7 @@
         <ul class="sidebar-menu">
             <li class="menu-header">Dashboard</li>
             <li class='{{ Request::is('homepage') ? 'active' : '' }}'>
-                <a class="nav-link" href="{{ route('login') }}"><i class="fas fa-house"></i> <span>Dashboard</span></a>
-            </li>
-
-            <li class="menu-header">Qur'an Alfuadi</li>
-            <li class="{{ Request::is('surahs') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('quran.index') }}"><i class="fas fa-book-quran"></i>
-                    <span>Al-Quran</span></a>
+                <a class="nav-link" href="{{ route('dashboard') }}"><i class="fas fa-house"></i> <span>Dashboard</span></a>
             </li>
 
             @if (auth()->check())
@@ -37,11 +31,22 @@
                         </li>
                     </ul>
                 </li>
-                <li class="{{ $type_menu === 'exercise' ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('exercise-level.index') }}">
-                        <i class="fas fa-pen-to-square"></i>
-                        <span>Latihan analisa</span>
-                    </a>
+                <li class="nav-item dropdown {{ Request::is('dashboard/exercises') ? 'active' : '' }}">
+                    <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
+                            class="fas fa-file-signature"></i>
+                        <span>Latihan</span></a>
+                    <ul class="dropdown-menu">
+                        <li class="{{ $type_menu === 'dashboard.exercises.exercise-level' ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('dashboard.exercise-levels.index') }}">
+                                <span>Level</span>
+                            </a>
+                        </li>
+                        <li class="{{ $type_menu === 'dashboard.exercises.exercise' ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('dashboard.exercises.index') }}">
+                                <span>Soal</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
             @endauth
 
@@ -70,7 +75,7 @@
 
                 <li class="menu-header">Organize</li>
                 <li class="{{ Request::is('skema-nahwu') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('admin.analysis-settings.index') }}">
+                    <a class="nav-link" href="{{ route('dashboard.analysis-settings.index') }}">
                         <i class="fas fa-gear"></i>
                         <span>Pengaturan</span></a>
                 </li>

@@ -52,14 +52,14 @@
     <!-- END GA -->
 </head>
 
-<body>
+<body class="layout-3">
     <div id="app">
-        <div class="main-wrapper">
+        <div class="main-wrapper container">
             <!-- Header -->
-            @include('components.header')
+            @include('components.header-app')
 
-            <!-- Sidebar -->
-            @include('components.sidebar')
+            <!-- Secondary Navigation Menu -->
+            @include('components.navbar')
 
             <!-- Content -->
             @yield('main')
@@ -85,9 +85,9 @@
     <script src="{{ asset('js/custom.js') }}"></script>
 
     @vite(['resources/js/app.js'])
+    <div id="loading-overlay">
+        <div class="spinner-border text-primary" role="status"></div>
+    </div>
 </body>
-<div id="loading-overlay">
-    <div class="spinner-border text-primary" role="status"></div>
-</div>
 
 </html>

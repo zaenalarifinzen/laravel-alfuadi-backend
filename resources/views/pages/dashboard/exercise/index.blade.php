@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.dashboard')
 
 @section('title', 'Soal Latihan')
 
@@ -20,7 +20,7 @@
 
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h2 class="section-title">Soal Latihan</h2>
-                <a href="{{ route('admin.exercises.create') }}" class="btn btn-icon icon-left btn-primary">
+                <a href="{{ route('dashboard.exercises.create') }}" class="btn btn-icon icon-left btn-primary">
                     <i class="fas fa-plus"></i>
                     Tambah Soal
                 </a>
@@ -71,11 +71,11 @@
                                                 <div class="dropdown-menu">
                                                     @if ($exercise->exerciseLevel->slug !== 'alquran')
                                                         <a class="dropdown-item"
-                                                            href="{{ route('admin.exercises.edit', $exercise->id) }}">Edit</a>
+                                                            href="{{ route('dashboard.exercises.edit', $exercise->id) }}">Edit</a>
                                                         <a class="dropdown-item"
-                                                            href="{{ route('admin.exercises.grouping', $exercise->id) }}">Grouping</a>
+                                                            href="{{ route('dashboard.exercises.grouping', $exercise->id) }}">Grouping</a>
                                                         <a class="dropdown-item"
-                                                            href="{{ route('admin.exercises.irob', $exercise->id) }}">Input
+                                                            href="{{ route('dashboard.exercises.irob', $exercise->id) }}">Input
                                                             I'rob</a>
                                                     @endif
                                                     @if ($exercise->is_active)
@@ -85,7 +85,7 @@
                                                         </a>
 
                                                         <form id="deactivate-form-{{ $exercise->id }}"
-                                                            action="{{ route('admin.exercises.deactivate', $exercise->id) }}"
+                                                            action="{{ route('dashboard.exercises.deactivate', $exercise->id) }}"
                                                             method="POST" class="d-none">
                                                             @csrf
                                                         </form>
@@ -96,7 +96,7 @@
                                                         </a>
 
                                                         <form id="activate-form-{{ $exercise->id }}"
-                                                            action="{{ route('admin.exercises.activate', $exercise->id) }}"
+                                                            action="{{ route('dashboard.exercises.activate', $exercise->id) }}"
                                                             method="POST" class="d-none">
                                                             @csrf
                                                         </form>
@@ -108,7 +108,7 @@
                                                     </a>
 
                                                     <form id="delete-form-{{ $exercise->id }}"
-                                                        action="{{ route('admin.exercises.destroy', $exercise->id) }}"
+                                                        action="{{ route('dashboard.exercises.destroy', $exercise->id) }}"
                                                         method="POST" class="d-none">
                                                         @csrf
                                                         @method('DELETE')

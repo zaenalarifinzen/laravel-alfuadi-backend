@@ -30,58 +30,6 @@ Route::get('/', function () {
     return view('homepage');
 })->name('home');
 
-Route::get('/dashboard', function () {
-    dd(request()->all());
-    $user = Auth::user();
-
-    $randomVerse = Cache::remember('daily_verse', now()->endOfDay(), function () {
-        return Verse::query()
-            ->with('surah')
-            ->inRandomOrder()
-            ->first();
-    });
-
-    $latestTask = null;
-    $updatedAt = null;
-    $latestExercise = null;
-
-    if ($user) {
-        if (in_array($user->roles, ['administrator', 'operator'], true)) {
-            $latestProgres = Word::query()
-                ->where('editor', $user->id)
-                ->latest('updated_at')
-                ->first();
-
-            if ($latestProgres) {
-                $wordgroup = WordGroup::query()
-                    ->where('id', $latestProgres->word_group_id)
-                    ->latest('updated_at')
-                    ->first();
-
-                if ($wordgroup) {
-                    $surah = Surah::query()
-                        ->where('id', $wordgroup->surah_id)
-                        ->first();
-
-                    if ($surah) {
-                        $latestTask = 'Surah ' . $surah->name . ' ayat ' . $wordgroup->verse_number;
-                    }
-
-                    $updatedAt = $latestProgres->updated_at;
-                }
-            }
-        }
-    }
-
-    return view('pages.dashboard', [
-        'type_menu' => 'dashboard',
-        'randomVerse' => $randomVerse,
-        'latestTask' => $latestTask,
-        'updated_at' => $updatedAt,
-        'latestExercise' => $latestExercise,
-    ]);
-})->middleware(['auth'])->name('dashboard');
-
 Route::resource('surahs', SurahController::class);
 Route::resource('verses', VerseController::class);
 
@@ -90,56 +38,6 @@ Route::get('/wordgroups/get/{id?}', [WordGroupController::class, 'getWordGroup']
 Route::get('/words/get/{id}', [WordController::class, 'getWord'])->name('words.get');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', function () {
-        $user = Auth::user();
-
-        $randomVerse = Cache::remember('daily_verse', now()->endOfDay(), function () {
-            return Verse::query()
-                ->with('surah')
-                ->inRandomOrder()
-                ->first();
-        });
-
-        $latestTask = null;
-        $updatedAt = null;
-        $latestExercise = null;
-
-        if ($user) {
-            if (in_array($user->roles, ['administrator', 'operator'], true)) {
-                $latestProgres = Word::query()
-                    ->where('editor', $user->id)
-                    ->latest('updated_at')
-                    ->first();
-
-                if ($latestProgres) {
-                    $wordgroup = WordGroup::query()
-                        ->where('id', $latestProgres->word_group_id)
-                        ->latest('updated_at')
-                        ->first();
-
-                    if ($wordgroup) {
-                        $surah = Surah::query()
-                            ->where('id', $wordgroup->surah_id)
-                            ->first();
-
-                        if ($surah) {
-                            $latestTask = 'Surah ' . $surah->name . ' ayat ' . $wordgroup->verse_number;
-                        }
-
-                        $updatedAt = $latestProgres->updated_at;
-                    }
-                }
-            }
-        }
-
-        return view('pages.dashboard', [
-            'type_menu' => 'dashboard',
-            'randomVerse' => $randomVerse,
-            'latestTask' => $latestTask,
-            'updated_at' => $updatedAt,
-            'latestExercise' => $latestExercise,
-        ]);
-    })->name('dashboard');
 
     // Administrator Only
     Route::middleware(['roles:administrator'])->group(function () {
@@ -154,7 +52,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::resource('kedudukan', KedudukanController::class);
         });
 
-        Route::prefix('admin')->name('admin.')->group(function () {
+        Route::prefix('admin')->name('dashboard.')->group(function () {
             Route::get('/analysis-settings', [SettingsController::class, 'index'])->name('analysis-settings.index');
             Route::post('/analysis-settings', [SettingsController::class, 'store'])->name('analysis-settings.store');
             Route::resource('settings', SettingsController::class);
@@ -163,6 +61,58 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Administrator & Operator Only
     Route::middleware(['roles:administrator,operator'])->group(function () {
+        // Dashboard Panel
+        Route::get('/dashboard', function () {
+            $user = Auth::user();
+
+            $randomVerse = Cache::remember('daily_verse', now()->endOfDay(), function () {
+                return Verse::query()
+                    ->with('surah')
+                    ->inRandomOrder()
+                    ->first();
+            });
+
+            $latestTask = null;
+            $updatedAt = null;
+            $latestExercise = null;
+
+            if ($user) {
+                if (in_array($user->roles, ['administrator', 'operator'], true)) {
+                    $latestProgres = Word::query()
+                        ->where('editor', $user->id)
+                        ->latest('updated_at')
+                        ->first();
+
+                    if ($latestProgres) {
+                        $wordgroup = WordGroup::query()
+                            ->where('id', $latestProgres->word_group_id)
+                            ->latest('updated_at')
+                            ->first();
+
+                        if ($wordgroup) {
+                            $surah = Surah::query()
+                                ->where('id', $wordgroup->surah_id)
+                                ->first();
+
+                            if ($surah) {
+                                $latestTask = 'Surah ' . $surah->name . ' ayat ' . $wordgroup->verse_number;
+                            }
+
+                            $updatedAt = $latestProgres->updated_at;
+                        }
+                    }
+                }
+            }
+
+            return view('pages.dashboard.dashboard', [
+                'type_menu' => 'dashboard',
+                'randomVerse' => $randomVerse,
+                'latestTask' => $latestTask,
+                'updated_at' => $updatedAt,
+                'latestExercise' => $latestExercise,
+            ]);
+        })->name('dashboard');
+
         // Custom wordgroup routes
         Route::get('/wordgroups/grouping', [WordGroupController::class, 'grouping'])->name('wordgroups.grouping');
         Route::post('/wordgroups/save', [WordGroupController::class, 'save'])->name('wordgroups.save');
@@ -171,8 +121,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/wordgroups/split', [WordGroupController::class, 'split'])->name('wordgroups.split');
         Route::post('/wordgroups/complete', [WordGroupController::class, 'completeOrderNumber'])->name('wordgroups.complete');
 
-        // Admin exercise managemen
-        Route::prefix('admin')->name('admin.')->group(function () {
+        // Admin exercise management
+        Route::prefix('dashboard')->name('dashboard.')->group(function () {
             // Exercise Level
             Route::resource('exercise-levels', ExerciseLevelController::class);
             Route::resource('exercises', ExerciseController::class);

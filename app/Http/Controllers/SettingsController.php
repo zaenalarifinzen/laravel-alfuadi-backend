@@ -18,7 +18,7 @@ class SettingsController extends Controller
         $type_menu = 'admin';
         $allowedSurahConfig = Setting::getJson('analysis_allowed_surah_config', []);
 
-        return view('pages.admin.analysis-settings.index', compact('surahs', 'type_menu', 'allowedSurahConfig'));
+        return view('pages.dashboard.analysis-settings.index', compact('surahs', 'type_menu', 'allowedSurahConfig'));
     }
 
     /**
@@ -82,7 +82,7 @@ class SettingsController extends Controller
             Setting::setValue('analysis_allowed_surah_config', $config);
         } catch (\Throwable $e) {
             Log::error('Failed to save analysis_allowed_surah_config', ['exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
-            return redirect()->route('admin.analysis-settings.index')->with('error', 'Gagal menyimpan pengaturan: ' . $e->getMessage());
+            return redirect()->route('dashboard.analysis-settings.index')->with('error', 'Gagal menyimpan pengaturan: ' . $e->getMessage());
         }
 
         return redirect()->back()->with('success', 'Pengaturan berhasil disimpan.');

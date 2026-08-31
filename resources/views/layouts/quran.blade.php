@@ -55,7 +55,7 @@
 <body class="layout-3">
     <div class="main-wrapper container">
         <!-- Header -->
-        @include('components.header-general')
+        @include('components.header-app')
 
         <!-- Secondary Navigation Menu -->
         @include('components.navbar')

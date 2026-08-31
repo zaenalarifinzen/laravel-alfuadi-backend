@@ -74,20 +74,20 @@
                             class="fas fa-lightbulb"></i>
                         <span>Exercise</span></a>
                     <ul class="dropdown-menu">
-                        <li class="{{ $type_menu === 'admin.exercises.exercise-level' ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ route('admin.exercise-levels.index') }}">
+                        <li class="{{ $type_menu === 'dashboard.exercises.exercise-level' ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('dashboard.exercise-levels.index') }}">
                                 <span>Level</span>
                             </a>
                         </li>
-                        <li class="{{ $type_menu === 'admin.exercises.exercise' ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ route('admin.exercises.index') }}">
+                        <li class="{{ $type_menu === 'dashboard.exercises.exercise' ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('dashboard.exercises.index') }}">
                                 <span>Soal</span>
                             </a>
                         </li>
                     </ul>
                 </li>
                 <li class="{{ Request::is('skema-nahwu') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('admin.analysis-settings.index') }}">
+                    <a class="nav-link" href="{{ route('dashboard.analysis-settings.index') }}">
                         <i class="fas fa-gear"></i>
                         <span>Pengaturan</span></a>
                 </li>

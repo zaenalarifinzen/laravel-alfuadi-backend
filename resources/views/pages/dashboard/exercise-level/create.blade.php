@@ -1,6 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.dashboard')
 
-@section('title', 'Tambah soal')
+@section('title', 'Tambah level')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -16,11 +16,11 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Tambah Soal</h1>
+                <h1>Tambah Level</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="{{ route('home') }}">Dashboard</a></div>
                     <div class="breadcrumb-item"><a href="{{ route('exercise-level.index') }}">Latihan</a></div>
-                    <div class="breadcrumb-item">Tambah</div>
+                    <div class="breadcrumb-item">Create level</div>
                 </div>
             </div>
 
@@ -30,7 +30,7 @@
                     <div class="col-12 col-md-6 col-lg-6">
                         <div class="card">
                             <div class="card-header">
-                                <h4>Soal baru</h4>
+                                <h4>Level baru</h4>
                             </div>
                             <div class="card-body">
                                 <div class="row">
@@ -39,50 +39,43 @@
                                     </div>
                                 </div>
 
-                                <form action="{{ route('admin.exercises.store') }}" method="POST" novalidate>
+                                <form action="{{ route('exercise-level.store') }}" method="POST" novalidate>
                                     @csrf
                                     <div class="form-group">
-                                        <label>Level</label>
-                                        <select class="form-control @error('level') is-invalid @enderror" name="level" required>
-                                            <option value="">Pilih Level</option>
-                                            @foreach ($levels as $level)
-                                                <option value="{{ $level->level_number }}" {{ old('level') == $level->level_number ? 'selected' : '' }}>
-                                                    {{ $level->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        @error('level')
+                                        <label>Slug</label>
+                                        <input type="text" class="form-control @error('slug') is-invalid @enderror"
+                                            name="slug" value="{{ old('slug') }}" required>
+                                        @error('slug')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label>Judul</label>
-                                        <input type="text" class="form-control @error('title') is-invalid @enderror"
-                                            name="title" value="{{ old('title') }}" required>
-                                        @error('title')
+                                        <label>Nama level</label>
+                                        <input type="text" class="form-control @error('name') is-invalid @enderror"
+                                            name="name" value="{{ old('name') }}" required>
+                                        @error('name')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label>Isi</label>
-                                        {{-- required description --}} 
-                                        <textarea class="form-control arabic-text @error('description') is-invalid @enderror"
-                                        name="description" data-height="100" required >{{ old('description') }}</textarea>
+                                        <label>Nomor level</label>
+                                        <input type="number"
+                                            class="form-control @error('level_number') is-invalid @enderror"
+                                            name="level_number" value="{{ old('level_number') }}" required>
+                                        @error('level_number')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Deskripsi level</label>
+                                        <textarea class="form-control @error('description') is-invalid @enderror" name="description" data-height="100">{{ old('description') }}</textarea>
                                         @error('description')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                    <div class="form-group">
-                                        <label>Penjelasan <em class="text-muted">(Opsional)</em></label>
-                                        <textarea class="form-control @error('explanation') is-invalid @enderror"
-                                        name="explanation" data-height="100">{{ old('explanation') }}</textarea>
-                                        @error('explanation')
-                                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                                        @enderror
-                                    </div>
                             </div>
-                            <div class="card-footer text-right">
-                                <button class="btn btn-primary">Simpan</button>
+                            <div class="card-footer text-left">
+                                <button class="btn btn-primary">Submit</button>
                             </div>
                             </form>
                         </div>

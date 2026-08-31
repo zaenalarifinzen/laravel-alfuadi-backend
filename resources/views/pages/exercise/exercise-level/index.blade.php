@@ -10,13 +10,6 @@
         <section class="section">
             <div class="section-header d-flex justify-content-between align-items-center">
                 <h1>Latihan analisa</h1>
-                @if (auth()->user()->roles === 'administrator')
-                    <div class="section-header-button">
-                        <a href="{{ route('exercise-level.create') }}" class="btn btn-primary">
-                            Tambah
-                        </a>
-                    </div>
-                @endif
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="{{ route('home') }}">Dashboard</a></div>
                     <div class="breadcrumb-item">Level</div>

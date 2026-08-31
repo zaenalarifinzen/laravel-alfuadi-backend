@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.dashboard')
 
 @section('title', 'Input Irob')
 
@@ -100,7 +100,7 @@
     <script type="application/json" id="page-config">
         {!! json_encode([
             'pageType' => 'words',
-            'wordsSyncUrl' => route('admin.exercises.irob.update', ['id' => $exercise->id]),
+            'wordsSyncUrl' => route('dashboard.exercises.irob.update', ['id' => $exercise->id]),
             'initialData' => $exercise,
             'csrfToken' => csrf_token(),
         ]) !!}

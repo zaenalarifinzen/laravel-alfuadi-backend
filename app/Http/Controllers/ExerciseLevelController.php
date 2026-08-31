@@ -15,9 +15,9 @@ class ExerciseLevelController extends Controller
     public function index()
     {
         $levels = ExerciseLevel::orderBy('level_number', 'asc')->get();
-        $type_menu = 'admin.exercises.exercise-level';
+        $type_menu = 'dashboard.exercises.exercise-level';
 
-        return view('pages.admin.exercise-level.index', compact('levels', 'type_menu'));
+        return view('pages.dashboard.exercise-level.index', compact('levels', 'type_menu'));
     }
 
     /**
@@ -36,7 +36,7 @@ class ExerciseLevelController extends Controller
      */
     public function create()
     {
-        return view('pages.admin.exercise-level.create', [
+        return view('pages.dashboard.exercise-level.create', [
             'type_menu' => 'exercise',
             'mode' => 'create'
         ]);
@@ -54,7 +54,7 @@ class ExerciseLevelController extends Controller
         try {
             ExerciseLevel::create($data);
             return redirect()
-                ->route('admin.exercise-levels.index')
+                ->route('dashboard.exercise-levels.index')
                 ->with('success', $request->name . ' berhasil ditambahkan');
         } catch (\Exception $e) {
             return redirect()
@@ -80,7 +80,7 @@ class ExerciseLevelController extends Controller
         $level = ExerciseLevel::findOrFail($id);
         $type_menu = 'exercise';
 
-        return view('pages.admin.exercise-level.edit', compact('level', 'type_menu'));
+        return view('pages.dashboard.exercise-level.edit', compact('level', 'type_menu'));
     }
 
     /**
@@ -95,7 +95,7 @@ class ExerciseLevelController extends Controller
             $level->update($data);
             
             return redirect()
-                ->route('admin.exercise-levels.index')
+                ->route('dashboard.exercise-levels.index')
                 ->with('success', '"' . $level['name'] . '" berhasil diperbarui');
         } catch (\Exception $e) {
             return redirect()

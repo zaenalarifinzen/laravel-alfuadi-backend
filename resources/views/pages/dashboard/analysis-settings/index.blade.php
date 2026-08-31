@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.dashboard')
 
 @section('title', 'Pengaturan Analisa')
 
@@ -16,7 +16,7 @@
                     </div>
                 </div>
 
-                <form method="POST" action="{{ route('admin.analysis-settings.store') }}">
+                <form method="POST" action="{{ route('dashboard.analysis-settings.store') }}">
                     @csrf
                     <div class="row">
                         @foreach ($surahs as $surah)
