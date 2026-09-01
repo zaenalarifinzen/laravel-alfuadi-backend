@@ -11,6 +11,11 @@
         <section class="section">
             <div class="section-header d-flex justify-content-between align-items-center">
                 <h1>Grouping</h1>
+                <div class="section-header-breadcrumb">
+                    <div class="breadcrumb-item active"><a href="{{ route('dashboard') }}">Dashboard</a></div>
+                    <div class="breadcrumb-item"><a href="{{ route('dashboard.exercises.index') }}">Soal Latihan</a></div>
+                    <div class="breadcrumb-item">Grouping</div>
+                </div>
             </div>
 
             <div class="section-body">

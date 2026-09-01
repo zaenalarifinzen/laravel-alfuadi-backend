@@ -41,6 +41,11 @@
         <section class="section">
             <div class="section-header d-flex justify-content-between align-items-center">
                 <h1>Input I'rob</h1>
+                <div class="section-header-breadcrumb">
+                    <div class="breadcrumb-item active"><a href="{{ route('dashboard') }}">Dashboard</a></div>
+                    <div class="breadcrumb-item"><a href="{{ route('dashboard.exercises.index') }}">Soal Latihan</a></div>
+                    <div class="breadcrumb-item">I'rob</div>
+                </div>
             </div>
 
             <div class="section-body">

@@ -62,9 +62,6 @@
 
         <!-- Content -->
         @yield('main')
-
-        <!-- Footer -->
-        @include('components.footer')
     </div>
     {{-- <div id="app">
     </div> --}}
@@ -86,5 +83,8 @@
 
     @vite(['resources/js/app.js'])
 </body>
+
+<!-- Footer -->
+@include('components.footer')
 
 </html>

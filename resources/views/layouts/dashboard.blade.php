@@ -65,7 +65,7 @@
             @yield('main')
 
             <!-- Footer -->
-            @include('components.footer')
+            @include('components.footer-dashboard')
         </div>
     </div>
 

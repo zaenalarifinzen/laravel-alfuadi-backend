@@ -63,9 +63,6 @@
 
             <!-- Content -->
             @yield('main')
-
-            <!-- Footer -->
-            @include('components.footer')
         </div>
     </div>
 
@@ -89,5 +86,8 @@
         <div class="spinner-border text-primary" role="status"></div>
     </div>
 </body>
+
+<!-- Footer -->
+@include('components.footer')
 
 </html>
