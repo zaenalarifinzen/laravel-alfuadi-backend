@@ -35,7 +35,7 @@
                                 <h4>Input Text</h4>
                             </div>
                             <div class="card-body">
-                                <form action="{{ route('users.store') }}" method="POST">
+                                <form action="{{ route('dashboard.users.store') }}" method="POST">
                                     @csrf
                                     <div class="form-group">
                                         <label>Nama Lengkap</label>

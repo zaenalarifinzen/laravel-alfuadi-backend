@@ -39,7 +39,7 @@
                                     </div>
                                 </div>
 
-                                <form action="{{ route('skema-nahwu.kedudukan.update', $kedudukan) }}" method="POST" novalidate>
+                                <form action="{{ route('dashboard.skema-nahwu.kedudukan.update', $kedudukan) }}" method="POST" novalidate>
                                     @csrf
                                     @method('PUT')
                                     <div class="form-group">

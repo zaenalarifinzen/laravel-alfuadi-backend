@@ -80,12 +80,12 @@
                         <span>Pengaturan</span></a>
                 </li>
                 <li class="{{ Request::is('skema-nahwu') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('skema-nahwu.index') }}">
+                    <a class="nav-link" href="{{ route('dashboard.skema-nahwu.index') }}">
                         <i class="fas fa-sitemap"></i>
                         <span>Skema Nahwu</span></a>
                 </li>
                 <li class="{{ Request::is('users') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('users.index') }}">
+                    <a class="nav-link" href="{{ route('dashboard.users.index') }}">
                         <i class="fas fa-user"></i>
                         <span>User</span></a>
                 </li>

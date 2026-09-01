@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.dashboard')
 
 @section('title', 'Skema Nahwu')
 
@@ -55,7 +55,7 @@
                                         <div class="card">
                                             <div class="card-header">
                                                 <h4>
-                                                    <a href="{{ route('skema-nahwu.kalimat.create') }}"
+                                                    <a href="{{ route('dashboard.skema-nahwu.kalimat.create') }}"
                                                         class="btn btn-primary">Tambah</a>
                                                 </h4>
                                                 <div class="card-header-form">
@@ -101,7 +101,7 @@
                                                                     </td>
                                                                     <td>
                                                                         <div class="d-flex justify-content-left">
-                                                                            <a href='{{ route('skema-nahwu.kalimat.edit', $kalimat->id) }}'
+                                                                            <a href='{{ route('dashboard.skema-nahwu.kalimat.edit', $kalimat->id) }}'
                                                                                 class="btn btn-sm btn-info btn-icon"
                                                                                 data-toggle="tooltip"
                                                                                 data-original-title="Edit">
@@ -109,7 +109,7 @@
                                                                             </a>
 
                                                                             <form
-                                                                                action="{{ route('skema-nahwu.kalimat.destroy', $kalimat->id) }}"
+                                                                                action="{{ route('dashboard.skema-nahwu.kalimat.destroy', $kalimat->id) }}"
                                                                                 method="POST" class="ml-2">
                                                                                 <input type="hidden" name="_method"
                                                                                     value="DELETE" />
@@ -138,7 +138,7 @@
                                         <div class="card">
                                             <div class="card-header">
                                                 <h4>
-                                                    <a href="{{ route('skema-nahwu.kategori.create') }}"
+                                                    <a href="{{ route('dashboard.skema-nahwu.kategori.create') }}"
                                                         class="btn btn-primary">Tambah</a>
                                                 </h4>
                                                 <div class="card-header-form">
@@ -210,7 +210,7 @@
                                                                     </td>
                                                                     <td>
                                                                         <div class="d-flex justify-content-left">
-                                                                            <a href='{{ route('skema-nahwu.kategori.edit', $kategori->id) }}'
+                                                                            <a href='{{ route('dashboard.skema-nahwu.kategori.edit', $kategori->id) }}'
                                                                                 class="btn btn-sm btn-info btn-icon"
                                                                                 data-toggle="tooltip"
                                                                                 data-original-title="Edit">
@@ -218,7 +218,7 @@
                                                                             </a>
 
                                                                             <form
-                                                                                action="{{ route('skema-nahwu.kategori.destroy', $kategori->id) }}"
+                                                                                action="{{ route('dashboard.skema-nahwu.kategori.destroy', $kategori->id) }}"
                                                                                 method="POST" class="ml-2">
                                                                                 <input type="hidden" name="_method"
                                                                                     value="DELETE" />
@@ -247,7 +247,7 @@
                                         <div class="card">
                                             <div class="card-header">
                                                 <h4>
-                                                    <a href="{{ route('skema-nahwu.kedudukan.create') }}"
+                                                    <a href="{{ route('dashboard.skema-nahwu.kedudukan.create') }}"
                                                         class="btn btn-primary">Tambah</a>
                                                 </h4>
                                                 <div class="card-header-form">
@@ -305,7 +305,7 @@
                                                                     </td>
                                                                     <td>
                                                                         <div class="d-flex justify-content-left">
-                                                                            <a href='{{ route('skema-nahwu.kedudukan.edit', $kedudukan->id) }}'
+                                                                            <a href='{{ route('dashboard.skema-nahwu.kedudukan.edit', $kedudukan->id) }}'
                                                                                 class="btn btn-sm btn-info btn-icon"
                                                                                 data-toggle="tooltip"
                                                                                 data-original-title="Edit">
@@ -313,7 +313,7 @@
                                                                             </a>
 
                                                                             <form
-                                                                                action="{{ route('skema-nahwu.kedudukan.destroy', $kedudukan->id) }}"
+                                                                                action="{{ route('dashboard.skema-nahwu.kedudukan.destroy', $kedudukan->id) }}"
                                                                                 method="POST" class="ml-2">
                                                                                 <input type="hidden" name="_method"
                                                                                     value="DELETE" />

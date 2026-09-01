@@ -13,7 +13,7 @@
             <div class="section-header">
                 <h1>Kedudukan</h1>
                 <div class="section-header-button">
-                    <a href="{{ route('skema-nahwu.kedudukan.create') }}" class="btn btn-primary">Tambah</a>
+                    <a href="{{ route('dashboard.skema-nahwu.kedudukan.create') }}" class="btn btn-primary">Tambah</a>
                 </div>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
@@ -47,7 +47,7 @@
                                     </select>
                                 </div>
                                 <div class="float-right">
-                                    <form method="GET" action="{{ route('skema-nahwu.kedudukan.index') }}">
+                                    <form method="GET" action="{{ route('dashboard.skema-nahwu.kedudukan.index') }}">
                                         <div class="input-group">
                                             <input type="text" class="form-control" placeholder="Search" name="name">
                                             <div class="input-group-append">
@@ -92,13 +92,13 @@
                                                 </td>
                                                 <td>
                                                     <div class="d-flex justify-content-left">
-                                                        <a href='{{ route('skema-nahwu.kedudukan.edit', $kedudukan->id) }}'
+                                                        <a href='{{ route('dashboard.skema-nahwu.kedudukan.edit', $kedudukan->id) }}'
                                                             class="btn btn-sm btn-info btn-icon">
                                                             <i class="fas fa-edit"></i>
                                                             Edit
                                                         </a>
 
-                                                        <form action="{{ route('skema-nahwu.kedudukan.destroy', $kedudukan->id) }}"
+                                                        <form action="{{ route('dashboard.skema-nahwu.kedudukan.destroy', $kedudukan->id) }}"
                                                             method="POST" class="ml-2">
                                                             <input type="hidden" name="_method" value="DELETE" />
                                                             <input type="hidden" name="_token"

@@ -40,22 +40,24 @@ Route::get('/words/get/{id}', [WordController::class, 'getWord'])->name('words.g
 Route::middleware(['auth', 'verified'])->group(function () {
 
     // Administrator Only
-    Route::middleware(['roles:administrator'])->group(function () {
-        Route::resource('users', UserController::class);
-        Route::post('users/{user}/verify', [UserController::class, 'verify'])->name('users.verify');
-        Route::resource('products', ProductController::class);
+    Route::prefix('dashboard')->name('dashboard.')->group(function () {
+        Route::middleware(['roles:administrator'])->group(function () {
+            Route::resource('users', UserController::class);
+            Route::post('users/{user}/verify', [UserController::class, 'verify'])->name('users.verify');
+            Route::resource('products', ProductController::class);
 
-        Route::prefix('skema-nahwu')->name('skema-nahwu.')->group(function () {
-            Route::get('/', [NahwuDataController::class, 'index'])->name('index');
-            Route::resource('kalimat', KalimatController::class);
-            Route::resource('kategori', KategoriController::class);
-            Route::resource('kedudukan', KedudukanController::class);
-        });
+            Route::prefix('skema-nahwu')->name('skema-nahwu.')->group(function () {
+                Route::get('/', [NahwuDataController::class, 'index'])->name('index');
+                Route::resource('kalimat', KalimatController::class);
+                Route::resource('kategori', KategoriController::class);
+                Route::resource('kedudukan', KedudukanController::class);
+            });
 
-        Route::prefix('admin')->name('dashboard.')->group(function () {
-            Route::get('/analysis-settings', [SettingsController::class, 'index'])->name('analysis-settings.index');
-            Route::post('/analysis-settings', [SettingsController::class, 'store'])->name('analysis-settings.store');
-            Route::resource('settings', SettingsController::class);
+            Route::name('analysis-settings.')->group(function () {
+                Route::get('/analysis-settings', [SettingsController::class, 'index'])->name('index');
+                Route::post('/analysis-settings', [SettingsController::class, 'store'])->name('store');
+                Route::resource('settings', SettingsController::class);
+            });
         });
     });
 
@@ -134,7 +136,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('exercises/{id}/irob', [ExerciseController::class, 'updateIrob'])->name('exercises.irob.update');
             Route::post('exercises/{id}/activate', [ExerciseController::class, 'activate'])->name('exercises.activate');
             Route::post('exercises/{id}/deactivate', [ExerciseController::class, 'deactivate'])->name('exercises.deactivate');
-            
+
             // Exercise Levels.
             Route::get('/exercise-level/new', [ExerciseLevelController::class, 'create'])->name('exercise-level.create');
             Route::post('/exercise-level/new', [ExerciseLevelController::class, 'store'])->name('exercise-level.store');

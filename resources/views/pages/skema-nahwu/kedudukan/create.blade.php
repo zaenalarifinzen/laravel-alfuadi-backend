@@ -39,7 +39,7 @@
                                     </div>
                                 </div>
 
-                                <form action="{{ route('skema-nahwu.kedudukan.store') }}" method="POST" novalidate>
+                                <form action="{{ route('dashboard.skema-nahwu.kedudukan.store') }}" method="POST" novalidate>
                                     @csrf
                                     <div class="form-group">
                                         <label>Id Kedudukan</label>

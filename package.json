@@ -17,6 +17,7 @@
     },
     "dependencies": {
         "@sentry/browser": "^10.67.0",
+        "bootstrap": "^5.3.3",
         "swiper": "^14.0.5"
     }
 }
