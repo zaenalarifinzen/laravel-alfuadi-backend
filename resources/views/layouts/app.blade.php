@@ -2,6 +2,7 @@
 <html lang="id">
 
 <head>
+    @include('components.theme-script')
     <meta charset="UTF-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
@@ -54,13 +55,13 @@
 
 <body class="layout-3">
     <div id="app">
+        <!-- Header -->
+        @include('components.header-app')
+
+        <!-- Secondary Navigation Menu -->
+        @include('components.navbar')
+
         <div class="main-wrapper container">
-            <!-- Header -->
-            @include('components.header-app')
-
-            <!-- Secondary Navigation Menu -->
-            @include('components.navbar')
-
             <!-- Content -->
             @yield('main')
         </div>

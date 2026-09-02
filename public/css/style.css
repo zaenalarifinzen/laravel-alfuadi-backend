@@ -3323,14 +3323,14 @@ body.sidebar-mini .hide-sidebar-mini {
 body.sidebar-mini .main-sidebar {
     width: 65px;
     overflow: initial !important;
-    position: absolute;
+    position: fixed;
     box-shadow: none;
 }
 body.sidebar-mini .main-sidebar:after {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
     content: " ";
     position: fixed;
-    background-color: #fff;
+    /* background-color: #fff; */
     width: 65px;
     height: 100%;
     left: 0;

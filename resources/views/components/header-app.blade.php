@@ -16,6 +16,11 @@
         </div>
     </form>
     <ul class="navbar-nav navbar-right">
+        <li class="nav-item">
+            <a href="javascript:void(0)" class="nav-link nav-link-lg theme-toggle-btn" title="Ubah Tema">
+                <i class="fas fa-moon theme-toggle-icon"></i>
+            </a>
+        </li>
         @auth
             <li class="dropdown"><a href="#" data-toggle="dropdown"
                     class="nav-link dropdown-toggle nav-link-lg nav-link-user">

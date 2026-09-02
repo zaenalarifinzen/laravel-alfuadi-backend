@@ -2,6 +2,7 @@
 <html lang="id">
 
 <head>
+    @include('components.theme-script')
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
     <title>@yield('title') &verbar; Al-Fuadi Development</title>
@@ -17,7 +18,7 @@
     <!-- Template CSS -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/components.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+    @vite(['resources/css/custom.css'])
 
     <!-- Start GA -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
