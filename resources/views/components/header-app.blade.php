@@ -16,8 +16,8 @@
         </div>
     </form>
     <ul class="navbar-nav navbar-right">
-        <li class="nav-item">
-            <a href="javascript:void(0)" class="nav-link nav-link-lg theme-toggle-btn" title="Ubah Tema">
+        <li class="nav-item mr-2">
+            <a href="javascript:void(0)" class="nav-link nav-link-lg theme-toggle-btn" title="Ganti Tema">
                 <i class="fas fa-moon theme-toggle-icon"></i>
             </a>
         </li>
@@ -51,8 +51,8 @@
             </li>
         @else
             <li>
-                <a href="{{ route('login') }}" class="btn btn-outline-light">
-                    <i class="fas fa-arrow-right-to-bracket"></i> Masuk
+                <a href="{{ route('login') }}" class="btn btn-primary">
+                    </i> Masuk
                 </a>
             </li>
         @endauth
