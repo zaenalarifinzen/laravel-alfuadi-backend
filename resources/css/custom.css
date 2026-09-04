@@ -336,9 +336,9 @@ a {
 
 .btn-secondary,
 .btn-secondary.disabled {
-    box-shadow: 0 2px 6px #e1e5e8;
+    box-shadow: none !important;
     background-color: #9c9b9b;
-    border-color: #cdd3d8;
+    border-color: none !important;
     color: #fff;
 }
 
@@ -1165,7 +1165,7 @@ table tr:hover .table-links {
     padding: 0 20px;
     border-radius: 7px;
     border: 1px solid #eaecfc;
-    background: #ffffff;
+    /* background: #ffffff; */
     justify-content: space-between;
 }
 
@@ -1250,6 +1250,7 @@ table tr:hover .table-links {
 
 .search i {
     position: absolute;
+    top: 0;
     left: 10px;
     font-size: 15px;
     color: #999;
@@ -1948,7 +1949,7 @@ html.dark-mode .table thead th {
 
 html[data-theme="dark"] .table-striped tbody tr:nth-of-type(odd),
 html.dark-mode .table-striped tbody tr:nth-of-type(odd) {
-    background-color: rgba(255, 255, 255, 0.02) !important;
+    background-color: rgba(255, 255, 255, 0.02);
 }
 
 html[data-theme="dark"] .table-hover tbody tr:hover,
@@ -2019,4 +2020,37 @@ html.dark-mode .nav-tabs .nav-link.active {
 html[data-theme="dark"] .nav-tabs,
 html.dark-mode .nav-tabs {
     border-bottom-color: #334155 !important;
+}
+
+html[data-theme="dark"] .form-group .control-label,
+.form-group > label {
+    font-weight: 600;
+    color: #f5f5f5;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+}
+
+html[data-theme="dark"] .custom-dropdown.disabled .select-btn {
+    background: #0F172A;
+    border: 1px solid #2D3B4D;
+    color: #f5f5f5;
+    cursor: not-allowed;
+}
+
+html[data-theme="dark"] .content {
+    color: #f1f5f9;
+    background-color: #0F172A;
+    box-shadow: 0 0 0 1px #03304b;
+}
+
+html[data-theme="dark"] .options li:hover {
+    background: #083b39;
+}
+
+html[data-theme="dark"] .options li.selected {
+    background: #148a84;
+}
+
+html[data-theme="dark"] .nav-tabs .nav-item .nav-link {
+    color: #f1f5f9;
 }

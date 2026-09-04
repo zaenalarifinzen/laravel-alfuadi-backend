@@ -9,6 +9,7 @@ export function initAnalysisAnswerHandler({
     getCurrentCompareResult,
     setCurrentCompareResult,
     getCurrentExerciseState,
+    getNavigationState,
     getCachedExerciseData,
     saveCachedExerciseData,
     fetchExercise,
@@ -314,8 +315,9 @@ export function initAnalysisAnswerHandler({
         // passed check
         const btnId = this.id;
         if (btnId === "btn-next-verse") {
-            const nextExercise = exerciseNumber + 1;
-            fetchExercise(exerciseLevelSlug, nextExercise);
+            const { nextId } = getNavigationState();
+            if (nextId == null) return;
+            fetchExercise(exerciseLevelSlug, nextId);
             return;
         }
 
@@ -392,8 +394,9 @@ export function initAnalysisAnswerHandler({
                         }).then((willSave) => {
                             if (!willSave) return;
 
-                            const nextExercise = exerciseNumber + 1;
-                            fetchExercise(exerciseLevelSlug, nextExercise);
+                            const { nextId } = getNavigationState();
+                            if (nextId == null) return;
+                            fetchExercise(exerciseLevelSlug, nextId);
                         });
                     } else {
                         iziToast.error({

@@ -12,15 +12,15 @@
 export function buildExerciseUrl(
     config,
     levelSlug,
-    exerciseOrderNumber,
+    identifier,
     surahId,
     verseNumber,
 ) {
     if (levelSlug === "alquran") {
-        if (exerciseOrderNumber) {
+        if (identifier) {
             return config.exerciseGetUrl
                 .replace(":level", "alquran")
-                .replace(":id", exerciseOrderNumber);
+                .replace(":id", identifier);
         }
 
         if (surahId && verseNumber) {
@@ -33,10 +33,10 @@ export function buildExerciseUrl(
         return null; // caller decides how to handle "missing parameter"
     }
 
-    if (exerciseOrderNumber) {
+    if (identifier) {
         return config.exerciseGetUrl
             .replace(":level", levelSlug)
-            .replace(":id", exerciseOrderNumber);
+            .replace(":id", identifier);
     }
 
     return null;

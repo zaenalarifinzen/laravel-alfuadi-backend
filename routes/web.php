@@ -164,6 +164,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         })->name('metode-al-fuadi.jilid-1');
 
         Route::get('/exercise', [ExerciseLevelController::class, 'userIndex'])->name('exercise-level.index');
+        Route::get('/exercise/list/{level}', [ExerciseController::class, 'getExerciseList'])->name('exercise.list');
         Route::get('/exercise/get/{level}/{exerciseId?}', [ExerciseController::class, 'getExercise'])
             ->name('exercise.get');
         Route::get('/exercise/{level}/{exerciseId?}', function ($level) {

@@ -18,12 +18,18 @@ export function initAnalysisPage({
     storage,
     getWordTable,
     getSlider,
+    getQuestionList,
 }) {
     let exerciseCacheKey = null;
     let currentExerciseOrderNumber = null;
+    let currentExerciseListId = null;
     let currentExerciseLevelSlug = null;
     let currentCompareResult = [];
     let currentCompareExerciseId = null;
+    let navigationState = {
+        previousId: null,
+        nextId: null,
+    };
 
     function getPrefix() {
         return exerciseCacheKey;
@@ -65,6 +71,18 @@ export function initAnalysisPage({
 
         const exerciseLevel = exerciseData.exercise_level.slug;
         const exerciseNumber = exerciseService.resolveOrderNumber(exerciseData);
+        const exerciseListId = exerciseLevel === "alquran"
+            ? exerciseData.verse_id
+            : exerciseData.id;
+        currentExerciseListId = exerciseListId;
+        navigationState = {
+            previousId: exerciseLevel === "alquran"
+                ? exerciseData.prev_verse_id ?? null
+                : exerciseData.prev_exercise_id ?? null,
+            nextId: exerciseLevel === "alquran"
+                ? exerciseData.next_verse_id ?? null
+                : exerciseData.next_exercise_id ?? null,
+        };
         exerciseCacheKey = `ex_${exerciseLevel}_${exerciseNumber}`;
 
         const cachedData = exerciseService.getCachedExercise(
@@ -83,6 +101,13 @@ export function initAnalysisPage({
         currentExerciseOrderNumber = exerciseNumber;
         currentExerciseLevelSlug = exerciseLevel;
 
+        const questionList = getQuestionList ? getQuestionList() : null;
+        if (questionList) {
+            const surahId = content.surah ? content.surah.id : null;
+            questionList.fetchQuestions(exerciseLevel, surahId);
+            questionList.setActiveQuestion(exerciseListId);
+        }
+
         exerciseService.clearExerciseStorage();
 
         const exerciseKeyPayload = exerciseService.buildAnswerPayload(
@@ -97,7 +122,7 @@ export function initAnalysisPage({
 
         const wordTable = renderExercise(exerciseKeyPayload);
         updateSubmitState(wordTable, passed);
-        syncUrlToHistory(exerciseLevel, exerciseNumber);
+        syncUrlToHistory(exerciseLevel, currentExerciseOrderNumber);
     }
 
     function handleExerciseError(error) {
@@ -119,16 +144,21 @@ export function initAnalysisPage({
     function updateSubmitState(wordTable, passed) {
         wordTable.resetCard();
 
+        const questionList = getQuestionList ? getQuestionList() : null;
+
         if (passed) {
             wordTable.updateCard("Selesai", "success");
             ui.changeSubmitButton("btn-next-verse", "Selanjutnya", "primary");
+            if (questionList && currentExerciseListId != null) {
+                questionList.markQuestionPassed(currentExerciseListId);
+            }
         } else {
             ui.changeSubmitButton("btn-submit-answer", "Submit", "primary");
         }
     }
 
-    function syncUrlToHistory(levelSlug, orderNumber) {
-        history.replaceState(null, "", `/exercise/${levelSlug}/${orderNumber}`);
+    function syncUrlToHistory(levelSlug, exerciseId) {
+        history.replaceState(null, "", `/exercise/${levelSlug}/${exerciseId}`);
     }
 
     // ---------------------------------------------------------------------------
@@ -254,6 +284,16 @@ export function initAnalysisPage({
             ui.changeSubmitButton("btn-next-verse", "Selanjutnya", "primary");
             wordTable.updateCard("Selesai", "success");
         }
+
+        const questionList = getQuestionList ? getQuestionList() : null;
+        if (questionList) {
+            const surahId = cachedData.surah ? cachedData.surah.id : null;
+            questionList.fetchQuestions(currentExerciseLevelSlug, surahId);
+            questionList.setActiveQuestion(currentExerciseListId);
+            if (cachedData.passed) {
+                questionList.markQuestionPassed(currentExerciseListId);
+            }
+        }
     }
 
     function getCurrentExerciseState() {
@@ -263,6 +303,10 @@ export function initAnalysisPage({
             orderNumber: cachedData?.exerciseOrderNumber ?? null,
             levelSlug: cachedData?.levelSlug ?? null,
         };
+    }
+
+    function getNavigationState() {
+        return { ...navigationState };
     }
 
     // Satu pintu masuk untuk baca/tulis cache soal saat ini, supaya modul
@@ -281,13 +325,15 @@ export function initAnalysisPage({
     // Navigation
     // ---------------------------------------------------------------------------
     function nextExercise() {
-        if (!currentExerciseLevelSlug || currentExerciseOrderNumber == null) return;
-        fetchExercise(currentExerciseLevelSlug, currentExerciseOrderNumber + 1);
+        const nextId = navigationState.nextId;
+        if (!currentExerciseLevelSlug || nextId == null) return;
+        fetchExercise(currentExerciseLevelSlug, nextId);
     }
 
     function prevExercise() {
-        if (!currentExerciseLevelSlug || currentExerciseOrderNumber == null) return;
-        fetchExercise(currentExerciseLevelSlug, currentExerciseOrderNumber - 1);
+        const previousId = navigationState.previousId;
+        if (!currentExerciseLevelSlug || previousId == null) return;
+        fetchExercise(currentExerciseLevelSlug, previousId);
     }
 
     // ---------------------------------------------------------------------------
@@ -296,8 +342,29 @@ export function initAnalysisPage({
     function boot() {
         const urlParts = window.location.pathname.split("/");
         const levelSlug = urlParts[2] || "beginner";
-        const exerciseOrderNumber = urlParts[3] || 1;
-        fetchExercise(levelSlug, exerciseOrderNumber);
+        const exerciseId = urlParts[3] || null;
+
+        if (exerciseId) {
+            fetchExercise(levelSlug, exerciseId);
+            return;
+        }
+
+        const questionList = getQuestionList ? getQuestionList() : null;
+        if (!questionList) {
+            ui.showExerciseUnavailableDialog();
+            return;
+        }
+
+        questionList.fetchQuestions(levelSlug, null, true, (exercises) => {
+            const firstExerciseId = exercises[0]?.id;
+
+            if (firstExerciseId == null) {
+                ui.showExerciseUnavailableDialog();
+                return;
+            }
+
+            fetchExercise(levelSlug, firstExerciseId);
+        });
     }
 
     return {
@@ -314,6 +381,7 @@ export function initAnalysisPage({
         nextExercise,
         prevExercise,
         getCurrentExerciseOrderNumber: () => currentExerciseOrderNumber,
+        getNavigationState,
         getCurrentCompareResult: () => currentCompareResult,
         setCurrentCompareResult: (compareResult) => {
             currentCompareResult = compareResult;

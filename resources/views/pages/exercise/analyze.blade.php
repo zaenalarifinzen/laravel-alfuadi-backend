@@ -12,8 +12,16 @@
             background-color: #ffe6e6 !important;
         }
 
+        [data-theme="dark"] tr.is-wrong {
+            background-color: #4d2626 !important;
+        }
+
         tr.is-correct {
             background-color: #e6ffe6 !important;
+        }
+
+        [data-theme="dark"] tr.is-correct {
+            background-color: #173b17 !important;
         }
 
         td.is-wrong {
@@ -21,17 +29,155 @@
             font-weight: bold;
             outline: 1px solid #ff4a4a;
         }
+
+        html[data-theme="dark"] td.is-wrong {
+            background-color: #4d1d1d !important;
+            font-weight: bold;
+            outline: 1px solid #ff4a4a;
+        }
+
+        /* Dynamic layout transition */
+        .transition-all {
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* Question list styling */
+        .question-list-wrapper {
+            scrollbar-width: thin;
+            scrollbar-color: #1d948e #f1f1f1;
+        }
+
+        .question-list-wrapper::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .question-list-wrapper::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .question-list-wrapper::-webkit-scrollbar-thumb {
+            background: #1d948e;
+            border-radius: 3px;
+        }
+
+        .question-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border-left: 4px solid transparent;
+            text-decoration: none !important;
+            color: #495057;
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+        }
+
+        .question-item:hover {
+            background-color: rgba(29, 148, 142, 0.06);
+            color: #1d948e;
+        }
+
+        .question-item.active {
+            background-color: rgba(29, 148, 142, 0.12);
+            border-left-color: #1d948e;
+            font-weight: 600;
+            color: #138a84;
+        }
+
+        .question-item .question-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-right: 12px;
+            flex-shrink: 0;
+            background-color: #eef2f5;
+            color: #6c757d;
+            transition: all 0.2s ease;
+        }
+
+        .question-item.active .question-number {
+            background-color: #1d948e;
+            color: #ffffff;
+            box-shadow: 0 2px 6px rgba(29, 148, 142, 0.4);
+        }
+
+        .question-item.passed .question-number {
+            background-color: #47c363;
+            color: #ffffff;
+        }
+
+        .question-item .question-info {
+            flex-grow: 1;
+            min-width: 0;
+        }
+
+        .question-item .question-title {
+            font-size: 0.9rem;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .question-item .question-subtitle {
+            font-size: 0.75rem;
+            color: #868e96;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .question-item .question-status {
+            margin-left: 8px;
+            flex-shrink: 0;
+        }
+
+        /* Custom exercise layout width & narrowed body margins */
+        @media (min-width: 992px) {
+            .main-wrapper.container {
+                max-width: 95% !important;
+                width: 95% !important;
+                padding-left: 15px !important;
+                padding-right: 15px !important;
+            }
+        }
+
+        @media (min-width: 1600px) {
+            .main-wrapper.container {
+                max-width: 1560px !important;
+            }
+        }
+
+        .main-content {
+            padding-left: 15px !important;
+            padding-right: 15px !important;
+        }
+
+        #btn-toggle-sidebar.active {
+            background-color: #1d948e !important;
+            color: #ffffff !important;
+        }
     </style>
 @endpush
 
-@section('main')<div class="main-content">
+@section('main')
+    <div class="main-content">
         <section class="section">
             <div class="section-header d-flex justify-content-between align-items-center">
-                <h1>Latihan analisa</h1>
+                <div class="d-flex align-items-center">
+                    <h1 class="mb-0">Latihan analisa</h1>
+
+                </div>
 
                 @if (request()->segment(2) === 'alquran')
                     <div class="float-right">
-                        <form method="GET" action="{{ route('wordgroups.grouping') }}" id="search-verse-form" class="mb-0">
+                        <form method="GET" action="{{ route('wordgroups.grouping') }}" id="search-verse-form"
+                            class="mb-0">
                             <div class="input-group">
                                 <select class="form-control form-control-sm" name="surah-option" id="surah-option"
                                     style="flex: 3; border-top-left-radius: 0.5rem; border-bottom-left-radius: 0.5rem;"
@@ -47,123 +193,158 @@
                             </div>
                         </form>
                     </div>
+                @else
+                    <button type="button" class="btn btn-outline-primary btn-lg ml-3 d-inline-flex align-items-center"
+                        id="btn-toggle-sidebar" title="Toggle Daftar Soal">
+                        <i class="fas fa-list-check"></i> <span class="ml-2" id="toggle-sidebar-text">Sembunyikan</span>
+                    </button>
                 @endif
             </div>
 
             <div class="section-body exercise">
-                <div class="card">
-                    <input type="hidden" id="surah-id" value="">
-                    <input type="hidden" id="verse-number" value="">
-                    <input type="hidden" id="verse-id" value="">
-                    <input type="hidden" id="exercise-id" value="">
+                <div class="row" id="exercise-layout-row">
+                    <div class="col-lg-9 col-md-12 transition-all" id="exercise-main-content">
+                        <div class="card">
+                            <input type="hidden" id="surah-id" value="">
+                            <input type="hidden" id="verse-number" value="">
+                            <input type="hidden" id="verse-id" value="">
+                            <input type="hidden" id="exercise-id" value="">
 
-                    <div class="card-header" id="word">
-                        <div class="d-flex justify-content-between align-items-center w-100">
-                            <h4 id="current-wordgroup-label">Nama Soal</h4>
-                        </div>
-                    </div>
-
-                    <div class="card-body position-relative">
-                        <button id="btn-next-slide" class="slider-nav-btn prev">
-                            <i class="fa fa-chevron-left"></i>
-                        </button>
-
-                        <div class="swiper slider" id="slider-rtl">
-                            <div class="swiper-wrapper">
-                                <div class="swiper-slide">
-                                    <h4 class="arabic-text ar-title word-group text-center" wg-id="#">
-                                        Pilih soal terlebih dahulu
-                                    </h4>
+                            <div class="card-header" id="word">
+                                <div class="d-flex justify-content-between align-items-center w-100">
+                                    <h4 id="current-wordgroup-label">Nama Soal</h4>
                                 </div>
                             </div>
-                        </div>
 
-                        <button id="btn-prev-slide" class="slider-nav-btn next">
-                            <i class="fa fa-chevron-right"></i>
-                        </button>
-                    </div>
+                            <div class="card-body position-relative">
+                                <button id="btn-next-slide" class="slider-nav-btn prev">
+                                    <i class="fa fa-chevron-left"></i>
+                                </button>
 
-                </div>
-
-                <div class="card">
-                    <div class="card-body">
-                        <ul class="nav nav-tabs" id="myTab" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="input-tab" data-toggle="tab" href="#input-table"
-                                    role="tab" aria-controls="input" aria-selected="true">Jawaban</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="detail-tab" data-toggle="tab" href="#detail-table" role="tab"
-                                    aria-controls="detail" aria-selected="false">Kunci</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content" id="myTabContent">
-                            <div class="tab-pane fade show active" id="input-table" role="tabpanel"
-                                aria-labelledby="input-tab">
-                                <div class="card-header" id="input-table-header">
-                                    <div class="d-flex justify-content-between align-items-center w-100">
-                                        <h4 class="mb-0">Lembar Jawaban</h4>
+                                <div class="swiper slider" id="slider-rtl">
+                                    <div class="swiper-wrapper">
+                                        <div class="swiper-slide">
+                                            <h4 class="arabic-text ar-title word-group text-center" wg-id="#">
+                                                Pilih soal terlebih dahulu
+                                            </h4>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="table-responsive" style="direction: rtl;">
-                                    <div class="table-sm">
-                                        <div class="">
-                                            <table class="table-striped table" id="sortable-table">
-                                                <thead>
-                                                    <tr class="text-center">
-                                                        <th>Opsi</th>
-                                                        <th>Lafadz</th>
-                                                        <th>Kalimat</th>
-                                                        <th>Hukum</th>
-                                                        <th>Kategori</th>
-                                                        <th>Kedudukan</th>
-                                                        <th>I'rob</th>
-                                                        <th>Tanda</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                </tbody>
-                                            </table>
+
+                                <button id="btn-prev-slide" class="slider-nav-btn next">
+                                    <i class="fa fa-chevron-right"></i>
+                                </button>
+                            </div>
+
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="input-tab" data-toggle="tab" href="#input-table"
+                                            role="tab" aria-controls="input" aria-selected="true">Jawaban</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="detail-tab" data-toggle="tab" href="#detail-table"
+                                            role="tab" aria-controls="detail" aria-selected="false">Kunci</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="myTabContent">
+                                    <div class="tab-pane fade show active" id="input-table" role="tabpanel"
+                                        aria-labelledby="input-tab">
+                                        <div class="card-header" id="input-table-header">
+                                            <div class="d-flex justify-content-between align-items-center w-100">
+                                                <h4 class="mb-0">Lembar Jawaban</h4>
+                                            </div>
+                                        </div>
+                                        <div class="table-responsive" style="direction: rtl;">
+                                            <div class="table-sm">
+                                                <div class="">
+                                                    <table class="table-striped table" id="sortable-table">
+                                                        <thead>
+                                                            <tr class="text-center">
+                                                                <th>Opsi</th>
+                                                                <th>Lafadz</th>
+                                                                <th>Kalimat</th>
+                                                                <th>Hukum</th>
+                                                                <th>Kategori</th>
+                                                                <th>Kedudukan</th>
+                                                                <th>I'rob</th>
+                                                                <th>Tanda</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="detail-table" role="tabpanel"
+                                        aria-labelledby="detail-tab">
+                                        <div class="card">
+                                            <div class="card-header" id="detail-table-header">
+                                                <div class="d-flex justify-content-between align-items-center w-100">
+                                                    <h4 class="mb-0">Kunci Jawaban</h4>
+                                                </div>
+                                            </div>
+                                            <div class="table-sm">
+                                                <table class="table-striped table" id="detail-kalimat-table">
+                                                    <thead>
+                                                        <tr class="text-center">
+                                                            <th>Irob</th>
+                                                            <th style="width:110px;">Lafadz</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td colspan="5" class="text-center text-muted">Tidak ada
+                                                                data</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="detail-table" role="tabpanel" aria-labelledby="detail-tab">
-                                <div class="card">
-                                    <div class="card-header" id="detail-table-header">
-                                        <div class="d-flex justify-content-between align-items-center w-100">
-                                            <h4 class="mb-0">Kunci Jawaban</h4>
+                        </div>
+                        <div class="d-flex justify-content-end mb-4">
+                            <div>
+                                <button class="btn btn-icon icon-left btn-primary btn-lg" name="btn-submit"
+                                    id="btn-submit-answer">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Sidebar: Question List -->
+                    <div class="col-lg-3 col-md-12 transition-all" id="exercise-sidebar">
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center py-3">
+                                <h4 class="mb-0 d-flex align-items-center" id="question-list-header">
+                                    </i> Daftar Soal
+                                </h4>
+                                <span class="badge badge-light badge-pill font-weight-bold" id="question-count-badge">0
+                                    Soal</span>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="question-list-wrapper" style="max-height: 520px; overflow-y: auto;">
+                                    <div class="list-group list-group-flush" id="question-list">
+                                        <div class="p-4 text-center text-muted spinner-container">
+                                            <div class="spinner-border spinner-border-sm text-primary mr-2"
+                                                role="status"></div>
+                                            <span>Memuat daftar soal...</span>
                                         </div>
-                                    </div>
-                                    <div class="table-sm">
-                                        <table class="table-striped table" id="detail-kalimat-table">
-                                            <thead>
-                                                <tr class="text-center">
-                                                    <th>Irob</th>
-                                                    <th style="width:110px;">Lafadz</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td colspan="5" class="text-center text-muted">Tidak ada data</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="d-flex justify-content-end">
-                    <div>
-                        <button class="btn btn-icon icon-left btn-primary btn-lg" name="btn-submit"
-                            id="btn-submit-answer">Submit</button>
-                    </div>
-
                 </div>
             </div>
         </section>
+
     </div>
 
     <!-- Modal Add Word-->
@@ -275,6 +456,7 @@
         {!! json_encode([
             'pageType' => 'exercise',
             'exerciseGetUrl' => route('exercise.get', ['level' => ':level', 'exerciseId' => ':id']),
+            'exerciseListUrl' => route('exercise.list', ['level' => ':level']),
             'csrfToken' => csrf_token(),
             'allowedSurahIds' => $allowedSurahIds,
             'allowedVerseNumbersBySurah' => $allowedVerseNumbersBySurah,

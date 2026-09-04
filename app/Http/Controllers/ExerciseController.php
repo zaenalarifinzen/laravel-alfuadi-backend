@@ -116,32 +116,130 @@ class ExerciseController extends Controller
         return redirect()->back()->with('success', '"' . $exercise['title'] . '" succesfully deleted');
     }
 
+    public function getExerciseList(Request $request, $level)
+    {
+        $exerciseLevel = ExerciseLevel::where('slug', $level)->active()->first();
+
+        if (!$exerciseLevel) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Level not found',
+            ], 404);
+        }
+
+        if ($level === 'alquran') {
+            $surahId = $request->query('surah_id');
+
+            $query = Verse::query()->whereHas('wordGroups.words');
+
+            if ($surahId) {
+                $query->where('surah_id', $surahId);
+            } else {
+                $firstVerse = (clone $query)->first();
+                if ($firstVerse) {
+                    $query->where('surah_id', $firstVerse->surah_id);
+                }
+            }
+
+            $verses = $query->orderBy('number', 'asc')->get(['id', 'surah_id', 'number', 'text']);
+
+            if (auth()->check()) {
+                $exerciseIds = Exercise::whereIn('verse_id', $verses->pluck('id'))->pluck('id', 'verse_id');
+                $passedExerciseIds = UserAnswer::where('user_id', auth()->id())
+                    ->whereIn('exercise_id', $exerciseIds->values())
+                    ->where('passed', true)
+                    ->pluck('exercise_id')
+                    ->toArray();
+
+                foreach ($verses as $verse) {
+                    $exId = $exerciseIds[$verse->id] ?? null;
+                    $verse->passed = $exId ? in_array($exId, $passedExerciseIds) : false;
+                }
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'level' => $exerciseLevel,
+                    'exercises' => $verses->map(function ($v) {
+                        return [
+                            'id' => $v->id,
+                            'order_number' => $v->id,
+                            'title' => 'Ayat ' . $v->number,
+                            'subtitle' => $v->text,
+                            'passed' => $v->passed ?? false,
+                        ];
+                    }),
+                ]
+            ]);
+        }
+
+        $exercises = Exercise::active()
+            ->where('level', $exerciseLevel->level_number)
+            ->orderBy('display_order', 'asc')
+            ->get(['id', 'title', 'description', 'level', 'display_order', 'verse_id']);
+
+        if (auth()->check()) {
+            $passedExerciseIds = UserAnswer::where('user_id', auth()->id())
+                ->whereIn('exercise_id', $exercises->pluck('id'))
+                ->where('passed', true)
+                ->pluck('exercise_id')
+                ->toArray();
+
+            foreach ($exercises as $ex) {
+                $ex->passed = in_array($ex->id, $passedExerciseIds);
+            }
+        }
+
+        // add level info in 'data' response, jadi di data nanti ada exercises dan level info
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'level' => $exerciseLevel,
+                'exercises' => $exercises->map(function ($ex) {
+                    return [
+                        'id' => $ex->id,
+                        'order_number' => $ex->display_order,
+                        'title' => $ex->title ?: ('Soal ' . $ex->display_order),
+                        'subtitle' => $ex->description ?? '',
+                        'passed' => $ex->passed ?? false,
+                    ];
+                }),
+            ],
+        ]);
+    }
+
     /**
      * CUSTOM FUNCTION
      */
-    public function getExercise(Request $request, $level = null, $exerciseOrderNumber = null)
+    public function getExercise(Request $request, $level = null, $identifier = null)
     {
         if ($level === 'alquran') {
-            return $this->getQuranExercise($request, $level, $exerciseOrderNumber);
+            return $this->getQuranExercise($request, $level, $identifier);
         } else {
-            return $this->getBasicExercise($level, $exerciseOrderNumber);
+            return $this->getBasicExercise($level, $identifier);
         }
     }
 
-    public function getBasicExercise($level = null, $exerciseOrderNumber = null)
+    private function getBasicExercise($level = null, $exerciseId = null)
     {
         $exerciseLevel = ExerciseLevel::where('slug', $level)->active()->first();
         $levelNumber = $exerciseLevel ? $exerciseLevel->level_number : (int) $level;
+        $exerciseId = (int) $exerciseId ;
 
-        $exercise = Exercise::with('verse')
-            ->active()
-            ->where('level', $levelNumber)
-            ->where('display_order', $exerciseOrderNumber)
-            ->first();
+        if ($exerciseId) {
+            $exercise = Exercise::active()
+                ->where('level', $levelNumber)
+                ->where('id', $exerciseId)
+                ->first();
+        } else {
+            $exercise = Exercise::active()
+                ->where('level', $levelNumber)
+                ->where('display_order', 1)
+                ->first();
+        }
 
-        $content = $exercise->content ?? null;
-
-        if (!$exercise || !$content) {
+        if (!$exercise || !$exercise->content) {
             return response()->json([
                 'success' => false,
                 'message' => 'Exercise not found',
@@ -158,6 +256,22 @@ class ExerciseController extends Controller
             $exercise->setAttribute('passed', $ua ? (bool) $ua->passed : false);
         }
 
+        // add attribute prev and next exercise id
+        $prevExercise = Exercise::active()
+            ->where('level', $levelNumber)
+            ->where('display_order', '<', $exercise->display_order)
+            ->orderBy('display_order', 'desc')
+            ->first();
+
+        $nextExercise = Exercise::active()
+            ->where('level', $levelNumber)
+            ->where('display_order', '>', $exercise->display_order)
+            ->orderBy('display_order', 'asc')
+            ->first();
+
+        $exercise->setAttribute('prev_exercise_id', $prevExercise ? $prevExercise->id : null);
+        $exercise->setAttribute('next_exercise_id', $nextExercise ? $nextExercise->id : null);
+
         return response()->json([
             'success' => true,
             'message' => 'OK',
@@ -165,7 +279,7 @@ class ExerciseController extends Controller
         ], 200);
     }
 
-    public function getQuranExercise(Request $request, $level = null, $exerciseOrderNumber = null)
+    private function getQuranExercise(Request $request, $level = null, $verseId = null)
     {
         try {
             $validLevels = ExerciseLevel::active()->pluck('slug')->toArray();
@@ -195,18 +309,18 @@ class ExerciseController extends Controller
             }
 
             $verse = null;
-            $resolvedExerciseOrderNumber = $exerciseOrderNumber;
+            $resolvedExerciseId = $verseId;
 
-            if ($exerciseLevel->slug === 'alquran' && $exerciseOrderNumber) {
-                $verse = Verse::with(['surah', 'wordGroups.words'])->find($exerciseOrderNumber);
+            if ($exerciseLevel->slug === 'alquran' && $verseId) {
+                $verse = Verse::with(['surah', 'wordGroups.words'])->find($verseId);
                 if (!$verse) {
                     return response()->json([
                         'success' => false,
                         'message' => 'Verse not found',
                     ], 404);
                 }
-                $resolvedExerciseOrderNumber = $verse->id;
-            } elseif ($exerciseLevel->slug === 'alquran' && !$exerciseOrderNumber) {
+                $resolvedExerciseId = $verse->id;
+            } elseif ($exerciseLevel->slug === 'alquran' && !$verseId) {
                 $surahId = $request->query('surah_id');
                 $verseNumber = $request->query('verse_number');
 
@@ -221,7 +335,7 @@ class ExerciseController extends Controller
                             'message' => 'Verse not found',
                         ], 404);
                     }
-                    $resolvedExerciseOrderNumber = $verse->id;
+                    $resolvedExerciseId = $verse->id;
                 } else {
                     return response()->json([
                         'success' => false,
@@ -241,7 +355,7 @@ class ExerciseController extends Controller
                 ], 422);
             }
 
-            $exercise = Exercise::findOrCreateQuranExercise($resolvedExerciseOrderNumber, $levelNumber);
+            $exercise = Exercise::findOrCreateQuranExercise($resolvedExerciseId, $levelNumber);
 
             if (! $exercise->is_active) {
                 return response()->json([
@@ -277,9 +391,7 @@ class ExerciseController extends Controller
                         'verse_id',
                         'order_number',
                         'text',
-                        'created_at',
                         'updated_at',
-                        'editor'
                     ]);
                     $groupData['words'] = $group->words->map(function ($word) {
                         return $word->only([
@@ -296,9 +408,7 @@ class ExerciseController extends Controller
                             'irob',
                             'tanda',
                             'simbol',
-                            'created_at',
                             'updated_at',
-                            'editor'
                         ]);
                     })->toArray();
                     return $groupData;
@@ -314,6 +424,25 @@ class ExerciseController extends Controller
 
                 $exercise->setAttribute('passed', $ua ? (bool) $ua->passed : false);
             }
+
+            $exerciseOrderNumber = $exercise->display_order;
+
+            $prevExercise = Exercise::active()
+                ->where('level', $levelNumber)
+                ->where('display_order', '<', $exerciseOrderNumber)
+                ->orderBy('display_order', 'desc')
+                ->first();
+
+            $nextExercise = Exercise::active()
+                ->where('level', $levelNumber)
+                ->where('display_order', '>', $exerciseOrderNumber)
+                ->orderBy('display_order', 'asc')
+                ->first();
+
+            $exercise->setAttribute('prev_exercise_id', $prevExercise ? $prevExercise->id : null);
+            $exercise->setAttribute('next_exercise_id', $nextExercise ? $nextExercise->id : null);
+            $exercise->setAttribute('prev_verse_id', $prevExercise ? $prevExercise->verse_id : null);
+            $exercise->setAttribute('next_verse_id', $nextExercise ? $nextExercise->verse_id : null);
 
             return response()->json([
                 'success' => true,

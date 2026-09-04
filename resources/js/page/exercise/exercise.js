@@ -6,6 +6,7 @@ import { initSearchVerse } from "../../utils/search-verse";
 import { initSwiperSlider } from "../../components/swiper-slider";
 import { initWordTable } from "../../components/word-table";
 import { initComponentsTable } from "../../page/components-table";
+import { initQuestionList } from "./question-list";
 
 function readPageConfig() {
     const configEl = document.getElementById("page-config");
@@ -40,7 +41,16 @@ const elements = collectElements();
 let analysisPage;
 let wordTable;
 let slider;
+let questionList;
 let nahwuFormController = null;
+
+questionList = initQuestionList({
+    config,
+    onSelectQuestion: (exerciseId) => {
+        const state = analysisPage.getCurrentExerciseState();
+        analysisPage.fetchExercise(state.levelSlug || "beginner", exerciseId);
+    },
+});
 
 analysisPage = initAnalysisPage({
     config,
@@ -48,6 +58,7 @@ analysisPage = initAnalysisPage({
     storage,
     getWordTable: () => wordTable,
     getSlider: () => slider,
+    getQuestionList: () => questionList,
 });
 
 wordTable = initWordTable({
@@ -92,6 +103,7 @@ initAnalysisAnswerHandler({
     getCurrentCompareResult: analysisPage.getCurrentCompareResult,
     setCurrentCompareResult: analysisPage.setCurrentCompareResult,
     getCurrentExerciseState: analysisPage.getCurrentExerciseState,
+    getNavigationState: analysisPage.getNavigationState,
     getCachedExerciseData: analysisPage.getCachedExerciseData,
     saveCachedExerciseData: analysisPage.saveCachedExerciseData,
     fetchExercise: analysisPage.fetchExercise,

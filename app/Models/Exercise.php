@@ -43,17 +43,17 @@ class Exercise extends Model
         'display_correct_answer',
     ];
 
-    public static function findOrCreateQuranExercise($exerciseOrderNumber, $levelNumber = 1)
+    public static function findOrCreateQuranExercise($exerciseId, $levelNumber = 1)
     {
         $admin = User::where('roles', 'administrator')->first();
         $adminId = $admin ? $admin->id : 1;
 
-        $verse = Verse::find($exerciseOrderNumber);
+        $verse = Verse::find($exerciseId);
         $surah = $verse->surah;
 
         return self::firstOrCreate(
             [
-                'verse_id' => $exerciseOrderNumber,
+                'verse_id' => $exerciseId,
                 'type' => 'analysis',
                 'level' => $levelNumber,
             ],
