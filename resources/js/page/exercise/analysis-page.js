@@ -122,7 +122,11 @@ export function initAnalysisPage({
 
         const wordTable = renderExercise(exerciseKeyPayload);
         updateSubmitState(wordTable, passed);
-        syncUrlToHistory(exerciseLevel, currentExerciseOrderNumber);
+
+        const identifier = exerciseLevel === "alquran"
+            ? exerciseData.verse_id
+            : exerciseData.id;
+        syncUrlToHistory(exerciseLevel, identifier);
     }
 
     function handleExerciseError(error) {

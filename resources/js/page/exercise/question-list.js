@@ -17,7 +17,7 @@ export function initQuestionList({ config, onSelectQuestion }) {
         currentLevelName = level?.name || level?.slug || null;
 
         if (questionListHeaderEl && currentLevelName) {
-            questionListHeaderEl.textContent = `Daftar Soal ${currentLevelName}`;
+            questionListHeaderEl.textContent = `Soal level ${currentLevelName}`;
         }
     }
 
