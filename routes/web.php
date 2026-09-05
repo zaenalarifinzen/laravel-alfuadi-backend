@@ -33,6 +33,13 @@ Route::get('/', function () {
 Route::resource('surahs', SurahController::class);
 Route::resource('verses', VerseController::class);
 
+Route::get('/courses', function () {
+    return view('pages.course.index', ['type_menu' => 'courses']);
+})->name('courses');
+Route::get('/enrollments', function () {
+    return view('pages.course.enrollment', ['type_menu' => 'enrollments']);
+})->name('enrollments');
+
 // Custom API routes
 Route::get('/wordgroups/get/{id?}', [WordGroupController::class, 'getWordGroup'])->name('wordgroups.get');
 Route::get('/words/get/{id}', [WordController::class, 'getWord'])->name('words.get');

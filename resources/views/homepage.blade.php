@@ -132,7 +132,7 @@
             font-size: 16px;
         }
 
-        /* Card Styles - Inspired by Laravel Daily Grid */
+        /* Card Styles  */
         .bab-card {
             border: 1px solid #e2f1ee;
             border-radius: 12px;
@@ -186,91 +186,6 @@
             display: flex;
             align-items: center;
             gap: 6px;
-        }
-
-        /* Course Cards */
-        .course-card {
-            border: 1px solid #e2f1ee;
-            border-radius: 14px;
-            background: #fff;
-            padding: 32px 28px;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            transition: all 0.25s ease;
-            position: relative;
-        }
-
-        .course-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 18px 40px rgba(15, 23, 42, .08);
-        }
-
-        .course-card.is-popular {
-            border: 2px solid #138a84;
-            box-shadow: 0 14px 35px rgba(19, 138, 132, .15);
-        }
-
-        .course-badge {
-            position: absolute;
-            top: -14px;
-            right: 24px;
-            background: #138a84;
-            color: #fff;
-            font-size: 12px;
-            font-weight: 700;
-            padding: 4px 14px;
-            border-radius: 20px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .course-icon {
-            width: 52px;
-            height: 52px;
-            border-radius: 12px;
-            background: #e9fbf8;
-            color: #138a84;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            margin-bottom: 20px;
-        }
-
-        .course-card h3 {
-            font-size: 21px;
-            font-weight: 800;
-            color: #103d3a;
-            margin-bottom: 10px;
-        }
-
-        .course-card p {
-            color: #667085;
-            font-size: 14px;
-            line-height: 1.6;
-            margin-bottom: 24px;
-            flex-grow: 1;
-        }
-
-        .course-features {
-            list-style: none;
-            padding: 0;
-            margin: 0 0 28px 0;
-        }
-
-        .course-features li {
-            font-size: 14px;
-            color: #475467;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .course-features li i {
-            color: #138a84;
-            font-size: 13px;
         }
 
         /* Testimonial Cards */
@@ -411,7 +326,8 @@
                     </h1>
 
                     <p class="homepage-lead">
-                        Pelajari tata bahasa, sintaksis, dan struktur i'rob Al-Qur'an secara interaktif melalui pendekatan bertahap bersama Metode Al-Fuadi.
+                        Pelajari tata bahasa, sintaksis, dan struktur i'rob Al-Qur'an secara interaktif melalui pendekatan
+                        bertahap bersama Metode Al-Fuadi.
                     </p>
 
                     <div class="homepage-actions">
@@ -432,15 +348,16 @@
                     </h1>
 
                     <p class="homepage-lead">
-                        Siap untuk melanjutkan pembelajaran? Mari perdalam pemahaman kaidah nahwu dan tingkatkan latihan analisa i'rob ayat Anda hari ini.
+                        Siap untuk melanjutkan pembelajaran? Mari perdalam pemahaman kaidah nahwu dan tingkatkan latihan analisa
+                        i'rob ayat Anda hari ini.
                     </p>
 
                     <div class="homepage-actions">
-                        <a class="btn btn-primary btn-lg px-4" href="#">
-                            <i class="fas fa-gauge-high mr-2"></i>Lanjutkan Belajar Saya
+                        <a class="btn btn-primary btn-lg px-4" href="{{ route('enrollments') }}">
+                            <i class="fas fa-gauge-high mr-2"></i>Lanjutkan Belajar
                         </a>
-                        <a class="btn btn-outline-primary btn-lg px-4" href="#bab-materi">
-                            <i class="fas fa-layer-group mr-2"></i>Lihat Kurikulum Materi
+                        <a class="btn btn-outline-primary btn-lg px-4" href="{{ route('courses') }}">
+                            <i class="fas fa-layer-group mr-2"></i>Lihat Kelas Online
                         </a>
                     </div>
                 @endguest
@@ -450,7 +367,8 @@
                     <div class="homepage-verse-card">
                         <div class="homepage-arabic">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
                         <p class="text-muted mb-0 mt-3 font-weight-500">
-                            "Mulai pembelajaran dari pengenalan struktur kata, tanda i'rob, hingga analisis kedudukan ayat Al-Qur'an secara komprehensif."
+                            "Mulai pembelajaran dari pengenalan struktur kata, tanda i'rob, hingga analisis kedudukan ayat
+                            Al-Qur'an secara komprehensif."
                         </p>
                     </div>
                 </div>
@@ -464,7 +382,8 @@
                         <span class="homepage-section-subtitle">Metode Al-Fuadi</span>
                         <h2 class="homepage-section-title">Modul & Kurikulum Materi Nahwu</h2>
                         <p class="homepage-section-lead">
-                            Materi disusun secara sistematis agar Anda dapat menguasai fondasi kaidah tata bahasa Arab hingga praktik analisis i'rob ayat.
+                            Materi disusun secara sistematis agar Anda dapat menguasai fondasi kaidah tata bahasa Arab
+                            hingga praktik analisis i'rob ayat.
                         </p>
                     </div>
 
@@ -475,7 +394,8 @@
                                 <span class="bab-number">BAB 01</span>
                                 <h3>Kalimat & Pembagiannya</h3>
                                 <p>
-                                    Pengenalan dasar 3 jenis kata dalam bahasa Arab: Isim, Fi'il, dan Harf beserta ciri dan tanda khas masing-masing.
+                                    Pengenalan dasar 3 jenis kata dalam bahasa Arab: Isim, Fi'il, dan Harf beserta ciri dan
+                                    tanda khas masing-masing.
                                 </p>
 
                                 <div class="bab-meta">
@@ -490,7 +410,8 @@
                                 <span class="bab-number">BAB 02</span>
                                 <h3>Tanda-Tanda I'rob</h3>
                                 <p>
-                                    Memahami 4 kondisi I'rob (Rofa', Nasab, Khofad/Jar, Jazam) serta perubahan harokat asli dan penggantinya.
+                                    Memahami 4 kondisi I'rob (Rofa', Nasab, Khofad/Jar, Jazam) serta perubahan harokat asli
+                                    dan penggantinya.
                                 </p>
                                 <div class="bab-meta">
                                     <i class="fas fa-tags"></i> العلامات والإعراب
@@ -504,7 +425,8 @@
                                 <span class="bab-number">BAB 03</span>
                                 <h3>Marfu'atul Asma'</h3>
                                 <p>
-                                    Struktur Isim-isim yang wajib Dibaca Rofa': Fa'il, Naibul Fa'il, Mubtada', Khobar, Isim Kana, dan Khobar Inna.
+                                    Struktur Isim-isim yang wajib Dibaca Rofa': Fa'il, Naibul Fa'il, Mubtada', Khobar, Isim
+                                    Kana, dan Khobar Inna.
                                 </p>
                                 <div class="bab-meta">
                                     <i class="fas fa-arrow-up-right-dots"></i> Subjek & Predikat (مرفوعات)
@@ -518,7 +440,8 @@
                                 <span class="bab-number">BAB 04</span>
                                 <h3>Manshubatul Asma'</h3>
                                 <p>
-                                    Pembahasan lengkap Objek dan Keterangan: Maf'ul Bih, Maf'ul Mutlaq, Dhorof, Hal, Tamyiz, dan Mustatsna.
+                                    Pembahasan lengkap Objek dan Keterangan: Maf'ul Bih, Maf'ul Mutlaq, Dhorof, Hal, Tamyiz,
+                                    dan Mustatsna.
                                 </p>
                                 <div class="bab-meta">
                                     <i class="fas fa-arrows-left-right"></i> Objek & Pelengkap (منصوبات)
@@ -532,7 +455,8 @@
                                 <span class="bab-number">BAB 05</span>
                                 <h3>Majruratul Asma'</h3>
                                 <p>
-                                    Kaidah kata yang dibaca Jar karena Huruf Jar, Idhofah (Mudhof & Mudhof Ilaih), serta Pengikut (Tawaabi').
+                                    Kaidah kata yang dibaca Jar karena Huruf Jar, Idhofah (Mudhof & Mudhof Ilaih), serta
+                                    Pengikut (Tawaabi').
                                 </p>
                                 <div class="bab-meta">
                                     <i class="fas fa-link"></i> Sandaran & Pengikut (مجرورات)
@@ -546,7 +470,8 @@
                                 <span class="bab-number">BAB 06</span>
                                 <h3>Analisis I'rob Ayat Al-Qur'an</h3>
                                 <p>
-                                    Praktik langsung membedah kedudukan kalimat kata demi kata dalam ayat-ayat pilihan Al-Qur'an secara presisi.
+                                    Praktik langsung membedah kedudukan kalimat kata demi kata dalam ayat-ayat pilihan
+                                    Al-Qur'an secara presisi.
                                 </p>
                                 <div class="bab-meta">
                                     <i class="fas fa-circle-nodes"></i> Praktik I'rob (إعراب القرآن)
@@ -578,11 +503,7 @@
                                     <li><i class="fas fa-circle-check"></i> Teknik Membaca yang Benar</li>
                                     <li><i class="fas fa-circle-check"></i> Latihan Kuis Pilihan Ganda</li>
                                 </ul>
-                                @auth
-                                    <a href="{{ route('dashboard') }}" class="btn btn-outline-primary btn-block">Lanjutkan Belajar</a>
-                                @else
-                                    <a href="{{ route('register') }}" class="btn btn-outline-primary btn-block">Beli Kelas</a>
-                                @endauth
+                                <a href="{{ route('dashboard') }}"class="btn btn-outline-primary btn-block disabled">Segera Hadir</a>
                             </div>
                         </div>
 
@@ -597,11 +518,7 @@
                                     <li><i class="fas fa-circle-check"></i> Latihan Analisa Kalimat</li>
                                     <li><i class="fas fa-circle-check"></i> Peta Konsep Nahwu</li>
                                 </ul>
-                                @auth
-                                    <a href="{{ route('dashboard') }}" class="btn btn-primary btn-block">Lanjutkan Belajar</a>
-                                @else
-                                    <a href="{{ route('register') }}" class="btn btn-primary btn-block">Beli Kelas</a>
-                                @endauth
+                                <a href="{{ route('dashboard') }}"class="btn btn-outline-primary btn-block disabled">Segera Hadir</a>
                             </div>
                         </div>
 
@@ -615,11 +532,7 @@
                                     <li><i class="fas fa-circle-check"></i> Ujian & Bank Soal Komprehensif</li>
                                     <li><i class="fas fa-circle-check"></i> Sertifikat Capaian Pembelajaran</li>
                                 </ul>
-                                @auth
-                                    <a href="{{ route('dashboard') }}" class="btn btn-outline-primary btn-block">Lanjutkan Belajar</a>
-                                @else
-                                    <a href="{{ route('register') }}" class="btn btn-outline-primary btn-block">Beli Kelas</a>
-                                @endauth
+                                <a href="{{ route('dashboard') }}" class="btn btn-outline-primary btn-block disabled">Segera Hadir</a>
                             </div>
                         </div>
                     </div>
@@ -632,7 +545,8 @@
                         <span class="homepage-section-subtitle">Pengalaman Peserta</span>
                         <h2 class="homepage-section-title">Apa Kata Mereka yang Sudah Belajar?</h2>
                         <p class="homepage-section-lead">
-                            Testimoni dari santri, pengajar, dan penggiat ilmu Al-Qur'an yang telah merasakan kemudahan Metode Al-Fuadi.
+                            Testimoni dari santri, pengajar, dan penggiat ilmu Al-Qur'an yang telah merasakan kemudahan
+                            Metode Al-Fuadi.
                         </p>
                     </div>
 
@@ -649,7 +563,8 @@
                                         <i class="fas fa-star"></i>
                                     </div>
                                     <p class="testimonial-quote">
-                                        "Metode Al-Fuadi membuat ilmu Nahwu yang dulunya terasa rumit menjadi sangat sistematis dan mudah dipahami."
+                                        "Metode Al-Fuadi membuat ilmu Nahwu yang dulunya terasa rumit menjadi sangat
+                                        sistematis dan mudah dipahami."
                                     </p>
                                 </div>
                                 <div class="testimonial-author">
@@ -674,7 +589,8 @@
                                         <i class="fas fa-star"></i>
                                     </div>
                                     <p class="testimonial-quote">
-                                        "Sangat membantu dalam memahami i'rob ayat Al-Qur'an secara presisi. Visualisasi skema nahwunya luar biasa jelas!"
+                                        "Sangat membantu dalam memahami i'rob ayat Al-Qur'an secara presisi. Visualisasi
+                                        skema nahwunya luar biasa jelas!"
                                     </p>
                                 </div>
                                 <div class="testimonial-author">
@@ -699,7 +615,8 @@
                                         <i class="fas fa-star"></i>
                                     </div>
                                     <p class="testimonial-quote">
-                                        "Latihan interaktifnya membuat saya lebih percaya diri saat membaca dan menganalisis struktur kalimat dalam Al-Qur'an."
+                                        "Latihan interaktifnya membuat saya lebih percaya diri saat membaca dan menganalisis
+                                        struktur kalimat dalam Al-Qur'an."
                                     </p>
                                 </div>
                                 <div class="testimonial-author">
@@ -719,15 +636,18 @@
                 <section class="homepage-cta-banner">
                     <h2>Mulai Perjalanan Memahami Al-Qur'an Hari Ini</h2>
                     <p>
-                        Bergabunglah dengan platform pembelajaran Metode Al-Fuadi dan rasakan pengalaman belajar nahwu yang modern, terstruktur, dan efektif.
+                        Bergabunglah dengan platform pembelajaran Metode Al-Fuadi dan rasakan pengalaman belajar nahwu yang
+                        modern, terstruktur, dan efektif.
                     </p>
                     <div>
                         @auth
-                            <a class="btn btn-light btn-lg px-4 font-weight-bold text-primary" href="#">
+                            <a class="btn btn-light btn-lg px-4 font-weight-bold text-primary"
+                                href="{{ route('enrollments') }}">
                                 <i class="fas fa-arrow-right mr-2"></i>Kelas Saya
                             </a>
                         @else
-                            <a class="btn btn-light btn-lg px-4 font-weight-bold text-primary mr-2" href="{{ route('register') }}">
+                            <a class="btn btn-light btn-lg px-4 font-weight-bold text-primary mr-2"
+                                href="{{ route('register') }}">
                                 <i class="fas fa-user-plus mr-2"></i>Buat Akun Gratis
                             </a>
                             <a class="btn btn-outline-light btn-lg px-4 font-weight-bold" href="{{ route('login') }}">

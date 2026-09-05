@@ -194,10 +194,8 @@
                         </form>
                     </div>
                 @else
-                    <button type="button" class="btn btn-outline-primary btn-lg ml-3 d-inline-flex align-items-center"
-                        id="btn-toggle-sidebar" title="Toggle Daftar Soal">
-                        <i class="fas fa-list-check"></i> <span class="ml-2" id="toggle-sidebar-text">Sembunyikan</span>
-                    </button>
+                    <a href="#" id="btn-toggle-sidebar" title="Toggle Daftar Soal" class="btn btn-outline-primary"><i
+                                class="fas fa-bars"></i></a>
                 @endif
             </div>
 

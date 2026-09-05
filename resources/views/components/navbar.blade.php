@@ -3,19 +3,25 @@
         <ul class="navbar-nav">
             <li class="nav-item">
                 <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}">
-                    <i class="fas fa-home"></i><span>Beranda</span>
+                    <span>Beranda</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="{{ route('quran.index') }}"
                     class="nav-link {{ request()->routeIs('quran.*') ? 'active' : '' }}">
-                    <i class="fas fa-book"></i><span>Al-Quran</span>
+                    <span>Al-Quran</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="{{ route('metode-al-fuadi.jilid-1') }}"
                     class="nav-link {{ request()->routeIs('metode-al-fuadi.*') ? 'active' : '' }}">
-                    <i class="fas fa-chalkboard-teacher"></i><span>Metode Al-Fuadi</span>
+                    </i><span>Metode Al-Fuadi</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ route('metode-al-fuadi.jilid-1') }}"
+                    class="nav-link {{ request()->routeIs('metode-al-fuadi.*') ? 'active' : '' }}">
+                    </i><span>Kelas Online</span>
                 </a>
             </li>
         </ul>

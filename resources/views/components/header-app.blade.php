@@ -10,13 +10,13 @@
         <div class="nav-collapse">
             <ul class="navbar-nav">
                 <li class="nav-item"><a href="{{ route('quran.index') }}" class="nav-link">Al-Quran</a></li>
-                <li class="nav-item"><a href="{{ route('metode-al-fuadi.jilid-1') }}" class="nav-link">Metode
-                        Al-Fuadi</a></li>
+                <li class="nav-item"><a href="{{ route('metode-al-fuadi.jilid-1') }}" class="nav-link">Metode Al-Fuadi</a></li>
+                <li class="nav-item"><a href="{{ route('courses') }}" class="nav-link">Kelas Online</a></li>
             </ul>
         </div>
     </form>
     <ul class="navbar-nav navbar-right">
-        <li class="nav-item mr-2">
+        <li class="nav-item">
             <a href="javascript:void(0)" class="nav-link nav-link-lg theme-toggle-btn" title="Ganti Tema">
                 <i class="fas fa-moon theme-toggle-icon"></i>
             </a>
@@ -36,6 +36,10 @@
                             <i class="fas fa-border-all"></i>Dashboard
                         </a>
                     @endif
+                    <div class="dropdown-divider"></div>
+                    <a href="{{ route('enrollments') }}" class="dropdown-item has-icon">
+                        <i class="fas fa-chalkboard"></i> Kelas saya
+                    </a>
                     <a href="{{ route('exercise-level.index') }}" class="dropdown-item has-icon">
                         <i class="far fa-pen-to-square"></i> Latihan
                     </a>

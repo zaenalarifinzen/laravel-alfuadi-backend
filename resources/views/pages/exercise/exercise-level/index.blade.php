@@ -108,8 +108,8 @@
             <div class="section-header d-flex justify-content-between align-items-center">
                 <h1>Latihan analisa</h1>
                 <div class="section-header-breadcrumb">
-                    <div class="breadcrumb-item active"><a href="{{ route('home') }}">Dashboard</a></div>
-                    <div class="breadcrumb-item">Level</div>
+                    <div class="breadcrumb-item active"><a href="{{ route('home') }}">Home</a></div>
+                    <div class="breadcrumb-item">Latihan</div>
                 </div>
             </div>
 
