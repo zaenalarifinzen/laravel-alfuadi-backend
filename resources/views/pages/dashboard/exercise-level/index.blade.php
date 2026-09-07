@@ -19,8 +19,7 @@
                 <h1>Kelola Level</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="{{ route('home') }}">Dashboard</a></div>
-                    <div class="breadcrumb-item"><a href="{{ route('exercise-level.index') }}">Admin</a></div>
-                    <div class="breadcrumb-item">Kelola Level</div>
+                    <div class="breadcrumb-item">Level</div>
                 </div>
             </div>
 
@@ -101,7 +100,7 @@
                                             </div>
                                         </td>
                                         <td>{{ $level->description }}</td>
-                                        <td>10</td>
+                                        <td>{{ $level->exercises_count }}</td>
                                         <td>
                                             @if ($level->is_active)
                                                 <div class="badge badge-success">Aktif</div>

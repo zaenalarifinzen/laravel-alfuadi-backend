@@ -272,6 +272,22 @@ class ExerciseController extends Controller
         $exercise->setAttribute('prev_exercise_id', $prevExercise ? $prevExercise->id : null);
         $exercise->setAttribute('next_exercise_id', $nextExercise ? $nextExercise->id : null);
 
+        // only return data when previous exercise passed
+        if ($prevExercise && auth()->check()) {
+            $prevUserAnswer = UserAnswer::where('user_id', auth()->id())
+                ->where('exercise_id', $prevExercise->id)
+                ->where('passed', true)
+                ->latest()
+                ->first();
+
+            if (!$prevUserAnswer) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Previous exercise not passed',
+                ], 403);
+            }
+        }
+
         return response()->json([
             'success' => true,
             'message' => 'OK',

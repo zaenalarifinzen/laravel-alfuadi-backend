@@ -14,7 +14,7 @@ class ExerciseLevelController extends Controller
      */
     public function index()
     {
-        $levels = ExerciseLevel::orderBy('level_number', 'asc')->get();
+        $levels = ExerciseLevel::withCount('exercises')->orderBy('level_number', 'asc')->get();
         $type_menu = 'dashboard.exercises.exercise-level';
 
         return view('pages.dashboard.exercise-level.index', compact('levels', 'type_menu'));

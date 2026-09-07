@@ -52,10 +52,10 @@ export function showEditConfirmation() {
     });
 }
 
-export function showExerciseUnavailableDialog() {
+export function showExerciseUnavailableDialog(title = null, message = null) {
     swal({
-        title: "Soal tidak tersedia",
-        text: "Silakan coba soal lainnya.",
+        title: title || "Soal tidak tersedia",
+        text: message || "Silakan coba soal lainnya.",
         icon: "error",
         buttons: {
             confirm: {

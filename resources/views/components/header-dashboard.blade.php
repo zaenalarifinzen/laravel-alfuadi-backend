@@ -240,7 +240,7 @@
                     </a>
                     <div class="dropdown-divider"></div>
                     <a href="{{ route('enrollments') }}" class="dropdown-item has-icon">
-                        <i class="far fa-pen-to-square"></i> Kelas saya
+                        <i class="fas fa-chalkboard"></i> Kelas saya
                     </a>
                     <a href="{{ route('exercise-level.index') }}" class="dropdown-item has-icon">
                         <i class="far fa-pen-to-square"></i> Latihan

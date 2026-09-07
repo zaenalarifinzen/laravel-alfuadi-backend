@@ -19,8 +19,8 @@
                 <h1>Edit Level</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="{{ route('home') }}">Dashboard</a></div>
-                    <div class="breadcrumb-item"><a href="{{ route('exercise-level.index') }}">Latihan</a></div>
-                    <div class="breadcrumb-item">Edit level</div>
+                    <div class="breadcrumb-item"><a href="{{ route('dashboard.exercise-levels.index') }}">Latihan</a></div>
+                    <div class="breadcrumb-item">Edit</div>
                 </div>
             </div>
 

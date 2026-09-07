@@ -71,17 +71,20 @@ export function initAnalysisPage({
 
         const exerciseLevel = exerciseData.exercise_level.slug;
         const exerciseNumber = exerciseService.resolveOrderNumber(exerciseData);
-        const exerciseListId = exerciseLevel === "alquran"
-            ? exerciseData.verse_id
-            : exerciseData.id;
+        const exerciseListId =
+            exerciseLevel === "alquran"
+                ? exerciseData.verse_id
+                : exerciseData.id;
         currentExerciseListId = exerciseListId;
         navigationState = {
-            previousId: exerciseLevel === "alquran"
-                ? exerciseData.prev_verse_id ?? null
-                : exerciseData.prev_exercise_id ?? null,
-            nextId: exerciseLevel === "alquran"
-                ? exerciseData.next_verse_id ?? null
-                : exerciseData.next_exercise_id ?? null,
+            previousId:
+                exerciseLevel === "alquran"
+                    ? (exerciseData.prev_verse_id ?? null)
+                    : (exerciseData.prev_exercise_id ?? null),
+            nextId:
+                exerciseLevel === "alquran"
+                    ? (exerciseData.next_verse_id ?? null)
+                    : (exerciseData.next_exercise_id ?? null),
         };
         exerciseCacheKey = `ex_${exerciseLevel}_${exerciseNumber}`;
 
@@ -123,15 +126,20 @@ export function initAnalysisPage({
         const wordTable = renderExercise(exerciseKeyPayload);
         updateSubmitState(wordTable, passed);
 
-        const identifier = exerciseLevel === "alquran"
-            ? exerciseData.verse_id
-            : exerciseData.id;
+        const identifier =
+            exerciseLevel === "alquran"
+                ? exerciseData.verse_id
+                : exerciseData.id;
         syncUrlToHistory(exerciseLevel, identifier);
     }
 
     function handleExerciseError(error) {
-        console.error(error);
-        ui.showExerciseUnavailableDialog();
+        const message =
+            error.message === "Previous exercise not passed"
+                ? "Selesaikan latihan sebelumnya terlebih dahulu."
+                : null;
+
+        ui.showExerciseUnavailableDialog('Akses ditolak', message);
     }
 
     function renderExercise(clonedContent) {
@@ -193,7 +201,7 @@ export function initAnalysisPage({
             type: "GET",
             beforeSend: ui.showLoading,
             success: handleExerciseResponse,
-            error: (xhr, status, error) => handleExerciseError(error),
+            error: (xhr, status, error) => handleExerciseError(xhr.responseJSON),
             complete: ui.hideLoading,
         });
     }
@@ -264,8 +272,10 @@ export function initAnalysisPage({
 
         if (!cachedData) return;
 
-        currentExerciseOrderNumber = cachedData.exerciseOrderNumber ?? currentExerciseOrderNumber;
-        currentExerciseLevelSlug = cachedData.levelSlug ?? currentExerciseLevelSlug;
+        currentExerciseOrderNumber =
+            cachedData.exerciseOrderNumber ?? currentExerciseOrderNumber;
+        currentExerciseLevelSlug =
+            cachedData.levelSlug ?? currentExerciseLevelSlug;
 
         const wordTable = getWordTable();
         const slider = getSlider();

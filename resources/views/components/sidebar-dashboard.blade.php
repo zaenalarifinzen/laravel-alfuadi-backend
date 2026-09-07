@@ -8,14 +8,14 @@
         </div>
         <ul class="sidebar-menu">
             <li class="menu-header">Dashboard</li>
-            <li class='{{ Request::is('homepage') ? 'active' : '' }}'>
+            <li class='{{ Request::is('dashboard') ? 'active' : '' }}'>
                 <a class="nav-link" href="{{ route('dashboard') }}"><i class="fas fa-house"></i> <span>Dashboard</span></a>
             </li>
 
             @if (auth()->check())
                 <li class="menu-header">Metode Al-Fuadi</li>
                 <li class="nav-item dropdown {{ $type_menu === 'metode-al-fuadi' ? 'active' : '' }}">
-                    <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
+                    <a href="#" class="nav-link has-dropdown"><i
                             class="fas fa-book-open"></i>
                         <span>Modul Al-Fuadi</span></a>
                     <ul class="dropdown-menu">
@@ -32,7 +32,7 @@
                     </ul>
                 </li>
                 <li class="nav-item dropdown {{ Request::is('dashboard/exercises') ? 'active' : '' }}">
-                    <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
+                    <a href="#" class="nav-link has-dropdown"><i
                             class="fas fa-file-signature"></i>
                         <span>Latihan</span></a>
                     <ul class="dropdown-menu">
