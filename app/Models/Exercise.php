@@ -17,7 +17,7 @@ class Exercise extends Model
         'title',
         'description',
         'content',
-        'level',
+        'level_id',
         'type',
         'verse_id',
         'options',
@@ -55,7 +55,7 @@ class Exercise extends Model
             [
                 'verse_id' => $exerciseId,
                 'type' => 'analysis',
-                'level' => $levelNumber,
+                'level_id' => $levelNumber,
             ],
             [
                 'title' => "Surat {$surah->name}" . " ayat {$verse->number}",
@@ -63,7 +63,7 @@ class Exercise extends Model
                 'content' => null,
                 'correct_answer' => null,
                 'type' => 'analysis',
-                'level' => $levelNumber,
+                'level_id' => $levelNumber,
                 'is_active' => true,
                 'display_order' => $verse->id,
                 'created_by' => $adminId,
@@ -87,11 +87,11 @@ class Exercise extends Model
     }
 
     /**
-     * Relasi ke UserAnswer - satu soal bisa punya banyak jawaban dari berbagai user
+     * Relasi ke ExerciseSubmission - satu soal bisa punya banyak jawaban dari berbagai user
      */
     public function userAnswers()
     {
-        return $this->hasMany(UserAnswer::class);
+        return $this->hasMany(ExerciseSubmission::class);
     }
 
     /**
@@ -99,7 +99,7 @@ class Exercise extends Model
      */
     public function exerciseLevel()
     {
-        return $this->belongsTo(ExerciseLevel::class, 'level', 'level_number');
+        return $this->belongsTo(ExerciseLevel::class, 'level_id', 'level_number');
     }
 
     public function getDisplayContentAttribute()
@@ -133,7 +133,7 @@ class Exercise extends Model
      */
     public function scopeByLevel($query, $level)
     {
-        return $query->where('level', $level);
+        return $query->where('level_id', $level);
     }
 
     /**

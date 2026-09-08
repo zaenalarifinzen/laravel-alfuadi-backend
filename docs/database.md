@@ -17,7 +17,7 @@ Dokumen ini merangkum struktur database berdasarkan model Eloquent di `app/Model
 | `Kedudukan` | `kedudukan` | Master kedudukan/i'rob yang berada di bawah `kalimat`. |
 | `ExerciseLevel` | `exercise_levels` | Master level latihan. |
 | `Exercise` | `exercises` | Soal/latihan, termasuk latihan analisis ayat. |
-| `UserAnswer` | `user_answers` | Jawaban dan progres user terhadap latihan. |
+| `ExerciseSubmission` | `user_answers` | Jawaban dan progres user terhadap latihan. |
 | `Setting` | `settings` | Penyimpanan konfigurasi key-value aplikasi. |
 
 ## ERD Ringkas
@@ -71,7 +71,7 @@ Model:
 - Trait: `HasFactory`, `Notifiable`, `SoftDeletes`, `HasApiTokens`.
 
 Relasi:
-- `userAnswers()`: has many `UserAnswer`.
+- `userAnswers()`: has many `ExerciseSubmission`.
 - `createdQuestions()`: has many `Question` via `created_by`.
 
 Catatan:
@@ -329,14 +329,14 @@ Model:
 Relasi:
 - `verse()`: belongs to `Verse`.
 - `creator()`: belongs to `User` via `created_by`.
-- `userAnswers()`: has many `UserAnswer`.
+- `userAnswers()`: has many `ExerciseSubmission`.
 - `exerciseLevel()`: belongs to `ExerciseLevel` dengan mapping `exercises.level` ke `exercise_levels.level_number`.
 
 Accessor:
 - `display_content`: untuk `type = analysis`, mengambil `verse.text`; selain itu mengambil `description`.
 - `display_correct_answer`: untuk `type = analysis`, mengambil `verse.translation_indo`; selain itu mengambil `correct_answer`.
 
-### `UserAnswer` -> `user_answers`
+### `ExerciseSubmission` -> `user_answers`
 
 Menyimpan progres/jawaban user terhadap latihan.
 

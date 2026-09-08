@@ -31,7 +31,7 @@ class UpdateQuestionRequest extends FormRequest
                 'string',
                 Rule::prohibitedIf(fn () => $this->input('type') === 'analysis'),
             ],
-            'level' => 'sometimes|required|integer|in:1,2,3',
+            'level_id' => 'sometimes|required|integer|in:1,2,3',
             'type' => 'sometimes|required|in:multiple_choice,short_answer,essay,analysis',
             'options' => 'nullable|json',
             'correct_answer' => [

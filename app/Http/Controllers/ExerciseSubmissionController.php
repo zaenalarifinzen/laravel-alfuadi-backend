@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreUserAnswerRequest;
+use App\Http\Requests\StoreExerciseSubmissionRequest;
 use App\Models\Exercise;
 use App\Models\ExerciseLevel;
-use App\Models\UserAnswer;
+use App\Models\ExerciseSubmission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-class UserAnswerController extends Controller
+class ExerciseSubmissionController extends Controller
 {
-    function store(StoreUserAnswerRequest $request)
+    function store(StoreExerciseSubmissionRequest $request)
     {
         try {
             $userId = auth()->id();
@@ -22,13 +22,13 @@ class UserAnswerController extends Controller
             $exerciseLevelNumber = $exerciseLevel->level_number;
 
             $exercise = Exercise::where('display_order', $exerciseNumber)
-                ->where('level', $exerciseLevelNumber)
+                ->where('level_id', $exerciseLevelNumber)
                 ->first();
             $exerciseId = $exercise->id;
 
-            $existingAnswer = UserAnswer::where('user_id', $userId)
+            $existingAnswer = ExerciseSubmission::where('user_id', $userId)
                 ->where('exercise_id', $exerciseId)
-                ->where('level', $exerciseLevelNumber)
+                ->where('level_id', $exerciseLevelNumber)
                 ->first();
 
             // Update
@@ -50,10 +50,10 @@ class UserAnswerController extends Controller
             }
 
             // Save new
-            $userAnswer = UserAnswer::create([
+            $userAnswer = ExerciseSubmission::create([
                 'user_id' => $userId,
                 'exercise_id' => $exerciseId,
-                'level' => $exerciseLevelNumber,
+                'level_id' => $exerciseLevelNumber,
                 'passed' => $request->pass ?? false,
                 'score' => $request->score,
                 'attempt_count' => $request->attempt_count ??  1,
@@ -80,7 +80,7 @@ class UserAnswerController extends Controller
         try {
             $userId = auth()->id();
             
-            $userAnswer = UserAnswer::where('user_id', $userId)
+            $userAnswer = ExerciseSubmission::where('user_id', $userId)
                 ->where('exercise_id', $exerciseId)
                 ->where('is_latest', true)
                 ->first();

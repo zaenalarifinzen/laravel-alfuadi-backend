@@ -3,19 +3,19 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreUserAnswerRequest;
-use App\Models\UserAnswer;
+use App\Http\Requests\StoreExerciseSubmissionRequest;
+use App\Models\ExerciseSubmission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 use function Illuminate\Log\log;
 
-class UserAnswerController extends Controller
+class ExerciseSubmissionController extends Controller
 {
     /**
      * Simpan jawaban user
      */
-    public function store(StoreUserAnswerRequest $request)
+    public function store(StoreExerciseSubmissionRequest $request)
     {       
         try {
             $userId = auth()->id();
@@ -23,9 +23,9 @@ class UserAnswerController extends Controller
             $level = $request->level;
 
             // Cek apakah sudah ada jawaban sebelumnya
-            $existingAnswer = UserAnswer::where('user_id', $userId)
+            $existingAnswer = ExerciseSubmission::where('user_id', $userId)
                 ->where('exercise_id', $exerciseId)
-                ->where('level', $level)
+                ->where('level_id', $level)
                 ->first();
 
             if ($existingAnswer) {
@@ -47,10 +47,10 @@ class UserAnswerController extends Controller
             }
 
             // Jika belum ada, buat catatan penyelesaian baru
-            $userAnswer = UserAnswer::create([
+            $userAnswer = ExerciseSubmission::create([
                 'user_id' => $userId,
                 'exercise_id' => $exerciseId,
-                'level' => $level,
+                'level_id' => $level,
                 'pass' => $request->pass ?? false,
                 'score' => $request->score,
                 'attempt_count' => $request->attempt_count ?? 1,
@@ -80,7 +80,7 @@ class UserAnswerController extends Controller
         try {
             $userId = auth()->id();
 
-            $userAnswer = UserAnswer::where('user_id', $userId)
+            $userAnswer = ExerciseSubmission::where('user_id', $userId)
                 ->where('exercise_id', $exerciseId)
                 ->where('is_latest', true)
                 ->first();
@@ -112,16 +112,16 @@ class UserAnswerController extends Controller
     {
         try {
             $userId = auth()->id();
-            $level = $request->query('level'); // filter by level
+            $level = $request->query('level_id'); // filter by level
             $pass = $request->query('pass'); // filter by pass status
 
-            $query = UserAnswer::where('user_id', $userId)
+            $query = ExerciseSubmission::where('user_id', $userId)
                 ->where('is_latest', true)
                 ->with(['exercise']);
 
             // Filter berdasarkan level
             if ($level) {
-                $query->where('level', $level);
+                $query->where('level_id', $level);
             }
 
             // Filter berdasarkan status pass
@@ -151,13 +151,13 @@ class UserAnswerController extends Controller
     {
         try {
             $userId = auth()->id();
-            $level = $request->query('level');
+            $level = $request->query('level_id');
 
-            $query = UserAnswer::where('user_id', $userId)
+            $query = ExerciseSubmission::where('user_id', $userId)
                 ->where('is_latest', true);
 
             if ($level) {
-                $query->where('level', $level);
+                $query->where('level_id', $level);
             }
 
             $totalAnswered = $query->count();

@@ -8,7 +8,7 @@ use App\Http\Controllers\ExerciseLevelController;
 use App\Http\Controllers\NahwuDataController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SurahController;
-use App\Http\Controllers\UserAnswerController;
+use App\Http\Controllers\ExerciseSubmissionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerseController;
 use App\Http\Controllers\WordController;
@@ -17,7 +17,7 @@ use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\QuranController;
 use App\Http\Controllers\SettingsController;
 use App\Models\Surah;
-// use App\Models\UserAnswer;
+// use App\Models\ExerciseSubmission;
 use App\Models\Verse;
 use App\Models\Word;
 use App\Models\WordGroup;
@@ -189,5 +189,5 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/profile', [UserController::class, 'updateProfile'])->name('profile.update');
 
     // Resource
-    Route::resource('user-answers', UserAnswerController::class);
+    Route::resource('user-answers', ExerciseSubmissionController::class);
 });

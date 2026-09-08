@@ -6,7 +6,7 @@ use App\Http\Requests\StoreExerciseRequest;
 use App\Http\Requests\UpdateExerciseRequest;
 use App\Models\Exercise;
 use App\Models\ExerciseLevel;
-use App\Models\UserAnswer;
+use App\Models\ExerciseSubmission;
 use App\Models\Verse;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Mailables\Content;
@@ -20,7 +20,7 @@ class ExerciseController extends Controller
     public function index()
     {
         $exercises = Exercise::with('exerciseLevel')
-            ->orderBy('level', 'asc')
+            ->orderBy('level_id', 'asc')
             ->orderBy('display_order', 'asc')
             ->get();
 
@@ -55,7 +55,7 @@ class ExerciseController extends Controller
         $data['is_active'] = false;
 
         if (!isset($data['display_order'])) {
-            $maxDisplayOrder = Exercise::where('level', $data['level'])->max('display_order');
+            $maxDisplayOrder = Exercise::where('level_id', $data['level_id'])->max('display_order');
             $data['display_order'] = $maxDisplayOrder ? $maxDisplayOrder + 1 : 1;
         }
 
@@ -145,7 +145,7 @@ class ExerciseController extends Controller
 
             if (auth()->check()) {
                 $exerciseIds = Exercise::whereIn('verse_id', $verses->pluck('id'))->pluck('id', 'verse_id');
-                $passedExerciseIds = UserAnswer::where('user_id', auth()->id())
+                $passedExerciseIds = ExerciseSubmission::where('user_id', auth()->id())
                     ->whereIn('exercise_id', $exerciseIds->values())
                     ->where('passed', true)
                     ->pluck('exercise_id')
@@ -160,7 +160,7 @@ class ExerciseController extends Controller
             return response()->json([
                 'success' => true,
                 'data' => [
-                    'level' => $exerciseLevel,
+                    'level_id' => $exerciseLevel,
                     'exercises' => $verses->map(function ($v) {
                         return [
                             'id' => $v->id,
@@ -175,12 +175,12 @@ class ExerciseController extends Controller
         }
 
         $exercises = Exercise::active()
-            ->where('level', $exerciseLevel->level_number)
+            ->where('level_id', $exerciseLevel->level_number)
             ->orderBy('display_order', 'asc')
-            ->get(['id', 'title', 'description', 'level', 'display_order', 'verse_id']);
+            ->get(['id', 'title', 'description', 'level_id', 'display_order', 'verse_id']);
 
         if (auth()->check()) {
-            $passedExerciseIds = UserAnswer::where('user_id', auth()->id())
+            $passedExerciseIds = ExerciseSubmission::where('user_id', auth()->id())
                 ->whereIn('exercise_id', $exercises->pluck('id'))
                 ->where('passed', true)
                 ->pluck('exercise_id')
@@ -229,12 +229,12 @@ class ExerciseController extends Controller
 
         if ($exerciseId) {
             $exercise = Exercise::active()
-                ->where('level', $levelNumber)
+                ->where('level_id', $levelNumber)
                 ->where('id', $exerciseId)
                 ->first();
         } else {
             $exercise = Exercise::active()
-                ->where('level', $levelNumber)
+                ->where('level_id', $levelNumber)
                 ->where('display_order', 1)
                 ->first();
         }
@@ -247,7 +247,7 @@ class ExerciseController extends Controller
         }
 
         if (auth()->check()) {
-            $ua = UserAnswer::where('user_id', auth()->id())
+            $ua = ExerciseSubmission::where('user_id', auth()->id())
                 ->where('exercise_id', $exercise->id)
                 ->where('passed', true)
                 ->latest()
@@ -258,13 +258,13 @@ class ExerciseController extends Controller
 
         // add attribute prev and next exercise id
         $prevExercise = Exercise::active()
-            ->where('level', $levelNumber)
+            ->where('level_id', $levelNumber)
             ->where('display_order', '<', $exercise->display_order)
             ->orderBy('display_order', 'desc')
             ->first();
 
         $nextExercise = Exercise::active()
-            ->where('level', $levelNumber)
+            ->where('level_id', $levelNumber)
             ->where('display_order', '>', $exercise->display_order)
             ->orderBy('display_order', 'asc')
             ->first();
@@ -274,13 +274,13 @@ class ExerciseController extends Controller
 
         // only return data when previous exercise passed
         if ($prevExercise && auth()->check()) {
-            $prevUserAnswer = UserAnswer::where('user_id', auth()->id())
+            $prevExerciseSubmission = ExerciseSubmission::where('user_id', auth()->id())
                 ->where('exercise_id', $prevExercise->id)
                 ->where('passed', true)
                 ->latest()
                 ->first();
 
-            if (!$prevUserAnswer) {
+            if (!$prevExerciseSubmission) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Previous exercise not passed',
@@ -317,8 +317,8 @@ class ExerciseController extends Controller
                     ], 404);
                 }
                 $levelNumber = $exerciseLevel->level_number;
-            } elseif ($request->filled('level')) {
-                $levelNumber = (int) $request->query('level');
+            } elseif ($request->filled('level_id')) {
+                $levelNumber = (int) $request->query('level_id');
             } elseif ($level) {
                 $exerciseLevel = ExerciseLevel::where('slug', $level)->active()->first();
                 $levelNumber = $exerciseLevel ? $exerciseLevel->level_number : (int) $level;
@@ -432,7 +432,7 @@ class ExerciseController extends Controller
             ];
 
             if (auth()->check()) {
-                $ua = UserAnswer::where('user_id', auth()->id())
+                $ua = ExerciseSubmission::where('user_id', auth()->id())
                     ->where('exercise_id', $exercise->id)
                     ->where('passed', true)
                     ->latest()
@@ -444,13 +444,13 @@ class ExerciseController extends Controller
             $exerciseOrderNumber = $exercise->display_order;
 
             $prevExercise = Exercise::active()
-                ->where('level', $levelNumber)
+                ->where('level_id', $levelNumber)
                 ->where('display_order', '<', $exerciseOrderNumber)
                 ->orderBy('display_order', 'desc')
                 ->first();
 
             $nextExercise = Exercise::active()
-                ->where('level', $levelNumber)
+                ->where('level_id', $levelNumber)
                 ->where('display_order', '>', $exerciseOrderNumber)
                 ->orderBy('display_order', 'asc')
                 ->first();

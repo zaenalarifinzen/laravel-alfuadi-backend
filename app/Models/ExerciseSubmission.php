@@ -5,16 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserAnswer extends Model
+class ExerciseSubmission extends Model
 {
     use HasFactory;
 
-    protected $table = 'user_answers';
+    protected $table = 'exercise_submissions';
 
     protected $fillable = [
         'user_id',
         'exercise_id',
-        'level',
+        'level_id',
         'passed',
         'score',
         'attempt_count',
@@ -73,7 +73,7 @@ class UserAnswer extends Model
     public function scopePassedByLevel($query, $userId, $level)
     {
         return $query->where('user_id', $userId)
-            ->where('level', $level)
+            ->where('level_id', $level)
             ->where('passed', true);
     }
 }

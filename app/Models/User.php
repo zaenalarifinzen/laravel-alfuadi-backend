@@ -53,19 +53,19 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Relation to UserAnswer
+     * Relation to ExerciseSubmission
      */
-    public function userAnswers()
+    public function exerciseSubmissions()
     {
-        return $this->hasMany(UserAnswer::class);
+        return $this->hasMany(ExerciseSubmission::class);
     }
 
     /**
-     * Relation to Question
+     * Relation to Exercise
      */
-    public function createdQuestions()
+    public function createdExercises()
     {
-        return $this->hasMany(Question::class, 'created_by');
+        return $this->hasMany(Exercise::class, 'created_by');
     }
 
     /**

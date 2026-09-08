@@ -30,7 +30,7 @@ class StoreExerciseRequest extends FormRequest
             //     'array',
             //     Rule::prohibitedIf(fn () => $this->input('type') === 'analysis'),
             // ],
-            'level' => 'required|integer|in:1,2,3',
+            'level_id' => 'required|integer|in:1,2,3',
             // 'type' => 'required|in:multiple_choice,short_answer,essay,analysis',
             // 'verse_id' => [
             //     Rule::requiredIf(fn () => $this->input('type') === 'analysis'),

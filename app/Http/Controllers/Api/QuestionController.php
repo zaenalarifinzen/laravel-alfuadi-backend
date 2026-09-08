@@ -19,8 +19,8 @@ class QuestionController extends Controller
             $query = Question::with(['creator', 'verse.wordGroups.words']);
 
             // Filter by level
-            if ($request->query('level')) {
-                $query->where('level', $request->query('level'));
+            if ($request->query('level_id')) {
+                $query->where('level_id', $request->query('level_id'));
             }
 
             // Filter by type
@@ -170,7 +170,7 @@ class QuestionController extends Controller
     {
         try {
             $questions = Question::with('verse.wordGroups.words')
-                ->where('level', $level)
+                ->where('level_id', $level)
                 ->where('is_active', true)
                 ->orderBy('display_order')
                 ->get();
@@ -196,8 +196,8 @@ class QuestionController extends Controller
         try {
             $query = Question::query();
 
-            if ($request->query('level')) {
-                $query->where('level', $request->query('level'));
+            if ($request->query('level_id')) {
+                $query->where('level_id', $request->query('level_id'));
             }
 
             $totalQuestions = (clone $query)->count();

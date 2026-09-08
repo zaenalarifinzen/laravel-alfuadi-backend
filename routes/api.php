@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Api\WordGroupController;
 use App\Http\Controllers\Api\SurahController;
-use App\Http\Controllers\Api\UserAnswerController;
+use App\Http\Controllers\Api\ExerciseSubmissionController;
 use App\Http\Controllers\Api\QuestionController;
 use App\Http\Controllers\Api\QuestionLevelController;
 use Illuminate\Http\Request;
@@ -44,8 +44,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('questions/{id}', [QuestionController::class, 'destroy']);
 
     // User Answers
-    Route::post('user-answers', [UserAnswerController::class, 'store']); // Simpan jawaban
-    Route::get('user-answers', [UserAnswerController::class, 'index']); // List jawaban user dengan filter
-    Route::get('user-answers/{wordId}', [UserAnswerController::class, 'show']); // Detail jawaban untuk soal tertentu
-    Route::get('user-answers/stats', [UserAnswerController::class, 'stats']); // Statistik jawaban user
+    Route::post('user-answers', [ExerciseSubmissionController::class, 'store']); // Simpan jawaban
+    Route::get('user-answers', [ExerciseSubmissionController::class, 'index']); // List jawaban user dengan filter
+    Route::get('user-answers/{wordId}', [ExerciseSubmissionController::class, 'show']); // Detail jawaban untuk soal tertentu
+    Route::get('user-answers/stats', [ExerciseSubmissionController::class, 'stats']); // Statistik jawaban user
 });

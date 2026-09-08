@@ -31,7 +31,7 @@ class ExerciseLevel extends Model
      */
     public function exercises()
     {
-        return $this->hasMany(Exercise::class, 'level', 'level_number');
+        return $this->hasMany(Exercise::class, 'level_id', 'level_number');
     }
 
     /**
