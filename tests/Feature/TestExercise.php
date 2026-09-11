@@ -12,7 +12,7 @@ class TestExercise extends TestCase
 {
     use RefreshDatabase;
 
-    public function testIndex(): void
+    public function testRelationWithLevel(): void
     {
         $user = User::factory()->create();
         $level = ExerciseLevel::create([
@@ -39,5 +39,35 @@ class TestExercise extends TestCase
         $this->assertNotNull($exercise);
         $this->assertTrue($exercise->relationLoaded('exerciseLevel'));
         $this->assertSame($level->id, $exercise->exerciseLevel->id);
+    }
+
+    public function testFirstOrder()
+    {
+        $user = User::factory()->create();
+        $level = ExerciseLevel::create([
+            'name' => 'Test Level',
+            'slug' => 'test-level',
+            'level_number' => 1,
+            'display_order' => 1,
+            'description' => 'Test level',
+            'is_active' => true,
+        ]);
+
+        for ($i = 1; $i < 11; $i++) {
+            Exercise::create([
+                'title' => "Exercise $i",
+                'level_id' => $level->id,
+                'type' => 'analysis',
+                'display_order' => "$i",
+                'created_by' => $user->id,
+            ]);
+        }
+
+        $firstExercise = Exercise::orderBy('display_order', 'asc')->first();
+        $prefExercise = Exercise::where('display_order', '<', $firstExercise->display_order)
+            ->orderBy('display_order', 'desc')
+            ->first();
+
+        $this->assertNull($prefExercise);
     }
 }

@@ -355,7 +355,7 @@ export function initAnalysisPage({
     // ---------------------------------------------------------------------------
     function boot() {
         const urlParts = window.location.pathname.split("/");
-        const levelSlug = urlParts[2] || "beginner";
+        const levelSlug = urlParts[2] || null;
         const exerciseId = urlParts[3] || null;
 
         if (exerciseId) {

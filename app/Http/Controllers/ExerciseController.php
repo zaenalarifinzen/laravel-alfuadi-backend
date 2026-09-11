@@ -224,17 +224,16 @@ class ExerciseController extends Controller
     private function getBasicExercise($level = null, $exerciseId = null)
     {
         $exerciseLevel = ExerciseLevel::where('slug', $level)->active()->first();
-        $levelNumber = $exerciseLevel ? $exerciseLevel->level_number : (int) $level;
         $exerciseId = (int) $exerciseId ;
 
         if ($exerciseId) {
             $exercise = Exercise::active()
-                ->where('level_id', $levelNumber)
+                ->where('level_id', $exerciseLevel->id)
                 ->where('id', $exerciseId)
                 ->first();
         } else {
             $exercise = Exercise::active()
-                ->where('level_id', $levelNumber)
+                ->where('level_id', $exerciseLevel->id)
                 ->where('display_order', 1)
                 ->first();
         }
@@ -258,13 +257,13 @@ class ExerciseController extends Controller
 
         // add attribute prev and next exercise id
         $prevExercise = Exercise::active()
-            ->where('level_id', $levelNumber)
+            ->where('level_id', $exerciseLevel->id)
             ->where('display_order', '<', $exercise->display_order)
             ->orderBy('display_order', 'desc')
             ->first();
 
         $nextExercise = Exercise::active()
-            ->where('level_id', $levelNumber)
+            ->where('level_id', $exerciseLevel->id)
             ->where('display_order', '>', $exercise->display_order)
             ->orderBy('display_order', 'asc')
             ->first();
@@ -272,8 +271,22 @@ class ExerciseController extends Controller
         $exercise->setAttribute('prev_exercise_id', $prevExercise ? $prevExercise->id : null);
         $exercise->setAttribute('next_exercise_id', $nextExercise ? $nextExercise->id : null);
 
-        // only return data when previous exercise passed
-        if ($prevExercise && auth()->check()) {
+        // The first exercise is always available; later exercises require the previous one to be passed.
+        $firstExercise = Exercise::active()
+            ->where('level_id', $exerciseLevel->id)
+            ->orderBy('display_order', 'asc')
+            ->orderBy('id', 'asc')
+            ->first();
+        $isFirstExercise = $firstExercise && $firstExercise->id === $exercise->id;
+
+        if (!$isFirstExercise) {
+            if (!$prevExercise || !auth()->check()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Previous exercise not passed',
+                ], 403);
+            }
+
             $prevExerciseSubmission = ExerciseSubmission::where('user_id', auth()->id())
                 ->where('exercise_id', $prevExercise->id)
                 ->where('passed', true)

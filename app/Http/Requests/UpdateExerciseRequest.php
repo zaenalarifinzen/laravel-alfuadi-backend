@@ -24,11 +24,11 @@ class UpdateExerciseRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'level_id' => 'required|integer|in:1,2,3,99',
+            'level_id' => 'required|integer',
             'options' => 'nullable|json',
             'explanation' => 'nullable|string',
             'display_order' => 'nullable|integer',
-            'is_active' => 'boolean',
+            'is_active' => 'nullable|boolean',
             'metadata' => 'nullable|json',
         ];
     }

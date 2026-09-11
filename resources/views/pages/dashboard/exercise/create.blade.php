@@ -43,7 +43,7 @@
                                     @csrf
                                     <div class="form-group">
                                         <label>Level</label>
-                                        <select class="form-control @error('level') is-invalid @enderror" name="level" required>
+                                        <select class="form-control @error('level_id') is-invalid @enderror" name="level_id" required>
                                             <option value="">Pilih Level</option>
                                             @foreach ($levels as $level)
                                                 <option value="{{ $level->level_number }}" {{ old('level') == $level->level_number ? 'selected' : '' }}>
@@ -51,7 +51,7 @@
                                                 </option>
                                             @endforeach
                                         </select>
-                                        @error('level')
+                                        @error('level_id')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
