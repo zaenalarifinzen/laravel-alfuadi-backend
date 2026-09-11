@@ -99,7 +99,7 @@ class Exercise extends Model
      */
     public function exerciseLevel()
     {
-        return $this->belongsTo(ExerciseLevel::class, 'level_id', 'level_number');
+        return $this->belongsTo(ExerciseLevel::class, 'level_id', 'id');
     }
 
     public function getDisplayContentAttribute()

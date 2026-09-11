@@ -24,9 +24,6 @@ class Word extends Model
         'irob',
         'tanda',
         'simbol',
-
-        'created_at',
-        'updated_at',
         'editor',
     ];
 

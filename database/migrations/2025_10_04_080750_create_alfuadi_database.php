@@ -6,16 +6,11 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         // Surahs Table
         Schema::create('surahs', function (Blueprint $table) {
-            $table->integer('id', true, true);
-            $table->primary('id');
-
+            $table->id();
             $table->string('name', 100);
             $table->string('name_id', 100);
             $table->string('name_en', 100);
@@ -25,10 +20,9 @@ return new class extends Migration
 
         // Verses Table
         Schema::create('verses', function (Blueprint $table) {
-            $table->integer('id', true, true);
-            $table->primary('id');
+            $table->id();
 
-            $table->unsignedInteger('surah_id');
+            $table->unsignedBigInteger('surah_id');
             $table->foreign('surah_id')->references('id')->on('surahs')->onDelete('cascade');
             $table->integer('number');
             $table->text('text');
@@ -37,16 +31,15 @@ return new class extends Migration
 
         // Word Groups Table
         Schema::create('word_groups', function (Blueprint $table) {
-            $table->integer('id', true, true);
-            $table->primary('id');
+            $table->id();
 
-            $table->unsignedInteger('surah_id');
+            $table->unsignedBigInteger('surah_id');
             $table->foreign('surah_id')->references('id')->on('surahs')->onDelete('cascade');
 
-            $table->unsignedInteger('verse_number');
+            $table->unsignedBigInteger('verse_number'); 
             $table->foreign('verse_number')->references('id')->on('verses')->onDelete('cascade');
 
-            $table->unsignedInteger('verse_id')->nullable();
+            $table->unsignedBigInteger('verse_id')->nullable(); 
             $table->foreign('verse_id')->references('id')->on('verses')->onDelete('cascade');
 
             $table->integer('order_number')->nullable();
@@ -60,10 +53,9 @@ return new class extends Migration
 
         // Words Table
         Schema::create('words', function (Blueprint $table) {
-            $table->integer('id', true, true);
-            $table->primary('id');
+            $table->id();
 
-            $table->unsignedInteger('word_group_id');
+            $table->unsignedBigInteger('word_group_id');
             $table->foreign('word_group_id')->references('id')->on('word_groups')->onDelete('cascade');
 
             $table->integer('order_number');
@@ -79,12 +71,11 @@ return new class extends Migration
             $table->string('irab', 100)->nullable();
             $table->string('tanda', 100)->nullable();
             $table->string('nampak', 100)->nullable();
+            $table->timestamps();
+            $table->bigInteger('editor');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('words');

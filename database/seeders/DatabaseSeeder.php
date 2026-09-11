@@ -2,7 +2,14 @@
 
 namespace Database\Seeders;
 
+use App\Models\Exercise;
+use App\Models\ExerciseLevel;
+use App\Models\Product;
+use App\Models\Surah;
 use App\Models\User;
+use App\Models\Verse;
+use App\Models\Word;
+use App\Models\WordGroup;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -14,19 +21,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Zaenal Arifin',
-            'email' => 'zaenal@gmail.com',
-            'password' => Hash::make('12345678'),
-            'roles' => 'administrator',
-            'phone' => '081234567890',
-        ]);
-
         $this->call([
-            QuestionLevelSeeder::class,
-            ProductSeeder::class,
+            UserSeeder::class,
+            ExerciseLevelSeeder::class,
         ]);
+        
+        User::factory(10)->create();
+        Surah::factory(14)->create();
+        Verse::factory(100)->create();
+        WordGroup::factory(100)->create();
+        Word::factory(100)->create();
+        ExerciseLevel::factory(3)->create();
+        Exercise::factory(10)->create();
+        
+        Product::factory(10)->create();
     }
 }

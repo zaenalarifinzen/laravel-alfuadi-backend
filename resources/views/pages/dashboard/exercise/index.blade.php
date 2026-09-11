@@ -60,7 +60,7 @@
                                 @foreach ($exercises as $exercise)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $exercise->exerciseLevel->name }}</td>
+                                        <td>{{ $exercise->exerciseLevel->name ?? '' }}</td>
                                         <td>{{ $exercise->display_order }}</td>
                                         <td>
                                             <div class="btn-group mb-2">
@@ -68,7 +68,7 @@
                                                     aria-haspopup="true" aria-expanded="false">
                                                     {{ $exercise->title }}</a>
                                                 <div class="dropdown-menu">
-                                                    @if ($exercise->exerciseLevel->slug !== 'alquran')
+                                                    @if ($exercise->exerciseLevel?->slug !== 'alquran')
                                                         <a class="dropdown-item"
                                                             href="{{ route('dashboard.exercises.edit', $exercise->id) }}">Edit</a>
                                                         <a class="dropdown-item"

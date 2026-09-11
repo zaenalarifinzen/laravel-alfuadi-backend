@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('content')->nullable(); // Isi soal
             $table->tinyInteger('level')->default(1); // Level 1, 2, 3
             $table->enum('type', ['multiple_choice', 'short_answer', 'essay', 'analysis'])->default('multiple_choice'); // Tipe soal
-            $table->unsignedInteger('verse_id')->nullable();
+            $table->unsignedBigInteger('verse_id')->nullable();
             $table->foreign('verse_id')->references('id')->on('verses')->onDelete('cascade');
             $table->json('options')->nullable(); // Untuk multiple choice: {a: "...", b: "...", c: "...", d: "..."}
             $table->text('correct_answer')->nullable(); // Jawaban benar

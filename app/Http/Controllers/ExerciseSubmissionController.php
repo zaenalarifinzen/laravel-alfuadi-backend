@@ -6,6 +6,7 @@ use App\Http\Requests\StoreExerciseSubmissionRequest;
 use App\Models\Exercise;
 use App\Models\ExerciseLevel;
 use App\Models\ExerciseSubmission;
+use App\Models\UserLevelProgress;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -62,6 +63,18 @@ class ExerciseSubmissionController extends Controller
                 'is_latest' => true,
             ]);
 
+            $isLastInLevel = !Exercise::active()
+                ->where('level_id', $exercise->level_id)
+                ->where('display_order', '>', $exercise->display_order)
+                ->exists();
+
+            if ($isLastInLevel) {
+                UserLevelProgress::updateOrCreate(
+                    ['user_id' => $userId, 'exercise_level_id' => $exercise->level_id],
+                    ['is_completed' => true, 'completed_at' => now()]
+                );
+            }
+
             return response()->json([
                 'success' => true,
                 'message' => 'Status penyelesaian berhasil disimpan',
@@ -79,7 +92,7 @@ class ExerciseSubmissionController extends Controller
     {
         try {
             $userId = auth()->id();
-            
+
             $userAnswer = ExerciseSubmission::where('user_id', $userId)
                 ->where('exercise_id', $exerciseId)
                 ->where('is_latest', true)
