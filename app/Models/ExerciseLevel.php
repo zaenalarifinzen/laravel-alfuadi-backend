@@ -27,11 +27,19 @@ class ExerciseLevel extends Model
     ];
 
     /**
-     * Relasi ke Exercise - satu level bisa punya banyak soal
+     * Relasi ke Exercise
      */
     public function exercises()
     {
-        return $this->hasMany(Exercise::class, 'level_id', 'level_number');
+        return $this->hasMany(Exercise::class, 'level_id', 'id');
+    }
+
+    /**
+     * Ambil exercise yang aktif
+     */
+    public function activeExercises()
+    {
+        return $this->exercises()->where('is_active', true);
     }
 
     /**

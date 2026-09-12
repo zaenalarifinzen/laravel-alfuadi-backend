@@ -134,16 +134,12 @@
                 <div class="row">
                     <div class="col-12">
                         @foreach ($exerciseLevel as $level)
-                            @if ($level->slug === 'alquran')
-                                @continue
-                            @endif
-
                             @unless ($level->is_active)
                                 <div class="card card-locked" aria-disabled="true">
                                     <div class="card-header d-flex align-items-center justify-content-between">
                                         <div class="d-flex align-items-center">
                                             <figure class="avatar bg-secondary mr-2 text-white"
-                                                data-initial="{{ $level->level_number }}"></figure>
+                                                data-initial="{{ $loop->iteration }}"></figure>
                                             <h4 class="mb-0">{{ $level->name }}</h4>
                                         </div>
                                         <span class="badge badge-secondary lock-badge">
@@ -160,65 +156,67 @@
                                     </div>
                                 </div>
                             @else
-                                <a href="{{ route('exercise.analyze', $level->slug) }}" class="text-decoration-none">
-                                    <div class="card">
-                                        <div class="card-header d-flex align-items-center justify-content-start">
-                                            <figure class="avatar bg-secondary mr-2 text-white"
-                                                data-initial="{{ $level->level_number }}"></figure>
-                                            <h4>{{ $level->name }}</h4>
-                                        </div>
-                                        <div class="collapse show" id="mycard-collapse-{{ $level->id }}">
-                                            <div class="card-body">
-                                                <div class="progress mb-3" data-height="5">
-                                                    <div class="progress-bar bg-success" role="progressbar"
-                                                        data-width="{{ $level->progress_percentage ?? 0 }}%"
-                                                        aria-valuenow="{{ $level->progress_percentage ?? 0 }}" aria-valuemin="0"
-                                                        aria-valuemax="100">
+                                @if ($level->slug === 'alquran')
+                                    <a href="{{ route('exercise.analyze', 'alquran') }}" class="text-decoration-none"
+                                        aria-disabled="true">
+                                        <div class="card card-hero">
+                                            <div class="card-header">
+                                                <div class="card-icon">
+                                                    <i class="fas fa-book-quran"></i>
+                                                </div>
+                                                <h4>Al-Quran</h4>
+                                                <div class="card-description">Analisa langsung dari ayat Al-Quran</div>
+                                            </div>
+                                            {{-- <div class="card-body p-0" id="xlast-opened-info">
+                                                <div class="tickets-list">
+                                                    <div class="ticket-item">
+                                                        <div class="ticket-title">
+                                                            <h4>My order hasn't arrived yet</h4>
+                                                        </div>
+                                                        <div class="ticket-info">
+                                                            <div id="info-label"></div>
+                                                            <div class="bullet"></div>
+                                                            <div class="text-primary">Lanjutkan</div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="d-flex justify-content-between">
-                                                    <div class="card-description">
-                                                        {{ $level->completed_count ?? 0 }} dari
-                                                        {{ $level->total_count ?? 0 }} soal selesai
+                                            </div> --}}
+                                        </div>
+                                    </a>
+                                @else
+                                    <a href="{{ route('exercise.analyze', $level->slug) }}" class="text-decoration-none">
+                                        <div class="card">
+                                            <div class="card-header d-flex align-items-center justify-content-start">
+                                                <figure class="avatar bg-secondary mr-2 text-white"
+                                                    data-initial="{{ $level->level_number }}"></figure>
+                                                <h4>{{ $level->name }}</h4>
+                                            </div>
+                                            <div class="collapse show" id="mycard-collapse-{{ $level->id }}">
+                                                <div class="card-body">
+                                                    <div class="progress mb-3" data-height="5">
+                                                        <div class="progress-bar bg-success" role="progressbar"
+                                                            data-width="{{ $level->progress_percentage ?? 0 }}%"
+                                                            aria-valuenow="{{ $level->progress_percentage ?? 0 }}"
+                                                            aria-valuemin="0" aria-valuemax="100">
+                                                        </div>
                                                     </div>
-                                                    <div class="card-description">{{ $level->progress_percentage ?? 0 }}%
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="card-description">
+                                                            {{ $level->count_passed ?? 0 }} dari
+                                                            {{ $level->count_total ?? 0 }} soal selesai
+                                                        </div>
+                                                        <div class="card-description">{{ $level->progress_percentage ?? 0 }}%
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </a>
+                                    </a>
+                                @endif
                             @endunless
                         @endforeach
                     </div>
                 </div>
-
-                <a href="{{ route('exercise.analyze', 'alquran') }}" class="text-decoration-none">
-                    <div class="card card-hero">
-                        <div class="card-header">
-                            <div class="card-icon">
-                                <i class="fas fa-book-quran"></i>
-                            </div>
-                            <h4>Al-Quran</h4>
-                            <div class="card-description">Analisa langsung dari ayat Al-Quran</div>
-                        </div>
-                        <div class="card-body p-0" id="last-opened-info" style="display: none">
-                            <div class="tickets-list">
-                                <a href="{{ route('exercise.analyze', 'alquran') }}" class="ticket-item">
-                                    {{-- <div class="ticket-title">
-                                        <h4>My order hasn't arrived yet</h4>
-                                    </div> --}}
-                                    <div class="ticket-info">
-                                        <div id="info-label"></div>
-                                        <div class="bullet"></div>
-                                        <div class="text-primary">Lanjutkan</div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-
             </div>
         </section>
     </div>

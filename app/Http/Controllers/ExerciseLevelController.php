@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreExerciseLevelRequest;
 use App\Http\Requests\UpdateExerciseLevelRequest;
 use App\Models\ExerciseLevel;
+use App\Models\ExerciseSubmission;
 use App\Models\UserLevelProgress;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ExerciseLevelController extends Controller
 {
@@ -30,7 +31,42 @@ class ExerciseLevelController extends Controller
             ->pluck('exercise_level_id')
             ->toArray();
 
-        $exerciseLevel = ExerciseLevel::orderBy('level_number', 'asc')->get();
+        // unlock the next level
+        $unlockedLevel = ExerciseLevel::active()->whereNotIn('id', $passedLevels)
+            ->orderBy('level_number', 'asc')
+            ->first();
+
+        if ($unlockedLevel) {
+            $passedLevels[] = $unlockedLevel->id;
+        }
+
+        // set is_active to false for levels that are not passed
+        $exerciseLevel = ExerciseLevel::active()->orderBy('level_number', 'asc')->get()
+            ->map(function ($level) use ($passedLevels) {
+                $level->is_active = in_array($level->id, $passedLevels);
+                return $level;
+            });
+
+        // Set the first level as active for default
+        if (empty($passedLevels)) {
+            $exerciseLevel->first()->is_active = true;
+        }
+
+        // add count passed and count total exercises for each level
+        $exerciseLevel = $exerciseLevel->map(function ($level) {
+            $activeExerciseIds = $level->activeExercises()->pluck('id');
+
+            $level->count_passed = ExerciseSubmission::where('user_id', auth()->id())
+                ->whereIn('exercise_id', $activeExerciseIds)
+                ->count();
+
+            $level->count_total = $activeExerciseIds->count();
+            $level->progress_percentage = $level->count_total > 0
+                ? round($level->count_passed / $level->count_total * 100)
+                : 0;
+            return $level;
+        });
+
         $type_menu = 'exercise';
 
         return view('pages.exercise.exercise-level.index', compact('exerciseLevel', 'type_menu'));
@@ -98,7 +134,7 @@ class ExerciseLevelController extends Controller
         try {
             $level = ExerciseLevel::findOrFail($id);
             $level->update($data);
-            
+
             return redirect()
                 ->route('dashboard.exercise-levels.index')
                 ->with('success', '"' . $level['name'] . '" berhasil diperbarui');
@@ -140,7 +176,8 @@ class ExerciseLevelController extends Controller
     /**
      * Status Setter
      */
-    private function setActiveStatus(string $exerciseId, bool $status) {
+    private function setActiveStatus(string $exerciseId, bool $status)
+    {
         $exerciseLevel = ExerciseLevel::findOrFail($exerciseId);
         $exerciseLevel->update(['is_active' => $status]);
         $action = $status ? 'diaktifkan' : 'dinonaktifkan';

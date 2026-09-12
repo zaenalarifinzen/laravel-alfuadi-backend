@@ -52,7 +52,7 @@
                                 </thead>
                                 @foreach ($levels as $level)
                                     <tr>
-                                        <td>{{ $level->level_number }}</td>
+                                        <td>{{ $loop->iteration }}</td>
                                         <td>
                                             <div class="btn-group mb-2">
                                                 <a href="#" class="font-weight-600" data-toggle="dropdown"
