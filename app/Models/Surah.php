@@ -27,4 +27,10 @@ class Surah extends Model
     {
         return $this->hasMany(Verse::class, 'surah_id', 'id');
     } 
+
+    // get the verses of the surah
+    public function wordgroups(): HasMany
+    {
+        return $this->hasMany(WordGroup::class, 'surah_id', 'id');
+    } 
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreExerciseLevelRequest;
 use App\Http\Requests\UpdateExerciseLevelRequest;
 use App\Models\ExerciseLevel;
+use App\Models\UserLevelProgress;
 use Illuminate\Http\Request;
 
 class ExerciseLevelController extends Controller
@@ -25,6 +26,10 @@ class ExerciseLevelController extends Controller
      */
     public function userIndex()
     {
+        $passedLevels = UserLevelProgress::where('user_id', auth()->id())
+            ->pluck('exercise_level_id')
+            ->toArray();
+
         $exerciseLevel = ExerciseLevel::orderBy('level_number', 'asc')->get();
         $type_menu = 'exercise';
 

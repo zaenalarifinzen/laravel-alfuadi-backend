@@ -60,4 +60,12 @@ class LevelProgressTest extends TestCase
 
         $this->assertTrue($isLastInLevel);
     }
+
+    public function testGetUserLevelProgress ()
+    {
+        $user = User::factory(1)->create()[0];
+
+        
+    }
+    
 }

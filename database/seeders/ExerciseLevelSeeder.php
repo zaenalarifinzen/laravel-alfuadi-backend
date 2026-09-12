@@ -14,6 +14,7 @@ class ExerciseLevelSeeder extends Seeder
     public function run(): void
     {
         ExerciseLevel::create([
+            'id' => 99,
             'name' => 'Al-Quran',
             'slug' => 'alquran',
             'level_number' => 99,

@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Surah;
+use App\Models\Verse;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,10 +19,10 @@ class WordGroupFactory extends Factory
     public function definition(): array
     {
         return [
-            'surah_id' => $this->faker->numberBetween(1, 14),
+            // 'surah_id' => Surah::factory(),
+            // 'verse_id' => Verse::factory(),
             'verse_number' => $this->faker->numberBetween(1, 100),
-            'verse_id' => $this->faker->numberBetween(1, 100),
-            'order_number' => $this->faker->numberBetween(1, 10),
+            'order_number' => $this->faker->unique()->randomNumber(5, true),
             'text' => $this->faker->word(),
             'editor' => $this->faker->numberBetween(1, 10)
         ];

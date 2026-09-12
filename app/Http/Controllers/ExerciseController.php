@@ -9,7 +9,6 @@ use App\Models\ExerciseLevel;
 use App\Models\ExerciseSubmission;
 use App\Models\Verse;
 use Illuminate\Http\Request;
-use Illuminate\Mail\Mailables\Content;
 use Illuminate\Support\Facades\Log;
 
 class ExerciseController extends Controller
@@ -116,6 +115,10 @@ class ExerciseController extends Controller
         return redirect()->back()->with('success', '"' . $exercise['title'] . '" succesfully deleted');
     }
 
+    /** -----------------------
+     * CUSTOM FUNCTION
+     *  -----------------------
+     */
     public function getExerciseList(Request $request, $level)
     {
         $exerciseLevel = ExerciseLevel::where('slug', $level)->active()->first();
@@ -224,7 +227,7 @@ class ExerciseController extends Controller
     private function getBasicExercise($level = null, $exerciseId = null)
     {
         $exerciseLevel = ExerciseLevel::where('slug', $level)->active()->first();
-        $exerciseId = (int) $exerciseId ;
+        $exerciseId = (int) $exerciseId;
 
         if ($exerciseId) {
             $exercise = Exercise::active()

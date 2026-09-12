@@ -19,8 +19,8 @@ class ExerciseLevelFactory extends Factory
         return [
             'name' => $this->faker->word(),
             'slug' => $this->faker->word(),
-            'level_number' => $this->faker->numberBetween(1, 10),
-            'display_order' => $this->faker->numberBetween(1, 10),
+            'level_number' => $this->faker->numberBetween(1, 99),
+            'display_order' => $this->faker->numberBetween(1, 100),
             'description' => $this->faker->sentence(),
             'is_active' => $this->faker->boolean(),
             'metadata' => null,

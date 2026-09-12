@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\WordGroup;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,8 +18,8 @@ class WordFactory extends Factory
     public function definition(): array
     {
         return [
-            'word_group_id' => $this->faker->numberBetween(1, 100),
-            'order_number' => $this->faker->numberBetween(1, 10),
+            // 'word_group_id' => WordGroup::factory(),
+            'order_number' => $this->faker->numberBetween(1, 100),
             'text' => $this->faker->word(),
             'translation' => $this->faker->word(),
             'kalimat' => $this->faker->randomElement(['Isim', 'Fiil', 'Huruf']),

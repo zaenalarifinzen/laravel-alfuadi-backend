@@ -19,12 +19,13 @@ class ExerciseFactory extends Factory
         return [
             'title' => $this->faker->sentence(),
             'type' => $this->faker->randomElement(['analysis', 'multiple_choice']),
-            'level_id' => $this->faker->numberBetween(1, 5),
-            'display_order' => $this->faker->numberBetween(1, 10),
+            'level_id' => $this->faker->numberBetween(1, 100),
+            'description' => $this->faker->text(30),
+            'display_order' => $this->faker->numberBetween(1, 100),
             'is_active' => $this->faker->boolean(),
             'attempts' => $this->faker->numberBetween(0, 10),
             'passed' => $this->faker->numberBetween(0, 10),
-            'created_by' => $this->faker->numberBetween(1, 5),
+            'created_by' => $this->faker->numberBetween(1, 10),
         ];
     }
 }

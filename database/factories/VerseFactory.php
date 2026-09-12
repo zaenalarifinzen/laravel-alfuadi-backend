@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Surah;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,9 +18,8 @@ class VerseFactory extends Factory
     public function definition(): array
     {
         return [
-            // surah_id must available in surah table, so make sure to create surah first before creating verse
-            'surah_id' => $this->faker->numberBetween(1, 14),
-            'number' => $this->faker->numberBetween(1, 6000),
+            // 'surah_id' => Surah::factory(),
+            'number' => $this->faker->numberBetween(1, 200),
             'text' => $this->faker->text(),
             'translation_indo' => $this->faker->text(),
         ];
