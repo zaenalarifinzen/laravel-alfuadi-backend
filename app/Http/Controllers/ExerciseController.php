@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateExerciseRequest;
 use App\Models\Exercise;
 use App\Models\ExerciseLevel;
 use App\Models\ExerciseSubmission;
+use App\Models\UserLevelProgress;
 use App\Models\Verse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -217,6 +218,31 @@ class ExerciseController extends Controller
      */
     public function getExercise(Request $request, $level = null, $identifier = null)
     {
+        $activeLevels = ExerciseLevel::active()
+            ->orderBy('level_number', 'asc')
+            ->get();
+
+        $currentLevel = $activeLevels->firstWhere('slug', $level);
+        if (!$currentLevel) {
+            abort(404, 'Level not found');
+        }
+
+        $currentLevelIndex = $activeLevels->search($currentLevel);
+
+        $prevLevel = $currentLevelIndex > 0
+            ? $activeLevels->get($currentLevelIndex - 1)
+            : null;
+
+        $isPrevLevelPassed = $prevLevel
+            ? UserLevelProgress::where('user_id', auth()->id())
+            ->where('exercise_level_id', $prevLevel->id)
+            ->exists()
+            : true;
+
+        if (!$isPrevLevelPassed) {
+            abort(403, 'Previous Level not passed');
+        }
+
         if ($level === 'alquran') {
             return $this->getQuranExercise($request, $level, $identifier);
         } else {
