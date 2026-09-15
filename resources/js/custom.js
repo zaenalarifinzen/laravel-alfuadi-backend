@@ -8,17 +8,6 @@
 "use strict";
 
 function updateThemeUI(theme) {
-    const icons = document.querySelectorAll('.theme-toggle-icon');
-    icons.forEach(function(icon) {
-        if (theme === 'dark') {
-            icon.classList.remove('fa-moon', 'far');
-            icon.classList.add('fa-sun', 'fas');
-        } else {
-            icon.classList.remove('fa-sun', 'far');
-            icon.classList.add('fa-moon', 'fas');
-        }
-    });
-
     const btns = document.querySelectorAll('.theme-toggle-btn');
     btns.forEach(function(btn) {
         btn.setAttribute('title', theme === 'dark' ? 'Tukar ke Tema Terang' : 'Tukar ke Tema Gelap');

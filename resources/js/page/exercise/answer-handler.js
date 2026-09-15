@@ -293,7 +293,7 @@ export function initAnalysisAnswerHandler({
         $("#form-add-word-label").text("Update Kalimat");
         $("#btn-submit").text("Update");
         $("#additional-fields").show();
-        $("#modal-add-word").modal("show");
+        $("#modal-add-word").modal({ backdrop : "static" }).modal("show");
     });
 
     // SUBMIT USER ANSWER

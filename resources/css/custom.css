@@ -2192,3 +2192,44 @@ html[data-theme="dark"] .section .section-title {
     position: relative;
     margin: 30px 0 25px 0;
 }
+
+/* Theme Toggle Button & Lucide Icons */
+.theme-toggle-btn {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    height: 100%;
+    padding: 0 10px !important;
+}
+
+.theme-toggle-icon {
+    width: 22px !important;
+    height: 22px !important;
+    stroke-width: 2.2px !important;
+    vertical-align: middle;
+    transition: transform 0.2s ease, stroke 0.2s ease;
+}
+
+.theme-toggle-btn:hover .theme-toggle-icon {
+    transform: scale(1.15);
+}
+
+/* Light mode: Show Moon icon (click to switch to Dark), hide Sun icon */
+html:not([data-theme="dark"]):not(.dark-mode) .theme-toggle-moon {
+    display: none !important;
+}
+html:not([data-theme="dark"]):not(.dark-mode) .theme-toggle-sun {
+    display: inline-block !important;
+}
+
+/* Dark mode: Show Sun icon (click to switch to Light), hide Moon icon */
+html[data-theme="dark"] .theme-toggle-moon,
+html.dark-mode .theme-toggle-moon {
+    display: inline-block !important;
+}
+html[data-theme="dark"] .theme-toggle-sun,
+html.dark-mode .theme-toggle-sun {
+    display: none !important;
+}
+

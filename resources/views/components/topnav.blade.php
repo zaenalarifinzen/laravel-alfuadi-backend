@@ -10,8 +10,9 @@
     </form>
     <ul class="navbar-nav navbar-right">
         <li class="nav-item mr-2">
-            <a href="javascript:void(0)" class="nav-link nav-link-lg theme-toggle-btn" title="Ganti Tema">
-                <i class="fas fa-sun theme-toggle-icon"></i>
+            <a href="javascript:void(0)" class="theme-toggle-btn" title="Ganti Tema">
+                <x-lucide-moon class="theme-toggle-icon theme-toggle-moon" />
+                <x-lucide-sun class="theme-toggle-icon theme-toggle-sun" />
             </a>
         </li>
         <li class="dropdown"><a href="#" data-toggle="dropdown"

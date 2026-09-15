@@ -194,8 +194,8 @@
                         </form>
                     </div>
                 @else
-                    <a href="#" id="btn-toggle-sidebar" title="Toggle Daftar Soal" class="btn btn-outline-primary"><i
-                                class="fas fa-bars"></i></a>
+                    <a href="#" id="btn-toggle-sidebar" title="Toggle Daftar Soal" class="btn btn-outline-primary">
+                        <i class="fas fa-bars"></i></a>
                 @endif
             </div>
 
