@@ -98,7 +98,7 @@ export function initWordCrud({
         $("#input-simbol").val("");
 
         $("#input-lafadz").attr("required", true);
-        $("#modal-add-word").modal("show");
+        $("#modal-add-word").modal({ backdrop: "static" }).modal("show");
     });
 
     $("#form-add-word").on("submit", function (e) {
@@ -408,7 +408,7 @@ export function initWordCrud({
         $("#form-add-word-label").text("Update Kalimat");
         $("#btn-submit").text("Update");
         $("#additional-fields").show();
-        $("#modal-add-word").modal("show");
+        $("#modal-add-word").modal({ backdrop: "static" }).modal("show");
     });
 
     // Save All Word

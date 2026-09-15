@@ -388,24 +388,6 @@
         </div>
     </div>
 
-    <!-- Restore Modal -->
-    <div class="modal fade" tabindex="-1" role="dialog" id="modal-restore">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Lanjutkan progres sebelumnya?</h5>
-                </div>
-                <div class="modal-body">
-                    <p>Terakhir di edit : <span class="text-primary" id="last-location-label"></span></p>
-                </div>
-                <div class="modal-footer bg-whitesmoke br">
-                    <button type="button" class="btn btn-secondary" id="btn-restore-cancel">Tutup</button>
-                    <button type="button" class="btn btn-primary" id="btn-restore-continue">Lanjutkan</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
 @endsection
 
 @push('scripts')

@@ -11,11 +11,11 @@ function updateThemeUI(theme) {
     const icons = document.querySelectorAll('.theme-toggle-icon');
     icons.forEach(function(icon) {
         if (theme === 'dark') {
-            icon.classList.remove('fa-moon', 'far');
-            icon.classList.add('fa-sun', 'fas');
-        } else {
-            icon.classList.remove('fa-sun', 'far');
+            icon.classList.remove('fa-sun', 'fas');
             icon.classList.add('fa-moon', 'fas');
+        } else {
+            icon.classList.remove('fa-moon', 'fas');
+            icon.classList.add('fa-sun', 'fas');
         }
     });
 

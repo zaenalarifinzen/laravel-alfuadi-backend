@@ -11,7 +11,7 @@
     <ul class="navbar-nav navbar-right">
         <li class="nav-item mr-2">
             <a href="javascript:void(0)" class="nav-link nav-link-lg theme-toggle-btn" title="Ganti Tema">
-                <i class="fas fa-moon theme-toggle-icon"></i>
+                <i class="fas fa-sun theme-toggle-icon"></i>
             </a>
         </li>
         <li class="dropdown"><a href="#" data-toggle="dropdown"
