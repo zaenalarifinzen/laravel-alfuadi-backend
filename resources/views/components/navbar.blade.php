@@ -13,7 +13,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ route('metode-al-fuadi.jilid-1') }}"
+                <a href="{{ route('metode-alfuadi') }}"
                     class="nav-link {{ request()->routeIs('metode-al-fuadi.*') ? 'active' : '' }}">
                     </i><span>Metode Al-Fuadi</span>
                 </a>

@@ -17,7 +17,6 @@ use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\QuranController;
 use App\Http\Controllers\SettingsController;
 use App\Models\Surah;
-// use App\Models\ExerciseSubmission;
 use App\Models\Verse;
 use App\Models\Word;
 use App\Models\WordGroup;
@@ -29,6 +28,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('homepage');
 })->name('home');
+
+// Navigation Menu
+Route::get('quran', [QuranController::class, 'index'])->name('quran.index');
+Route::get('quran/surah', [QuranController::class, 'versesOfSurah'])->name('quran.surah');
+Route::get('metode-alfuadi', function () {
+    return view('pages.metode-alfuadi.introducing');
+})->name('metode-alfuadi');
 
 Route::resource('surahs', SurahController::class);
 Route::resource('verses', VerseController::class);
@@ -44,8 +50,8 @@ Route::get('/enrollments', function () {
 Route::get('/wordgroups/get/{id?}', [WordGroupController::class, 'getWordGroup'])->name('wordgroups.get');
 Route::get('/words/get/{id}', [WordController::class, 'getWord'])->name('words.get');
 
+// Auth Middleware
 Route::middleware(['auth', 'verified'])->group(function () {
-
     // Administrator Only
     Route::prefix('dashboard')->name('dashboard.')->group(function () {
         Route::middleware(['roles:administrator'])->group(function () {
@@ -163,12 +169,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Administrator, Operator and User Only
     Route::middleware(['roles:administrator,operator,user'])->group(function () {
-        Route::get('quran', [QuranController::class, 'index'])->name('quran.index');
-        Route::get('quran/surah', [QuranController::class, 'versesOfSurah'])->name('quran.surah');
 
-        Route::get('/metode-al-fuadi/jilid-1', function () {
-            return view('pages.modul.nahwu.jilid-1', ['type_menu' => 'metode-al-fuadi']);
-        })->name('metode-al-fuadi.jilid-1');
+        // Route::get('/metode-al-fuadi/jilid-1', function () {
+        //     return view('pages.modul.nahwu.jilid-1', ['type_menu' => 'metode-al-fuadi']);
+        // })->name('metode-al-fuadi.jilid-1');
 
         Route::get('/exercise', [ExerciseLevelController::class, 'userIndex'])->name('exercise-level.index');
         Route::get('/exercise/list/{level}', [ExerciseController::class, 'getExerciseList'])->name('exercise.list');

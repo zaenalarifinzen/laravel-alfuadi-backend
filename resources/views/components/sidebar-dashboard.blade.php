@@ -20,7 +20,7 @@
                         <span>Modul Al-Fuadi</span></a>
                     <ul class="dropdown-menu">
                         <li class="{{ Request::is('metode-al-fuadi/jilid-1') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ route('metode-al-fuadi.jilid-1') }}">
+                            <a class="nav-link" href="#">
                                 <span>Jilid 1</span>
                             </a>
                         </li>

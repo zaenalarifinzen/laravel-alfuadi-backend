@@ -9,6 +9,7 @@
         }
 
         .homepage-hero {
+            height: 100vh;
             padding: 56px 0 40px;
         }
 
@@ -361,17 +362,6 @@
                         </a>
                     </div>
                 @endguest
-
-                <!-- VISUAL VERSE CARD -->
-                <div class="homepage-visual">
-                    <div class="homepage-verse-card">
-                        <div class="homepage-arabic">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
-                        <p class="text-muted mb-0 mt-3 font-weight-500">
-                            "Mulai pembelajaran dari pengenalan struktur kata, tanda i'rob, hingga analisis kedudukan ayat
-                            Al-Qur'an secara komprehensif."
-                        </p>
-                    </div>
-                </div>
             </div>
 
             <div class="section-body">
