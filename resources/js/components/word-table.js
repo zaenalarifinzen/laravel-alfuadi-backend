@@ -68,6 +68,7 @@ export function initWordTable({
                 </td>
                 <td class="text-center align-middle col-word">
                     <div class="${simbolClass} arabic-text words" id="${word.id}">${word.text}</div>
+                    ${isAnswerMode ? `<div class="translation">${word.translation}</div>` : ''}
                 </td>
                 <td class="text-center align-middle col-kalimat">
                     <div class="text-center mb-2 arabic-text ar-symbol">${
