@@ -1,10 +1,4 @@
 <nav class="navbar navbar-expand-lg main-navbar">
-    <ul class="navbar-nav mr-3">
-        <li>
-            <a href="#" data-toggle="sidebar" class="nav-link sidebar-gone-show"><i class="fas fa-bars"></i></a>
-        </li>
-    </ul>
-
     <a href="{{ route('home') }}" class="navbar-brand">Al-Fuadi</a>
     <form class="form-inline mr-auto">
         <div class="nav-collapse">
@@ -26,7 +20,7 @@
             <li class="dropdown"><a href="#" data-toggle="dropdown"
                     class="nav-link dropdown-toggle nav-link-lg nav-link-user">
                     <img alt="image" src="{{ asset('img/avatar/avatar-3.png') }}" class="rounded-circle mr-1">
-                    <div class="d-sm-none d-lg-inline-block">Hi, {{ auth()->user()->name }}</div>
+                    <div class="d-sm-none d-lg-inline-block">{{ auth()->user()->name }}</div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
                     <a href="{{ route('profile') }}" class="dropdown-item has-icon">
@@ -61,5 +55,10 @@
                 </a>
             </li>
         @endauth
+    </ul>
+    <ul class="navbar-nav">
+        <li>
+            <a href="#" data-toggle="sidebar" class="nav-link sidebar-gone-show"><i class="fas fa-bars"></i></a>
+        </li>
     </ul>
 </nav>

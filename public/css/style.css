@@ -1216,6 +1216,9 @@ select.form-control:not([size]):not([multiple]) {
     }
 }
 @media (min-width: 768px) and (max-width: 991.98px) {
+    body.layout-3 {
+        overflow-x: hidden;
+    }
     .card .card-stats .card-stats-items {
         height: 49px;
     }

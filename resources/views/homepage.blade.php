@@ -9,8 +9,29 @@
         }
 
         .homepage-hero {
-            height: 100vh;
-            padding: 56px 0 40px;
+            /* width: 100vw; */
+            margin-left: calc(50% - 50vw);
+            margin-right: calc(50% - 50vw);
+            padding: 56px 0 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .homepage-hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px 70px;
+            box-sizing: border-box;
+        }
+
+        .hero-left {
+            text-align: left;
+            position: relative;
+            z-index: 2;
         }
 
         .homepage-badge-top {
@@ -29,12 +50,16 @@
 
         .homepage-title {
             color: #103d3a;
-            font-size: 42px;
+            font-size: 44px;
             font-weight: 800;
-            line-height: 1.2;
-            margin: 10px auto 16px;
-            max-width: 860px;
+            line-height: 1.18;
+            margin: 10px 0 18px;
+            max-width: 560px;
             letter-spacing: -0.5px;
+        }
+
+        html[data-theme="dark"] .homepage-title {
+            color: #f2fffe;
         }
 
         .homepage-title span {
@@ -46,62 +71,332 @@
 
         .homepage-lead {
             color: #667085;
-            font-size: 18px;
+            font-size: 17px;
             line-height: 1.8;
-            margin: 0 auto 28px;
-            max-width: 720px;
+            margin: 0 0 28px;
+            max-width: 480px;
         }
 
         .homepage-actions {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
-            gap: 14px;
-            margin-bottom: 40px;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 18px;
+            margin-bottom: 34px;
         }
 
-        .homepage-visual {
-            background:
-                linear-gradient(135deg, rgba(19, 138, 132, .92), rgba(29, 148, 142, .75)),
-                radial-gradient(circle at top left, rgba(255, 255, 255, .32), transparent 40%),
-                #138a84;
-            border-radius: 12px;
-            box-shadow: 0 20px 45px rgba(19, 138, 132, .18);
-            margin: 0 auto 50px;
-            max-width: 920px;
-            overflow: hidden;
-            padding: 40px;
+        .btn-hero-play {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: #103d3a;
+            font-weight: 700;
+            font-size: 15px;
+            text-decoration: none;
+        }
+
+        .btn-hero-play .play-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1.5px solid #138a84;
+            color: #138a84;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all .2s ease;
+        }
+
+        .btn-hero-play:hover .play-circle {
+            background: #138a84;
+            color: #fff;
+        }
+
+        .btn-hero-play:hover {
+            color: #138a84;
+        }
+
+        .hero-social-proof {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .hero-avatar-stack {
+            display: flex;
+        }
+
+        .hero-avatar-stack .hero-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            background: linear-gradient(135deg, #138a84, #0d6561);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            margin-left: -10px;
+        }
+
+        .hero-avatar-stack .hero-avatar:first-child {
+            margin-left: 0;
+        }
+
+        .hero-social-proof-text .hero-stars {
+            color: #f5b942;
+            font-size: 13px;
+            margin-bottom: 2px;
+        }
+
+        .hero-social-proof-text small {
+            color: #475467;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* Hero visual (right side) */
+        .hero-right {
             position: relative;
+            min-height: 460px;
+        }
+
+        .hero-visual-panel {
+            background: linear-gradient(150deg, #138a84 0%, #0d6561 100%);
+            border-radius: 20px;
+            /* box-shadow: 0 25px 55px rgba(16, 61, 58, .25); */
+            height: 460px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .hero-visual-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+        }
+
+        .hero-blob {
+            position: absolute;
+            border-radius: 50%;
+            opacity: .55;
+            z-index: 0;
+        }
+
+        .hero-blob--1 {
+            width: 90px;
+            height: 90px;
+            background: #f5b942;
+            top: -22px;
+            left: 20px;
+            opacity: .85;
+        }
+
+        .hero-blob--2 {
+            width: 46px;
+            height: 46px;
+            background: #7fd8cf;
+            bottom: 60px;
+            left: -20px;
+        }
+
+        .hero-blob--3 {
+            width: 60px;
+            height: 60px;
+            background: #f5b942;
+            bottom: -20px;
+            right: 50px;
+            opacity: .7;
+        }
+
+        .hero-floating-card {
+            position: absolute;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 14px 34px rgba(16, 61, 58, .18);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 2;
+            max-width: 220px;
+        }
+
+        .hero-floating-card .fc-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: #e9fbf8;
+            color: #138a84;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 14px;
+        }
+
+        .hero-floating-card p {
+            margin: 0;
+            font-size: 12.5px;
+            line-height: 1.4;
+            color: #344054;
+            font-weight: 600;
+        }
+
+        .hero-fc-top {
+            top: 6%;
+            right: -4%;
+        }
+
+        .hero-fc-stat {
+            top: 40%;
+            right: -10%;
             text-align: left;
         }
 
-        .homepage-visual::after {
-            background-image:
-                linear-gradient(rgba(255, 255, 255, .12) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, .12) 1px, transparent 1px);
-            background-size: 28px 28px;
-            content: "";
-            inset: 0;
-            opacity: .45;
-            position: absolute;
+        .hero-fc-stat .fc-stat-value {
+            font-size: 20px;
+            font-weight: 800;
+            color: #103d3a;
+            line-height: 1.1;
         }
 
-        .homepage-verse-card {
-            background: rgba(255, 255, 255, .96);
-            border-radius: 10px;
-            box-shadow: 0 12px 34px rgba(16, 61, 58, .18);
-            max-width: 580px;
-            padding: 28px 32px;
+        .hero-fc-stat .fc-stat-label {
+            font-size: 11px;
+            color: #667085;
+            font-weight: 600;
+        }
+
+        .hero-fc-stat .fc-stat-badge {
+            color: #16a34a;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .hero-fc-testi {
+            bottom: 4%;
+            left: -6%;
+            max-width: 240px;
+            align-items: flex-start;
+        }
+
+        .hero-fc-testi .testi-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #138a84;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .hero-fc-testi .testi-stars {
+            color: #f5b942;
+            font-size: 10px;
+            margin-bottom: 3px;
+        }
+
+        .hero-fc-testi p {
+            font-weight: 500;
+            font-style: italic;
+        }
+
+        .hero-fc-testi .testi-name {
+            font-weight: 700;
+            font-style: normal;
+            color: #103d3a;
+            margin-top: 2px;
+            display: block;
+        }
+
+        /* Trust strip below hero */
+        .homepage-trust-strip {
+            background: linear-gradient(135deg, #e9fbf8 0%, #f4fffd 100%);
+            border: 1px solid #c2f2ea;
+            border-radius: 18px;
+            box-shadow: 0 14px 34px rgba(19, 138, 132, .08);
+            max-width: 1200px;
+            margin: 0 auto 50px;
+            padding: 26px 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .homepage-trust-strip::before {
+            content: "";
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(19, 138, 132, .08), transparent 70%);
+            top: -60px;
+            right: -40px;
+        }
+
+        .homepage-trust-strip .trust-label {
+            text-align: center;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: .3px;
+            color: #138a84;
+            margin-bottom: 18px;
             position: relative;
             z-index: 1;
         }
 
-        .homepage-arabic {
+        .trust-logo-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 14px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .trust-logo-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #fff;
+            border: 1px solid #c2f2ea;
+            border-radius: 50px;
+            padding: 9px 18px 9px 9px;
             color: #103d3a;
-            font-family: "LPMQ Isepmisbah", "Scheherazade New", "Amiri Quran", serif;
-            font-size: 36px;
-            line-height: 2;
-            text-align: right;
+            font-weight: 700;
+            font-size: 13.5px;
+            box-shadow: 0 6px 16px rgba(16, 61, 58, .06);
+            transition: all .2s ease;
+        }
+
+        .trust-logo-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 22px rgba(19, 138, 132, .14);
+            border-color: #7fd8cf;
+        }
+
+        .trust-logo-item i {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #138a84, #0d6561);
+            color: #fff;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
         }
 
         /* Section Titles */
@@ -110,17 +405,30 @@
         }
 
         .homepage-section-subtitle {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-size: 13px;
+            letter-spacing: 1px;
+            font-size: 12px;
             font-weight: 700;
             color: #138a84;
-            margin-bottom: 8px;
-            display: block;
+            background: #e9fbf8;
+            border: 1px solid #c2f2ea;
+            padding: 6px 16px;
+            border-radius: 50px;
+            margin-bottom: 14px;
         }
 
         .homepage-section-title {
             color: #103d3a;
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        html[data-theme="dark"] .homepage-section-title {
+            color: #f2fffe;
             font-size: 32px;
             font-weight: 800;
             margin-bottom: 12px;
@@ -133,10 +441,49 @@
             font-size: 16px;
         }
 
+        /* Contained panel background for alternating sections (keeps side spacing) */
+        .homepage-panel-section {
+            background: linear-gradient(180deg, #f4fffd 0%, #ffffff 100%);
+            border: 1px solid #e2f1ee;
+            border-radius: 28px;
+            padding: 56px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .homepage-panel-section::before {
+            content: "";
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(19, 138, 132, .07), transparent 70%);
+            top: -100px;
+            right: -80px;
+            z-index: 0;
+        }
+
+        .homepage-panel-section::after {
+            content: "";
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(245, 185, 66, .10), transparent 70%);
+            bottom: -80px;
+            left: -60px;
+            z-index: 0;
+        }
+
+        .homepage-panel-section > * {
+            position: relative;
+            z-index: 1;
+        }
+
         /* Card Styles  */
         .bab-card {
             border: 1px solid #e2f1ee;
-            border-radius: 12px;
+            border-radius: 16px;
             background: #fff;
             padding: 28px;
             height: 100%;
@@ -148,15 +495,15 @@
 
         .bab-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 16px 35px rgba(19, 138, 132, .12);
-            border-color: #b7e8df;
+            box-shadow: 0 16px 35px rgba(19, 138, 132, .14);
+            border-color: #7fd8cf;
         }
 
         .bab-number {
             font-size: 12px;
             font-weight: 800;
-            color: #138a84;
-            background: #e9fbf8;
+            color: #fff;
+            background: linear-gradient(135deg, #138a84, #0d6561);
             padding: 4px 12px;
             border-radius: 20px;
             display: inline-block;
@@ -187,12 +534,106 @@
             display: flex;
             align-items: center;
             gap: 6px;
+            padding-top: 14px;
+            border-top: 1px dashed #e2f1ee;
+        }
+
+        /* Course / class pricing cards */
+        .course-card {
+            background: #fff;
+            border: 1px solid #e2f1ee;
+            border-radius: 16px;
+            padding: 34px 28px 28px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .course-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 35px rgba(19, 138, 132, .12);
+            border-color: #b7e8df;
+        }
+
+        .course-card.is-popular {
+            border: 2px solid #138a84;
+            box-shadow: 0 16px 40px rgba(19, 138, 132, .16);
+        }
+
+        .course-badge {
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #138a84, #0d6561);
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 6px 18px;
+            border-radius: 50px;
+            box-shadow: 0 8px 18px rgba(19, 138, 132, .3);
+            white-space: nowrap;
+        }
+
+        .course-card h3 {
+            color: #103d3a;
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .course-card > p {
+            color: #667085;
+            font-size: 14px;
+            line-height: 1.65;
+            margin-bottom: 22px;
+        }
+
+        .course-features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 28px;
+            flex-grow: 1;
+        }
+
+        .course-features li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: #344054;
+            margin-bottom: 12px;
+        }
+
+        .course-features li i {
+            color: #138a84;
+            font-size: 15px;
+        }
+
+        .course-card .btn {
+            margin-top: auto;
+            border-radius: 10px;
+            font-weight: 700;
+            padding: 10px;
+        }
+
+        .course-card .btn-outline-primary {
+            color: #138a84;
+            border-color: #138a84;
+        }
+
+        .course-card.is-popular .btn-outline-primary {
+            background: linear-gradient(135deg, #138a84, #0d6561);
+            border-color: #138a84;
+            color: #fff;
         }
 
         /* Testimonial Cards */
         .testimonial-card {
             border: 1px solid #e9f4f2;
-            border-radius: 12px;
+            border-radius: 16px;
             background: #fff;
             padding: 28px;
             height: 100%;
@@ -200,10 +641,17 @@
             flex-direction: column;
             justify-content: space-between;
             box-shadow: 0 6px 20px rgba(15, 23, 42, .03);
+            transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 35px rgba(19, 138, 132, .12);
+            border-color: #b7e8df;
         }
 
         .testimonial-stars {
-            color: #ffc107;
+            color: #f5b942;
             margin-bottom: 14px;
             font-size: 14px;
         }
@@ -226,7 +674,7 @@
             width: 44px;
             height: 44px;
             border-radius: 50%;
-            background: #138a84;
+            background: linear-gradient(135deg, #138a84, #0d6561);
             color: #fff;
             display: flex;
             align-items: center;
@@ -275,29 +723,310 @@
             margin: 0 auto 30px;
         }
 
+        /* =========================================================
+           DARK THEME OVERRIDES
+           ========================================================= */
+        html[data-theme="dark"] .homepage {
+            color: #e6f3f1;
+        }
+
+        html[data-theme="dark"] .homepage-badge-top {
+            background-color: #123330;
+            border-color: #1f4d49;
+            color: #5eead4;
+        }
+
+        html[data-theme="dark"] .homepage-lead,
+        html[data-theme="dark"] .homepage-section-lead {
+            color: #9fb8b4;
+        }
+
+        html[data-theme="dark"] .btn-hero-play {
+            color: #f2fffe;
+        }
+
+        html[data-theme="dark"] .btn-hero-play .play-circle {
+            border-color: #5eead4;
+            color: #5eead4;
+        }
+
+        html[data-theme="dark"] .btn-hero-play:hover .play-circle {
+            background: #5eead4;
+            color: #0d2624;
+        }
+
+        html[data-theme="dark"] .btn-hero-play:hover {
+            color: #5eead4;
+        }
+
+        html[data-theme="dark"] .hero-avatar-stack .hero-avatar {
+            border-color: #0b1f1d;
+        }
+
+        html[data-theme="dark"] .hero-social-proof-text small {
+            color: #9fb8b4;
+        }
+
+        html[data-theme="dark"] .hero-floating-card {
+            background: #14302d;
+            box-shadow: 0 14px 34px rgba(0, 0, 0, .35);
+        }
+
+        html[data-theme="dark"] .hero-floating-card .fc-icon {
+            background: #1f4d49;
+            color: #5eead4;
+        }
+
+        html[data-theme="dark"] .hero-floating-card p {
+            color: #d7e6e4;
+        }
+
+        html[data-theme="dark"] .hero-fc-stat .fc-stat-value {
+            color: #f2fffe;
+        }
+
+        html[data-theme="dark"] .hero-fc-stat .fc-stat-label {
+            color: #9fb8b4;
+        }
+
+        html[data-theme="dark"] .hero-fc-stat .fc-stat-badge {
+            color: #4ade80;
+        }
+
+        html[data-theme="dark"] .hero-fc-testi .testi-name {
+            color: #f2fffe;
+        }
+
+        html[data-theme="dark"] .homepage-trust-strip {
+            background: linear-gradient(135deg, #123330 0%, #0d2624 100%);
+            border-color: #1f4d49;
+            box-shadow: 0 14px 34px rgba(0, 0, 0, .3);
+        }
+
+        html[data-theme="dark"] .homepage-trust-strip .trust-label {
+            color: #5eead4;
+        }
+
+        html[data-theme="dark"] .trust-logo-item {
+            background: #17403c;
+            border-color: #1f4d49;
+            color: #f2fffe;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, .25);
+        }
+
+        html[data-theme="dark"] .trust-logo-item:hover {
+            border-color: #2f6b64;
+            box-shadow: 0 10px 22px rgba(0, 0, 0, .35);
+        }
+
+        html[data-theme="dark"] .homepage-section-subtitle {
+            background: #123330;
+            border-color: #1f4d49;
+            color: #5eead4;
+        }
+
+        html[data-theme="dark"] .homepage-panel-section {
+            background: linear-gradient(180deg, #10302d 0%, #0b1f1d 100%);
+            border-color: #1f4d49;
+        }
+
+        html[data-theme="dark"] .homepage-panel-section::before {
+            background: radial-gradient(circle, rgba(94, 234, 212, .10), transparent 70%);
+        }
+
+        html[data-theme="dark"] .homepage-panel-section::after {
+            background: radial-gradient(circle, rgba(245, 185, 66, .12), transparent 70%);
+        }
+
+        html[data-theme="dark"] .bab-card {
+            background: #14302d;
+            border-color: #1f4d49;
+        }
+
+        html[data-theme="dark"] .bab-card:hover {
+            border-color: #2f6b64;
+            box-shadow: 0 16px 35px rgba(0, 0, 0, .3);
+        }
+
+        html[data-theme="dark"] .bab-card h3 {
+            color: #f2fffe;
+        }
+
+        html[data-theme="dark"] .bab-card p {
+            color: #a9c6c2;
+        }
+
+        html[data-theme="dark"] .bab-meta {
+            color: #5eead4;
+            border-top-color: rgba(255, 255, 255, .12);
+        }
+
+        html[data-theme="dark"] .course-card {
+            background: #14302d;
+            border-color: #1f4d49;
+        }
+
+        html[data-theme="dark"] .course-card:hover {
+            border-color: #2f6b64;
+            box-shadow: 0 16px 35px rgba(0, 0, 0, .3);
+        }
+
+        html[data-theme="dark"] .course-card.is-popular {
+            border-color: #2dd4bf;
+            box-shadow: 0 16px 40px rgba(45, 212, 191, .18);
+        }
+
+        html[data-theme="dark"] .course-card h3 {
+            color: #f2fffe;
+        }
+
+        html[data-theme="dark"] .course-card > p {
+            color: #9fb8b4;
+        }
+
+        html[data-theme="dark"] .course-features li {
+            color: #d7e6e4;
+        }
+
+        html[data-theme="dark"] .course-features li i {
+            color: #5eead4;
+        }
+
+        html[data-theme="dark"] .course-card .btn-outline-primary {
+            color: #5eead4;
+            border-color: #5eead4;
+        }
+
+        html[data-theme="dark"] .course-card.is-popular .btn-outline-primary {
+            background: linear-gradient(135deg, #138a84, #0d6561);
+            border-color: #2dd4bf;
+            color: #fff;
+        }
+
+        html[data-theme="dark"] .testimonial-card {
+            background: #14302d;
+            border-color: #1f4d49;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, .2);
+        }
+
+        html[data-theme="dark"] .testimonial-card:hover {
+            border-color: #2f6b64;
+            box-shadow: 0 16px 35px rgba(0, 0, 0, .3);
+        }
+
+        html[data-theme="dark"] .testimonial-quote {
+            color: #d7e6e4;
+        }
+
+        html[data-theme="dark"] .testimonial-info h4 {
+            color: #f2fffe;
+        }
+
+        html[data-theme="dark"] .testimonial-info p {
+            color: #9fb8b4;
+        }
+
+        html[data-theme="dark"] .homepage-cta-banner {
+            box-shadow: 0 20px 45px rgba(0, 0, 0, .4);
+        }
+
+        @media (max-width: 991.98px) {
+            .homepage-hero-grid {
+                grid-template-columns: 1fr;
+                gap: 60px;
+            }
+
+            .hero-left {
+                text-align: center;
+            }
+
+            .homepage-title,
+            .homepage-lead {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .homepage-actions {
+                justify-content: center;
+            }
+
+            .hero-social-proof {
+                justify-content: center;
+            }
+
+            .hero-right {
+                min-height: 400px;
+                max-width: 460px;
+                margin: 0 auto;
+            }
+
+            .hero-visual-panel {
+                height: 380px;
+            }
+
+            .hero-fc-top {
+                right: 2%;
+            }
+
+            .hero-fc-stat {
+                right: 0;
+            }
+
+            .hero-fc-testi {
+                left: 2%;
+            }
+        }
+
         @media (max-width: 767.98px) {
             .homepage-hero {
                 padding-top: 24px;
+                margin: 15px;
+            }
+
+            .homepage-panel-section {
+                padding: 36px 20px;
+                border-radius: 20px;
             }
 
             .homepage-title {
-                font-size: 30px;
+                font-size: 28px;
             }
 
             .homepage-lead {
                 font-size: 15px;
             }
 
-            .homepage-visual {
-                padding: 20px;
+            .hero-right {
+                min-height: 320px;
             }
 
-            .homepage-verse-card {
-                padding: 20px;
+            .hero-visual-panel {
+                height: 300px;
             }
 
-            .homepage-arabic {
-                font-size: 28px;
+            .hero-visual-icon {
+                width: 140px;
+                height: 140px;
+                font-size: 54px;
+            }
+
+            .hero-floating-card {
+                max-width: 170px;
+                padding: 9px 12px;
+            }
+
+            .hero-fc-stat .fc-stat-value {
+                font-size: 16px;
+            }
+
+            .homepage-trust-strip {
+                padding: 22px 18px;
+                border-radius: 14px;
+            }
+
+            .trust-logo-item {
+                font-size: 12.5px;
+                padding: 7px 14px 7px 7px;
             }
 
             .homepage-cta-banner {
@@ -316,64 +1045,155 @@
         <section class="section">
 
             <!-- HERO SECTION -->
-            <div class="homepage-hero text-center">
-                @guest
-                    <div class="homepage-badge-top">
-                        <i class="fas fa-sparkles"></i> Metode Pembelajaran Nahwu Modern & Terstruktur
+            <div class="homepage-hero">
+                <div class="homepage-hero-grid">
+                    <div class="hero-left">
+                        @guest
+                            <div class="homepage-badge-top">
+                                <i class="fas fa-sparkles"></i> Metode Pembelajaran Nahwu Modern & Terstruktur
+                            </div>
+
+                            <h1 class="homepage-title">
+                                Kuasai Ilmu <span>Nahwu</span> dengan Mudah & Efektif
+                            </h1>
+
+                            <p class="homepage-lead">
+                                Pelajari tata bahasa, sintaksis, dan struktur i'rob Al-Qur'an secara interaktif melalui
+                                pendekatan bertahap bersama Metode Al-Fuadi.
+                            </p>
+
+                            <div class="homepage-actions">
+                                <a class="btn btn-primary btn-lg px-4" href="{{ route('register') }}">
+                                    Mulai Belajar Gratis
+                                </a>
+                                <a class="btn-hero-play" href="{{ route('courses' )}}">
+                                    <i class="fas fa-search"></i>
+                                    Jelajahi Kelas Online
+                                </a>
+                            </div>
+
+                            <div class="hero-social-proof">
+                                <div class="hero-avatar-stack">
+                                    <span class="hero-avatar">AF</span>
+                                    <span class="hero-avatar">ZA</span>
+                                    <span class="hero-avatar">SN</span>
+                                    <span class="hero-avatar">HR</span>
+                                </div>
+                                <div class="hero-social-proof-text">
+                                    <div class="hero-stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                    <small>Bergabung dengan 2.000+ santri belajar Nahwu</small>
+                                </div>
+                            </div>
+                        @else
+                            <div class="homepage-badge-top">
+                                <i class="fas fa-user-check"></i> Selamat Datang Kembali
+                            </div>
+
+                            <h1 class="homepage-title">
+                                Halo, <span>{{ auth()->user()->name }}</span>
+                            </h1>
+
+                            <p class="homepage-lead">
+                                Siap untuk melanjutkan pembelajaran? Mari perdalam pemahaman kaidah nahwu dan tingkatkan
+                                latihan analisa i'rob Anda hari ini.
+                            </p>
+
+                            <div class="homepage-actions">
+                                <a class="btn btn-primary btn-lg px-4" href="{{ route('enrollments') }}">
+                                    Lanjutkan Belajar
+                                </a>
+                                <a class="btn-hero-play" href="{{ route('courses') }}">
+                                    <span class="play-circle"><i class="fas fa-search"></i></span>
+                                    Lihat Kelas Online
+                                </a>
+                            </div>
+
+                            <div class="hero-social-proof">
+                                <div class="hero-avatar-stack">
+                                    <span class="hero-avatar">ZA</span>
+                                    <span class="hero-avatar">SY</span>
+                                    <span class="hero-avatar">EW</span>
+                                    <span class="hero-avatar">MS</span>
+                                </div>
+                                <div class="hero-social-proof-text">
+                                    <div class="hero-stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                    <small>Bergabung dengan 2.000+ Sobat Fuadi</small>
+                                </div>
+                            </div>
+                        @endguest
                     </div>
 
-                    <h1 class="homepage-title">
-                        Kuasai Ilmu <span>Nahwu Al-Qur'an</span> dengan Mudah & Efektif
-                    </h1>
+                    <div class="hero-right">
+                        <span class="hero-blob hero-blob--1"></span>
+                        <span class="hero-blob hero-blob--2"></span>
+                        <span class="hero-blob hero-blob--3"></span>
 
-                    <p class="homepage-lead">
-                        Pelajari tata bahasa, sintaksis, dan struktur i'rob Al-Qur'an secara interaktif melalui pendekatan
-                        bertahap bersama Metode Al-Fuadi.
-                    </p>
+                        <div class="hero-visual-panel">
+                            {{-- Ganti file gambar ini di public/images/hero-visual.png kapan pun diperlukan --}}
+                            <img src="https://blocks.astratic.com/img/general-img-square.png"
+                                alt="Ilustrasi belajar Nahwu Al-Qur'an" class="hero-visual-img">
+                        </div>
 
-                    <div class="homepage-actions">
-                        <a class="btn btn-primary btn-lg px-4" href="{{ route('register') }}">
-                            <i class="fas fa-user-plus mr-2"></i>Mulai Belajar Gratis
-                        </a>
-                        <a class="btn btn-outline-primary btn-lg px-4" href="#bab-materi">
-                            <i class="fas fa-book-open mr-2"></i>Jelajahi Materi
-                        </a>
+                        {{-- <div class="hero-floating-card hero-fc-top">
+                            <span class="fc-icon"><i class="fas fa-heart"></i></span>
+                            <p>Pahami i'rob Al-Qur'an dengan percaya diri</p>
+                        </div>
+
+                        <div class="hero-floating-card hero-fc-stat">
+                            <div>
+                                <span class="fc-stat-label">Progres Belajar</span><br>
+                                <span class="fc-stat-value">92%</span>
+                                <span class="fc-stat-badge">+18% bulan ini</span>
+                            </div>
+                        </div>
+
+                        <div class="hero-floating-card hero-fc-testi">
+                            <span class="testi-avatar">ZA</span>
+                            <p>
+                                <span class="testi-stars">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                </span>
+                                "Metode ini mengubah cara saya memahami Nahwu."
+                                <span class="testi-name">- Zaenal A.</span>
+                            </p>
+                        </div> --}}
                     </div>
-                @else
-                    <div class="homepage-badge-top">
-                        <i class="fas fa-user-check"></i> Selamat Datang Kembali
-                    </div>
+                </div>
+            </div>
 
-                    <h1 class="homepage-title">
-                        Halo, <span>{{ auth()->user()->name }}</span>
-                    </h1>
-
-                    <p class="homepage-lead">
-                        Siap untuk melanjutkan pembelajaran? Mari perdalam pemahaman kaidah nahwu dan tingkatkan latihan analisa
-                        i'rob ayat Anda hari ini.
-                    </p>
-
-                    <div class="homepage-actions">
-                        <a class="btn btn-primary btn-lg px-4" href="{{ route('enrollments') }}">
-                            <i class="fas fa-gauge-high mr-2"></i>Lanjutkan Belajar
-                        </a>
-                        <a class="btn btn-outline-primary btn-lg px-4" href="{{ route('courses') }}">
-                            <i class="fas fa-layer-group mr-2"></i>Lihat Kelas Online
-                        </a>
-                    </div>
-                @endguest
+            <div class="homepage-trust-strip">
+                <p class="trust-label">Dipercaya santri, pengajar, dan lembaga di seluruh Indonesia</p>
+                <div class="trust-logo-row">
+                    <span class="trust-logo-item"><i class="fas fa-mosque"></i> Pesantren</span>
+                    <span class="trust-logo-item"><i class="fas fa-school"></i> Sekolah</span>
+                    <span class="trust-logo-item"><i class="fas fa-graduation-cap"></i> Universitas</span>
+                    <span class="trust-logo-item"><i class="fas fa-users"></i> Kajian</span>
+                </div>
             </div>
 
             <div class="section-body">
 
                 <!-- SECTION 1: BAB & MATERI METODE AL-FUADI (6 CARDS) -->
                 <section id="bab-materi" class="py-4">
+                  <div class="homepage-panel-section">
                     <div class="text-center homepage-section-header">
                         <span class="homepage-section-subtitle">Metode Al-Fuadi</span>
                         <h2 class="homepage-section-title">Modul & Kurikulum Materi Nahwu</h2>
                         <p class="homepage-section-lead">
                             Materi disusun secara sistematis agar Anda dapat menguasai fondasi kaidah tata bahasa Arab
-                            hingga praktik analisis i'rob ayat.
+                            hingga praktik analisis i'rob.
                         </p>
                     </div>
 
@@ -381,94 +1201,95 @@
                         <!-- Bab 1 -->
                         <div class="col-lg-4 col-md-6 mb-4">
                             <div class="bab-card">
-                                <span class="bab-number">BAB 01</span>
-                                <h3>Kalimat & Pembagiannya</h3>
+                                <span class="bab-number">Materi 01</span>
+                                <h3>Kalimat dan Macamnya</h3>
                                 <p>
                                     Pengenalan dasar 3 jenis kata dalam bahasa Arab: Isim, Fi'il, dan Harf beserta ciri dan
                                     tanda khas masing-masing.
                                 </p>
 
-                                <div class="bab-meta">
+                                {{-- <div class="bab-meta">
                                     <i class="fas fa-file-lines"></i> Pembagian Al-Kalimah
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
 
                         <!-- Bab 2 -->
                         <div class="col-lg-4 col-md-6 mb-4">
                             <div class="bab-card">
-                                <span class="bab-number">BAB 02</span>
-                                <h3>Tanda-Tanda I'rob</h3>
+                                <span class="bab-number">Materi 02</span>
+                                <h3>I'rob dan Macamnya</h3>
                                 <p>
                                     Memahami 4 kondisi I'rob (Rofa', Nasab, Khofad/Jar, Jazam) serta perubahan harokat asli
                                     dan penggantinya.
                                 </p>
-                                <div class="bab-meta">
+                                {{-- <div class="bab-meta">
                                     <i class="fas fa-tags"></i> العلامات والإعراب
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
 
                         <!-- Bab 3 -->
                         <div class="col-lg-4 col-md-6 mb-4">
                             <div class="bab-card">
-                                <span class="bab-number">BAB 03</span>
-                                <h3>Marfu'atul Asma'</h3>
+                                <span class="bab-number">Materi 03</span>
+                                <h3>Hukum Kalimat Isim</h3>
                                 <p>
                                     Struktur Isim-isim yang wajib Dibaca Rofa': Fa'il, Naibul Fa'il, Mubtada', Khobar, Isim
                                     Kana, dan Khobar Inna.
                                 </p>
-                                <div class="bab-meta">
+                                {{-- <div class="bab-meta">
                                     <i class="fas fa-arrow-up-right-dots"></i> Subjek & Predikat (مرفوعات)
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
 
                         <!-- Bab 4 -->
                         <div class="col-lg-4 col-md-6 mb-4">
                             <div class="bab-card">
-                                <span class="bab-number">BAB 04</span>
-                                <h3>Manshubatul Asma'</h3>
+                                <span class="bab-number">Materi 04</span>
+                                <h3>Tanda I'rob Kalimat Isim</h3>
                                 <p>
                                     Pembahasan lengkap Objek dan Keterangan: Maf'ul Bih, Maf'ul Mutlaq, Dhorof, Hal, Tamyiz,
                                     dan Mustatsna.
                                 </p>
-                                <div class="bab-meta">
+                                {{-- <div class="bab-meta">
                                     <i class="fas fa-arrows-left-right"></i> Objek & Pelengkap (منصوبات)
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
 
                         <!-- Bab 5 -->
                         <div class="col-lg-4 col-md-6 mb-4">
                             <div class="bab-card">
-                                <span class="bab-number">BAB 05</span>
-                                <h3>Majruratul Asma'</h3>
+                                <span class="bab-number">Materi 05</span>
+                                <h3>Mubtada dan Khobar</h3>
                                 <p>
                                     Kaidah kata yang dibaca Jar karena Huruf Jar, Idhofah (Mudhof & Mudhof Ilaih), serta
                                     Pengikut (Tawaabi').
                                 </p>
-                                <div class="bab-meta">
+                                {{-- <div class="bab-meta">
                                     <i class="fas fa-link"></i> Sandaran & Pengikut (مجرورات)
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
 
                         <!-- Bab 6 -->
                         <div class="col-lg-4 col-md-6 mb-4">
                             <div class="bab-card">
-                                <span class="bab-number">BAB 06</span>
-                                <h3>Analisis I'rob Ayat Al-Qur'an</h3>
+                                <span class="bab-number">Materi 06</span>
+                                <h3>Jar dan Majrur</h3>
                                 <p>
                                     Praktik langsung membedah kedudukan kalimat kata demi kata dalam ayat-ayat pilihan
                                     Al-Qur'an secara presisi.
                                 </p>
-                                <div class="bab-meta">
+                                {{-- <div class="bab-meta">
                                     <i class="fas fa-circle-nodes"></i> Praktik I'rob (إعراب القرآن)
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>
+                  </div>
                 </section>
 
 
@@ -531,6 +1352,7 @@
 
                 <!-- SECTION 3: TESTIMONI -->
                 <section id="testimoni" class="py-4">
+                  <div class="homepage-panel-section">
                     <div class="text-center homepage-section-header">
                         <span class="homepage-section-subtitle">Pengalaman Peserta</span>
                         <h2 class="homepage-section-title">Apa Kata Mereka yang Sudah Belajar?</h2>
@@ -619,6 +1441,7 @@
                             </div>
                         </div>
                     </div>
+                  </div>
                 </section>
 
 

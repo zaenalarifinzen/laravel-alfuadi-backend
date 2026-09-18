@@ -3,19 +3,19 @@
     "file": "assets/components-table-BJPu9yXy.css",
     "src": "_components-table-BJPu9yXy.css"
   },
-  "_components-table-Qv0N0ZHF.js": {
-    "file": "assets/components-table-Qv0N0ZHF.js",
+  "_components-table-BUXh5125.js": {
+    "file": "assets/components-table-BUXh5125.js",
     "name": "components-table",
     "css": [
       "assets/components-table-BJPu9yXy.css"
     ]
   },
-  "_nahwu-form-autofill-C9_bjVRM.js": {
-    "file": "assets/nahwu-form-autofill-C9_bjVRM.js",
+  "_nahwu-form-autofill-CJbr6pbh.js": {
+    "file": "assets/nahwu-form-autofill-CJbr6pbh.js",
     "name": "nahwu-form-autofill"
   },
   "resources/css/app.css": {
-    "file": "assets/app-DE-f8_ga.css",
+    "file": "assets/app-DPhYpAcJ.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "name": "app",
@@ -24,7 +24,7 @@
     ]
   },
   "resources/css/custom.css": {
-    "file": "assets/custom-BxNd50d8.css",
+    "file": "assets/custom-xQDGkk9K.css",
     "src": "resources/css/custom.css",
     "isEntry": true,
     "name": "custom",
@@ -33,46 +33,46 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-Cg0gmP4v.js",
+    "file": "assets/app-DzNrUOKr.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true
   },
   "resources/js/page/admin/exercise/grouping.js": {
-    "file": "assets/grouping-HJiUFREP.js",
+    "file": "assets/grouping-VC6LBBpz.js",
     "name": "grouping",
     "src": "resources/js/page/admin/exercise/grouping.js",
     "isEntry": true
   },
   "resources/js/page/admin/exercise/irob-init.js": {
-    "file": "assets/irob-init-CF7vA0Pv.js",
+    "file": "assets/irob-init-DhYnSu8U.js",
     "name": "irob-init",
     "src": "resources/js/page/admin/exercise/irob-init.js",
     "isEntry": true,
     "imports": [
       "resources/js/utils/storage-helper.js",
-      "_components-table-Qv0N0ZHF.js"
+      "_components-table-BUXh5125.js"
     ]
   },
   "resources/js/page/auth/auth-form.js": {
-    "file": "assets/auth-form-plPxWkjz.js",
+    "file": "assets/auth-form-zLdxVAaJ.js",
     "name": "auth-form",
     "src": "resources/js/page/auth/auth-form.js",
     "isEntry": true
   },
   "resources/js/page/exercise/exercise.js": {
-    "file": "assets/exercise-Cx7SQCVp.js",
+    "file": "assets/exercise-C0yxV4y4.js",
     "name": "exercise",
     "src": "resources/js/page/exercise/exercise.js",
     "isEntry": true,
     "imports": [
       "resources/js/utils/storage-helper.js",
-      "_nahwu-form-autofill-C9_bjVRM.js",
-      "_components-table-Qv0N0ZHF.js"
+      "_nahwu-form-autofill-CJbr6pbh.js",
+      "_components-table-BUXh5125.js"
     ]
   },
   "resources/js/page/exercise/level-index.js": {
-    "file": "assets/level-index-BHXmjPqD.js",
+    "file": "assets/level-index-tEgcFQSa.js",
     "name": "level-index",
     "src": "resources/js/page/exercise/level-index.js",
     "isEntry": true,
@@ -81,42 +81,42 @@
     ]
   },
   "resources/js/page/template-js/features-post-create.js": {
-    "file": "assets/features-post-create-XPzG0Wjb.js",
+    "file": "assets/features-post-create-R2DN0fzB.js",
     "name": "features-post-create",
     "src": "resources/js/page/template-js/features-post-create.js",
     "isEntry": true
   },
   "resources/js/page/template-js/features-posts.js": {
-    "file": "assets/features-posts-CtcoG9c5.js",
+    "file": "assets/features-posts-BgtJ02Je.js",
     "name": "features-posts",
     "src": "resources/js/page/template-js/features-posts.js",
     "isEntry": true
   },
   "resources/js/page/template-js/modules-toastr.js": {
-    "file": "assets/modules-toastr-BTtvaadv.js",
+    "file": "assets/modules-toastr-C-qBHT1y.js",
     "name": "modules-toastr",
     "src": "resources/js/page/template-js/modules-toastr.js",
     "isEntry": true
   },
   "resources/js/page/wordgroups/grouping-page.js": {
-    "file": "assets/grouping-page-BrlAQ8n0.js",
+    "file": "assets/grouping-page-D7mQZY-B.js",
     "name": "grouping-page",
     "src": "resources/js/page/wordgroups/grouping-page.js",
     "isEntry": true
   },
   "resources/js/page/words/create-new.js": {
-    "file": "assets/create-new-mc3zNaSL.js",
+    "file": "assets/create-new-fZbcdZVb.js",
     "name": "create-new",
     "src": "resources/js/page/words/create-new.js",
     "isEntry": true,
     "imports": [
       "resources/js/utils/storage-helper.js",
-      "_components-table-Qv0N0ZHF.js",
-      "_nahwu-form-autofill-C9_bjVRM.js"
+      "_components-table-BUXh5125.js",
+      "_nahwu-form-autofill-CJbr6pbh.js"
     ]
   },
   "resources/js/utils/storage-helper.js": {
-    "file": "assets/storage-helper-D6SUCwL0.js",
+    "file": "assets/storage-helper-CN0kPcNS.js",
     "name": "storage-helper",
     "src": "resources/js/utils/storage-helper.js",
     "isEntry": true

@@ -31,7 +31,8 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item dropdown {{ Request::is('dashboard/exercises') ? 'active' : '' }}">
+                <li class="nav-item dropdown {{ Request::is('dashboard/exercises') || 
+                    Request::is('dashboard/exercise-levels') ? 'active' : '' }}">
                     <a href="#" class="nav-link has-dropdown"><i
                             class="fas fa-file-signature"></i>
                         <span>Latihan</span></a>
@@ -74,17 +75,17 @@
                 </li>
 
                 <li class="menu-header">Organize</li>
-                <li class="{{ Request::is('skema-nahwu') ? 'active' : '' }}">
+                <li class="{{ Request::is('dashboard/analysis-settings') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('dashboard.analysis-settings.index') }}">
                         <i class="fas fa-gear"></i>
                         <span>Pengaturan</span></a>
                 </li>
-                <li class="{{ Request::is('skema-nahwu') ? 'active' : '' }}">
+                <li class="{{ Request::is('dashboard/skema-nahwu') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('dashboard.skema-nahwu.index') }}">
                         <i class="fas fa-sitemap"></i>
                         <span>Skema Nahwu</span></a>
                 </li>
-                <li class="{{ Request::is('users') ? 'active' : '' }}">
+                <li class="{{ Request::is('dashboard/users') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('dashboard.users.index') }}">
                         <i class="fas fa-user"></i>
                         <span>User</span></a>
@@ -93,7 +94,7 @@
                     <a class="nav-link" href="{{ route('products.index') }}"><i class="fas fa-utensils"></i>
                         <span>Products</span></a>
                 </li> --}}
-                <li class="{{ Request::is('example') ? 'active' : '' }}">
+                <li class="{{ Request::is('dashboard/example') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('home') }}"><i class="fas fa-file-lines"></i>
                         <span>Test Page</span></a>
                 </li>
