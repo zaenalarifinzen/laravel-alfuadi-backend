@@ -111,6 +111,22 @@ export function initAnalysisPage({
             questionList.setActiveQuestion(exerciseListId);
         }
 
+        if (cachedData) {
+            const mergedData = exerciseService.mergeFreshWordGroups(
+                cachedData,
+                content,
+            );
+            localStorage.setItem(
+                exerciseCacheKey,
+                JSON.stringify(mergedData),
+            );
+
+            const wordTable = renderExercise(mergedData);
+            updateSubmitState(wordTable, mergedData.passed);
+            syncUrlToHistory(exerciseLevel, exerciseListId);
+            return;
+        }
+
         exerciseService.clearExerciseStorage();
 
         const exerciseKeyPayload = exerciseService.buildAnswerPayload(

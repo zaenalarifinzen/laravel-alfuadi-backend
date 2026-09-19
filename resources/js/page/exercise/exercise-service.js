@@ -88,6 +88,13 @@ export function isCacheStillValid(cachedData, freshContent) {
     return cachedWords[0].updated_at === freshWords[0].updated_at;
 }
 
+export function mergeFreshWordGroups(cachedData, freshContent) {
+    return {
+        ...structuredClone(cachedData),
+        wordGroups: structuredClone(freshContent.wordGroups),
+    };
+}
+
 export function clearExerciseStorage() {
     Object.keys(localStorage)
         .filter((k) => k.startsWith("ex_"))
