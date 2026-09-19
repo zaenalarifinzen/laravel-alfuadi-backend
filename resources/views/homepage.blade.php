@@ -1141,7 +1141,6 @@
                         <span class="hero-blob hero-blob--3"></span>
 
                         <div class="hero-visual-panel">
-                            {{-- Ganti file gambar ini di public/images/hero-visual.png kapan pun diperlukan --}}
                             <img src="https://blocks.astratic.com/img/general-img-square.png"
                                 alt="Ilustrasi belajar Nahwu Al-Qur'an" class="hero-visual-img">
                         </div>
@@ -1184,8 +1183,6 @@
             </div>
 
             <div class="section-body">
-
-                <!-- SECTION 1: BAB & MATERI METODE AL-FUADI (6 CARDS) -->
                 <section id="bab-materi" class="py-4">
                   <div class="homepage-panel-section">
                     <div class="text-center homepage-section-header">
@@ -1198,14 +1195,13 @@
                     </div>
 
                     <div class="row">
-                        <!-- Bab 1 -->
                         <div class="col-lg-4 col-md-6 mb-4">
                             <div class="bab-card">
                                 <span class="bab-number">Materi 01</span>
                                 <h3>Kalimat dan Macamnya</h3>
                                 <p>
                                     Pengenalan dasar 3 jenis kata dalam bahasa Arab: Isim, Fi'il, dan Harf beserta ciri dan
-                                    tanda khas masing-masing.
+                                    tandanya.
                                 </p>
 
                                 {{-- <div class="bab-meta">
@@ -1214,14 +1210,12 @@
                             </div>
                         </div>
 
-                        <!-- Bab 2 -->
                         <div class="col-lg-4 col-md-6 mb-4">
                             <div class="bab-card">
                                 <span class="bab-number">Materi 02</span>
                                 <h3>I'rob dan Macamnya</h3>
                                 <p>
-                                    Memahami 4 kondisi I'rob (Rofa', Nasab, Khofad/Jar, Jazam) serta perubahan harokat asli
-                                    dan penggantinya.
+                                    Memahami 4 kondisi I'rob (Rofa', Nasab, Jar dan Jazm) pada kalimat.
                                 </p>
                                 {{-- <div class="bab-meta">
                                     <i class="fas fa-tags"></i> العلامات والإعراب
@@ -1235,8 +1229,7 @@
                                 <span class="bab-number">Materi 03</span>
                                 <h3>Hukum Kalimat Isim</h3>
                                 <p>
-                                    Struktur Isim-isim yang wajib Dibaca Rofa': Fa'il, Naibul Fa'il, Mubtada', Khobar, Isim
-                                    Kana, dan Khobar Inna.
+                                    Memahami hukum pada kalimat serta alasannya mengapa di hukumi Mu'rob ataupun Mabni.
                                 </p>
                                 {{-- <div class="bab-meta">
                                     <i class="fas fa-arrow-up-right-dots"></i> Subjek & Predikat (مرفوعات)
@@ -1250,8 +1243,7 @@
                                 <span class="bab-number">Materi 04</span>
                                 <h3>Tanda I'rob Kalimat Isim</h3>
                                 <p>
-                                    Pembahasan lengkap Objek dan Keterangan: Maf'ul Bih, Maf'ul Mutlaq, Dhorof, Hal, Tamyiz,
-                                    dan Mustatsna.
+                                    Mengenali tanda i'rob pada halimat isim berdasarkan kategorinya.
                                 </p>
                                 {{-- <div class="bab-meta">
                                     <i class="fas fa-arrows-left-right"></i> Objek & Pelengkap (منصوبات)
@@ -1265,8 +1257,7 @@
                                 <span class="bab-number">Materi 05</span>
                                 <h3>Mubtada dan Khobar</h3>
                                 <p>
-                                    Kaidah kata yang dibaca Jar karena Huruf Jar, Idhofah (Mudhof & Mudhof Ilaih), serta
-                                    Pengikut (Tawaabi').
+                                    Pelajari kedudukan Mubtada dan Khobar pada susunan kalimat.
                                 </p>
                                 {{-- <div class="bab-meta">
                                     <i class="fas fa-link"></i> Sandaran & Pengikut (مجرورات)
@@ -1375,15 +1366,14 @@
                                         <i class="fas fa-star"></i>
                                     </div>
                                     <p class="testimonial-quote">
-                                        "Metode Al-Fuadi membuat ilmu Nahwu yang dulunya terasa rumit menjadi sangat
-                                        sistematis dan mudah dipahami."
+                                        "Metode ini sangan praktis, sangat membantu, terstruktur dengan baik, dan dilengkapi I'robul Qur'anF."
                                     </p>
                                 </div>
                                 <div class="testimonial-author">
                                     <div class="testimonial-avatar">ZA</div>
                                     <div class="testimonial-info">
-                                        <h4>Zaenal Arifin</h4>
-                                        <p>Mahasiswa</p>
+                                        <h4>Prof. Dr. KH. Nasarudin Umar, M.A.</h4>
+                                        <p>Menteri Agama RI</p>
                                     </div>
                                 </div>
                             </div>
@@ -1408,8 +1398,8 @@
                                 <div class="testimonial-author">
                                     <div class="testimonial-avatar">SN</div>
                                     <div class="testimonial-info">
-                                        <h4>Siti Nurhaliza</h4>
-                                        <p>Pengajar Rumah Tahfidz</p>
+                                        <h4>Siti Maryam, S.Pd.</h4>
+                                        <p>Guru</p>
                                     </div>
                                 </div>
                             </div>
@@ -1434,7 +1424,7 @@
                                 <div class="testimonial-author">
                                     <div class="testimonial-avatar">HR</div>
                                     <div class="testimonial-info">
-                                        <h4>Ustadz H. Rizky</h4>
+                                        <h4>Ust. Ardani Ahmad Al-Hafidz</h4>
                                         <p>Pembimbing Kajian Bahasa Arab</p>
                                     </div>
                                 </div>

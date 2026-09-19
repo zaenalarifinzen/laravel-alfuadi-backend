@@ -19,7 +19,7 @@
                     {{ $value }}
                 </div>
             @endsession
-            <form method="POST" action="{{ route('login') }}" class="needs-validation" novalidate="">
+            <form method="POST" action="{{ route('login') }}" class="needs-validation" novalidate="" data-prevent-double>
                 @csrf
                 <div class="form-group">
                     <label for="email">Email</label>
