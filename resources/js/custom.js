@@ -43,6 +43,32 @@ function toggleTheme() {
     applyTheme(newTheme);
 }
 
+function toggleSidebar() {
+    const isMobile = window.innerWidth <= 1024;
+
+    if (isMobile) {
+        const isOpen = document.body.classList.contains("sidebar-show");
+        document.body.classList.toggle("sidebar-show", !isOpen);
+        document.body.classList.toggle("sidebar-gone", isOpen);
+    } else {
+        document.body.classList.toggle("sidebar-mini");
+    }
+}
+
+document.addEventListener("click", function (e) {
+    const sidebarButton = e.target.closest(
+        '[data-sidebar-toggle], [data-toggle="sidebar"], [data-bs-toggle="sidebar"]',
+    );
+
+    if (!sidebarButton) {
+        return;
+    }
+
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    toggleSidebar();
+}, true);
+
 document.addEventListener("DOMContentLoaded", function () {
     const activeTheme =
         localStorage.getItem("theme") ||
