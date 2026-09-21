@@ -9,6 +9,7 @@ export default defineConfig({
             'resources/css/app.css',
             'resources/css/custom.css',
             'resources/js/app.js',
+            'resources/js/custom.js',
             'resources/js/utils/storage-helper.js',
             'resources/js/page/words/create-new.js',
             'resources/js/page/exercise/level-index.js',

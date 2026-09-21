@@ -80,9 +80,9 @@
 
     <!-- Template JS File -->
     <script src="{{ asset('js/scripts.js') }}"></script>
-    <script src="{{ asset('js/custom.js') }}"></script>
 
     @vite(['resources/js/app.js'])
+    @vite(['resources/js/custom.js'])
     <div id="loading-overlay">
         <div class="spinner-border text-primary" role="status"></div>
     </div>
