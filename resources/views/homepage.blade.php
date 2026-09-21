@@ -1419,7 +1419,7 @@
                             <a class="btn btn-primary btn-lg px-4" href="{{ route('register') }}">
                                 <i class="fas fa-user-plus mr-2"></i>Buat Akun Gratis
                             </a>
-                            <a class="btn btn-outline-primary btn-lg mx-4 " href="{{ route('login') }}">
+                            <a class="btn btn-outline-primary btn-lg m-4 " href="{{ route('login') }}">
                                 <i class="fas fa-right-to-bracket mr-2"></i></span>
                                 Masuk
                             </a>

@@ -302,6 +302,10 @@ a {
     z-index: -1;
 }
 
+.navbar-nav {
+    gap: 12px;
+}
+
 /* 
 .navbar,
 .main-navbar {

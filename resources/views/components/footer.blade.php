@@ -51,7 +51,7 @@
 
         <div class="footer-bottom">
             <div>© @php echo date('Y'); @endphp Al-Fuadi Learning Center</div>
-            <div>Versi 1.2.5</div>
+            <div>Versi 1.3.0</div>
         </div>
     </div>
 </footer>

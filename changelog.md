@@ -1,5 +1,15 @@
 # Change Log
 
+## 1.3.0
+
+-   Darkmode
+-   Pembaruan tampilan awal
+-   Pembaruan halaman analisa soal
+-   Pemisahan halaman dashboard
+-   Penambahan halaman untuk mengelola data soal latihan
+-   Mempertahankan jawaban meskipun ada update kunci dari server
+-   Halaman Al-Qur'an (Beta), Metode Al-Fuadi dan Kursus
+
 ## 1.2.5
 
 -   Redesign halaman Al-Quran (trial)
