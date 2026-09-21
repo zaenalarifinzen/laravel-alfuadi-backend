@@ -166,9 +166,7 @@
         }
 
         .hero-visual-panel {
-            background: linear-gradient(150deg, #138a84 0%, #0d6561 100%);
             border-radius: 20px;
-            /* box-shadow: 0 25px 55px rgba(16, 61, 58, .25); */
             height: 460px;
             position: relative;
             overflow: hidden;
@@ -181,39 +179,6 @@
             object-fit: cover;
             object-position: center;
             display: block;
-        }
-
-        .hero-blob {
-            position: absolute;
-            border-radius: 50%;
-            opacity: .55;
-            z-index: 0;
-        }
-
-        .hero-blob--1 {
-            width: 90px;
-            height: 90px;
-            background: #f5b942;
-            top: -22px;
-            left: 20px;
-            opacity: .85;
-        }
-
-        .hero-blob--2 {
-            width: 46px;
-            height: 46px;
-            background: #7fd8cf;
-            bottom: 60px;
-            left: -20px;
-        }
-
-        .hero-blob--3 {
-            width: 60px;
-            height: 60px;
-            background: #f5b942;
-            bottom: -20px;
-            right: 50px;
-            opacity: .7;
         }
 
         .hero-floating-card {
@@ -475,7 +440,7 @@
             z-index: 0;
         }
 
-        .homepage-panel-section > * {
+        .homepage-panel-section>* {
             position: relative;
             z-index: 1;
         }
@@ -584,7 +549,7 @@
             margin-bottom: 10px;
         }
 
-        .course-card > p {
+        .course-card>p {
             color: #667085;
             font-size: 14px;
             line-height: 1.65;
@@ -698,34 +663,34 @@
 
         /* CTA Section */
         .homepage-cta-banner {
-            background: linear-gradient(135deg, #103d3a 0%, #138a84 100%);
+            /* background: linear-gradient(135deg, #103d3a 0%, #138a84 100%); */
             border-radius: 16px;
             padding: 48px;
-            color: #fff;
+            /* color: #fff; */
             text-align: center;
             margin: 60px 0 30px;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 20px 45px rgba(16, 61, 58, .2);
+            /* box-shadow: 0 20px 45px rgba(16, 61, 58, .2); */
         }
 
         .homepage-cta-banner h2 {
-            color: #fff;
+            /* color: #fff; */
             font-size: 32px;
             font-weight: 800;
             margin-bottom: 14px;
         }
 
         .homepage-cta-banner p {
-            color: rgba(255, 255, 255, .84);
+            /* color: rgba(255, 255, 255, .84); */
             font-size: 17px;
             max-width: 640px;
             margin: 0 auto 30px;
         }
 
         /* =========================================================
-           DARK THEME OVERRIDES
-           ========================================================= */
+               DARK THEME OVERRIDES
+               ========================================================= */
         html[data-theme="dark"] .homepage {
             color: #e6f3f1;
         }
@@ -826,8 +791,9 @@
         }
 
         html[data-theme="dark"] .homepage-panel-section {
-            background: linear-gradient(180deg, #10302d 0%, #0b1f1d 100%);
-            border-color: #1f4d49;
+            background: linear-gradient(180deg, #191030ad 0%, #0b0d1f 100%);
+            ;
+            border-color: #281d5b;
         }
 
         html[data-theme="dark"] .homepage-panel-section::before {
@@ -839,7 +805,7 @@
         }
 
         html[data-theme="dark"] .bab-card {
-            background: #14302d;
+            background: #0d191e94;
             border-color: #1f4d49;
         }
 
@@ -862,7 +828,7 @@
         }
 
         html[data-theme="dark"] .course-card {
-            background: #14302d;
+            background: #0d191e94;
             border-color: #1f4d49;
         }
 
@@ -880,7 +846,7 @@
             color: #f2fffe;
         }
 
-        html[data-theme="dark"] .course-card > p {
+        html[data-theme="dark"] .course-card>p {
             color: #9fb8b4;
         }
 
@@ -904,7 +870,7 @@
         }
 
         html[data-theme="dark"] .testimonial-card {
-            background: #14302d;
+            background: #0d191e94;
             border-color: #1f4d49;
             box-shadow: 0 6px 20px rgba(0, 0, 0, .2);
         }
@@ -926,9 +892,9 @@
             color: #9fb8b4;
         }
 
-        html[data-theme="dark"] .homepage-cta-banner {
-            box-shadow: 0 20px 45px rgba(0, 0, 0, .4);
-        }
+        /* html[data-theme="dark"] .homepage-cta-banner {
+                box-shadow: 0 20px 45px rgba(0, 0, 0, .4);
+            } */
 
         @media (max-width: 991.98px) {
             .homepage-hero-grid {
@@ -1066,7 +1032,7 @@
                                 <a class="btn btn-primary btn-lg px-4" href="{{ route('register') }}">
                                     Mulai Belajar Gratis
                                 </a>
-                                <a class="btn-hero-play" href="{{ route('courses' )}}">
+                                <a class="btn-hero-play" href="{{ route('courses') }}">
                                     <i class="fas fa-search"></i>
                                     Jelajahi Kelas Online
                                 </a>
@@ -1106,7 +1072,7 @@
 
                             <div class="homepage-actions">
                                 <a class="btn btn-primary btn-lg px-4" href="{{ route('enrollments') }}">
-                                    Lanjutkan Belajar
+                                    Lanjutkan Belajar<span class="ms-2"><i class="fas fa-arrow-right"></i></span>
                                 </a>
                                 <a class="btn-hero-play" href="{{ route('courses') }}">
                                     <span class="play-circle"><i class="fas fa-search"></i></span>
@@ -1136,13 +1102,9 @@
                     </div>
 
                     <div class="hero-right">
-                        <span class="hero-blob hero-blob--1"></span>
-                        <span class="hero-blob hero-blob--2"></span>
-                        <span class="hero-blob hero-blob--3"></span>
-
                         <div class="hero-visual-panel">
-                            <img src="https://blocks.astratic.com/img/general-img-square.png"
-                                alt="Ilustrasi belajar Nahwu Al-Qur'an" class="hero-visual-img">
+                            <img src="{{ asset('img/hero.webp') }}" alt="Ilustrasi belajar Nahwu Al-Qur'an"
+                                class="hero-visual-img">
                         </div>
 
                         {{-- <div class="hero-floating-card hero-fc-top">
@@ -1184,103 +1146,104 @@
 
             <div class="section-body">
                 <section id="bab-materi" class="py-4">
-                  <div class="homepage-panel-section">
-                    <div class="text-center homepage-section-header">
-                        <span class="homepage-section-subtitle">Metode Al-Fuadi</span>
-                        <h2 class="homepage-section-title">Modul & Kurikulum Materi Nahwu</h2>
-                        <p class="homepage-section-lead">
-                            Materi disusun secara sistematis agar Anda dapat menguasai fondasi kaidah tata bahasa Arab
-                            hingga praktik analisis i'rob.
-                        </p>
-                    </div>
+                    <div class="homepage-panel-section">
+                        <div class="text-center homepage-section-header">
+                            <span class="homepage-section-subtitle">Metode Al-Fuadi</span>
+                            <h2 class="homepage-section-title">Modul & Kurikulum Materi Nahwu</h2>
+                            <p class="homepage-section-lead">
+                                Materi disusun secara sistematis agar Anda dapat menguasai fondasi kaidah tata bahasa Arab
+                                hingga praktik analisis i'rob.
+                            </p>
+                        </div>
 
-                    <div class="row">
-                        <div class="col-lg-4 col-md-6 mb-4">
-                            <div class="bab-card">
-                                <span class="bab-number">Materi 01</span>
-                                <h3>Kalimat dan Macamnya</h3>
-                                <p>
-                                    Pengenalan dasar 3 jenis kata dalam bahasa Arab: Isim, Fi'il, dan Harf beserta ciri dan
-                                    tandanya.
-                                </p>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="bab-card">
+                                    <span class="bab-number">Materi 01</span>
+                                    <h3>Kalimat dan Macamnya</h3>
+                                    <p>
+                                        Pengenalan dasar 3 jenis kata dalam bahasa Arab: Isim, Fi'il, dan Harf beserta ciri
+                                        dan
+                                        tandanya.
+                                    </p>
 
-                                {{-- <div class="bab-meta">
+                                    {{-- <div class="bab-meta">
                                     <i class="fas fa-file-lines"></i> Pembagian Al-Kalimah
                                 </div> --}}
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="col-lg-4 col-md-6 mb-4">
-                            <div class="bab-card">
-                                <span class="bab-number">Materi 02</span>
-                                <h3>I'rob dan Macamnya</h3>
-                                <p>
-                                    Memahami 4 kondisi I'rob (Rofa', Nasab, Jar dan Jazm) pada kalimat.
-                                </p>
-                                {{-- <div class="bab-meta">
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="bab-card">
+                                    <span class="bab-number">Materi 02</span>
+                                    <h3>I'rob dan Macamnya</h3>
+                                    <p>
+                                        Memahami 4 kondisi I'rob (Rofa', Nasab, Jar dan Jazm) pada kalimat.
+                                    </p>
+                                    {{-- <div class="bab-meta">
                                     <i class="fas fa-tags"></i> العلامات والإعراب
                                 </div> --}}
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- Bab 3 -->
-                        <div class="col-lg-4 col-md-6 mb-4">
-                            <div class="bab-card">
-                                <span class="bab-number">Materi 03</span>
-                                <h3>Hukum Kalimat Isim</h3>
-                                <p>
-                                    Memahami hukum pada kalimat serta alasannya mengapa di hukumi Mu'rob ataupun Mabni.
-                                </p>
-                                {{-- <div class="bab-meta">
+                            <!-- Bab 3 -->
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="bab-card">
+                                    <span class="bab-number">Materi 03</span>
+                                    <h3>Hukum Kalimat Isim</h3>
+                                    <p>
+                                        Memahami hukum pada kalimat serta alasannya mengapa di hukumi Mu'rob ataupun Mabni.
+                                    </p>
+                                    {{-- <div class="bab-meta">
                                     <i class="fas fa-arrow-up-right-dots"></i> Subjek & Predikat (مرفوعات)
                                 </div> --}}
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- Bab 4 -->
-                        <div class="col-lg-4 col-md-6 mb-4">
-                            <div class="bab-card">
-                                <span class="bab-number">Materi 04</span>
-                                <h3>Tanda I'rob Kalimat Isim</h3>
-                                <p>
-                                    Mengenali tanda i'rob pada halimat isim berdasarkan kategorinya.
-                                </p>
-                                {{-- <div class="bab-meta">
+                            <!-- Bab 4 -->
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="bab-card">
+                                    <span class="bab-number">Materi 04</span>
+                                    <h3>Tanda I'rob Kalimat Isim</h3>
+                                    <p>
+                                        Mengenali tanda i'rob pada halimat isim berdasarkan kategorinya.
+                                    </p>
+                                    {{-- <div class="bab-meta">
                                     <i class="fas fa-arrows-left-right"></i> Objek & Pelengkap (منصوبات)
                                 </div> --}}
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- Bab 5 -->
-                        <div class="col-lg-4 col-md-6 mb-4">
-                            <div class="bab-card">
-                                <span class="bab-number">Materi 05</span>
-                                <h3>Mubtada dan Khobar</h3>
-                                <p>
-                                    Pelajari kedudukan Mubtada dan Khobar pada susunan kalimat.
-                                </p>
-                                {{-- <div class="bab-meta">
+                            <!-- Bab 5 -->
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="bab-card">
+                                    <span class="bab-number">Materi 05</span>
+                                    <h3>Mubtada dan Khobar</h3>
+                                    <p>
+                                        Pelajari kedudukan Mubtada dan Khobar pada susunan kalimat.
+                                    </p>
+                                    {{-- <div class="bab-meta">
                                     <i class="fas fa-link"></i> Sandaran & Pengikut (مجرورات)
                                 </div> --}}
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- Bab 6 -->
-                        <div class="col-lg-4 col-md-6 mb-4">
-                            <div class="bab-card">
-                                <span class="bab-number">Materi 06</span>
-                                <h3>Jar dan Majrur</h3>
-                                <p>
-                                    Praktik langsung membedah kedudukan kalimat kata demi kata dalam ayat-ayat pilihan
-                                    Al-Qur'an secara presisi.
-                                </p>
-                                {{-- <div class="bab-meta">
+                            <!-- Bab 6 -->
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="bab-card">
+                                    <span class="bab-number">Materi 06</span>
+                                    <h3>Jar dan Majrur</h3>
+                                    <p>
+                                        Praktik langsung membedah kedudukan kalimat kata demi kata dalam ayat-ayat pilihan
+                                        Al-Qur'an secara presisi.
+                                    </p>
+                                    {{-- <div class="bab-meta">
                                     <i class="fas fa-circle-nodes"></i> Praktik I'rob (إعراب القرآن)
                                 </div> --}}
+                                </div>
                             </div>
                         </div>
                     </div>
-                  </div>
                 </section>
 
 
@@ -1305,7 +1268,8 @@
                                     <li><i class="fas fa-circle-check"></i> Teknik Membaca yang Benar</li>
                                     <li><i class="fas fa-circle-check"></i> Latihan Kuis Pilihan Ganda</li>
                                 </ul>
-                                <a href="{{ route('dashboard') }}"class="btn btn-outline-primary btn-block disabled">Segera Hadir</a>
+                                <a href="{{ route('dashboard') }}"class="btn btn-outline-primary btn-block disabled">Segera
+                                    Hadir</a>
                             </div>
                         </div>
 
@@ -1320,7 +1284,8 @@
                                     <li><i class="fas fa-circle-check"></i> Latihan Analisa Kalimat</li>
                                     <li><i class="fas fa-circle-check"></i> Peta Konsep Nahwu</li>
                                 </ul>
-                                <a href="{{ route('dashboard') }}"class="btn btn-outline-primary btn-block disabled">Segera Hadir</a>
+                                <a href="{{ route('dashboard') }}"class="btn btn-outline-primary btn-block disabled">Segera
+                                    Hadir</a>
                             </div>
                         </div>
 
@@ -1334,7 +1299,8 @@
                                     <li><i class="fas fa-circle-check"></i> Ujian & Bank Soal Komprehensif</li>
                                     <li><i class="fas fa-circle-check"></i> Sertifikat Capaian Pembelajaran</li>
                                 </ul>
-                                <a href="{{ route('dashboard') }}" class="btn btn-outline-primary btn-block disabled">Segera Hadir</a>
+                                <a href="{{ route('dashboard') }}"
+                                    class="btn btn-outline-primary btn-block disabled">Segera Hadir</a>
                             </div>
                         </div>
                     </div>
@@ -1343,118 +1309,119 @@
 
                 <!-- SECTION 3: TESTIMONI -->
                 <section id="testimoni" class="py-4">
-                  <div class="homepage-panel-section">
-                    <div class="text-center homepage-section-header">
-                        <span class="homepage-section-subtitle">Pengalaman Peserta</span>
-                        <h2 class="homepage-section-title">Apa Kata Mereka yang Sudah Belajar?</h2>
-                        <p class="homepage-section-lead">
-                            Testimoni dari santri, pengajar, dan penggiat ilmu Al-Qur'an yang telah merasakan kemudahan
-                            Metode Al-Fuadi.
-                        </p>
+                    <div class="homepage-panel-section">
+                        <div class="text-center homepage-section-header">
+                            <span class="homepage-section-subtitle">Pengalaman Peserta</span>
+                            <h2 class="homepage-section-title">Apa Kata Mereka yang Sudah Belajar?</h2>
+                            <p class="homepage-section-lead">
+                                Testimoni dari santri, pengajar, dan penggiat ilmu Al-Qur'an yang telah merasakan kemudahan
+                                Metode Al-Fuadi.
+                            </p>
+                        </div>
+
+                        <div class="row">
+                            <!-- Testimoni 1 -->
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="testimonial-card">
+                                    <div>
+                                        <div class="testimonial-stars">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                        <p class="testimonial-quote">
+                                            "Metode ini sangan praktis, sangat membantu, terstruktur dengan baik, dan
+                                            dilengkapi I'robul Qur'an."
+                                        </p>
+                                    </div>
+                                    <div class="testimonial-author">
+                                        {{-- <div class="testimonial-avatar">NS</div> --}}
+                                        <div class="testimonial-info">
+                                            <h4>Prof. Dr. KH. Nasarudin Umar, M.A.</h4>
+                                            <p>Menteri Agama RI</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Testimoni 2 -->
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="testimonial-card">
+                                    <div>
+                                        <div class="testimonial-stars">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                        <p class="testimonial-quote">
+                                            "Sangat membantu dalam memahami i'rob ayat Al-Qur'an secara presisi. Visualisasi
+                                            skema nahwunya luar biasa jelas!"
+                                        </p>
+                                    </div>
+                                    <div class="testimonial-author">
+                                        {{-- <div class="testimonial-avatar">SM</div> --}}
+                                        <div class="testimonial-info">
+                                            <h4>Siti Maryam, S.Pd.</h4>
+                                            <p>Guru</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Testimoni 3 -->
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="testimonial-card">
+                                    <div>
+                                        <div class="testimonial-stars">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                        <p class="testimonial-quote">
+                                            "Latihan interaktifnya membuat saya lebih percaya diri saat membaca dan
+                                            menganalisis
+                                            struktur kalimat dalam Al-Qur'an."
+                                        </p>
+                                    </div>
+                                    <div class="testimonial-author">
+                                        {{-- <div class="testimonial-avatar">AA</div> --}}
+                                        <div class="testimonial-info">
+                                            <h4>Ust. Ardani Ahmad Al-Hafidz</h4>
+                                            <p>Pembimbing Kajian Bahasa Arab</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
-                    <div class="row">
-                        <!-- Testimoni 1 -->
-                        <div class="col-lg-4 col-md-6 mb-4">
-                            <div class="testimonial-card">
-                                <div>
-                                    <div class="testimonial-stars">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <p class="testimonial-quote">
-                                        "Metode ini sangan praktis, sangat membantu, terstruktur dengan baik, dan dilengkapi I'robul Qur'anF."
-                                    </p>
-                                </div>
-                                <div class="testimonial-author">
-                                    <div class="testimonial-avatar">ZA</div>
-                                    <div class="testimonial-info">
-                                        <h4>Prof. Dr. KH. Nasarudin Umar, M.A.</h4>
-                                        <p>Menteri Agama RI</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Testimoni 2 -->
-                        <div class="col-lg-4 col-md-6 mb-4">
-                            <div class="testimonial-card">
-                                <div>
-                                    <div class="testimonial-stars">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <p class="testimonial-quote">
-                                        "Sangat membantu dalam memahami i'rob ayat Al-Qur'an secara presisi. Visualisasi
-                                        skema nahwunya luar biasa jelas!"
-                                    </p>
-                                </div>
-                                <div class="testimonial-author">
-                                    <div class="testimonial-avatar">SN</div>
-                                    <div class="testimonial-info">
-                                        <h4>Siti Maryam, S.Pd.</h4>
-                                        <p>Guru</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Testimoni 3 -->
-                        <div class="col-lg-4 col-md-6 mb-4">
-                            <div class="testimonial-card">
-                                <div>
-                                    <div class="testimonial-stars">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <p class="testimonial-quote">
-                                        "Latihan interaktifnya membuat saya lebih percaya diri saat membaca dan menganalisis
-                                        struktur kalimat dalam Al-Qur'an."
-                                    </p>
-                                </div>
-                                <div class="testimonial-author">
-                                    <div class="testimonial-avatar">HR</div>
-                                    <div class="testimonial-info">
-                                        <h4>Ust. Ardani Ahmad Al-Hafidz</h4>
-                                        <p>Pembimbing Kajian Bahasa Arab</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                  </div>
                 </section>
 
 
                 <!-- SECTION 4: CALL TO ACTION (CTA) -->
                 <section class="homepage-cta-banner">
-                    <h2>Mulai Perjalanan Memahami Al-Qur'an Hari Ini</h2>
+                    <h2 class="homepage-section-title">Mulai Perjalanan Memahami Al-Qur'an Hari Ini</h2>
                     <p>
                         Bergabunglah dengan platform pembelajaran Metode Al-Fuadi dan rasakan pengalaman belajar nahwu yang
                         modern, terstruktur, dan efektif.
                     </p>
                     <div>
                         @auth
-                            <a class="btn btn-light btn-lg px-4 font-weight-bold text-primary"
-                                href="{{ route('enrollments') }}">
-                                <i class="fas fa-arrow-right mr-2"></i>Kelas Saya
+                            <a class="btn btn-primary btn-lg px-4" href="{{ route('enrollments') }}">
+                                Kelas Saya<span class="ms-2"><i class="fas fa-arrow-right"></i></span>
                             </a>
                         @else
-                            <a class="btn btn-light btn-lg px-4 font-weight-bold text-primary mr-2"
-                                href="{{ route('register') }}">
+                            <a class="btn btn-primary btn-lg px-4" href="{{ route('register') }}">
                                 <i class="fas fa-user-plus mr-2"></i>Buat Akun Gratis
                             </a>
-                            <a class="btn btn-outline-light btn-lg px-4 font-weight-bold" href="{{ route('login') }}">
-                                <i class="fas fa-right-to-bracket mr-2"></i>Masuk
+                            <a class="btn btn-outline-primary btn-lg mx-4 " href="{{ route('login') }}">
+                                <i class="fas fa-right-to-bracket mr-2"></i></span>
+                                Masuk
                             </a>
                         @endauth
                     </div>

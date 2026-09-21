@@ -7,6 +7,52 @@
     <link rel="stylesheet" href="{{ asset('library/selectric/public/selectric.css') }}">
 @endpush
 
+@push('style')
+    <style>
+        html[data-theme="dark"] .course-card {
+            background: #0d191e94;
+            border-color: #1f4d49;
+        }
+
+        html[data-theme="dark"] .course-card:hover {
+            border-color: #2f6b64;
+            box-shadow: 0 16px 35px rgba(0, 0, 0, .3);
+        }
+
+        html[data-theme="dark"] .course-card.is-popular {
+            border-color: #2dd4bf;
+            box-shadow: 0 16px 40px rgba(45, 212, 191, .18);
+        }
+
+        html[data-theme="dark"] .course-card h3 {
+            color: #f2fffe;
+        }
+
+        html[data-theme="dark"] .course-card>p {
+            color: #9fb8b4;
+        }
+
+        html[data-theme="dark"] .course-features li {
+            color: #d7e6e4;
+        }
+
+        html[data-theme="dark"] .course-features li i {
+            color: #5eead4;
+        }
+
+        html[data-theme="dark"] .course-card .btn-outline-primary {
+            color: #5eead4;
+            border-color: #5eead4;
+        }
+
+        html[data-theme="dark"] .course-card.is-popular .btn-outline-primary {
+            background: linear-gradient(135deg, #138a84, #0d6561);
+            border-color: #2dd4bf;
+            color: #fff;
+        }
+    </style>
+@endpush('style')
+
 @section('main')
     <div class="main-content">
         <section class="section">
