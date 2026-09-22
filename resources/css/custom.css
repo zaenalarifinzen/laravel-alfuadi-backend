@@ -521,6 +521,14 @@ a.dropdown-item.active {
     color: #444444 !important;
 }
 
+.dropdown-item.text-danger:hover,
+.dropdown-item.text-danger:focus,
+html.dark-mode .dropdown-item.text-danger:hover,
+html.dark-mode .dropdown-item.text-danger:focus {
+    background-color: #fddbe2 !important;
+    color: #e72222 !important;
+}
+
 .main-sidebar .sidebar-brand a {
     font-family: "Cinzel Decorative" !important;
     text-decoration: none;
@@ -1957,11 +1965,22 @@ html.dark-mode .main-sidebar .sidebar-menu li a:hover {
     color: #ffffff !important;
 }
 
-html[data-theme="dark"] .main-sidebar .sidebar-menu li.active a,
-html.dark-mode .main-sidebar .sidebar-menu li.active a {
-    background-color: #1d948e !important;
-    color: #ffffff !important;
-    box-shadow: 0 4px 10px rgba(29, 148, 142, 0.4);
+html[data-theme="dark"] .main-sidebar .sidebar-menu .nav-item.active > a,
+html.dark-mode .main-sidebar .sidebar-menu .nav-item.active > a {
+    background-color: #1d948e;
+    color: #fff !important;
+}
+html[data-theme="dark"] .main-sidebar .sidebar-menu .nav-item.active .dropdown-menu a,
+html.dark-mode .main-sidebar .sidebar-menu .nav-item.active .dropdown-menu a {
+    background-color: #1e293b !important;
+}
+html[data-theme="dark"] .main-sidebar .sidebar-menu .nav-item .dropdown-menu a,
+html.dark-mode .main-sidebar .sidebar-menu .nav-item .dropdown-menu a:hover{
+    background-color: #334155 !important;
+}
+html[data-theme="dark"] .main-sidebar .sidebar-menu .nav-item.active .dropdown-menu li.active a,
+html.dark-mode .main-sidebar .sidebar-menu .nav-item.active .dropdown-menu li.active a {
+    color: #1d948e !important;
 }
 
 html[data-theme="dark"] .main-sidebar .sidebar-menu li.menu-header,
@@ -2066,7 +2085,7 @@ html.dark-mode .dropdown-menu {
 
 html[data-theme="dark"] .dropdown-item,
 html.dark-mode .dropdown-item {
-    color: #e2e8f0 !important;
+    color: #e2e8f0;
 }
 
 html[data-theme="dark"] .dropdown-item:hover,
@@ -2074,6 +2093,14 @@ html[data-theme="dark"] .dropdown-item:focus,
 html.dark-mode .dropdown-item:hover,
 html.dark-mode .dropdown-item:focus {
     background-color: #334155 !important;
+    color: #ffffff !important;
+}
+
+html[data-theme="dark"] .dropdown-item.text-danger:hover,
+html[data-theme="dark"] .dropdown-item.text-danger:focus,
+html.dark-mode .dropdown-item.text-danger:hover,
+html.dark-mode .dropdown-item.text-danger:focus {
+    background-color: #9b1b36 !important;
     color: #ffffff !important;
 }
 

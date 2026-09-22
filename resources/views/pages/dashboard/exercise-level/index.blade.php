@@ -61,6 +61,7 @@
                                                 <div class="dropdown-menu">
                                                     <a class="dropdown-item"
                                                         href="{{ route('dashboard.exercise-levels.edit', $level->id) }}">Edit</a>
+                                                    <div class="dropdown-divider"></div>
                                                     @if ($level->is_active)
                                                         <a href="#" class="dropdown-item"
                                                             onclick="event.preventDefault(); document.getElementById('deactivate-form-{{ $level->id }}').submit();">
@@ -84,7 +85,6 @@
                                                             @csrf
                                                         </form>
                                                     @endif
-                                                    <div class="dropdown-divider"></div>
                                                     <a href="#" class="dropdown-item text-danger"
                                                         onclick="event.preventDefault(); document.getElementById('delete-form-{{ $level->id }}').submit();">
                                                         Hapus

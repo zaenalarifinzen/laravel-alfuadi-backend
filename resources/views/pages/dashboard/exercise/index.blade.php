@@ -77,6 +77,7 @@
                                                             href="{{ route('dashboard.exercises.irob', $exercise->id) }}">Input
                                                             I'rob</a>
                                                     @endif
+                                                    <div class="dropdown-divider"></div>
                                                     @if ($exercise->is_active)
                                                         <a href="#" class="dropdown-item"
                                                             onclick="event.preventDefault(); document.getElementById('deactivate-form-{{ $exercise->id }}').submit();">
@@ -100,7 +101,6 @@
                                                             @csrf
                                                         </form>
                                                     @endif
-                                                    <div class="dropdown-divider"></div>
                                                     <a href="#" class="dropdown-item text-danger"
                                                         onclick="event.preventDefault(); document.getElementById('delete-form-{{ $exercise->id }}').submit();">
                                                         Hapus
