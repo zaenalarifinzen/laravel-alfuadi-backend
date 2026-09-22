@@ -76,8 +76,8 @@
                                                         <a class="dropdown-item"
                                                             href="{{ route('dashboard.exercises.irob', $exercise->id) }}">Input
                                                             I'rob</a>
+                                                        <div class="dropdown-divider"></div>
                                                     @endif
-                                                    <div class="dropdown-divider"></div>
                                                     @if ($exercise->is_active)
                                                         <a href="#" class="dropdown-item"
                                                             onclick="event.preventDefault(); document.getElementById('deactivate-form-{{ $exercise->id }}').submit();">
@@ -101,17 +101,12 @@
                                                             @csrf
                                                         </form>
                                                     @endif
-                                                    <a href="#" class="dropdown-item text-danger"
-                                                        onclick="event.preventDefault(); document.getElementById('delete-form-{{ $exercise->id }}').submit();">
+                                                    <a href="#" class="dropdown-item text-danger" data-toggle="modal"
+                                                        data-target="#deleteModal"
+                                                        data-action="{{ route('dashboard.exercises.destroy', $exercise->id) }}"
+                                                        data-title="{{ $exercise->title }}">
                                                         Hapus
                                                     </a>
-
-                                                    <form id="delete-form-{{ $exercise->id }}"
-                                                        action="{{ route('dashboard.exercises.destroy', $exercise->id) }}"
-                                                        method="POST" class="d-none">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                    </form>
                                                 </div>
                                             </div>
                                         </td>
@@ -155,10 +150,52 @@
     </div>
     </section>
     </div>
+
+    <!-- Modal Konfirmasi Hapus -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="mb-0">Apakah Anda yakin ingin menghapus soal latihan <strong
+                            id="delete-exercise-title"></strong>?</p>
+                    <p class="text-danger mt-2 mb-0"><small><i class="fas fa-exclamation-triangle mr-1"></i> Data yang
+                            dihapus tidak dapat dikembalikan.</small></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <form id="delete-modal-form" action="" method="POST" class="d-inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-shadow">Ya, Hapus</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')
     <!-- JS Libraies -->
 
     <!-- Page Specific JS File -->
+    <script>
+        $(document).ready(function() {
+            $('#deleteModal').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget);
+                var action = button.data('action');
+                var title = button.data('title');
+                var modal = $(this);
+
+                modal.find('#delete-modal-form').attr('action', action);
+                modal.find('#delete-exercise-title').text(title ? `"${title}"` : 'data ini');
+            });
+        });
+    </script>
 @endpush

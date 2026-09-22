@@ -86,16 +86,12 @@
                                                         </form>
                                                     @endif
                                                     <a href="#" class="dropdown-item text-danger"
-                                                        onclick="event.preventDefault(); document.getElementById('delete-form-{{ $level->id }}').submit();">
+                                                        data-toggle="modal"
+                                                        data-target="#deleteModal"
+                                                        data-action="{{ route('dashboard.exercise-levels.destroy', $level->id) }}"
+                                                        data-title="{{ $level->name }}">
                                                         Hapus
                                                     </a>
-
-                                                    <form id="delete-form-{{ $level->id }}"
-                                                        action="{{ route('dashboard.exercise-levels.destroy', $level->id) }}"
-                                                        method="POST" class="d-none">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                    </form>
                                                 </div>
                                             </div>
                                         </td>
@@ -108,25 +104,6 @@
                                                 <div class="badge badge-warning">Tidak Aktif</div>
                                             @endif
                                         </td>
-                                        {{-- <td>
-                                            <div class="d-flex justify-content-left">
-                                                <a href='{{ route('dashboard.exercise-levels.edit', $level->id) }}'
-                                                    class="btn btn-sm btn-info btn-icon">
-                                                    <i class="fas fa-edit" data-toggle="tooltip"
-                                                        data-original-title="Edit"></i>
-                                                </a>
-                                                <form action="{{ route('dashboard.exercise-levels.destroy', $level->id) }}"
-                                                    method="POST" class="ml-2">
-                                                    <input type="hidden" name="_method" value="DELETE" />
-                                                    <input type="hidden" name="_token" value="{{ csrf_token() }}" />
-                                                    <button type="button"
-                                                        class="btn btn-sm btn-danger btn-icon confirm-delete"
-                                                        data-toggle="tooltip" data-original-title="Hapus">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </td> --}}
                                     </tr>
                                 @endforeach
                             </table>
@@ -159,6 +136,32 @@
     </div>
     </section>
     </div>
+
+    <!-- Modal Konfirmasi Hapus -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="mb-0">Apakah Anda yakin ingin menghapus level <strong id="delete-level-title"></strong>?</p>
+                    <p class="text-danger mt-2 mb-0"><small><i class="fas fa-exclamation-triangle mr-1"></i> Data yang dihapus tidak dapat dikembalikan.</small></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <form id="delete-modal-form" action="" method="POST" class="d-inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-shadow">Ya, Hapus</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')
@@ -166,36 +169,16 @@
     <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
 
     <!-- Page Specific JS File -->
-    <!-- Page Specific JS File -->
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            document.querySelectorAll(".confirm-delete").forEach(btn => {
-                btn.addEventListener("click", function(e) {
-                    let form = this.closest("form");
+        $(document).ready(function() {
+            $('#deleteModal').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget);
+                var action = button.data('action');
+                var title = button.data('title');
+                var modal = $(this);
 
-                    swal({
-                            title: "Hapus level?",
-                            text: "Level akan dihapus permanen beserta daftar soal yang terkait",
-                            icon: "warning",
-                            buttons: {
-                                cancel: {
-                                    text: 'Batal',
-                                    visible: true,
-                                },
-                                confirm: {
-                                    text: 'Ya, hapus',
-                                    visible: true,
-                                    className: 'btn-danger'
-                                }
-                            },
-                            dangerMode: true,
-                        })
-                        .then((willDelete) => {
-                            if (willDelete) {
-                                form.submit();
-                            }
-                        });
-                });
+                modal.find('#delete-modal-form').attr('action', action);
+                modal.find('#delete-level-title').text(title ? `"${title}"` : 'data ini');
             });
         });
     </script>

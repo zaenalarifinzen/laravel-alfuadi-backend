@@ -22,7 +22,7 @@ export default defineConfig({
             'resources/js/page/admin/exercise/grouping.js',
             'resources/js/page/admin/exercise/irob-init.js',
 
-            // Components
+            // Template JS
         ],
         refresh: true,
     }), tailwindcss(), sentryVitePlugin({
