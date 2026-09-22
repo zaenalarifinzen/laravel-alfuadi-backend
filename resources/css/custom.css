@@ -415,10 +415,6 @@ a {
     color: #fff;
 }
 
-body.sidebar-mini .main-sidebar:after {
-    background-color: none !important;
-}
-
 body.sidebar-mini .main-sidebar .sidebar-menu>li.active>a {
     box-shadow: 0 4px 8px #d1f7f5;
     background-color: #1d948e;
@@ -2277,4 +2273,9 @@ html.dark-mode .theme-toggle-sun {
 
 html[data-theme="dark"] footer.site-footer {
   background: #0f5f5b;
+}
+
+html[data-theme="dark"] body.sidebar-mini .main-sidebar:after {
+    /* background-color: #df004a; */
+    background-color: #1e293b;
 }
