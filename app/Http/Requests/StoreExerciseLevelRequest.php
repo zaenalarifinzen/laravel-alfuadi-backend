@@ -23,8 +23,8 @@ class StoreExerciseLevelRequest extends FormRequest
     {
         return [
             'name' => 'sometimes|required|string|max:100',
-            'slug' => 'sometimes|required|string|max:100',
-            'level_number' => 'sometimes|required|integer',
+            'slug' => 'sometimes|required|string|max:100|unique:exercise_levels,slug',
+            'level_number' => 'required|integer|unique:exercise_levels,level_number',
             'order_number' => 'sometimes|required|integer',
             'description' => 'nullable|string',
             'is_active' => 'boolean',
