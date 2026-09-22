@@ -1,7 +1,5 @@
  <div class="login-brand">
-     <img src="{{ asset('img/alfuadi_splash_icon.svg') }}"
-         alt="logo"
-         height="70"
-         {{-- class="shadow-light rounded-circle"> --}}
-         >
+     <a href="{{ route('home') }}">
+         <img src="{{ asset('img/alfuadi_title.webp') }}" alt="logo" height="40">
+     </a>
  </div>
