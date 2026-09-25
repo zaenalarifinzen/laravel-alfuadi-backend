@@ -179,7 +179,7 @@ class ExerciseController extends Controller
         }
 
         $exercises = Exercise::active()
-            ->where('level_id', $exerciseLevel->level_number)
+            ->where('level_id', $exerciseLevel->id)
             ->orderBy('display_order', 'asc')
             ->get(['id', 'title', 'description', 'level_id', 'display_order', 'verse_id']);
 

@@ -22,6 +22,7 @@ class StoreExerciseSubmissionRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'exercise_id' => 'required|exists:exercises,id',
             'exercise_number' => 'required|exists:exercises,display_order',
             'level' => 'required|string',
             'pass' => 'nullable|boolean',

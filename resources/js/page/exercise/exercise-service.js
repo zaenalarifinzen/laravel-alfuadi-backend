@@ -105,13 +105,14 @@ export function clearExerciseStorage() {
 // Answer payload building
 // ---------------------------------------------------------------------------
 
-export function buildAnswerPayload(content, exerciseData, orderNumber) {
+export function buildAnswerPayload(content, exerciseData, id) {
     const cloned = structuredClone(content);
     const wordGroups = structuredClone(cloned.wordGroups);
 
     cloned.modified = false;
     cloned.levelSlug = exerciseData.exercise_level.slug;
-    cloned.exerciseOrderNumber = orderNumber;
+    cloned.exerciseOrderNumber = exerciseData.display_order;
+    cloned.exerciseId = exerciseData.id;
     cloned.passed = exerciseData.passed;
     cloned.title = exerciseData.title;
     cloned.userAnswer = cloned.passed

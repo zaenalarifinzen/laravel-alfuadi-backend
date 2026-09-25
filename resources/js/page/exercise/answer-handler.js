@@ -386,10 +386,12 @@ export function initAnalysisAnswerHandler({
         e.preventDefault();
 
         const exerciseState = getCurrentExerciseState();
+        const exerciseId = exerciseState.exerciseId ?? null;
         const exerciseNumber = exerciseState.orderNumber ?? null;
         const exerciseLevelSlug = exerciseState.levelSlug ?? null;
 
-        if (!exerciseNumber) {
+        if (!exerciseId) {
+            console.log('exercise ID not found')
             iziToast.warning({
                 message: "Exercise tidak ditemukan",
                 position: "topRight",
@@ -458,11 +460,13 @@ export function initAnalysisAnswerHandler({
 
         if (score >= passingGrade) {
             let titleBadge = "Selamat!";
-            if (score >= 85) titleBadge = "Mumtaz! ⭐⭐⭐";
-            else if (score >= 70) titleBadge = "Jayyid Jiddan! ⭐⭐";
-            else titleBadge = "Maqbul! ⭐";
+            if (score === 100) titleBadge = "Luar Biasa!";
+            else if (score >= 85) titleBadge = "Hebat!";
+            else if (score >= 70) titleBadge = "Bagus!";
+            else titleBadge = "Semangat!";
 
             const payload = {
+                exercise_id: exerciseId,
                 exercise_number: exerciseNumber,
                 level: exerciseLevelSlug,
                 pass: true,
@@ -506,7 +510,7 @@ export function initAnalysisAnswerHandler({
                         swal({
                             icon: "success",
                             title: titleBadge,
-                            text: `Nilai Anda: ${score}/100\n(Benar mandiri: ${correctComponents}/${totalComponents}, Bantuan: ${hintedComponents})`,
+                            text: `Skor Anda: ${score}\n(Benar mandiri: ${correctComponents}/${totalComponents}, Bantuan: ${hintedComponents})`,
                             buttons: {
                                 cancel: {
                                     text: "Tutup",

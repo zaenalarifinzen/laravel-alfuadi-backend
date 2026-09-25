@@ -70,6 +70,7 @@ export function initAnalysisPage({
         }
 
         const exerciseLevel = exerciseData.exercise_level.slug;
+        const exerciseId = exerciseData.id;
         const exerciseNumber = exerciseService.resolveOrderNumber(exerciseData);
         const exerciseListId =
             exerciseLevel === "alquran"
@@ -86,7 +87,7 @@ export function initAnalysisPage({
                     ? (exerciseData.next_verse_id ?? null)
                     : (exerciseData.next_exercise_id ?? null),
         };
-        exerciseCacheKey = `ex_${exerciseLevel}_${exerciseNumber}`;
+        exerciseCacheKey = `ex_${exerciseLevel}_${exerciseId}`;
 
         const cachedData = exerciseService.getCachedExercise(
             storage,
@@ -132,7 +133,7 @@ export function initAnalysisPage({
         const exerciseKeyPayload = exerciseService.buildAnswerPayload(
             content,
             exerciseData,
-            exerciseNumber,
+            exerciseId,
         );
         localStorage.setItem(
             exerciseCacheKey,
@@ -330,6 +331,7 @@ export function initAnalysisPage({
         const cachedData = getCachedExerciseData();
 
         return {
+            exerciseId: cachedData?.exerciseId ?? null,
             orderNumber: cachedData?.exerciseOrderNumber ?? null,
             levelSlug: cachedData?.levelSlug ?? null,
         };

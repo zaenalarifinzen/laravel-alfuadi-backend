@@ -16,16 +16,16 @@ class ExerciseSubmissionController extends Controller
     {
         try {
             $userId = auth()->id();
-            $exerciseNumber = $request->exercise_number;
+            $exerciseId = $request->exercise_id;
+            Log::info('exercise_id: ' . $exerciseId);
             $level = $request->level;
 
             $exerciseLevel = ExerciseLevel::where('slug', $level)->first();
             $exerciseLevelNumber = $exerciseLevel->level_number;
 
-            $exercise = Exercise::where('display_order', $exerciseNumber)
+            $exercise = Exercise::where('id', $exerciseId)
                 ->where('level_id', $exerciseLevelNumber)
                 ->first();
-            $exerciseId = $exercise->id;
 
             $existingAnswer = ExerciseSubmission::where('user_id', $userId)
                 ->where('exercise_id', $exerciseId)
