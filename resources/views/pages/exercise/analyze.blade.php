@@ -25,6 +25,7 @@
         }
 
         td.is-wrong {
+            position: relative;
             background-color: #ffcccc !important;
             font-weight: bold;
             outline: 1px solid #ff4a4a;
@@ -34,6 +35,55 @@
             background-color: #4d1d1d !important;
             font-weight: bold;
             outline: 1px solid #ff4a4a;
+        }
+
+        td.is-hinted {
+            background-color: #fff9e6 !important;
+            outline: 1px solid #f6c23e;
+        }
+
+        html[data-theme="dark"] td.is-hinted {
+            background-color: #453818 !important;
+            outline: 1px solid #f6c23e;
+        }
+
+        td.text-center.align-middle.col-kalimat.is-wrong {
+            position: relative;
+        }
+
+        .btn-cell-hint {
+            position: absolute;
+            top: 3px;
+            right: 3px;
+            margin: 0;
+            padding: 2px 4px;
+            background: transparent;
+            color: #ff9f2e;
+            border: none;
+            line-height: 1;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .btn-cell-hint:hover {
+            background-color: transparent;
+            color: #ff9f2e;
+            transform: translateY(-1px);
+            /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); */
+        }
+
+        .badge-hint {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+            background-color: #ffeeba;
+            color: #ffffffff;
+            border: 1px solid #ffeeba;
+            font-weight: 600;
+            margin-top: 3px;
         }
 
         /* Dynamic layout transition */

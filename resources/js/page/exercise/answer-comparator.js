@@ -12,7 +12,6 @@ const COMPARED_FIELDS = [
     "kedudukan",
     "irob",
     "tanda",
-    "simbol",
 ];
 
 const COLUMN_CLASS_BY_FIELD = {
@@ -51,11 +50,13 @@ export function compareAnswers(prefix) {
             const fieldsResult = COMPARED_FIELDS.map((field) => {
                 const expected = String(keyWord[field] ?? "").trim();
                 const actual = String(userWord[field] ?? "").trim();
+                const isHinted = Boolean(userWord.hints && userWord.hints[field]);
                 return {
                     field,
                     expected,
                     actual,
                     correct: expected === actual,
+                    isHinted,
                 };
             });
 
@@ -74,8 +75,9 @@ export function compareAnswers(prefix) {
 export function clearComparisonHighlights() {
     document.querySelectorAll("#sortable-table tbody tr").forEach((tr) => {
         tr.classList.remove("is-wrong", "is-correct");
-        tr.querySelectorAll("td.is-wrong").forEach((td) => {
+        tr.querySelectorAll("td").forEach((td) => {
             td.classList.remove("is-wrong");
+            td.querySelectorAll(".btn-cell-hint").forEach((btn) => btn.remove());
         });
     });
 }
@@ -102,13 +104,33 @@ export function highlightErrors(compareResult) {
         tr.classList.add("is-wrong");
 
         item.fields.forEach((fieldResult) => {
-            if (fieldResult.correct) return;
-
             const colClass = COLUMN_CLASS_BY_FIELD[fieldResult.field];
             if (!colClass) return;
 
             const td = tr.querySelector(colClass);
-            if (td) td.classList.add("is-wrong");
+            if (!td) return;
+
+            if (fieldResult.correct) {
+                if (fieldResult.isHinted) {
+                    td.classList.add("is-hinted");
+                }
+                return;
+            }
+
+            td.classList.add("is-wrong");
+
+            // Append lightbulb hint button if not present
+            if (!td.querySelector(".btn-cell-hint")) {
+                const hintBtn = document.createElement("button");
+                hintBtn.type = "button";
+                hintBtn.className = "btn-cell-hint";
+                hintBtn.setAttribute("data-word-id", item.wordId);
+                hintBtn.setAttribute("data-field", fieldResult.field);
+                hintBtn.setAttribute("data-expected", fieldResult.expected);
+                hintBtn.title = `Buka bantuan untuk ${fieldResult.field}`;
+                hintBtn.innerHTML = '<i class="fas fa-circle-question"></i>';
+                td.appendChild(hintBtn);
+            }
         });
     });
 }

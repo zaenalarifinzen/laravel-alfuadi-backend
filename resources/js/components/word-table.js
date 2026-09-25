@@ -59,9 +59,22 @@ export function initWordTable({
                    <i class="fa-solid fa-arrow-down"></i>
                </button>`;
 
+            const renderCell = (field, value) => {
+                const isHinted = Boolean(word.hints && word.hints[field]);
+                const hintedClass = isHinted ? " is-hinted" : "";
+                const badge = isHinted
+                    ? `<div class="badge-hint" title="Diisi dengan bantuan"><i class="fas fa-lightbulb"></i></div>`
+                    : "";
+                return `
+                <td class="text-center align-middle col-${field}${hintedClass}">
+                    <div class="text-center mb-1 arabic-text ar-symbol">${value ?? ""}</div>
+                    
+                </td>`;
+            };
+
             const row = `
             <tr>
-            <td class="align-middle col-action">
+                <td class="align-middle col-action">
                     <div class="d-flex justify-content-center action-buttons">
                         ${actionButtons}
                     </div>
@@ -70,36 +83,12 @@ export function initWordTable({
                     <div class="${simbolClass} arabic-text words" id="${word.id}">${word.text}</div>
                     ${isAnswerMode ? `<div class="translation">${word.translation}</div>` : ''}
                 </td>
-                <td class="text-center align-middle col-kalimat">
-                    <div class="text-center mb-2 arabic-text ar-symbol">${
-                        word.kalimat ?? ""
-                    }</div>
-                </td>
-                <td class="text-center align-middle col-hukum">
-                    <div class="text-center mb-2 arabic-text ar-symbol">${
-                        word.hukum ?? ""
-                    }</div>
-                </td>
-                <td class="text-center align-middle col-kategori">
-                    <div class="text-center mb-2 arabic-text ar-symbol">${
-                        word.kategori ?? ""
-                    }</div>
-                </td>
-                <td class="text-center align-middle col-kedudukan">
-                    <div class="text-center mb-2 arabic-text ar-symbol">${
-                        word.kedudukan ?? ""
-                    }</div>
-                </td>
-                <td class="text-center align-middle col-irob">
-                    <div class="text-center mb-2 arabic-text ar-symbol">${
-                        word.irob ?? ""
-                    }</div>
-                </td>
-                <td class="text-center align-middle col-tanda">
-                    <div class="text-center mb-2 arabic-text ar-symbol">${
-                        word.tanda ?? ""
-                    }</div>
-                </td>
+                ${renderCell('kalimat', word.kalimat)}
+                ${renderCell('hukum', word.hukum)}
+                ${renderCell('kategori', word.kategori)}
+                ${renderCell('kedudukan', word.kedudukan)}
+                ${renderCell('irob', word.irob)}
+                ${renderCell('tanda', word.tanda)}
             </tr>
         `;
             tbody.append(row);

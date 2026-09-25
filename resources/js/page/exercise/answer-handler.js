@@ -173,6 +173,7 @@ export function initAnalysisAnswerHandler({
             const wordIndex = words.findIndex((w) => w.id == wordId);
 
             if (wordIndex !== -1) {
+                newWord.hints = { ...(words[wordIndex].hints || {}) };
                 stored.userAnswer[userAnswerWordGroupIndex].words[wordIndex] =
                     newWord;
             } else {
@@ -296,6 +297,90 @@ export function initAnalysisAnswerHandler({
         $("#modal-add-word").modal({ backdrop : "static" }).modal("show");
     });
 
+    // HINT BUTTON CLICK (LAMPU)
+    $(document).on("click", ".btn-cell-hint", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const btn = $(this);
+        const wordId = btn.attr("data-word-id");
+        const field = btn.attr("data-field");
+        const expected = btn.attr("data-expected");
+
+        const fieldLabels = {
+            kalimat: "Kalimat",
+            hukum: "Hukum",
+            kategori: "Kategori",
+            kedudukan: "Kedudukan",
+            irob: "I'rob",
+            tanda: "Tanda I'rob",
+        };
+        const fieldName = fieldLabels[field] || field;
+
+        swal({
+            title: "Buka Bantuan?",
+            text: `Jawaban pada ${fieldName} akan diperbaiki dengan yang benar, namun ini akan mengurangi skor anda.`,
+            icon: "warning",
+            buttons: {
+                cancel: {
+                    text: "Batal",
+                    visible: true,
+                    className: "btn btn-secondary",
+                },
+                confirm: {
+                    text: "Perbaiki",
+                    visible: true,
+                    className: "btn btn-warning",
+                },
+            },
+        }).then((willOpen) => {
+            if (!willOpen) return;
+
+            const stored = getCachedExerciseData();
+            if (!stored) return;
+
+            const activeWordGroupId = $(
+                ".swiper-slide-active .word-group",
+            ).attr("wg-id");
+            const groupIndex = stored.userAnswer.findIndex(
+                (g) => g.id == activeWordGroupId,
+            );
+            if (groupIndex === -1) return;
+
+            const word = stored.userAnswer[groupIndex].words.find(
+                (w) => String(w.id) === String(wordId),
+            );
+            if (!word) return;
+
+            word[field] = expected;
+            if (!word.hints) {
+                word.hints = {};
+            }
+            word.hints[field] = true;
+
+            // If field is kalimat, sync color as well if available
+            if (field === "kalimat") {
+                const keyGroup = stored.wordGroups.find(
+                    (g) => g.id == activeWordGroupId,
+                );
+                const keyWord = keyGroup?.words?.find(
+                    (w) => String(w.id) === String(wordId),
+                );
+                if (keyWord && keyWord.color) {
+                    word.color = keyWord.color;
+                }
+            }
+
+            saveCachedExerciseData(stored);
+            markModified(getPrefix());
+
+            renderWordsTable(stored.userAnswer[groupIndex]);
+            const compareResult = compareAnswers();
+            setCurrentCompareResult(compareResult);
+            highlightErrors(compareResult);
+        });
+    });
+
     // SUBMIT USER ANSWER
     $(document).on("click", "button[name='btn-submit']", function (e) {
         e.preventDefault();
@@ -333,12 +418,50 @@ export function initAnalysisAnswerHandler({
         setCurrentCompareResult(compareResult);
         highlightErrors(compareResult);
 
-        const totalAnswers = compareResult.length;
-        const correctAnswers = compareResult.filter((r) => r.correct).length;
-        const wrongAnswers = totalAnswers - correctAnswers;
-        const score = Math.round((correctAnswers / totalAnswers) * 100);
+        // Granular component calculation (6 fields per word)
+        let totalComponents = 0;
+        let correctComponents = 0;
+        let hintedComponents = 0;
+        let wrongComponents = 0;
 
-        if (score === 100) {
+        compareResult.forEach((item) => {
+            item.fields.forEach((f) => {
+                totalComponents++;
+                if (f.correct) {
+                    if (f.isHinted) {
+                        hintedComponents++;
+                    } else {
+                        correctComponents++;
+                    }
+                } else {
+                    wrongComponents++;
+                }
+            });
+        });
+
+        // If there are still incorrect fields that haven't been resolved
+        if (wrongComponents > 0) {
+            iziToast.warning({
+                title: "Periksa Kembali",
+                message: `Masih ada ${wrongComponents} isian yang belum tepat. Silakan periksa kolom bertanda merah atau gunakan bantuan 💡.`,
+                position: "bottomRight",
+                timeout: 5000,
+            });
+            return;
+        }
+
+        const score = totalComponents > 0
+            ? Math.round((correctComponents / totalComponents) * 100)
+            : 0;
+
+        const passingGrade = 60;
+
+        if (score >= passingGrade) {
+            let titleBadge = "Selamat!";
+            if (score >= 85) titleBadge = "Mumtaz! ⭐⭐⭐";
+            else if (score >= 70) titleBadge = "Jayyid Jiddan! ⭐⭐";
+            else titleBadge = "Maqbul! ⭐";
+
             const payload = {
                 exercise_number: exerciseNumber,
                 level: exerciseLevelSlug,
@@ -347,8 +470,11 @@ export function initAnalysisAnswerHandler({
                 attempt_count: 1,
                 time_spent: null,
                 metadata: JSON.stringify({
-                    total_answers: totalAnswers,
-                    correct_answers: correctAnswers,
+                    total_words: compareResult.length,
+                    total_components: totalComponents,
+                    correct_independent: correctComponents,
+                    hints_used: hintedComponents,
+                    final_score: score,
                 }),
             };
 
@@ -379,8 +505,8 @@ export function initAnalysisAnswerHandler({
 
                         swal({
                             icon: "success",
-                            title: "Selamat",
-                            text: "Anda dapat melanjutkan ke soal selanjutnya",
+                            title: titleBadge,
+                            text: `Nilai Anda: ${score}/100\n(Benar mandiri: ${correctComponents}/${totalComponents}, Bantuan: ${hintedComponents})`,
                             buttons: {
                                 cancel: {
                                     text: "Tutup",
@@ -444,10 +570,72 @@ export function initAnalysisAnswerHandler({
                 },
             });
         } else {
-            iziToast.warning({
-                message: `${wrongAnswers} jawaban salah. Mohon cek kembali`,
-                position: "bottomRight",
-                timeout: 5000,
+            // Score below passing grade due to too many hints
+            swal({
+                icon: "warning",
+                title: "Belum Mencapai KKM",
+                text: `Nilai Anda ${score}/100 (minimal KKM adalah ${passingGrade}). Anda menggunakan ${hintedComponents} bantuan sehingga belum tuntas.\n\nApakah Anda ingin mengulang latihan ayat ini secara mandiri?`,
+                buttons: {
+                    cancel: {
+                        text: "Tutup",
+                        visible: true,
+                        className: "btn btn-secondary",
+                    },
+                    confirm: {
+                        text: "Ulangi Latihan",
+                        visible: true,
+                        className: "btn btn-warning",
+                    },
+                },
+            }).then((willRetry) => {
+                if (!willRetry) return;
+
+                const stored = getCachedExerciseData();
+                if (!stored) return;
+
+                stored.userAnswer.forEach((group) => {
+                    if (Array.isArray(group.words)) {
+                        group.words.forEach((w) => {
+                            w.kalimat = null;
+                            w.hukum = null;
+                            w.kategori = null;
+                            w.kedudukan = null;
+                            w.irob = null;
+                            w.tanda = null;
+                            w.color = null;
+                            delete w.hints;
+                        });
+                    }
+                });
+
+                saveCachedExerciseData(stored);
+                markModified(getPrefix());
+
+                const activeWordGroupId = $(
+                    ".swiper-slide-active .word-group",
+                ).attr("wg-id");
+                const activeGroup = stored.userAnswer.find(
+                    (g) => g.id == activeWordGroupId,
+                );
+                renderWordsTable(activeGroup);
+                setCurrentCompareResult([]);
+                document
+                    .querySelectorAll("#sortable-table tbody tr")
+                    .forEach((tr) => {
+                        tr.classList.remove("is-wrong", "is-correct");
+                        tr.querySelectorAll("td").forEach((td) => {
+                            td.classList.remove("is-wrong", "is-hinted");
+                            td.querySelectorAll(".btn-cell-hint").forEach(
+                                (btn) => btn.remove(),
+                            );
+                        });
+                    });
+
+                iziToast.info({
+                    message:
+                        "Jawaban telah direset. Silakan kerjakan kembali secara mandiri!",
+                    position: "bottomRight",
+                });
             });
         }
     });
