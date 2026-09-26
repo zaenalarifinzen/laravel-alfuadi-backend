@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.3.1
+
+-   Opsi bantuan pada jawaban yang salah
+-   Reset jawaban jika skor dibawah minimal untuk melanjutkan latihan
+-   Perbaikan crash id dan nomor level
+
 ## 1.3.0
 
 -   Darkmode
