@@ -111,6 +111,7 @@ initAnalysisAnswerHandler({
     highlightErrors: analysisPage.highlightErrors,
     changeSubmitButton: analysisPage.changeSubmitButton,
     resetCard: wordTable.resetCard,
+    markExercisePassed: analysisPage.markCurrentExercisePassed,
 });
 
 document.addEventListener("DOMContentLoaded", () => {

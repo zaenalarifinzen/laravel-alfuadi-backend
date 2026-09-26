@@ -113,7 +113,7 @@ export function initQuestionList({ config, onSelectQuestion }) {
         if (countBadgeEl) countBadgeEl.textContent = "0 Soal";
     }
 
-    function renderQuestions(questions) {
+    function renderQuestions(questions) {        
         if (!questionListEl) return;
         if (countBadgeEl) countBadgeEl.textContent = `${questions.length} Soal`;
 
@@ -171,9 +171,9 @@ export function initQuestionList({ config, onSelectQuestion }) {
         }
     }
 
-    function markQuestionPassed(exerciseId) {
+    function markQuestionPassed(exerciseId) {        
         const q = currentQuestions.find((item) => item.id == exerciseId);
-        if (q) {
+        if (q) {            
             q.passed = true;
             renderQuestions(currentQuestions);
         }

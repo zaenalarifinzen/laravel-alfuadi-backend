@@ -293,7 +293,7 @@
                                         <a class="nav-link active" id="input-tab" data-toggle="tab" href="#input-table"
                                             role="tab" aria-controls="input" aria-selected="true">Jawaban</a>
                                     </li>
-                                    <li class="nav-item">
+                                    <li class="nav-item d-none" >
                                         <a class="nav-link" id="detail-tab" data-toggle="tab" href="#detail-table"
                                             role="tab" aria-controls="detail" aria-selected="false">Kunci</a>
                                     </li>

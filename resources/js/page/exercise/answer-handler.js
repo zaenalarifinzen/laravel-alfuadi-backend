@@ -17,6 +17,7 @@ export function initAnalysisAnswerHandler({
     highlightErrors,
     changeSubmitButton,
     resetCard,
+    markExercisePassed,
 }) {
     function resetWordForm() {
         // 1. reset native form
@@ -294,7 +295,7 @@ export function initAnalysisAnswerHandler({
         $("#form-add-word-label").text("Update Kalimat");
         $("#btn-submit").text("Update");
         $("#additional-fields").show();
-        $("#modal-add-word").modal({ backdrop : "static" }).modal("show");
+        $("#modal-add-word").modal({ backdrop: "static" }).modal("show");
     });
 
     // HINT BUTTON CLICK (LAMPU)
@@ -319,7 +320,8 @@ export function initAnalysisAnswerHandler({
 
         swal({
             title: "Buka Bantuan?",
-            text: `Jawaban pada ${fieldName} akan diperbaiki dengan yang benar, namun ini akan mengurangi skor anda.`,
+            text: `Jawaban pada ${fieldName} akan diperbaiki dengan yang benar,
+                namun ini akan mengurangi skor anda.`,
             icon: "warning",
             buttons: {
                 cancel: {
@@ -391,7 +393,7 @@ export function initAnalysisAnswerHandler({
         const exerciseLevelSlug = exerciseState.levelSlug ?? null;
 
         if (!exerciseId) {
-            console.log('exercise ID not found')
+            console.log("exercise ID not found");
             iziToast.warning({
                 message: "Exercise tidak ditemukan",
                 position: "topRight",
@@ -445,16 +447,19 @@ export function initAnalysisAnswerHandler({
         if (wrongComponents > 0) {
             iziToast.warning({
                 title: "Periksa Kembali",
-                message: `Masih ada ${wrongComponents} isian yang belum tepat. Silakan periksa kolom bertanda merah atau gunakan bantuan 💡.`,
+                message: `Masih ada ${wrongComponents} isian yang belum tepat.
+                    Silakan periksa kolom bertanda merah atau gunakan opsi bantuan
+                    <i class="fas fa-circle-question"></i>`,
                 position: "bottomRight",
                 timeout: 5000,
             });
             return;
         }
 
-        const score = totalComponents > 0
-            ? Math.round((correctComponents / totalComponents) * 100)
-            : 0;
+        const score =
+            totalComponents > 0
+                ? Math.round((correctComponents / totalComponents) * 100)
+                : 0;
 
         const passingGrade = 60;
 
@@ -501,6 +506,11 @@ export function initAnalysisAnswerHandler({
                 success: function (response) {
                     if (response.success) {
                         resetCard();
+
+                        if (typeof markExercisePassed === "function") {
+                            markExercisePassed();
+                        }
+
                         changeSubmitButton(
                             "btn-next-verse",
                             "Selanjutnya",
@@ -577,8 +587,8 @@ export function initAnalysisAnswerHandler({
             // Score below passing grade due to too many hints
             swal({
                 icon: "warning",
-                title: "Belum Mencapai KKM",
-                text: `Nilai Anda ${score}/100 (minimal KKM adalah ${passingGrade}). Anda menggunakan ${hintedComponents} bantuan sehingga belum tuntas.\n\nApakah Anda ingin mengulang latihan ayat ini secara mandiri?`,
+                title: "Jangan Menyerah!",
+                text: `Skor Anda ${score} (minimal skor : ${passingGrade}).\n\nAnda menggunakan ${hintedComponents} bantuan sehingga skor berkurang. Silahkan ulangi soal latihan ini secara mandiri.`,
                 buttons: {
                     cancel: {
                         text: "Tutup",
@@ -586,7 +596,7 @@ export function initAnalysisAnswerHandler({
                         className: "btn btn-secondary",
                     },
                     confirm: {
-                        text: "Ulangi Latihan",
+                        text: "Ulangi",
                         visible: true,
                         className: "btn btn-warning",
                     },

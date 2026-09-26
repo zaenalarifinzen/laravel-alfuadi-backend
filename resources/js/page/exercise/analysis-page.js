@@ -353,6 +353,20 @@ export function initAnalysisPage({
         localStorage.setItem(cachedKey, JSON.stringify(data));
     }
 
+    function markCurrentExercisePassed() {
+        const questionList = getQuestionList ? getQuestionList() : null;
+
+        if (questionList && currentExerciseListId != null) {
+            questionList.markQuestionPassed(currentExerciseListId);
+        }
+
+        const cachedData = getCachedExerciseData();
+        if (cachedData) {
+            cachedData.passed = true;
+            saveCachedExerciseData(cachedData);
+        }
+    }
+
     // ---------------------------------------------------------------------------
     // Navigation
     // ---------------------------------------------------------------------------
@@ -422,5 +436,6 @@ export function initAnalysisPage({
         getCurrentExerciseState,
         getCachedExerciseData,
         saveCachedExerciseData,
+        markCurrentExercisePassed,
     };
 }

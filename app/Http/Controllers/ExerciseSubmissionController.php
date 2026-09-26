@@ -21,15 +21,15 @@ class ExerciseSubmissionController extends Controller
             $level = $request->level;
 
             $exerciseLevel = ExerciseLevel::where('slug', $level)->first();
-            $exerciseLevelNumber = $exerciseLevel->level_number;
+            // $exerciseLevelNumber = $exerciseLevel->level_number;
 
             $exercise = Exercise::where('id', $exerciseId)
-                ->where('level_id', $exerciseLevelNumber)
+                ->where('level_id', $exerciseLevel->id)
                 ->first();
 
             $existingAnswer = ExerciseSubmission::where('user_id', $userId)
                 ->where('exercise_id', $exerciseId)
-                ->where('level_id', $exerciseLevelNumber)
+                ->where('level_id', $exerciseLevel->id)
                 ->first();
 
             // Update
@@ -54,7 +54,7 @@ class ExerciseSubmissionController extends Controller
             $userAnswer = ExerciseSubmission::create([
                 'user_id' => $userId,
                 'exercise_id' => $exerciseId,
-                'level_id' => $exerciseLevelNumber,
+                'level_id' => $exerciseLevel->id,
                 'passed' => $request->pass ?? false,
                 'score' => $request->score,
                 'attempt_count' => $request->attempt_count ??  1,
