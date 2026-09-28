@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.3.2
+
+-   Perbaikan cache jawaban untuk mencegah kehilangan data.
+-   Penambahan dialog konfirmasi saat berpindah dari soal yang belum selesai.
+-   Perubahan batas skor minimal menjadi 70.
+
 ## 1.3.1
 
 -   Opsi bantuan pada jawaban yang salah
