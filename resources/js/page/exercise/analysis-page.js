@@ -117,10 +117,7 @@ export function initAnalysisPage({
                 cachedData,
                 content,
             );
-            localStorage.setItem(
-                exerciseCacheKey,
-                JSON.stringify(mergedData),
-            );
+            localStorage.setItem(exerciseCacheKey, JSON.stringify(mergedData));
 
             const wordTable = renderExercise(mergedData);
             updateSubmitState(wordTable, mergedData.passed);
@@ -128,7 +125,7 @@ export function initAnalysisPage({
             return;
         }
 
-        exerciseService.clearExerciseStorage();
+        exerciseService.clearExerciseStorage(exerciseLevel);
 
         const exerciseKeyPayload = exerciseService.buildAnswerPayload(
             content,
@@ -156,7 +153,7 @@ export function initAnalysisPage({
                 ? "Selesaikan latihan sebelumnya terlebih dahulu."
                 : null;
 
-        ui.showExerciseUnavailableDialog('Akses ditolak', message);
+        ui.showExerciseUnavailableDialog("Akses ditolak", message);
     }
 
     function renderExercise(clonedContent) {
@@ -210,6 +207,8 @@ export function initAnalysisPage({
 
         if (!url) {
             alert("Missing parameter");
+            console.log(`Missing parameter`);
+            
             return;
         }
 
@@ -218,7 +217,8 @@ export function initAnalysisPage({
             type: "GET",
             beforeSend: ui.showLoading,
             success: handleExerciseResponse,
-            error: (xhr, status, error) => handleExerciseError(xhr.responseJSON),
+            error: (xhr, status, error) =>
+                handleExerciseError(xhr.responseJSON),
             complete: ui.hideLoading,
         });
     }
@@ -394,6 +394,27 @@ export function initAnalysisPage({
             fetchExercise(levelSlug, exerciseId);
             return;
         }
+
+        console.log('Identifier not found');        
+
+        // check cache
+        const cacheExerciseKey = storage.getActiveStorageKey(`ex_${levelSlug}`);  
+        console.log(cacheExerciseKey);
+        
+        const cacheExerciseData = storage.getStoredData(cacheExerciseKey);
+        console.log(cacheExerciseData);
+        cacheExerciseKey
+        if (cacheExerciseData) {
+            const identifier =
+                cacheExerciseData.levelSlug === "alquran"
+                    ? cacheExerciseData.exerciseOrderNumber
+                    : cacheExerciseData.exerciseId;
+            fetchExercise(cacheExerciseData.levelSlug, identifier);
+            console.log(`${cacheExerciseData.levelSlug} and ${identifier}`);            
+            return;
+        }
+
+        console.log('Identifier and Cache not found');
 
         const questionList = getQuestionList ? getQuestionList() : null;
         if (!questionList) {

@@ -39,7 +39,9 @@ export function buildExerciseUrl(
             .replace(":id", identifier);
     }
 
-    return null;
+    return config.exerciseGetUrl
+        .replace(":level", levelSlug)
+        .replace(":id", "");
 }
 
 // ---------------------------------------------------------------------------
@@ -95,9 +97,9 @@ export function mergeFreshWordGroups(cachedData, freshContent) {
     };
 }
 
-export function clearExerciseStorage() {
+export function clearExerciseStorage(slug = null) {
     Object.keys(localStorage)
-        .filter((k) => k.startsWith("ex_"))
+        .filter((k) => k.startsWith(`ex_${slug}`))
         .forEach((k) => localStorage.removeItem(k));
 }
 

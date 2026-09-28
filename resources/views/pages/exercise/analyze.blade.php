@@ -293,7 +293,7 @@
                                         <a class="nav-link active" id="input-tab" data-toggle="tab" href="#input-table"
                                             role="tab" aria-controls="input" aria-selected="true">Jawaban</a>
                                     </li>
-                                    <li class="nav-item d-none" >
+                                    <li class="nav-item @if (auth()->check() && auth()->user()->roles === 'user') d-none @endif">
                                         <a class="nav-link" id="detail-tab" data-toggle="tab" href="#detail-table"
                                             role="tab" aria-controls="detail" aria-selected="false">Kunci</a>
                                     </li>
@@ -329,32 +329,35 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tab-pane fade" id="detail-table" role="tabpanel"
-                                        aria-labelledby="detail-tab">
-                                        <div class="card">
-                                            <div class="card-header" id="detail-table-header">
-                                                <div class="d-flex justify-content-between align-items-center w-100">
-                                                    <h4 class="mb-0">Kunci Jawaban</h4>
+                                    @if (auth()->check() && auth()->user()->roles !== 'user')
+                                        <div class="tab-pane fade" id="detail-table" role="tabpanel"
+                                            aria-labelledby="detail-tab">
+                                            <div class="card">
+                                                <div class="card-header" id="detail-table-header">
+                                                    <div class="d-flex justify-content-between align-items-center w-100">
+                                                        <h4 class="mb-0">Kunci Jawaban</h4>
+                                                    </div>
+                                                </div>
+                                                <div class="table-sm">
+                                                    <table class="table-striped table" id="detail-kalimat-table">
+                                                        <thead>
+                                                            <tr class="text-center">
+                                                                <th>Irob</th>
+                                                                <th style="width:110px;">Lafadz</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td colspan="5" class="text-center text-muted">Tidak
+                                                                    ada
+                                                                    data</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                             </div>
-                                            <div class="table-sm">
-                                                <table class="table-striped table" id="detail-kalimat-table">
-                                                    <thead>
-                                                        <tr class="text-center">
-                                                            <th>Irob</th>
-                                                            <th style="width:110px;">Lafadz</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td colspan="5" class="text-center text-muted">Tidak ada
-                                                                data</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
                                         </div>
-                                    </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
