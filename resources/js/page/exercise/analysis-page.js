@@ -117,10 +117,7 @@ export function initAnalysisPage({
                 cachedData,
                 content,
             );
-            localStorage.setItem(
-                exerciseCacheKey,
-                JSON.stringify(mergedData),
-            );
+            localStorage.setItem(exerciseCacheKey, JSON.stringify(mergedData));
 
             const wordTable = renderExercise(mergedData);
             updateSubmitState(wordTable, mergedData.passed);
@@ -128,7 +125,7 @@ export function initAnalysisPage({
             return;
         }
 
-        exerciseService.clearExerciseStorage();
+        exerciseService.clearExerciseStorage(exerciseLevel);
 
         const exerciseKeyPayload = exerciseService.buildAnswerPayload(
             content,
@@ -156,7 +153,7 @@ export function initAnalysisPage({
                 ? "Selesaikan latihan sebelumnya terlebih dahulu."
                 : null;
 
-        ui.showExerciseUnavailableDialog('Akses ditolak', message);
+        ui.showExerciseUnavailableDialog("Akses ditolak", message);
     }
 
     function renderExercise(clonedContent) {
@@ -200,6 +197,39 @@ export function initAnalysisPage({
         surahId = null,
         verseNumber = null,
     ) {
+        const args = [levelSlug, exerciseOrderNumber, surahId, verseNumber];
+
+        // modified check
+        if (!storage.isModified(`ex_${levelSlug}`)) {
+            return requestExercise(...args);
+        }
+
+        swal({
+            icon: "warning",
+            title: "Perubahan belum disimpan",
+            text: "Abaikan jawaban yang sudah ada?",
+            buttons: {
+                cancel: {
+                    text: "Kembali",
+                    visible: true,
+                },
+                confirm: {
+                    text: "Abaikan",
+                    visible: true,
+                },
+            },
+        }).then((willContinue) => {
+            if (!willContinue) return;
+            requestExercise(...args);
+        });
+    }
+
+    function requestExercise(
+        levelSlug,
+        exerciseOrderNumber,
+        surahId,
+        verseNumber,
+    ) {
         const url = exerciseService.buildExerciseUrl(
             config,
             levelSlug,
@@ -218,7 +248,8 @@ export function initAnalysisPage({
             type: "GET",
             beforeSend: ui.showLoading,
             success: handleExerciseResponse,
-            error: (xhr, status, error) => handleExerciseError(xhr.responseJSON),
+            error: (xhr, status, error) =>
+                handleExerciseError(xhr.responseJSON),
             complete: ui.hideLoading,
         });
     }
@@ -392,6 +423,20 @@ export function initAnalysisPage({
 
         if (exerciseId) {
             fetchExercise(levelSlug, exerciseId);
+            return;
+        }
+
+        // check cache
+        const cacheExerciseKey = storage.getActiveStorageKey(`ex_${levelSlug}`);
+
+        const cacheExerciseData = storage.getStoredData(cacheExerciseKey);
+        cacheExerciseKey;
+        if (cacheExerciseData) {
+            const identifier =
+                cacheExerciseData.levelSlug === "alquran"
+                    ? cacheExerciseData.exerciseOrderNumber
+                    : cacheExerciseData.exerciseId;
+            fetchExercise(cacheExerciseData.levelSlug, identifier);
             return;
         }
 

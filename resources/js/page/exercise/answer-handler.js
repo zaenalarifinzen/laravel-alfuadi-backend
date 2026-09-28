@@ -461,7 +461,7 @@ export function initAnalysisAnswerHandler({
                 ? Math.round((correctComponents / totalComponents) * 100)
                 : 0;
 
-        const passingGrade = 60;
+        const passingGrade = 70;
 
         if (score >= passingGrade) {
             let titleBadge = "Selamat!";
