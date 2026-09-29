@@ -34,7 +34,7 @@ class UserController extends Controller
         $data = $request->all();
         $data['password'] = Hash::make($request->password);
         User::create($data);
-        return redirect()->route('users.index')->with('success', 'User succesfully created');
+        return redirect()->route('dashboard.users.index')->with('success', 'User succesfully created');
     }
 
     public function edit(String $id)
@@ -47,7 +47,7 @@ class UserController extends Controller
     {
         $data = $request->validated();
         $user->update($data);
-        return redirect()->route('users.index')->with('success', 'User succesfully updated');
+        return redirect()->route('dashboard.users.index')->with('success', 'User succesfully updated');
     }
 
     public function updateProfile(Request $request)
@@ -71,12 +71,12 @@ class UserController extends Controller
             $user->save();
         }
 
-        return redirect()->route('users.index')->with('success', $user->name . ' berhasil diverifikasi');
+        return redirect()->route('dashboard.users.index')->with('success', $user->name . ' berhasil diverifikasi');
     }
 
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect()->route('users.index')->with('success', $user->name . ' deleted');
+        return redirect()->route('dashboard.users.index')->with('success', $user->name . ' deleted');
     }
 }

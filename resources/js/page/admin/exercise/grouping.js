@@ -518,9 +518,28 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
 
                     wordGroupsState.modified = false;
-                    iziToast.success({
-                        message: data.message,
-                        position: 'topRight',
+                    swal({
+                        icon: "success",
+                        title: "Grup berhasil disimpan",
+                        text: "Lanjutkan input i'rob untuk soal ini?",
+                        buttons: {
+                            cancel: {
+                                text: "Tidak",
+                                visible: true
+                            },
+                            confirm: {
+                                text: "Lanjutkan",
+                                visible: true,
+                            }
+                        }
+                    }).then((willContinue) => {
+                        if (!willContinue) return;
+
+                        const url = new URL(window.location.href);  
+                        url.pathname = url.pathname.replace('grouping', 'irob');
+                        console.log(url.pathname);
+                        
+                        window.location.href = url.toString();
                     });
                 })
                 .catch((error) => {
