@@ -193,14 +193,19 @@ export function initAnalysisPage({
 
     function fetchExercise(
         levelSlug,
-        exerciseOrderNumber = null,
+        identifier = null,
         surahId = null,
         verseNumber = null,
     ) {
-        const args = [levelSlug, exerciseOrderNumber, surahId, verseNumber];
+        const args = [levelSlug, identifier, surahId, verseNumber];
 
         // modified check
-        if (!storage.isModified(`ex_${levelSlug}`)) {
+        const cached = storage.getStoredData(`ex_${levelSlug}`);        
+        const isSameId = (levelSlug === "alquran") 
+            ? cached?.exerciseOrderNumber == identifier
+            : cached?.exerciseId == identifier;        
+
+        if (!storage.isModified(`ex_${levelSlug}`) || isSameId) {
             return requestExercise(...args);
         }
 
@@ -226,14 +231,14 @@ export function initAnalysisPage({
 
     function requestExercise(
         levelSlug,
-        exerciseOrderNumber,
+        identifier,
         surahId,
         verseNumber,
     ) {
         const url = exerciseService.buildExerciseUrl(
             config,
             levelSlug,
-            exerciseOrderNumber,
+            identifier,
             surahId,
             verseNumber,
         );

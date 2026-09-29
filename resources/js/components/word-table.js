@@ -40,8 +40,8 @@ export function initWordTable({
             else if (word.color === "green") simbolClass = "text-fiil";
             else if (word.color === "blue") simbolClass = "text-isim";
 
-            const isAnswerMode = mode === 'exercise';
-                         
+            const isAnswerMode = mode === "exercise";
+
             const actionButtons = isAnswerMode
                 ? `<button class="btn btn-sm btn-icon btn-warning word-edit" title="Edit">Edit 
                    <i class="fa-solid fa-edit"></i>
@@ -81,14 +81,14 @@ export function initWordTable({
                 </td>
                 <td class="text-center align-middle col-word">
                     <div class="${simbolClass} arabic-text words" id="${word.id}">${word.text}</div>
-                    ${isAnswerMode ? `<div class="translation">${word.translation}</div>` : ''}
+                    ${isAnswerMode ? `<div class="translation">${word.translation}</div>` : ""}
                 </td>
-                ${renderCell('kalimat', word.kalimat)}
-                ${renderCell('hukum', word.hukum)}
-                ${renderCell('kategori', word.kategori)}
-                ${renderCell('kedudukan', word.kedudukan)}
-                ${renderCell('irob', word.irob)}
-                ${renderCell('tanda', word.tanda)}
+                ${renderCell("kalimat", word.kalimat)}
+                ${renderCell("hukum", word.hukum)}
+                ${renderCell("kategori", word.kategori)}
+                ${renderCell("kedudukan", word.kedudukan)}
+                ${renderCell("irob", word.irob)}
+                ${renderCell("tanda", word.tanda)}
             </tr>
         `;
             tbody.append(row);
@@ -236,6 +236,12 @@ export function initWordTable({
     `;
 
         if (headerContainer) {
+            const existingBagdeWrapper = headerContainer.querySelector(".badge");
+
+            if (existingBagdeWrapper) {
+                existingBagdeWrapper.remove();
+            }
+
             headerContainer.appendChild(bagdeWrapper);
         }
     }
