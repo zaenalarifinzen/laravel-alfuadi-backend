@@ -163,7 +163,11 @@ export function initQuestionList({ config, onSelectQuestion }) {
                 const itemExerciseId = item.getAttribute("data-exercise-id");
                 if (itemExerciseId == exerciseId) {
                     item.classList.add("active");
-                    item.scrollIntoView({ behavior: "smooth", block: "nearest" });
+                    // item.scrollIntoView({ behavior: "smooth", block: "nearest" });
+                    const wrapper = questionListEl.closest(".question-list-wrapper");
+                    if (wrapper) {
+                        wrapper.scrollTop = item.offsetTop - wrapper.offsetTop;
+                    }
                 } else {
                     item.classList.remove("active");
                 }
