@@ -46,25 +46,26 @@ export function initComponentsTable({ getPrefix, markModified, renderWordsDetail
         $("#btn-save-all").show();
     });
 
-    function saveNewOrder() {
+    function saveNewOrder() {        
         const prefix = getPrefix();
         const currentKey = Object.keys(localStorage).find((k) =>
             k.startsWith(prefix),
         );
-        const stored = JSON.parse(localStorage.getItem(currentKey));
+        const stored = JSON.parse(localStorage.getItem(currentKey));                
 
-        const activeWordGroupId = $(".swiper-slide-active .word-group").attr("wg-id");
+        const activeWordGroupId = $(".swiper-slide-active .word-group").attr("data-wordgroup-id");
         const activeWordGroup = stored.wordGroups.find(
             (wg) => wg.id == activeWordGroupId,
-        );
+        );        
 
         const groupIndex = stored.wordGroups.findIndex(
             (g) => g.id == activeWordGroupId,
         );
+        
         if (groupIndex === -1) return;
 
         const words = stored.wordGroups[groupIndex].words;
-
+        
         $("#sortable-table tbody tr").each(function (index) {
             const wordId = $(this).find(".words").attr("id");
             const word = words.find((w) => w.id == wordId);

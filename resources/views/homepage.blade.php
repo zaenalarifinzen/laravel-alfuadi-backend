@@ -1076,27 +1076,8 @@
                                 </a>
                                 <a class="btn-hero-play" href="{{ route('courses') }}">
                                     <span class="play-circle"><i class="fas fa-search"></i></span>
-                                    Lihat Kelas Online
+                                    Jelajahi Kelas Online
                                 </a>
-                            </div>
-
-                            <div class="hero-social-proof">
-                                <div class="hero-avatar-stack">
-                                    <span class="hero-avatar">ZA</span>
-                                    <span class="hero-avatar">SY</span>
-                                    <span class="hero-avatar">EW</span>
-                                    <span class="hero-avatar">MS</span>
-                                </div>
-                                <div class="hero-social-proof-text">
-                                    <div class="hero-stars">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <small>Bergabung dengan 2.000+ Sobat Fuadi</small>
-                                </div>
                             </div>
                         @endguest
                     </div>
@@ -1106,30 +1087,6 @@
                             <img src="{{ asset('img/hero.webp') }}" alt="Ilustrasi belajar Nahwu Al-Qur'an"
                                 class="hero-visual-img">
                         </div>
-
-                        {{-- <div class="hero-floating-card hero-fc-top">
-                            <span class="fc-icon"><i class="fas fa-heart"></i></span>
-                            <p>Pahami i'rob Al-Qur'an dengan percaya diri</p>
-                        </div>
-
-                        <div class="hero-floating-card hero-fc-stat">
-                            <div>
-                                <span class="fc-stat-label">Progres Belajar</span><br>
-                                <span class="fc-stat-value">92%</span>
-                                <span class="fc-stat-badge">+18% bulan ini</span>
-                            </div>
-                        </div>
-
-                        <div class="hero-floating-card hero-fc-testi">
-                            <span class="testi-avatar">ZA</span>
-                            <p>
-                                <span class="testi-stars">
-                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                                </span>
-                                "Metode ini mengubah cara saya memahami Nahwu."
-                                <span class="testi-name">- Zaenal A.</span>
-                            </p>
-                        </div> --}}
                     </div>
                 </div>
             </div>

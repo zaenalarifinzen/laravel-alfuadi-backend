@@ -478,7 +478,7 @@ export function initWordCrud({
                         message: "Data berhasil disimpan",
                         position: "topRight",
                     });
-                    localStorage.removeItem(currentKey);
+                    // localStorage.removeItem(currentKey);
 
                     // load next verse
                     // const nextVerse = stored.verse.id + 1;

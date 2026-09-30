@@ -36,7 +36,7 @@
 
         <section id="kelas-kursus" class="py-5">
             <div class="text-center homepage-section-header">
-                <h2 class="homepage-section-title">Kelas anda masih kosong</h2>
+                <h2 class="homepage-section-title">Kelas masih kosong</h2>
                 <p class="homepage-section-lead">
                     Pilih program belajar yang sesuai dengan minat Anda.
                 </p>

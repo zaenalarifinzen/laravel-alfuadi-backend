@@ -320,8 +320,7 @@ export function initAnalysisAnswerHandler({
 
         swal({
             title: "Buka Bantuan?",
-            text: `Jawaban pada ${fieldName} akan diperbaiki dengan yang benar,
-                namun ini akan mengurangi skor anda.`,
+            text: `Jawaban pada ${fieldName} akan diperbaiki dengan yang benar, namun ini akan mengurangi skor anda.`,
             icon: "warning",
             buttons: {
                 cancel: {
