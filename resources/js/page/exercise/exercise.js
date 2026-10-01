@@ -97,6 +97,7 @@ initComponentsTable({
 initAnalysisAnswerHandler({
     getPrefix: analysisPage.getPrefix,
     markModified: storage.markModified,
+    resetModified: storage.resetModified,
     renderWordsTable: wordTable.renderWordsTable,
     renderWordsDetails: wordTable.renderWordsDetails,
     getNahwuController: () => nahwuFormController,

@@ -3,6 +3,7 @@
 export function initAnalysisAnswerHandler({
     getPrefix,
     markModified,
+    resetModified,
     renderWordsTable,
     renderWordsDetails,
     getNahwuController,
@@ -518,7 +519,8 @@ export function initAnalysisAnswerHandler({
                 success: function (response) {
                     if (response.success) {
                         resetCard();
-
+                        resetModified(`ex_${exerciseLevelSlug}_${exerciseId}`);
+                        
                         if (typeof markExercisePassed === "function") {
                             markExercisePassed();
                         }
@@ -545,7 +547,6 @@ export function initAnalysisAnswerHandler({
                             },
                         }).then((willSave) => {
                             if (!willSave) return;
-
                             navigateToNextExercise(exerciseLevelSlug, response);
                         });
                     } else {
