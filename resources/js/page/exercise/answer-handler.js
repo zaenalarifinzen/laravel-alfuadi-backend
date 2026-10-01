@@ -54,6 +54,21 @@ export function initAnalysisAnswerHandler({
         $("#btn-submit").text("Tambahkan");
     }
 
+    function navigateToNextExercise(levelSlug, responseData = null) {
+        const navigation = getNavigationState();
+        if (navigation.nextId != null) {
+            fetchExercise(levelSlug, navigation.nextId);
+            return;
+        }
+
+        const nextExercise = responseData?.data?.next_exercise;
+        const nextLevelSlug = nextExercise?.level ?? navigation.nextLevelSlug;
+        const nextExerciseId = nextExercise?.id ?? navigation.nextLevelExerciseId;
+        if (nextLevelSlug && nextExerciseId != null) {
+            fetchExercise(nextLevelSlug, nextExerciseId);
+        }
+    }
+
     $("#modal-add-word").on("hidden.bs.modal", function () {
         resetWordForm();
     });
@@ -403,9 +418,7 @@ export function initAnalysisAnswerHandler({
         // passed check
         const btnId = this.id;
         if (btnId === "btn-next-verse") {
-            const { nextId } = getNavigationState();
-            if (nextId == null) return;
-            fetchExercise(exerciseLevelSlug, nextId);
+            navigateToNextExercise(exerciseLevelSlug);
             return;
         }
 
@@ -533,9 +546,7 @@ export function initAnalysisAnswerHandler({
                         }).then((willSave) => {
                             if (!willSave) return;
 
-                            const { nextId } = getNavigationState();
-                            if (nextId == null) return;
-                            fetchExercise(exerciseLevelSlug, nextId);
+                            navigateToNextExercise(exerciseLevelSlug, response);
                         });
                     } else {
                         iziToast.error({

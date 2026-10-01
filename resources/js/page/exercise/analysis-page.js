@@ -86,6 +86,8 @@ export function initAnalysisPage({
                 exerciseLevel === "alquran"
                     ? (exerciseData.next_verse_id ?? null)
                     : (exerciseData.next_exercise_id ?? null),
+            nextLevelSlug: exerciseData.next_level_slug ?? null,
+            nextLevelExerciseId: exerciseData.next_level_exercise_id ?? null,
         };
         exerciseCacheKey = `ex_${exerciseLevel}_${exerciseId}`;
 

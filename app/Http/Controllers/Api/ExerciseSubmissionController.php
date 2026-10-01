@@ -42,7 +42,7 @@ class ExerciseSubmissionController extends Controller
                 return response()->json([
                     'success' => true,
                     'message' => 'Status penyelesaian berhasil diperbarui',
-                    'data' => $existingAnswer->load(['user', 'exercise']),
+                    // 'data' => $existingAnswer->load(['user', 'exercise']),
                 ], 200);
             }
 

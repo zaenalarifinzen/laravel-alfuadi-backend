@@ -297,8 +297,19 @@ class ExerciseController extends Controller
             ->orderBy('display_order', 'asc')
             ->first();
 
+        $nextLevel = ExerciseLevel::active()
+            ->where('level_number', '>', $exerciseLevel->level_number)
+            ->orderBy('level_number', 'asc')
+            ->first();
+        $nextLevelExercise = $nextLevel?->activeExercises()
+            ->orderBy('display_order', 'asc')
+            ->orderBy('id', 'asc')
+            ->first();
+
         $exercise->setAttribute('prev_exercise_id', $prevExercise ? $prevExercise->id : null);
         $exercise->setAttribute('next_exercise_id', $nextExercise ? $nextExercise->id : null);
+        $exercise->setAttribute('next_level_slug', $nextLevelExercise ? $nextLevel->slug : null);
+        $exercise->setAttribute('next_level_exercise_id', $nextLevelExercise?->id);
 
         // The first exercise is always available; later exercises require the previous one to be passed.
         $firstExercise = Exercise::active()

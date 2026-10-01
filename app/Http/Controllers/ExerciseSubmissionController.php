@@ -17,22 +17,28 @@ class ExerciseSubmissionController extends Controller
         try {
             $userId = auth()->id();
             $exerciseId = $request->exercise_id;
-            Log::info('exercise_id: ' . $exerciseId);
             $level = $request->level;
 
-            $exerciseLevel = ExerciseLevel::where('slug', $level)->first();
-            // $exerciseLevelNumber = $exerciseLevel->level_number;
+            $availableLevel = ExerciseLevel::active()->orderBy('display_order', 'asc')->get();
+            $currentLevel = $availableLevel->firstWhere('slug', $level);
+            $nextLevel = $availableLevel->firstWhere('level_number', '>', $currentLevel->level_number);
 
             $exercise = Exercise::where('id', $exerciseId)
-                ->where('level_id', $exerciseLevel->id)
+                ->where('level_id', $currentLevel->id)
                 ->first();
+
+            $isLastInLevel = !Exercise::active()
+                ->where('level_id', $exercise->level_id)
+                ->where('display_order', '>', $exercise->display_order)
+                ->exists();
 
             $existingAnswer = ExerciseSubmission::where('user_id', $userId)
                 ->where('exercise_id', $exerciseId)
-                ->where('level_id', $exerciseLevel->id)
+                ->where('level_id', $currentLevel->id)
                 ->first();
 
-            // Update
+            $responseStatus = 201;
+
             if ($existingAnswer) {
                 $existingAnswer->update([
                     'passed' => $request->pass ?? false,
@@ -42,44 +48,45 @@ class ExerciseSubmissionController extends Controller
                     'metadata' => $request->metadata,
                     'is_latest' => true,
                 ]);
-
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Status penyelesaian berhasil diperbarui',
-                    'data' => $existingAnswer->load(['user', 'exercise']),
-                ], 200);
+                $responseStatus = 200;
+            } else {
+                ExerciseSubmission::create([
+                    'user_id' => $userId,
+                    'exercise_id' => $exerciseId,
+                    'level_id' => $currentLevel->id,
+                    'passed' => $request->pass ?? false,
+                    'score' => $request->score,
+                    'attempt_count' => $request->attempt_count ?? 1,
+                    'time_spent' => $request->time_spent,
+                    'metadata' => $request->metadata,
+                    'is_latest' => true,
+                ]);
             }
 
-            // Save new
-            $userAnswer = ExerciseSubmission::create([
-                'user_id' => $userId,
-                'exercise_id' => $exerciseId,
-                'level_id' => $exerciseLevel->id,
-                'passed' => $request->pass ?? false,
-                'score' => $request->score,
-                'attempt_count' => $request->attempt_count ??  1,
-                'time_spent' => $request->time_spent,
-                'metadata' => $request->metadata,
-                'is_latest' => true,
-            ]);
+            $nextExercise = $isLastInLevel && $request->boolean('pass') && $nextLevel
+                ? $nextLevel->activeExercises()
+                    ->orderBy('display_order')
+                    ->orderBy('id')
+                    ->first()
+                : null;
 
-            $isLastInLevel = !Exercise::active()
-                ->where('level_id', $exercise->level_id)
-                ->where('display_order', '>', $exercise->display_order)
-                ->exists();
-
-            if ($isLastInLevel) {
+            if ($isLastInLevel && $request->boolean('pass')) {
                 UserLevelProgress::updateOrCreate(
                     ['user_id' => $userId, 'exercise_level_id' => $exercise->level_id],
-                    ['is_completed' => true, 'completed_at' => now()]
+                    ['completed_at' => now()]
                 );
             }
 
             return response()->json([
                 'success' => true,
                 'message' => 'Status penyelesaian berhasil disimpan',
-                'data' => $userAnswer->load(['user', 'exercise']),
-            ], 201);
+                'data' => [
+                    'next_exercise' => $nextExercise ? [
+                        'level' => $nextLevel->slug,
+                        'id' => $nextExercise->id,
+                    ] : null,
+                ],
+            ], $responseStatus);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
