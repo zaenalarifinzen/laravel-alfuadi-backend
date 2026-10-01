@@ -270,7 +270,7 @@ export function initWordCrud({
                     text: "Batal",
                     visible: true,
                 },
-                confirm: {
+                delete: {
                     text: "Hapus",
                     visible: true,
                     className: "btn-danger",
@@ -454,7 +454,6 @@ export function initWordCrud({
                 confirm: {
                     text: "Simpan",
                     visible: true,
-                    className: "btn-success",
                 },
             },
         }).then((willSave) => {

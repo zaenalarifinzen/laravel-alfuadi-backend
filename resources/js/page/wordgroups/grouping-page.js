@@ -458,7 +458,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 confirm: {
                     text: 'Submit',
                     visible: true,
-                    className: 'btn-success'
                 }
             },
         });
@@ -492,10 +491,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     text: 'Kembali',
                     visible: true,
                 },
-                confirm: {
+                discard: {
                     text: 'Abaikan',
                     visible: true,
-                    className: 'btn-success'
+                    className: 'btn-danger'
                 }
             },
         });
@@ -567,7 +566,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 confirm: {
                     text: 'Simpan',
                     visible: true,
-                    className: 'btn-success'
                 },
             },
         }).then((willSave) => {
@@ -632,7 +630,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 confirm: {
                     text: 'Update',
                     visible: true,
-                    className: 'btn-success'
                 },
             },
         }).then((willSave) => {

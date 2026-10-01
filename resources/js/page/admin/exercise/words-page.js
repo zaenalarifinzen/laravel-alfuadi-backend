@@ -31,7 +31,6 @@ export function initWordsPage({
                 confirm: {
                     text: "Abaikan",
                     visible: true,
-                    className: "btn-success",
                 },
             },
         });

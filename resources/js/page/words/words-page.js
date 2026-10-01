@@ -29,10 +29,10 @@ export function initWordsPage({
                     text: "Kembali",
                     visible: true,
                 },
-                confirm: {
+                discard: {
                     text: "Abaikan",
                     visible: true,
-                    className: "btn-success",
+                    className: "btn-danger",
                 },
             },
         });

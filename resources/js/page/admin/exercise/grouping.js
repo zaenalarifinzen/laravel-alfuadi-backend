@@ -423,7 +423,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 confirm: {
                     text: 'Submit',
                     visible: true,
-                    className: 'btn-success'
                 }
             },
         });

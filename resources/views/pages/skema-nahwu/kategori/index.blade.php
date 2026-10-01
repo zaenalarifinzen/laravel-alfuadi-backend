@@ -161,7 +161,7 @@
                                     text: 'Batal',
                                     visible: true,
                                 },
-                                confirm: {
+                                delete: {
                                     text: 'Ya, hapus',
                                     visible: true,
                                     className: 'btn-danger'

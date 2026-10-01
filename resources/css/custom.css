@@ -776,8 +776,12 @@ footer .footer-brand {
 
 .swal-button.swal-button--confirm {
     box-shadow: 0 2px 6px #d4fadd;
-    background-color: #28a745;
+    background-color: #138a84;
     padding: 10px 24px;
+}
+
+.swal-button.swal-button--confirm:hover {
+    background-color: #0c746e;
 }
 
 .swal-button.swal-button--confirm:focus {

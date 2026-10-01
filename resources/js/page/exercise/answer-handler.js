@@ -342,12 +342,11 @@ export function initAnalysisAnswerHandler({
                 cancel: {
                     text: "Batal",
                     visible: true,
-                    className: "btn btn-secondary",
                 },
-                confirm: {
+                apply: {
                     text: "Perbaiki",
                     visible: true,
-                    className: "btn btn-warning",
+                    className: "btn-warning",
                 },
             },
         }).then((willOpen) => {
@@ -460,8 +459,8 @@ export function initAnalysisAnswerHandler({
         if (wrongComponents > 0) {
             iziToast.warning({
                 title: "Periksa Kembali",
-                message: `Masih ada ${wrongComponents} isian yang belum tepat.
-                    Silakan periksa kolom bertanda merah atau gunakan opsi bantuan
+                message: `${wrongComponents} isian belum tepat.
+                    Periksa kolom bertanda merah atau gunakan opsi bantuan
                     <i class="fas fa-circle-question"></i>`,
                 position: "bottomRight",
                 timeout: 5000,
@@ -604,12 +603,11 @@ export function initAnalysisAnswerHandler({
                     cancel: {
                         text: "Tutup",
                         visible: true,
-                        className: "btn btn-secondary",
                     },
                     confirm: {
                         text: "Ulangi",
                         visible: true,
-                        className: "btn btn-warning",
+                        className: "btn-warning",
                     },
                 },
             }).then((willRetry) => {

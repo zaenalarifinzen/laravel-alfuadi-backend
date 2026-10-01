@@ -173,7 +173,7 @@
                                     text: 'Batal',
                                     visible: true,
                                 },
-                                confirm: {
+                                delete: {
                                     text: 'Ya, hapus',
                                     visible: true,
                                     className: 'btn-danger'
@@ -201,7 +201,7 @@
                                     text: 'Batal',
                                     visible: true,
                                 },
-                                confirm: {
+                                verify: {
                                     text: 'Ya, verifikasi',
                                     visible: true,
                                     className: 'btn-success'
