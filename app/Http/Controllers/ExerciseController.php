@@ -510,8 +510,9 @@ class ExerciseController extends Controller
 
             $exercise->setAttribute('prev_exercise_id', $prevExercise ? $prevExercise->id : null);
             $exercise->setAttribute('next_exercise_id', $nextExercise ? $nextExercise->id : null);
-            $exercise->setAttribute('prev_verse_id', $prevExercise ? $prevExercise->verse_id : null);
-            $exercise->setAttribute('next_verse_id', $nextExercise ? $nextExercise->verse_id : null);
+
+            $exercise->setAttribute('prev_verse_id', $exercise ? $exercise->verse_id - 1 : null);
+            $exercise->setAttribute('next_verse_id', $exercise ? $exercise->verse_id + 1 : null);
 
             return response()->json([
                 'success' => true,
