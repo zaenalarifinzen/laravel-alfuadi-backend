@@ -65,3 +65,10 @@ export function showExerciseUnavailableDialog(title = null, message = null) {
         },
     });
 }
+
+export function showNextLevelUnlocked() {
+    swal(`Selamat, Anda berhasil naik level!`, {
+        buttons: false,
+        timer: 3000,
+    });
+}

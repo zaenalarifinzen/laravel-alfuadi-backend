@@ -1,4 +1,5 @@
 "use strict";
+import * as ui from "./ui-helpers";
 
 export function initAnalysisAnswerHandler({
     getPrefix,
@@ -55,7 +56,7 @@ export function initAnalysisAnswerHandler({
         $("#btn-submit").text("Tambahkan");
     }
 
-    function navigateToNextExercise(levelSlug, responseData = null) {
+    function navigateToNextLevel(levelSlug, responseData = null) {
         const navigation = getNavigationState();
         if (navigation.nextId != null) {
             fetchExercise(levelSlug, navigation.nextId);
@@ -64,9 +65,15 @@ export function initAnalysisAnswerHandler({
 
         const nextExercise = responseData?.data?.next_exercise;
         const nextLevelSlug = nextExercise?.level ?? navigation.nextLevelSlug;
-        const nextExerciseId = nextExercise?.id ?? navigation.nextLevelExerciseId;
-        if (nextLevelSlug && nextExerciseId != null) {
+        const nextExerciseId =
+            nextExercise?.id ?? navigation.nextLevelExerciseId;
+
+        ui.showNextLevelUnlocked();
+
+        if (nextLevelSlug && nextLevelSlug != 'alquran' && nextExerciseId != null) {
             fetchExercise(nextLevelSlug, nextExerciseId);
+        } else {
+            fetchExercise(nextLevelSlug, 1);
         }
     }
 
@@ -418,7 +425,12 @@ export function initAnalysisAnswerHandler({
         // passed check
         const btnId = this.id;
         if (btnId === "btn-next-verse") {
-            navigateToNextExercise(exerciseLevelSlug);
+            const { nextId } = getNavigationState();
+            if (nextId == null) {
+                navigateToNextLevel(exerciseLevelSlug);
+            } else {
+                fetchExercise(exerciseLevelSlug, nextId);
+            }
             return;
         }
 
@@ -519,7 +531,7 @@ export function initAnalysisAnswerHandler({
                     if (response.success) {
                         resetCard();
                         resetModified(`ex_${exerciseLevelSlug}_${exerciseId}`);
-                        
+
                         if (typeof markExercisePassed === "function") {
                             markExercisePassed();
                         }
@@ -546,7 +558,13 @@ export function initAnalysisAnswerHandler({
                             },
                         }).then((willSave) => {
                             if (!willSave) return;
-                            navigateToNextExercise(exerciseLevelSlug, response);
+                            const { nextId } = getNavigationState();
+                            if (nextId == null) {
+                                navigateToNextLevel(exerciseLevelSlug, response);
+                            } else {
+                                fetchExercise(exerciseLevelSlug, nextId);
+                            }
+                            return;
                         });
                     } else {
                         iziToast.error({
