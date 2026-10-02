@@ -19,7 +19,7 @@ class ExerciseSubmissionController extends Controller
             $exerciseId = $request->exercise_id;
             $level = $request->level;
 
-            $availableLevel = ExerciseLevel::active()->orderBy('level_number', 'asc')->get();
+            $availableLevel = ExerciseLevel::active()->orderBy('display_order', 'asc')->get();
             $currentLevel = $availableLevel->firstWhere('slug', $level);
             $nextLevel = $availableLevel->firstWhere('level_number', '>', $currentLevel->level_number);
 

@@ -66,6 +66,7 @@ export function initAnalysisPage({
 
         if (!exerciseService.isValidExerciseContent(content)) {
             ui.showExerciseUnavailableDialog();
+            console.log('Invalid Exercise Content');  
             return;
         }
 
@@ -450,6 +451,7 @@ export function initAnalysisPage({
         const questionList = getQuestionList ? getQuestionList() : null;
         if (!questionList) {
             ui.showExerciseUnavailableDialog();
+            console.log('Question List Unavailable');            
             return;
         }
 
@@ -458,6 +460,7 @@ export function initAnalysisPage({
 
             if (firstExerciseId == null) {
                 ui.showExerciseUnavailableDialog();
+                console.log('First Exercise Id Unavailable');  
                 return;
             }
 

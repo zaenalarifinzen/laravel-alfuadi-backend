@@ -990,6 +990,10 @@ body.layout-3 {
 }
 
 @media (max-width: 1024px) {
+    .navbar-secondary {
+        display: none !important;
+    }
+
     .sidebar-gone-hide {
         display: none !important;
     }
@@ -1903,6 +1907,17 @@ footer.site-footer ul li a:hover {
     transition:
         transform 0.3s ease,
         color 0.3s ease;
+}
+
+.btn-icon-lucide {
+    font-size: 1.15rem;
+    padding: 0px;
+    color: #008f85;
+    width: 22px !important;
+    height: 22px !important;
+    stroke-width: 2.2px !important;
+    vertical-align: middle;
+    transition: transform 0.2s ease, stroke 0.2s ease;
 }
 
 /* Base Dark Theme Palette & Root Attributes */

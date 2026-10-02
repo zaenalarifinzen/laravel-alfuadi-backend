@@ -4,7 +4,7 @@
 
 @push('style')
     <!-- CSS Libraries -->
-    <link rel="stylesheet" href="{{ asset('library/ionicons201/css/ionicons.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('library/ionicons201/css/ionicons.min.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('library/izitoast/dist/css/iziToast.min.css') }}">
     <style>
         /* correction */
@@ -220,8 +220,10 @@
         <section class="section">
             <div class="section-header d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
+                    <a href="{{ route('exercise-level.index') }}" class="btn-back mr-2 mr-md-4 mr-xl-5">
+                        <x-lucide-arrow-left class="btn-icon-lucide" />
+                    </a>
                     <h1 class="mb-0">Latihan analisa</h1>
-
                 </div>
 
                 @if (request()->segment(2) === 'alquran')

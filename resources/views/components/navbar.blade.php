@@ -1,4 +1,4 @@
-<nav class="navbar navbar-secondary navbar-expand-lg sticky-top">
+<nav class="navbar navbar-secondary navbar-expand-lg">
     <div class="container">
         <ul class="navbar-nav">
             <li class="nav-item">

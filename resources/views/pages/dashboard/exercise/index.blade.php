@@ -10,7 +10,12 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Soal Latihan</h1>
+                <div class="d-flex align-items-center">
+                    <a href="{{ route('dashboard.exercise-levels.index') }}" class="btn-back mr-2 mr-md-4 mr-xl-5">
+                        <x-lucide-arrow-left class="btn-icon-lucide" />
+                    </a>
+                    <h1>Soal Latihan</h1>
+                </div>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="{{ route('dashboard') }}">Dashboard</a></div>
                     <div class="breadcrumb-item">Latihan</div>
