@@ -31,7 +31,7 @@ class UserController extends Controller
 
     public function store(StoreUserRequest $request)
     {
-        $data = $request->all();
+        $data = $request->validated();
         $data['password'] = Hash::make($request->password);
         User::create($data);
         return redirect()->route('dashboard.users.index')->with('success', 'User succesfully created');
