@@ -5,7 +5,7 @@
             <ul class="navbar-nav">
                 <li class="nav-item"><a href="{{ route('quran.index') }}" class="nav-link">Al-Quran</a></li>
                 <li class="nav-item"><a href="{{ route('metode-alfuadi') }}" class="nav-link">Metode Al-Fuadi</a></li>
-                <li class="nav-item"><a href="{{ route('courses') }}" class="nav-link">Kelas Online</a></li>
+                <li class="nav-item"><a href="{{ route('courses.index') }}" class="nav-link">Kelas Online</a></li>
             </ul>
         </div>
     </form>

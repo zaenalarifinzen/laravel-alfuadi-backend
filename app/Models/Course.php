@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
@@ -18,10 +19,21 @@ class Course extends Model
         'status',
     ];
 
+    protected function title(): Attribute
+    {
+        return Attribute::make(
+            set: fn (?string $value) => $value === null
+                ? null
+                : Str::title(preg_replace('/\s+/', ' ', trim($value))),
+        );
+    }
+
     protected static function booted() : void
     {
-        static::creating(function ($course) {
-            $course->slug = Str::slug($course->title);
+        static::saving(function ($course) {
+            if ($course->isDirty('title')) {
+                $course->slug = Str::slug($course->title);
+            }
         });
     }
 
@@ -35,9 +47,24 @@ class Course extends Model
         return $this->belongsTo(Category::class, 'category_id');
     }
 
-    public function lessons ()
+    public function lessons()
     {
         return $this->hasMany(Lesson::class)->orderBy('display_order');
+    }
+
+    public function enrollments()
+    {
+        return $this->hasMany(Enrollment::class);
+    }
+
+    public function quizzes()
+    {
+        return $this->hasMany(Quiz::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
     }
 
     public function isFree() : bool

@@ -19,7 +19,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ route('courses') }}"
+                <a href="{{ route('courses.index') }}"
                     class="nav-link {{ request()->routeIs('metode-al-fuadi.*') ? 'active' : '' }}">
                     </i><span>Kelas Online</span>
                 </a>

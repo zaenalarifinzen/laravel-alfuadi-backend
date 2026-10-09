@@ -1,6 +1,11 @@
 <?php
 
-use App\Http\Controllers\Admin\AnalysisSettingController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CourseController;
+use App\Http\Controllers\Admin\LessonController;
+use App\Http\Controllers\Admin\QuestionController;
+use App\Http\Controllers\Admin\QuizController;
 use App\Http\Controllers\KalimatController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\KedudukanController;
@@ -16,35 +21,23 @@ use App\Http\Controllers\WordGroupController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\QuranController;
 use App\Http\Controllers\SettingsController;
-use App\Models\Surah;
-use App\Models\Verse;
-use App\Models\Word;
-use App\Models\WordGroup;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
+use App\Http\Controllers\User\LearningController;
+use App\Http\Controllers\CourseController as ControllersCourseController;
+use App\Http\Controllers\User\QuizController as UserQuizController;
+use App\Http\Controllers\User\ReviewController as UserReviewController;
 use Illuminate\Support\Facades\Route;
 
 // Public routes
-Route::get('/', function () {
-    return view('homepage');
-})->name('home');
-
-// Navigation Menu
+Route::get('/', function () {return view('homepage');})->name('home');
+Route::get('/courses', [ControllersCourseController::class, 'index'])->name('courses.index');
+Route::get('/enrollments', function () {return view('pages.course.enrollment', ['type_menu' => 'enrollments']);})->name('enrollments');
 Route::get('quran', [QuranController::class, 'index'])->name('quran.index');
 Route::get('quran/surah', [QuranController::class, 'versesOfSurah'])->name('quran.surah');
-Route::get('metode-alfuadi', function () {
-    return view('pages.metode-alfuadi.introducing');
-})->name('metode-alfuadi');
+Route::get('metode-alfuadi', function () {return view('pages.metode-alfuadi.introducing');})->name('metode-alfuadi');
 
 Route::resource('surahs', SurahController::class);
 Route::resource('verses', VerseController::class);
 
-Route::get('/courses', function () {
-    return view('pages.course.index', ['type_menu' => 'courses']);
-})->name('courses');
-Route::get('/enrollments', function () {
-    return view('pages.course.enrollment', ['type_menu' => 'enrollments']);
-})->name('enrollments');
 
 // Custom API routes
 Route::get('/wordgroups/get/{id?}', [WordGroupController::class, 'getWordGroup'])->name('wordgroups.get');
@@ -77,56 +70,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Administrator & Operator Only
     Route::middleware(['roles:administrator,operator'])->group(function () {
         // Dashboard Panel
-        Route::get('/dashboard', function () {
-            $user = Auth::user();
-
-            $randomVerse = Cache::remember('daily_verse', now()->endOfDay(), function () {
-                return Verse::query()
-                    ->with('surah')
-                    ->inRandomOrder()
-                    ->first();
-            });
-
-            $latestTask = null;
-            $updatedAt = null;
-            $latestExercise = null;
-
-            if ($user) {
-                if (in_array($user->roles, ['administrator', 'operator'], true)) {
-                    $latestProgres = Word::query()
-                        ->where('editor', $user->id)
-                        ->latest('updated_at')
-                        ->first();
-
-                    if ($latestProgres) {
-                        $wordgroup = WordGroup::query()
-                            ->where('id', $latestProgres->word_group_id)
-                            ->latest('updated_at')
-                            ->first();
-
-                        if ($wordgroup) {
-                            $surah = Surah::query()
-                                ->where('id', $wordgroup->surah_id)
-                                ->first();
-
-                            if ($surah) {
-                                $latestTask = 'Surah ' . $surah->name . ' ayat ' . $wordgroup->verse_number;
-                            }
-
-                            $updatedAt = $latestProgres->updated_at;
-                        }
-                    }
-                }
-            }
-
-            return view('pages.dashboard.dashboard', [
-                'type_menu' => 'dashboard',
-                'randomVerse' => $randomVerse,
-                'latestTask' => $latestTask,
-                'updated_at' => $updatedAt,
-                'latestExercise' => $latestExercise,
-            ]);
-        })->name('dashboard');
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
         // Custom wordgroup routes
         Route::get('/wordgroups/grouping', [WordGroupController::class, 'grouping'])->name('wordgroups.grouping');
@@ -136,8 +80,42 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/wordgroups/split', [WordGroupController::class, 'split'])->name('wordgroups.split');
         Route::post('/wordgroups/complete', [WordGroupController::class, 'completeOrderNumber'])->name('wordgroups.complete');
 
-        // Dashboard exercise management
+        // Dashboard
         Route::prefix('dashboard')->name('dashboard.')->group(function () {
+            // Categories
+            Route::resource('/categories', CategoryController::class);
+
+            // Course
+            Route::resource('/courses', CourseController::class)->except('show');
+            Route::get('/courses/{course}', [CourseController::class, 'show'])->name('courses.show');
+            Route::get('/courses/{course}/student', [CourseController::class, 'students'])->name('courses.students');
+            Route::get('/courses/{course}/review', [CourseController::class, 'reviews'])->name('courses.reviews');
+
+
+            // Lessons
+            Route::get('/courses/{course}/lessons', [LessonController::class, 'index'])->name('lessons.index');
+            Route::get('/courses/{course}/lessons/create', [LessonController::class, 'create'])->name('lessons.create');
+            Route::post('/courses/{course}/lessons', [LessonController::class, 'store'])->name('lessons.store');
+            Route::get('/courses/{course}/lessons/{lesson}/edit', [LessonController::class, 'edit'])->name('lessons.edit');
+            Route::put('/courses/{course}/lessons/{lesson}', [LessonController::class, 'update'])->name('lessons.update');
+            Route::delete('/courses/{course}/lessons/{lesson}', [LessonController::class, 'destroy'])->name('lessons.destroy');
+
+            // Quizzes
+            Route::get('/courses/{course}/quizzes', [QuizController::class, 'index'])->name('quizzes.index');
+            Route::get('/courses/{course}/quizzes/create', [QuizController::class, 'create'])->name('quizzes.create');
+            Route::post('/courses/{course}/quizzes', [QuizController::class, 'store'])->name('quizzes.store');
+            Route::get('/courses/{course}/quizzes/{quiz}/edit', [QuizController::class, 'edit'])->name('quizzes.edit');
+            Route::put('/courses/{course}/quizzes/{quiz}', [QuizController::class, 'update'])->name('quizzes.update');
+            Route::delete('/courses/{course}/quizzes/{quiz}', [QuizController::class, 'destroy'])->name('quizzes.destroy');
+
+            // Questions
+            Route::get('/courses/{course}/quizzes/{quiz}/questions', [QuestionController::class, 'index'])->name('questions.index');
+            Route::get('/courses/{course}/quizzes/{quiz}/questions/create', [QuestionController::class, 'create'])->name('questions.create');
+            Route::post('/courses/{course}/quizzes/{quiz}/questions', [QuestionController::class, 'store'])->name('questions.store');
+            Route::get('/courses/{course}/quizzes/{quiz}/questions/{question}/edit', [QuestionController::class, 'edit'])->name('questions.edit');
+            Route::put('/courses/{course}/quizzes/{quiz}/questions/{question}', [QuestionController::class, 'update'])->name('questions.update');
+            Route::delete('/courses/{course}/quizzes/{quiz}/questions/{question}', [QuestionController::class, 'destroy'])->name('questions.destroy');
+
             // Exercise Level
             Route::resource('exercise-levels', ExerciseLevelController::class);
             Route::resource('exercises', ExerciseController::class);
@@ -170,10 +148,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Administrator, Operator and User Only
     Route::middleware(['roles:administrator,operator,user'])->group(function () {
 
-        // Route::get('/metode-al-fuadi/jilid-1', function () {
-        //     return view('pages.modul.nahwu.jilid-1', ['type_menu' => 'metode-al-fuadi']);
-        // })->name('metode-al-fuadi.jilid-1');
-
         Route::get('/exercise', [ExerciseLevelController::class, 'userIndex'])->name('exercise-level.index');
         Route::get('/exercise/list/{level}', [ExerciseController::class, 'getExerciseList'])->name('exercise.list');
         Route::get('/exercise/get/{level}/{exerciseId?}', [ExerciseController::class, 'getExercise'])
@@ -186,11 +160,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/words/data/data-nahwu', [NahwuDataController::class, 'getAll']);
     });
 
-    // User Profile
-    Route::get('/profile', function () {
-        return view('pages.users.profile', ['type_menu' => 'profile']);
-    })->name('profile');
+    // User
+    Route::get('/profile', function () {return view('pages.users.profile', ['type_menu' => 'profile']);})->name('profile');
     Route::put('/profile', [UserController::class, 'updateProfile'])->name('profile.update');
+    
+    // Learning
+    Route::get('/courses/{course:slug}/learn/{lesson}', [LearningController::class, 'show'])->name('learn');
+
+    // Quiz
+    Route::get('/courses/{course}/quizzes/{quiz}', [UserQuizController::class, 'show'])->name('quiz.show');
+    Route::post('/courses/{course}/quizzes/{quiz}', [UserQuizController::class, 'submit'])->name('quiz.submit');
+
+    // Review
+    Route::post('/courses/{course}/review', [UserReviewController::class, 'store'])->name('review.store');
 
     // Resource
     Route::resource('user-answers', ExerciseSubmissionController::class);
