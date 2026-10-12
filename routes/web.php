@@ -22,14 +22,15 @@ use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\QuranController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\User\LearningController;
-use App\Http\Controllers\CourseController as ControllersCourseController;
+use App\Http\Controllers\CourseController as UserCourseController;
 use App\Http\Controllers\User\QuizController as UserQuizController;
 use App\Http\Controllers\User\ReviewController as UserReviewController;
 use Illuminate\Support\Facades\Route;
 
 // Public routes
 Route::get('/', function () {return view('homepage');})->name('home');
-Route::get('/courses', [ControllersCourseController::class, 'index'])->name('courses.index');
+Route::get('/courses', [UserCourseController::class, 'index'])->name('courses.index');
+Route::get('/courses/{course:slug}', [UserCourseController::class, 'show'])->name('courses.show');
 Route::get('/enrollments', function () {return view('pages.course.enrollment', ['type_menu' => 'enrollments']);})->name('enrollments');
 Route::get('quran', [QuranController::class, 'index'])->name('quran.index');
 Route::get('quran/surah', [QuranController::class, 'versesOfSurah'])->name('quran.surah');

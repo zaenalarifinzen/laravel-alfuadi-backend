@@ -83,6 +83,25 @@
         <div class="row">
             <!-- Kelas 1 -->
             <div class="col-lg-4 col-md-6 mb-4">
+                @foreach ($courses as $course)
+                    <div class="course-card">
+                        <h3>{{ $course->title }}</h3>
+                        <p>{{ $course->description }}</p>
+                        <ul class="course-features">
+                            <li><i class="fas fa-circle-check"></i>Materi 1</li>
+                            <li><i class="fas fa-circle-check"></i>Materi 2</li>
+                            <li><i class="fas fa-circle-check"></i>Materi 3</li>
+                        </ul>
+                        <a href="{{ route('dashboard') }}"class="btn btn-outline-primary btn-block disabled">Segera
+                            Hadir</a>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Kelas 1 -->
+            <div class="col-lg-4 col-md-6 mb-4">
                 <div class="course-card">
                     <h3>Kelas Al-Qur'an</h3>
                     <p>Dirancang untuk santri & umum yang ingin membaca Al-Qur'an dengan baik dan benar.</p>

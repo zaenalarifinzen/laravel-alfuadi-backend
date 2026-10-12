@@ -56,7 +56,7 @@ class CourseController extends Controller
 
         $isEnrolled = auth()->check() ? auth()->user()->isEnrolled($course) : false;
 
-        return view('courses.show', compact('course', 'isEnrolled'));
+        return view('pages.course.show', compact('course', 'isEnrolled'));
     }
 
     /**
