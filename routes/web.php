@@ -89,6 +89,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
             // Course
             Route::resource('/courses', CourseController::class)->except('show');
             Route::get('/courses/{course}', [CourseController::class, 'show'])->name('courses.show');
+            Route::get('/courses/{course}/edit', [CourseController::class, 'edit'])->name('courses.edit');
+            Route::put('/courses/{course}', [CourseController::class, 'update'])->name('courses.update');
             Route::get('/courses/{course}/student', [CourseController::class, 'students'])->name('courses.students');
             Route::get('/courses/{course}/review', [CourseController::class, 'reviews'])->name('courses.reviews');
 

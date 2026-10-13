@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Course;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class CourseController extends Controller
@@ -20,7 +21,9 @@ class CourseController extends Controller
             ->latest()
             ->paginate(10);
 
-        return view('mentor.courses.index', compact('courses'));
+        $type_menu = 'courses';
+
+        return view('pages.dashboard.course.index', compact('courses', 'type_menu'));
     }
 
     /**
@@ -29,7 +32,8 @@ class CourseController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('mentor.courses.create', compact('categories'));
+        $type_menu = 'courses';
+        return view('pages.dashboard.course.create', compact('categories', 'type_menu'));
     }
 
     /**
@@ -67,7 +71,8 @@ class CourseController extends Controller
         $course->loadCount(['enrollments', 'lessons', 'reviews', 'quizzes']);
         $course->loadAvg('reviews', 'rating');
 
-        return view('mentor.courses.show', compact('course'));
+        $type_menu = 'courses';
+        return view('pages.dashboard.course.show', compact('course', 'type_menu'));
     }
 
     /**
@@ -76,7 +81,8 @@ class CourseController extends Controller
     public function edit(Course $course)
     {
         $categories = Category::all();
-        return view('mentor.courses.edit', compact('categories', 'course'));
+        $type_menu = 'courses';
+        return view('pages.dashboard.course.edit', compact('categories', 'course', 'type_menu'));
     }
 
     /**

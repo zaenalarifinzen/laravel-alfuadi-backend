@@ -38,7 +38,7 @@ class TestRoute extends TestCase
             ->assertForbidden();
     }
 
-    public function testCourseRouteIndex(): void
+    public function testUserCourseRouteIndex(): void
     {
 
         $user = User::factory(1)->create()[0];
@@ -65,5 +65,30 @@ class TestRoute extends TestCase
             ->assertViewIs('pages.course.show')
             ->assertSeeText('Course 1')
             ->assertSeeText('Description of course 1');
+    }
+
+    public function testAdminCourseRouteIndex(): void
+    {
+
+        $user = User::factory(1)->create()[0];
+        $category = Category::create(['name' => 'Programming']);
+        $course = Course::create([
+            'mentor_id' => $user->id,
+            'category_id' => $category->id,
+            'title' => "Course 1",
+            'description' => "Description of course 1",
+            'price' => 100000,
+            'status' => 'published',
+        ]);
+
+
+        $this->actingAs($this->admin)
+            ->get('dashboard/courses')
+            ->assertOk()
+            ->assertViewIs('pages.dashboard.course.index')
+            ->assertSeeText('Course 1')
+            ->assertSeeText('Draft')
+            ->assertSeeText('0 siswa')
+            ->assertSeeText('0 materi');
     }
 }
