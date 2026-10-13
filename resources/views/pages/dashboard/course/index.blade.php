@@ -22,7 +22,7 @@
 
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h2 class="section-title">Kelas Online</h2>
-                <a href="{{ route('dashboard.exercise-levels.create') }}" class="btn btn-icon icon-left btn-primary">
+                <a href="{{ route('dashboard.courses.create') }}" class="btn btn-icon icon-left btn-primary">
                     <i class="fas fa-plus"></i>Kelas baru</a>
             </div>
             <div class="section-body">
@@ -43,6 +43,7 @@
                                         <th>No</th>
                                         <th>Judul</th>
                                         <th>Status</th>
+                                        <th>Harga</th>
                                         <th>Materi</th>
                                         <th>Siswa</th>
                                     </tr>
@@ -56,33 +57,11 @@
                                                     aria-haspopup="true" aria-expanded="false">
                                                     {{ $course->title }}</a>
                                                 <div class="dropdown-menu">
+                                                    <a class="dropdown-item" href="{{ route('dashboard.courses.show', $course->id) }}">Detail</a>
                                                     <a class="dropdown-item" href="{{ route('dashboard.courses.edit', $course->id) }}">Edit</a>
                                                     <a class="dropdown-item" href="{{ route('dashboard.lessons.index', $course->id) }}">Materi</a>
                                                     <a class="dropdown-item" href="{{ route('dashboard.courses.reviews', $course->id) }}">Review</a>
                                                     <div class="dropdown-divider"></div>
-                                                    {{-- @if ($course->is_active)
-                                                        <a href="#" class="dropdown-item"
-                                                            onclick="event.preventDefault(); document.getElementById('deactivate-form-{{ $course->id }}').submit();">
-                                                            Nonaktifkan
-                                                        </a>
-
-                                                        <form id="deactivate-form-{{ $course->id }}"
-                                                            action="{{ route('dashboard.exercise-level.deactivate', $course->id) }}"
-                                                            method="POST" class="d-none">
-                                                            @csrf
-                                                        </form>
-                                                    @else
-                                                        <a href="#" class="dropdown-item"
-                                                            onclick="event.preventDefault(); document.getElementById('activate-form-{{ $course->id }}').submit();">
-                                                            Aktifkan
-                                                        </a>
-
-                                                        <form id="activate-form-{{ $course->id }}"
-                                                            action="{{ route('dashboard.exercise-level.activate', $course->id) }}"
-                                                            method="POST" class="d-none">
-                                                            @csrf
-                                                        </form>
-                                                    @endif --}}
                                                     <a href="#" class="dropdown-item text-danger"
                                                         data-toggle="modal"
                                                         data-target="#deleteModal"
@@ -94,14 +73,15 @@
                                             </div>
                                         </td>
                                         <td>
-                                            @if ($course->isPublished)
+                                            @if ($course->status === 'published')
                                                 <div class="badge badge-success">Published</div>
                                             @else
                                                 <div class="badge badge-warning">Draft</div>
                                             @endif
                                         </td>
-                                        <td>{{ $course->lessons_count ? $course->lessons_count : 0 }} materi</td>
-                                        <td>{{ $course->students_count ? $course->students_count : 0 }} siswa</td>
+                                        <td>{{ $course->price }}</td>
+                                        <td>{{ $course->lessons_count ? $course->lessons_count : 0 }}</td>
+                                        <td>{{ $course->students_count ? $course->students_count : 0 }}</td>
                                     </tr>
                                 @endforeach
                             </table>

@@ -14,8 +14,8 @@
 
             @if (auth()->check())
                 <li class="menu-header">Metode Al-Fuadi</li>
-                <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route ('dashboard.courses.index')}}"><i class="fas fa-film"></i>
+                <li class="{{ $type_menu === 'courses' ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route ('dashboard.courses.index')}}"><i class="fas fa-chalkboard-user"></i>
                         <span>Kelas Online</span></a>
                 </li>
                 <li class="nav-item dropdown {{ $type_menu === 'metode-al-fuadi' ? 'active' : '' }}">

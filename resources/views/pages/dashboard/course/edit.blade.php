@@ -36,7 +36,8 @@
                                     </div>
                                 </div>
 
-                                <form action="{{ route('dashboard.courses.update', $course->id) }}" method="POST" novalidate>
+                                <form action="{{ route('dashboard.courses.update', $course->id) }}" method="POST"
+                                    novalidate>
                                     @csrf
                                     @method('PUT')
                                     <div class="form-group">
@@ -48,27 +49,52 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label for="category">Kategori</label>
-                                        <select name="category">
+                                        <label>Kategori</label>
+                                        <select class="form-control @error('category_id') is-invalid @enderror" name="category_id" required>
                                             @foreach ($categories as $category)
                                                 <option value="{{ $category->id }}"
-                                                    {{ $course->category_id == $category->id ? 'selected' : '' }}>
-                                                    {{ $category->name }}</option>
+                                                    @selected(old('category_id', $course->category_id) == $category->id)>
+                                                    {{ $category->name }}
+                                                </option>
                                             @endforeach
                                         </select>
+                                        @error('category_id')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <div class="form-group">
                                         <label>Deskripsi</label>
-                                        <textarea class="form-control @error('description') is-invalid @enderror" name="description" data-height="100">{{ $course->description }}</textarea>
+                                        <textarea class="form-control @error('description') is-invalid @enderror"
+                                            name="description" data-height="100">{{ $course->description }}</textarea>
                                         @error('description')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label for="price">Harga</label>
-                                        <input type="number" name="price" placeholder="0" value="{{ $course->price }}">
+                                        <label>Harga</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">
+                                                    Rp
+                                                </div>
+                                            </div>
+                                            <input type="text" class="form-control currency" name="price"
+                                                value="{{ $course->price }}" required>
+                                            @error('price')
+                                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                            @enderror
+                                        </div>
                                     </div>
-
+                                    <div class="form-group">
+                                        <label>Status</label>
+                                        <select class="form-control @error('status') is-invalid @enderror" name="status" required>
+                                            <option value="draft" {{ old('status', $course->status) == 'draft' ? 'selected' : '' }}>Draft</option>
+                                            <option value="published" {{ old('status', $course->status) == 'published' ? 'selected' : '' }}>Published</option>
+                                        </select>
+                                        @error('status')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                             </div>
                             <div class="card-footer text-left">
                                 <button class="btn btn-primary">Update</button>

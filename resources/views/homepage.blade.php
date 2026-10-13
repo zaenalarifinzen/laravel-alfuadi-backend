@@ -1032,7 +1032,7 @@
                                 <a class="btn btn-primary btn-lg px-4" href="{{ route('register') }}">
                                     Mulai Belajar Gratis
                                 </a>
-                                <a class="btn-hero-play" href="{{ route('courses') }}">
+                                <a class="btn-hero-play" href="{{ route('courses.index') }}">
                                     <i class="fas fa-search"></i>
                                     Jelajahi Kelas Online
                                 </a>
@@ -1074,7 +1074,7 @@
                                 <a class="btn btn-primary btn-lg px-4" href="{{ route('enrollments') }}">
                                     Lanjutkan Belajar<span class="ms-2"><i class="fas fa-arrow-right"></i></span>
                                 </a>
-                                <a class="btn-hero-play" href="{{ route('courses') }}">
+                                <a class="btn-hero-play" href="{{ route('courses.index') }}">
                                     <span class="play-circle"><i class="fas fa-search"></i></span>
                                     Jelajahi Kelas Online
                                 </a>

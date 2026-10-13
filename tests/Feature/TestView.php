@@ -54,4 +54,22 @@ class TestView extends TestCase
             ->assertSee('selected')
             ->assertSee('99000');
     }
+
+    public function testShowCourseView(): void
+    {
+        $category1 = Category::create(['name' => 'Coding']);
+        $course = Course::create([
+            'title' => 'Course 1',
+            'description' => 'Description of course 1',
+            'category_id' => $category1->id,
+            'mentor_id' => $this->admin->id,
+            'price' => 99000,
+        ]);
+
+        $response = $this->actingAs($this->admin)
+            ->get('/dashboard/courses/' . $course->id)
+            ->assertOk()
+            ->assertViewIs('pages.dashboard.course.show')
+            ->assertSee('Course 1');
+    }
 }

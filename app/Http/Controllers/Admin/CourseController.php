@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
+use function Illuminate\Log\log;
+
 class CourseController extends Controller
 {
     /**
@@ -16,8 +18,7 @@ class CourseController extends Controller
      */
     public function index(Request $request)
     {
-        $courses = Course::where('status', 'published')
-            ->with('enrollments', 'lessons')
+        $courses = Course::with('enrollments', 'lessons')
             ->latest()
             ->paginate(10);
 
@@ -43,7 +44,7 @@ class CourseController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'category_id' => 'required|exist:categories,id',
+            'category_id' => 'required|exists:categories,id',
             'description' => 'required|string|max:1000',
             'price' => 'required|numeric|min:0',
             'thumbnail' => 'nullable|image|max:2048',
@@ -58,7 +59,7 @@ class CourseController extends Controller
 
         Course::create($validated);
 
-        return redirect()->route('mentor.courses.index')
+        return redirect()->route('dashboard.courses.index')
             ->with('success', 'Kursus berhasil dibuat.');
     }
 
@@ -92,12 +93,14 @@ class CourseController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'category_id' => 'required|exist:categories,id',
+            'category_id' => 'required|exists:categories,id',
             'description' => 'required|string|max:1000',
             'price' => 'required|numeric|min:0',
             'thumbnail' => 'nullable|image|max:2048',
             'status' => 'required|in:draft,published',
         ]);
+
+        Log::info('request', $request->toArray());
 
         if ($request->hasFile('thumbnail')) {
             if ($course->thumbnail) {
@@ -110,7 +113,7 @@ class CourseController extends Controller
 
         $course->update($validated);
 
-        return redirect()->route('mentor.courses.index')
+        return redirect()->route('dashboard.courses.index')
             ->with('success', 'Kursus berhasil diperbarui.');
     }
 
