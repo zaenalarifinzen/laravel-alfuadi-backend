@@ -78,18 +78,6 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label>Status</label>
-                                        <select class="form-control @error('status') is-invalid @enderror" name="status"
-                                            required>
-                                            <option value="draft">Draft</option>
-                                            <option value="published">Published</option>
-                                        </select>
-                                        @error('status')
-                                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
                             </div>
                             <div class="card-footer text-left">
                                 <button class="btn btn-primary">Simpan</button>

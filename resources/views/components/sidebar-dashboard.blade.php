@@ -13,27 +13,10 @@
             </li>
 
             @if (auth()->check())
-                <li class="menu-header">Metode Al-Fuadi</li>
+                <li class="menu-header">Kelas Online</li>
                 <li class="{{ $type_menu === 'courses' ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route ('dashboard.courses.index')}}"><i class="fas fa-chalkboard-user"></i>
                         <span>Kelas Online</span></a>
-                </li>
-                <li class="nav-item dropdown {{ $type_menu === 'metode-al-fuadi' ? 'active' : '' }}">
-                    <a href="#" class="nav-link has-dropdown"><i
-                            class="fas fa-book-open"></i>
-                        <span>Modul Al-Fuadi</span></a>
-                    <ul class="dropdown-menu">
-                        <li class="{{ Request::is('metode-al-fuadi/jilid-1') ? 'active' : '' }}">
-                            <a class="nav-link" href="#">
-                                <span>Jilid 1</span>
-                            </a>
-                        </li>
-                        <li class="{{ Request::is('modul/jilid-2') ? 'active' : '' }}">
-                            <a class="nav-link" href="#">
-                                <span>Jilid 2</span>
-                            </a>
-                        </li>
-                    </ul>
                 </li>
                 <li class="nav-item dropdown {{ Request::is('dashboard/exercises') || 
                     Request::is('dashboard/exercise-levels') ? 'active' : '' }}">

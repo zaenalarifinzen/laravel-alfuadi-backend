@@ -42,36 +42,26 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Judul</th>
-                                        <th>Status</th>
                                         <th>Harga</th>
                                         <th>Materi</th>
                                         <th>Siswa</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
                                 @foreach ($courses as $course)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>
-                                            <div class="btn-group mb-2">
-                                                <a href="#" class="font-weight-600" data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false">
-                                                    {{ $course->title }}</a>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="{{ route('dashboard.courses.show', $course->id) }}">Detail</a>
-                                                    <a class="dropdown-item" href="{{ route('dashboard.courses.edit', $course->id) }}">Edit</a>
-                                                    <a class="dropdown-item" href="{{ route('dashboard.lessons.index', $course->id) }}">Materi</a>
-                                                    <a class="dropdown-item" href="{{ route('dashboard.courses.reviews', $course->id) }}">Review</a>
-                                                    <div class="dropdown-divider"></div>
-                                                    <a href="#" class="dropdown-item text-danger"
-                                                        data-toggle="modal"
-                                                        data-target="#deleteModal"
-                                                        data-action="{{ route('dashboard.courses.destroy', $course->id) }}"
-                                                        data-title="{{ $course->title }}">
-                                                        Hapus
-                                                    </a>
-                                                </div>
+                                            <a href="{{ route('dashboard.courses.show', $course->id) }}" class="font-weight-600">{{ $course->title }}</a>
+                                            <div class="table-links">
+                                                <a href="{{ route('dashboard.courses.edit', $course->id) }}">Edit</a>
+                                                <div class="bullet"></div>
+                                                <a href="{{ route('dashboard.lessons.index', $course->id) }}">Kelola Materi</a>
                                             </div>
                                         </td>
+                                        <td>Rp {{ number_format($course->price, 0, ',', '.') }}</td>
+                                        <td>{{ $course->lessons_count ? $course->lessons_count : 0 }}</td>
+                                        <td>{{ $course->students_count ? $course->students_count : 0 }}</td>
                                         <td>
                                             @if ($course->status === 'published')
                                                 <div class="badge badge-success">Published</div>
@@ -79,9 +69,6 @@
                                                 <div class="badge badge-warning">Draft</div>
                                             @endif
                                         </td>
-                                        <td>{{ $course->price }}</td>
-                                        <td>{{ $course->lessons_count ? $course->lessons_count : 0 }}</td>
-                                        <td>{{ $course->students_count ? $course->students_count : 0 }}</td>
                                     </tr>
                                 @endforeach
                             </table>
@@ -89,7 +76,8 @@
                     </div>
                     <div class="card-footer d-flex justify-content-between align-items-center">
                         <div class="">
-                            <div class="p">Menampilkan {{ $courses->count() }} dari {{ $courses->count() }} hasil</div>
+                            <div class="p">Menampilkan {{ $courses->count() }} dari {{ $courses->count() }} hasil
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -99,7 +87,8 @@
     </div>
 
     <!-- Modal Konfirmasi Hapus -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -110,7 +99,8 @@
                 </div>
                 <div class="modal-body">
                     <p class="mb-0">Apakah Anda yakin ingin menghapus level <strong id="delete-level-title"></strong>?</p>
-                    <p class="text-danger mt-2 mb-0"><small><i class="fas fa-exclamation-triangle mr-1"></i> Data yang dihapus tidak dapat dikembalikan.</small></p>
+                    <p class="text-danger mt-2 mb-0"><small><i class="fas fa-exclamation-triangle mr-1"></i> Data yang
+                            dihapus tidak dapat dikembalikan.</small></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>

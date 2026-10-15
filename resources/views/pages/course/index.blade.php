@@ -82,21 +82,20 @@
 
         <div class="row">
             <!-- Kelas 1 -->
-            <div class="col-lg-4 col-md-6 mb-4">
-                @foreach ($courses as $course)
+            @foreach ($courses as $course)
+                <div class="col-lg-4 col-md-6 mb-4">
                     <div class="course-card">
                         <h3>{{ $course->title }}</h3>
                         <p>{{ $course->description }}</p>
                         <ul class="course-features">
-                            <li><i class="fas fa-circle-check"></i>Materi 1</li>
-                            <li><i class="fas fa-circle-check"></i>Materi 2</li>
-                            <li><i class="fas fa-circle-check"></i>Materi 3</li>
+                            @foreach ($course->lessons->take(5) as $lesson)
+                                <li><i class="fas fa-circle-check"></i>{{ $lesson->title }}</li>
+                            @endforeach
                         </ul>
-                        <a href="{{ route('dashboard') }}"class="btn btn-outline-primary btn-block disabled">Segera
-                            Hadir</a>
+                        <a href="{{ route('courses.show', $course->slug) }}"class="btn btn-primary btn-block">Detail</a>
                     </div>
-                @endforeach
-            </div>
+                </div>
+            @endforeach
         </div>
 
         <div class="row">

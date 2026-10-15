@@ -17,6 +17,7 @@
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="{{ route('home') }}">Dashboard</a></div>
                     <div class="breadcrumb-item"><a href="{{ route('dashboard.courses.index') }}">Kelas</a></div>
+                    <div class="breadcrumb-item"><a href="{{ route('dashboard.courses.show', $course->id ) }}">{{ $course->title }}</a></div>
                     <div class="breadcrumb-item">Edit</div>
                 </div>
             </div>

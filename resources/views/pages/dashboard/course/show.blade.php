@@ -73,7 +73,7 @@
                             <div class="card-body">
                                 @forelse ($course->lessons as $lesson)
                                     <div
-                                        class="d-flex align-items-center border-bottom {{ $loop->last ? 'border-bottom-0' : '' }}">
+                                        class="d-flex align-items-center py-2 border-bottom {{ $loop->last ? 'border-bottom-0' : '' }}">
                                         <span class="text-muted mr-4 font-weight-600">
                                             {{ $loop->iteration }}
                                         </span>
@@ -187,6 +187,10 @@
                                     <a href="{{ route('dashboard.courses.reviews', $course->id) }}"
                                         class="btn btn-outline-primary mb-2">
                                         Lihat Review
+                                    </a>
+                                    <a href="{{ route('dashboard.courses.destroy', $course->id) }}"
+                                        class="btn btn-outline-danger mt-2">
+                                        Hapus
                                     </a>
                                 </div>
                             </div>

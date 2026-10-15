@@ -54,9 +54,9 @@ class CourseController extends Controller
         $course->loadCount('enrollments', 'reviews');
         $course->loadAvg('reviews', 'rating');
 
-        $isEnrolled = auth()->check() ? auth()->user()->isEnrolled($course) : false;
+        // $isEnrolled = auth()->check() ? auth()->user()->isEnrolled($course) : false;
 
-        return view('pages.course.show', compact('course', 'isEnrolled'));
+        return view('pages.course.show', compact('course'));
     }
 
     /**

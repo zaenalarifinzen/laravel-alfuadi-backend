@@ -18,7 +18,7 @@ class CourseController extends Controller
      */
     public function index(Request $request)
     {
-        $courses = Course::with('enrollments', 'lessons')
+        $courses = Course::withCount('enrollments', 'lessons')
             ->latest()
             ->paginate(10);
 
