@@ -86,7 +86,7 @@
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="course-card">
                         <h3>{{ $course->title }}</h3>
-                        <p>{{ $course->description }}</p>
+                        <p>{!! nl2br(e(Str::limit($course->description, 150, ' ...', true))) !!}</p>
                         <ul class="course-features">
                             @foreach ($course->lessons->take(5) as $lesson)
                                 <li><i class="fas fa-circle-check"></i>{{ $lesson->title }}</li>

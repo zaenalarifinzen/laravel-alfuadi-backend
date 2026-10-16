@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('title', $course->title ?? 'Detail Kursus')
+@section('title', $course->title ?? 'Detail Kelas')
 
 @section('main')
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Detail Kursus</h1>
+                <h1>Detail Kelas</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="{{ route('home') }}">Dashboard</a></div>
                     <div class="breadcrumb-item"><a href="{{ route('dashboard.courses.index') }}">Kelas</a></div>
@@ -41,7 +41,7 @@
                                     {!! nl2br(e($course->description)) !!}
                                 </p>
                             @else
-                                <p class="text-muted mb-0 font-italic">Belum ada deskripsi untuk kursus ini.</p>
+                                <p class="text-muted mb-0 font-italic">Belum ada deskripsi untuk kelas ini.</p>
                             @endif
                         </div>
 
@@ -54,7 +54,7 @@
                             <div class="card-body">
                                 @forelse ($course->lessons as $lesson)
                                     <div
-                                        class="d-flex align-items-center py-2 border-bottom {{ $loop->last ? 'border-bottom-0' : '' }}">
+                                        class="d-flex align-items-center py-2">
                                         <span class="text-muted mr-4 font-weight-600">
                                             {{ $loop->iteration }}
                                         </span>
@@ -123,10 +123,11 @@
                                     <h3 class="text-primary">Rp {{ number_format($course->price, 0, ',', '.') }}</h3>
                                 </div>
                                 <div class="d-flex flex-column gap-2">
-                                    <p class="mb-0"><i class="fas fa-infinity mr-4"></i> Akses selamanya</p>
-                                    <p class="mb-0"><i class="far fa-circle-check mr-4"></i> Materi lengkap & terstruktur
-                                    </p>
-                                    <p class="mb-0"><i class="fas fa-recycle mr-4"></i> Update materi berkala</p>
+                                    <p class="mb-0"><i class="fas fa-infinity mr-3"></i> Akses selamanya</p>
+                                    <p class="mb-0"><i class="fas fa-circle-check mr-3"></i> Materi lengkap & terstruktur</p>
+                                    <p class="mb-0"><i class="fa-brands fa-youtube mr-3"></i> Video penjelasan</p>
+                                    <p class="mb-0"><i class="fas fa-video mr-3"></i> Sesi Live</p>
+                                    <p class="mb-0"><i class="fas fa-medal mr-3"></i> Sertifikat</p>
                                 </div>
                             </div>
                             <div class="card-footer">

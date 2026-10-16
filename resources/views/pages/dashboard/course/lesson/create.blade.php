@@ -62,14 +62,6 @@
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                    <div class="form-group">
-                                        <label>Urutan</label>
-                                        <input type="text" class="form-control @error('display_order') is-invalid @enderror"
-                                            name="display_order" value="{{ old('display_order') }}" required>
-                                        @error('display_order')
-                                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                                        @enderror
-                                    </div>
 
                             </div>
                             <div class="card-footer text-left">

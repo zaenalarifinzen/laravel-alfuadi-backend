@@ -29,7 +29,6 @@ class LessonController extends Controller
             'title' => 'required|string|max:255',
             'content_markdown' => 'required|string',
             'video_url' => 'nullable|url',
-            'display_order' => 'required|integer|min:0',
         ]);
 
         $data = [
@@ -37,7 +36,7 @@ class LessonController extends Controller
             'title' => $validated['title'],
             'content_markdown' => $validated['content_markdown'],
             'video_url' => $validated['video_url'],
-            'display_order' => $validated['display_order'],
+            'display_order' => $course->lessons()->max('display_order') + 1,
         ];
 
         $lesson = Lesson::create($data);
