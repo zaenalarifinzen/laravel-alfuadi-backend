@@ -104,20 +104,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::delete('/courses/{course}/lessons/{lesson}', [LessonController::class, 'destroy'])->name('lessons.destroy');
 
             // Quizzes
-            Route::get('/courses/{course}/quizzes', [QuizController::class, 'index'])->name('quizzes.index');
-            Route::get('/courses/{course}/quizzes/create', [QuizController::class, 'create'])->name('quizzes.create');
-            Route::post('/courses/{course}/quizzes', [QuizController::class, 'store'])->name('quizzes.store');
-            Route::get('/courses/{course}/quizzes/{quiz}/edit', [QuizController::class, 'edit'])->name('quizzes.edit');
-            Route::put('/courses/{course}/quizzes/{quiz}', [QuizController::class, 'update'])->name('quizzes.update');
-            Route::delete('/courses/{course}/quizzes/{quiz}', [QuizController::class, 'destroy'])->name('quizzes.destroy');
+            Route::get('/courses/{course}/lessons/{lesson}/quizzes', [QuizController::class, 'index'])->name('quizzes.index');
+            Route::get('/courses/{course}/lessons/{lesson}/quizzes/create', [QuizController::class, 'create'])->name('quizzes.create');
+            Route::post('/courses/{course}/lessons/{lesson}/quizzes', [QuizController::class, 'store'])->name('quizzes.store');
+            Route::get('/courses/{course}/lessons/{lesson}/quizzes/{quiz}/edit', [QuizController::class, 'edit'])->name('quizzes.edit');
+            Route::put('/courses/{course}/lessons/{lesson}/quizzes/{quiz}', [QuizController::class, 'update'])->name('quizzes.update');
+            Route::delete('/courses/{course}/lessons/{lesson}/quizzes/{quiz}', [QuizController::class, 'destroy'])->name('quizzes.destroy');
 
             // Questions
-            Route::get('/courses/{course}/quizzes/{quiz}/questions', [QuestionController::class, 'index'])->name('questions.index');
-            Route::get('/courses/{course}/quizzes/{quiz}/questions/create', [QuestionController::class, 'create'])->name('questions.create');
-            Route::post('/courses/{course}/quizzes/{quiz}/questions', [QuestionController::class, 'store'])->name('questions.store');
-            Route::get('/courses/{course}/quizzes/{quiz}/questions/{question}/edit', [QuestionController::class, 'edit'])->name('questions.edit');
-            Route::put('/courses/{course}/quizzes/{quiz}/questions/{question}', [QuestionController::class, 'update'])->name('questions.update');
-            Route::delete('/courses/{course}/quizzes/{quiz}/questions/{question}', [QuestionController::class, 'destroy'])->name('questions.destroy');
+            Route::get('/courses/{course}/lessons/{lesson}/quizzes/{quiz}/questions', [QuestionController::class, 'index'])->name('questions.index');
+            Route::get('/courses/{course}/lessons/{lesson}/quizzes/{quiz}/questions/create', [QuestionController::class, 'create'])->name('questions.create');
+            Route::post('/courses/{course}/lessons/{lesson}/quizzes/{quiz}/questions', [QuestionController::class, 'store'])->name('questions.store');
+            Route::get('/courses/{course}/lessons/{lesson}/quizzes/{quiz}/questions/{question}/edit', [QuestionController::class, 'edit'])->name('questions.edit');
+            Route::put('/courses/{course}/lessons/{lesson}/quizzes/{quiz}/questions/{question}', [QuestionController::class, 'update'])->name('questions.update');
+            Route::delete('/courses/{course}/lessons/{lesson}/quizzes/{quiz}/questions/{question}', [QuestionController::class, 'destroy'])->name('questions.destroy');
 
             // Exercise Level
             Route::resource('exercise-levels', ExerciseLevelController::class);
@@ -171,8 +171,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/courses/{course:slug}/learn/{lesson}', [LearningController::class, 'show'])->name('learn');
 
     // Quiz
-    Route::get('/courses/{course}/quizzes/{quiz}', [UserQuizController::class, 'show'])->name('quiz.show');
-    Route::post('/courses/{course}/quizzes/{quiz}', [UserQuizController::class, 'submit'])->name('quiz.submit');
+    Route::get('/courses/{course:slug}/lessons/{lesson}/quizzes/{quiz}', [UserQuizController::class, 'show'])->name('quiz.show');
+    Route::post('/courses/{course:slug}/lessons/{lesson}/quizzes/{quiz}', [UserQuizController::class, 'submit'])->name('quiz.submit');
 
     // Review
     Route::post('/courses/{course}/review', [UserReviewController::class, 'store'])->name('review.store');

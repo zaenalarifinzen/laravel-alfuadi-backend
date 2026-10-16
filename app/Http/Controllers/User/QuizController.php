@@ -4,34 +4,43 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Course;
+use App\Models\Lesson;
 use App\Models\Quiz;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class QuizController extends Controller
 {
-    public function show(Course $course, Quiz $quiz)
+    public function show(Course $course, Lesson $lesson, Quiz $quiz)
     {
-        $user = auth()->user();
+        $lesson = $course->lessons()->findOrFail($lesson->id);
+        $quiz = $lesson->quizzes()->with('questions')->findOrFail($quiz->id);
 
-        if (!$user->isEnrolled($course)) {
+        if (!$course->enrollments()->where('user_id', Auth::id())->exists()) {
             abort(403);
         }
 
-        $quiz->load('questions');
-
-        return view('siswa.quiz.show', compact('course', 'quiz'));
+        return view('siswa.quiz.show', compact('course', 'lesson', 'quiz'));
     }
 
-    public function submit(Request $request, Course $course, Quiz $quiz)
+    public function submit(Request $request, Course $course, Lesson $lesson, Quiz $quiz)
     {
-        $user = auth()->user();
+        $lesson = $course->lessons()->findOrFail($lesson->id);
+        $quiz = $lesson->quizzes()->with('questions')->findOrFail($quiz->id);
 
-        if (!$user->isEnrolled($course)) {
+        if (!$course->enrollments()->where('user_id', Auth::id())->exists()) {
             abort(403);
         }
 
-        $quiz->load('questions');
-        $answer = $request->input('answer', []);
+        $rules = [
+            'answer' => ['nullable', 'array'],
+        ];
+
+        foreach ($quiz->questions as $question) {
+            $rules['answer.' . $question->id] = ['nullable', 'in:a,b,c,d'];
+        }
+
+        $answer = $request->validate($rules)['answer'] ?? [];
 
         $score = 0;
         $results = [];
@@ -51,14 +60,8 @@ class QuizController extends Controller
             ];
         }
 
-        $attemp = QuizAttemp::create([
-            'user_id' => $user->id,
-            'quiz_id' => $quiz->id,
-            'score' => $score,
-            'total_questions' => $quiz->questions->count(),
-            'completed_at' => now(),
-        ]);
+        $totalQuestions = $quiz->questions->count();
 
-        return view('siswa.quiz.result', compact('course', 'quiz', 'attemp', 'results'));
+        return view('siswa.quiz.result', compact('course', 'lesson', 'quiz', 'score', 'totalQuestions', 'results'));
     }
 }

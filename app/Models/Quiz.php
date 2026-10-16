@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class Quiz extends Model
 {
     protected $fillable = [
-        'course_id',
+        'lesson_id',
         'title',
     ];
 
-    public function course()
+    public function lesson()
     {
-        return $this->belongsTo(Course::class);
+        return $this->belongsTo(Lesson::class);
     }
 
     public function questions()

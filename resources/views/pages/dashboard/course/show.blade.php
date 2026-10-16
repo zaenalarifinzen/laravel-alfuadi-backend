@@ -176,10 +176,6 @@
                                         class="btn btn-outline-primary mb-2">
                                         Kelola Materi
                                     </a>
-                                    <a href="{{ route('dashboard.quizzes.index', $course->id) }}"
-                                        class="btn btn-outline-primary mb-2">
-                                        Kelola Quiz
-                                    </a>
                                     <a href="{{ route('dashboard.courses.students', $course->id) }}"
                                         class="btn btn-outline-primary mb-2">
                                         Lihat Siswa

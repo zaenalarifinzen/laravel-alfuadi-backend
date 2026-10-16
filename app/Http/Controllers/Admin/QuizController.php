@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Course;
+use App\Models\Lesson;
 use App\Models\Quiz;
 use Illuminate\Http\Request;
 
@@ -12,32 +13,37 @@ class QuizController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Course $course)
+    public function index(Course $course, Lesson $lesson)
     {
-        $quizzes = $course->quizzes()->withCount('question')->get();
-        return view('mentor.quizzes.index', compact('quizzes'));
+        $lesson = $course->lessons()->findOrFail($lesson->id);
+        $quizzes = $lesson->quizzes()->withCount('questions')->get();
+
+        return view('mentor.quizzes.index', compact('course', 'lesson', 'quizzes'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Course $course)
+    public function create(Course $course, Lesson $lesson)
     {
-        return view('mentor.quizzes.create', compact('course'));
+        $lesson = $course->lessons()->findOrFail($lesson->id);
+
+        return view('mentor.quizzes.create', compact('course', 'lesson'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Course $course)
+    public function store(Request $request, Course $course, Lesson $lesson)
     {
+        $lesson = $course->lessons()->findOrFail($lesson->id);
         $validated = $request->validate([
-            'title' => 'require|string|max:255',
+            'title' => 'required|string|max:255',
         ]);
 
-        $course->quizzes()->create($validated);
+        $lesson->quizzes()->create($validated);
 
-        return redirect()->route('mentor.quizzes.index', $course)
+        return redirect()->route('dashboard.quizzes.index', [$course, $lesson])
             ->with('success', 'Quiz created successfully.');
     }
 
@@ -52,31 +58,38 @@ class QuizController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Course $course, Quiz $quiz)
+    public function edit(Course $course, Lesson $lesson, Quiz $quiz)
     {
-        return view('mentor.quizzes.edit', compact('course', 'quiz'));
+        $lesson = $course->lessons()->findOrFail($lesson->id);
+        $quiz = $lesson->quizzes()->findOrFail($quiz->id);
+
+        return view('mentor.quizzes.edit', compact('course', 'lesson', 'quiz'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Course $course, Quiz $quiz)
+    public function update(Request $request, Course $course, Lesson $lesson, Quiz $quiz)
     {
+        $lesson = $course->lessons()->findOrFail($lesson->id);
         $validated = $request->validate([
-            'title' => 'require|string|max:255',
+            'title' => 'required|string|max:255',
         ]);
 
+        $quiz = $lesson->quizzes()->findOrFail($quiz->id);
         $quiz->update($validated);
 
-        return redirect()->route('mentor.quizzes.index')
+        return redirect()->route('dashboard.quizzes.index', [$course, $lesson])
             ->with('success', 'Quiz updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Course $course, Quiz $quiz)
+    public function destroy(Course $course, Lesson $lesson, Quiz $quiz)
     {
+        $lesson = $course->lessons()->findOrFail($lesson->id);
+        $quiz = $lesson->quizzes()->findOrFail($quiz->id);
         $quiz->delete();
 
         return back()->with('success', 'Quiz deleted successfully');
