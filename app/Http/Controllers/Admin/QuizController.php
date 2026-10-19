@@ -16,7 +16,7 @@ class QuizController extends Controller
     public function index(Course $course, Lesson $lesson)
     {
         $lesson = $course->lessons()->findOrFail($lesson->id);
-        $quizzes = $lesson->quizzes()->withCount('questions')->get();
+        $quizzes = $lesson->quizzes()->get();
 
         return view('mentor.quizzes.index', compact('course', 'lesson', 'quizzes'));
     }
@@ -38,12 +38,17 @@ class QuizController extends Controller
     {
         $lesson = $course->lessons()->findOrFail($lesson->id);
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
+            'question' => 'required|string',
+            'option_a' => 'required|string|max:255',
+            'option_b' => 'required|string|max:255',
+            'option_c' => 'required|string|max:255',
+            'option_d' => 'required|string|max:255',
+            'correct_answer' => 'required|in:a,b,c,d',
         ]);
 
         $lesson->quizzes()->create($validated);
 
-        return redirect()->route('dashboard.quizzes.index', [$course, $lesson])
+        return redirect()->route('dashboard.lessons.edit', [$course, $lesson])
             ->with('success', 'Quiz created successfully.');
     }
 
@@ -73,13 +78,18 @@ class QuizController extends Controller
     {
         $lesson = $course->lessons()->findOrFail($lesson->id);
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
+            'question' => 'required|string',
+            'option_a' => 'required|string|max:255',
+            'option_b' => 'required|string|max:255',
+            'option_c' => 'required|string|max:255',
+            'option_d' => 'required|string|max:255',
+            'correct_answer' => 'required|in:a,b,c,d',
         ]);
 
         $quiz = $lesson->quizzes()->findOrFail($quiz->id);
         $quiz->update($validated);
 
-        return redirect()->route('dashboard.quizzes.index', [$course, $lesson])
+        return redirect()->route('dashboard.lessons.edit', [$course, $lesson])
             ->with('success', 'Quiz updated successfully');
     }
 

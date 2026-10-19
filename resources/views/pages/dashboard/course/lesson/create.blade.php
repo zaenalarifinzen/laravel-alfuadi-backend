@@ -23,12 +23,16 @@
             </div>
 
             <div class="section-body">
+                <h2 class="section-title">{{ $course->title }}</h2>
+                <p class="section-lead">
+                    Tambah materi pembelajaran.
+                </p>
 
                 <div class="row">
-                    <div class="col-12 col-md-6 col-lg-6">
+                    <div class="col-12 col-md-6 col-lg-8">
                         <div class="card">
                             <div class="card-header">
-                                <h4>{{ $course->title }}</h4>
+                                <h4>Materi</h4>
                             </div>
                             <div class="card-body">
                                 <div class="row">
@@ -64,8 +68,8 @@
                                     </div>
 
                             </div>
-                            <div class="card-footer text-left">
-                                <button class="btn btn-primary">Simpan</button>
+                            <div class="card-footer text-right">
+                                <button class="btn btn-primary px-4">Simpan</button>
                             </div>
                             </form>
                         </div>
@@ -75,6 +79,7 @@
     </div>
     </section>
     </div>
+    
 @endsection
 
 @push('scripts')

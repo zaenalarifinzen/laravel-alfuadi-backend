@@ -8,7 +8,12 @@ class Quiz extends Model
 {
     protected $fillable = [
         'lesson_id',
-        'title',
+        'question',
+        'option_a',
+        'option_b',
+        'option_c',
+        'option_d',
+        'correct_answer'
     ];
 
     public function lesson()
@@ -16,8 +21,8 @@ class Quiz extends Model
         return $this->belongsTo(Lesson::class);
     }
 
-    public function questions()
-    {
-        return $this->hasMany(Question::class);
-    }
+    // public function questions()
+    // {
+    //     return $this->hasMany(Question::class);
+    // }
 }

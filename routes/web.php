@@ -112,12 +112,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::delete('/courses/{course}/lessons/{lesson}/quizzes/{quiz}', [QuizController::class, 'destroy'])->name('quizzes.destroy');
 
             // Questions
-            Route::get('/courses/{course}/lessons/{lesson}/quizzes/{quiz}/questions', [QuestionController::class, 'index'])->name('questions.index');
-            Route::get('/courses/{course}/lessons/{lesson}/quizzes/{quiz}/questions/create', [QuestionController::class, 'create'])->name('questions.create');
-            Route::post('/courses/{course}/lessons/{lesson}/quizzes/{quiz}/questions', [QuestionController::class, 'store'])->name('questions.store');
-            Route::get('/courses/{course}/lessons/{lesson}/quizzes/{quiz}/questions/{question}/edit', [QuestionController::class, 'edit'])->name('questions.edit');
-            Route::put('/courses/{course}/lessons/{lesson}/quizzes/{quiz}/questions/{question}', [QuestionController::class, 'update'])->name('questions.update');
-            Route::delete('/courses/{course}/lessons/{lesson}/quizzes/{quiz}/questions/{question}', [QuestionController::class, 'destroy'])->name('questions.destroy');
+            // Route::get('/courses/{course}/lessons/{lesson}/quizzes/{quiz}/questions', [QuestionController::class, 'index'])->name('questions.index');
+            // Route::get('/courses/{course}/lessons/{lesson}/quizzes/{quiz}/questions/create', [QuestionController::class, 'create'])->name('questions.create');
+            // Route::post('/courses/{course}/lessons/{lesson}/quizzes/{quiz}/questions', [QuestionController::class, 'store'])->name('questions.store');
+            // Route::get('/courses/{course}/lessons/{lesson}/quizzes/{quiz}/questions/{question}/edit', [QuestionController::class, 'edit'])->name('questions.edit');
+            // Route::put('/courses/{course}/lessons/{lesson}/quizzes/{quiz}/questions/{question}', [QuestionController::class, 'update'])->name('questions.update');
+            // Route::delete('/courses/{course}/lessons/{lesson}/quizzes/{quiz}/questions/{question}', [QuestionController::class, 'destroy'])->name('questions.destroy');
 
             // Exercise Level
             Route::resource('exercise-levels', ExerciseLevelController::class);

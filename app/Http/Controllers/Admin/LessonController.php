@@ -52,8 +52,9 @@ class LessonController extends Controller
 
     public function edit(Course $course, Lesson $lesson)
     {
+        $quizzes = $lesson->quizzes()->get();
         $type_menu = 'courses';
-        return view('pages.dashboard.course.lesson.edit', compact('course', 'lesson', 'type_menu'));
+        return view('pages.dashboard.course.lesson.edit', compact('course', 'lesson', 'quizzes', 'type_menu'));
     }
 
     public function update(Request $request, Course $course, Lesson $lesson)

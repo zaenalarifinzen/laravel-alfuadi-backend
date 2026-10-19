@@ -169,24 +169,19 @@
                                 {{-- Action Buttons --}}
                                 <div class="d-flex flex-column">
                                     <a href="{{ route('dashboard.courses.edit', $course->id) }}"
-                                        class="btn btn-outline-primary mb-2">
-                                        Edit Kursus
+                                        class="btn btn-outline-primary mb-2">Edit Kursus
                                     </a>
                                     <a href="{{ route('dashboard.lessons.index', $course->id) }}"
-                                        class="btn btn-outline-primary mb-2">
-                                        Kelola Materi
+                                        class="btn btn-outline-primary mb-2">Kelola Materi
                                     </a>
                                     <a href="{{ route('dashboard.courses.students', $course->id) }}"
-                                        class="btn btn-outline-primary mb-2">
-                                        Lihat Siswa
+                                        class="btn btn-outline-primary mb-2">Lihat Siswa
                                     </a>
                                     <a href="{{ route('dashboard.courses.reviews', $course->id) }}"
-                                        class="btn btn-outline-primary mb-2">
-                                        Lihat Review
+                                        class="btn btn-outline-primary mb-2">Lihat Review
                                     </a>
                                     <a href="{{ route('dashboard.courses.destroy', $course->id) }}"
-                                        class="btn btn-outline-danger mt-2">
-                                        Hapus
+                                        class="btn btn-outline-danger mt-2">Hapus
                                     </a>
                                 </div>
                             </div>
