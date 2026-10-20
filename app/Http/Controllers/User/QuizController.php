@@ -14,7 +14,7 @@ class QuizController extends Controller
     public function show(Course $course, Lesson $lesson, Quiz $quiz)
     {
         $lesson = $course->lessons()->findOrFail($lesson->id);
-        $quiz = $lesson->quizzes()->with('questions')->findOrFail($quiz->id);
+        $quiz = $lesson->quizzes()->findOrFail($quiz->id);
 
         if (!$course->enrollments()->where('user_id', Auth::id())->exists()) {
             abort(403);

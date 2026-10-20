@@ -8,7 +8,7 @@
 "use strict";
 
 function updateThemeUI(theme) {
-    const btns = document.querySelectorAll(".theme-toggle-btn");
+    const btns = document.querySelectorAll("#theme-toggle-btn");
     btns.forEach(function (btn) {
         btn.setAttribute(
             "title",
@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", function () {
     applyTheme(activeTheme);
 
     document.addEventListener("click", function (e) {
-        const btn = e.target.closest(".theme-toggle-btn");
+        const btn = e.target.closest("#theme-toggle-btn");
         if (btn) {
             e.preventDefault();
             toggleTheme();

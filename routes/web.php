@@ -168,7 +168,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/profile', [UserController::class, 'updateProfile'])->name('profile.update');
     
     // Learning
-    Route::get('/courses/{course:slug}/learn/{lesson}', [LearningController::class, 'show'])->name('learn');
+    Route::get('/courses/{course:slug}/{lesson?}', [LearningController::class, 'show'])->name('learn');
 
     // Quiz
     Route::get('/courses/{course:slug}/lessons/{lesson}/quizzes/{quiz}', [UserQuizController::class, 'show'])->name('quiz.show');

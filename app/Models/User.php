@@ -69,6 +69,25 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Relation to Enrollment
+     */
+    public function enrollments()
+    {
+        return $this->hasMany(Enrollment::class);
+    }
+
+    /**
+     * Check if user is enrolled in a course
+     */
+    public function isEnrolled(Course $course): bool
+    {
+        if ($this->roles === 'admin' || $this->roles === 'mentor') {
+            return true;
+        }
+        return $this->enrollments()->where('course_id', $course->id)->exists();
+    }
+
+    /**
      * Send email verification notification.
      */
     public function sendEmailVerificationNotification()

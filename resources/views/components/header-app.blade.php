@@ -10,12 +10,12 @@
         </div>
     </form>
     <ul class="navbar-nav navbar-right">
-        <li class="nav-item">
+        {{-- <li class="nav-item">
             <a href="javascript:void(0)" class="theme-toggle-btn" title="Ganti Tema">
                 <x-lucide-moon class="theme-toggle-icon theme-toggle-moon" />
                 <x-lucide-sun class="theme-toggle-icon theme-toggle-sun" />
             </a>
-        </li>
+        </li> --}}
         @auth
             <li class="dropdown"><a href="#" data-toggle="dropdown"
                     class="nav-link dropdown-toggle nav-link-lg nav-link-user">
@@ -23,20 +23,23 @@
                     <div class="d-sm-none d-lg-inline-block">{{ auth()->user()->name }}</div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a href="{{ route('profile') }}" class="dropdown-item has-icon">
-                        <i class="far fa-user"></i> Profil
-                    </a>
                     @if (auth()->user()->roles !== 'user')
                         <a href="{{ route('dashboard') }}" class="dropdown-item has-icon">
                             <i class="fas fa-border-all"></i>Dashboard
                         </a>
                     @endif
-                    <div class="dropdown-divider"></div>
                     <a href="{{ route('enrollments') }}" class="dropdown-item has-icon">
-                        <i class="fas fa-chalkboard"></i> Kelas saya
+                        <i class="fas fa-chalkboard"></i> Kelas Saya
                     </a>
                     <a href="{{ route('exercise-level.index') }}" class="dropdown-item has-icon">
                         <i class="far fa-pen-to-square"></i> Latihan
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="{{ route('profile') }}" class="dropdown-item has-icon">
+                        <i class="far fa-user"></i> Profil
+                    </a>
+                    <a href="javascript:void(0)" class="dropdown-item has-icon" id="theme-toggle-btn" onclick="toggleTheme()">
+                        <i class="fas fa-circle-half-stroke"></i> Ganti Tema
                     </a>
                     <div class="dropdown-divider"></div>
                     <a href="#" class="dropdown-item has-icon text-danger"
