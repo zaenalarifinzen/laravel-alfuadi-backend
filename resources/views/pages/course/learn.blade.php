@@ -223,24 +223,6 @@
             flex-shrink: 0;
         }
 
-        .learn-sidebar-badge {
-            font-size: 0.7rem;
-            font-weight: 800;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--learn-brand-gold);
-            margin-bottom: 0.5rem;
-            display: inline-block;
-        }
-
-        .learn-sidebar-course-title {
-            font-size: 1.125rem;
-            font-weight: 800;
-            line-height: 1.35;
-            color: var(--learn-text-primary);
-            margin-bottom: 0.5rem;
-        }
-
         .learn-sidebar-progress-meta {
             font-size: 0.8125rem;
             color: var(--learn-text-muted);
@@ -281,27 +263,12 @@
             border-radius: 4px;
         }
 
-        .learn-chapter-header {
-            font-size: 0.725rem;
-            font-weight: 800;
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
-            color: var(--learn-text-muted);
-            padding: 1rem 0.5rem 0.5rem;
-            margin-top: 0.5rem;
-        }
-
-        .learn-chapter-header:first-of-type {
-            margin-top: 0;
-            padding-top: 0.25rem;
-        }
-
         .learn-lesson-item {
             display: flex;
             align-items: center;
             gap: 0.875rem;
             padding: 0.65rem 0.85rem;
-            border-radius: 9999px;
+            border-radius: .25rem;
             color: var(--learn-text-muted);
             text-decoration: none;
             font-size: 0.875rem;
@@ -412,7 +379,7 @@
         .learn-prose {
             font-size: 1.0625rem;
             line-height: 1.8;
-            color: var(--learn-text-primary);
+            color: var(--learn-text-primary) !important;
         }
 
         .learn-prose p {
@@ -469,7 +436,6 @@
             height: auto;
             border-radius: 12px;
             margin: 1.5rem 0;
-            border: 1px solid var(--learn-border);
         }
 
         .learn-prose table {
@@ -785,7 +751,7 @@
                     $chapters[$chTitle] = $chunk;
                 }
             } else {
-                $chapters['BAB 01 - DAFTAR MATERI'] = $lessons;
+                $chapters['Daftar Materi'] = $lessons;
             }
         }
     @endphp
@@ -813,17 +779,11 @@
         </div>
 
         <div class="learn-topbar-right">
-            <!-- Theme Toggle -->
-            {{-- <button type="button" class="learn-theme-toggle theme-toggle-btn" onclick="toggleTheme()" title="Ganti Tema">
-                <i class="fas fa-moon theme-toggle-moon"></i>
-                <i class="fas fa-sun theme-toggle-sun"></i>
-            </button> --}}
 
             <!-- Dashboard Button -->
             @auth
                 <div class="dropdown"><a href="#" data-toggle="dropdown"
                         class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-                        {{-- <img alt="image" src="{{ asset('img/avatar/avatar-3.png') }}" class="rounded-circle mr-1"> --}}
                         <div class="d-sm-none d-lg-inline-block">{{ auth()->user()->name }}</div>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
@@ -874,8 +834,8 @@
         <!-- Sidebar (Left) -->
         <aside class="learn-sidebar" id="learnSidebar">
             <div class="learn-sidebar-header">
-                <span class="learn-sidebar-badge">KURSUS</span>
-                <h2 class="learn-sidebar-course-title">{{ $course->title }}</h2>
+                <h6 class="text-warning">Kelas Online</h6>
+                <h4 class="text-primary">{{ $course->title }}</h4>
                 <div class="learn-sidebar-progress-meta">
                     <span><strong id="completedCountText">0</strong> / {{ $lessons->count() }} pelajaran</span>
                     <span id="completedPercentText">0%</span>
@@ -887,7 +847,6 @@
 
             <div class="learn-sidebar-scroll" id="sidebarScrollArea">
                 @foreach ($chapters as $chapterName => $chapterLessons)
-                    <div class="learn-chapter-header">{{ $chapterName }}</div>
                     @foreach ($chapterLessons as $item)
                         @php
                             $isActive = $item->id === $currentLesson->id;
@@ -957,23 +916,22 @@
 
                 <!-- Quizzes Box if Available -->
                 @if ($currentLesson->quizzes && $currentLesson->quizzes->count() > 0)
-                    @foreach ($currentLesson->quizzes as $quiz)
-                        <div class="learn-quiz-box">
-                            <div>
-                                <div class="learn-quiz-box-title">
-                                    <i class="fas fa-graduation-cap text-primary mr-2"></i>
-                                    {{ $quiz->title ?? 'Kuis Evaluasi' }}
-                                </div>
-                                {{-- <p class="learn-quiz-box-desc">
-                                    {{ $quiz->questions_count ?? $quiz->questions->count() }} pertanyaan &bull; Uji pemahaman Anda terhadap materi ini.
-                                </p> --}}
+                    <div class="learn-quiz-box">
+                        <div>
+                            <div class="learn-quiz-box-title">
+                                {{ __('Quiz: ') . $currentLesson->title }}
                             </div>
-                            <a href="{{ route('quiz.show', [$course->slug, $currentLesson->id, $quiz->id]) }}"
-                                class="btn btn-primary px-4 py-2 font-weight-bold">
-                                Mulai Kuis <i class="fas fa-arrow-right ml-1"></i>
-                            </a>
+                            <p class="learn-quiz-box-desc">
+                                {{ $currentLesson->quizzes->count() }} Pertanyaan &bull; Uji pemahaman Anda terhadap
+                                materi ini.
+                            </p>
                         </div>
-                    @endforeach
+                        <a href="{{ route('quiz.show', [$course->slug, $currentLesson->id, $currentLesson->quizzes->first()->id]) }}"
+                            target="_blank" rel="noopener noreferrer"
+                            class="btn btn-primary px-4 py-2 font-weight-bold">
+                            Mulai Quiz</i>
+                        </a>
+                    </div>
                 @endif
 
                 <div class="card">
@@ -983,8 +941,10 @@
                         </span>
                     </div>
                     <div class="card-body">
-                        <h5>Sudah paham materi ini?</h5>
-                        <p>Tandai selesai untuk menyimpan progresmu di kelas ini.</p>
+                        <div id="completeInfo">
+                            <h4>Sudah paham materi ini?</h4>
+                            <p>Tandai selesai untuk menyimpan progresmu di kelas ini.</p>
+                        </div>
                         <button type="button" class="learn-complete-btn" id="markCompleteBtn"
                             data-lesson-id="{{ $currentLesson->id }}">
                             <i class="fa-regular fa-circle-check"></i>
@@ -1138,6 +1098,7 @@
             const totalLessons = {{ $lessons->count() }};
             const markBtn = document.getElementById('markCompleteBtn');
             const completeBtnText = document.getElementById('completeBtnText');
+            const completeInfo = document.getElementById('completeInfo')
             const completedCountText = document.getElementById('completedCountText');
             const completedPercentText = document.getElementById('completedPercentText');
             const progressFill = document.getElementById('courseProgressFill');
@@ -1174,10 +1135,12 @@
                         markBtn.classList.add('is-completed');
                         markBtn.querySelector('i').className = 'fa-solid fa-circle-check';
                         completeBtnText.innerText = 'Selesai';
+                        completeInfo.style.display = 'none';
                     } else {
                         markBtn.classList.remove('is-completed');
                         markBtn.querySelector('i').className = 'fa-regular fa-circle-check';
                         completeBtnText.innerText = 'Tandai Selesai';
+                        completeInfo.style.display = 'block';
                     }
                 }
             }

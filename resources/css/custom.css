@@ -428,6 +428,10 @@ body.sidebar-mini .main-sidebar .sidebar-menu>li ul.dropdown-menu li.active>a:ho
     background-color: #1d948e !important;
 }
 
+.card {
+    border-radius: 12px;
+}
+
 .card.card-primary {
     border-top: 2px solid #1d948e;
 }

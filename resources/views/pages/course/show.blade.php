@@ -127,13 +127,19 @@
                             <div class="card-footer">
                                 <div class="d-flex flex-column mb-4">
                                     @guest
-                                        <a href="{{ route('login') }}" class="btn btn-primary mb-2">
-                                            Login untuk membeli
+                                        <a href="{{ route('courses.checkout', $course->slug) }}" class="btn btn-primary mb-2">
+                                            <i class="fas fa-shopping-cart mr-1"></i> Beli Kelas
                                         </a>
                                     @else
-                                        <a href="#" class="btn btn-primary mb-2">
-                                            Beli Kelas
-                                        </a>
+                                        @if(auth()->user()->isEnrolled($course))
+                                            <a href="{{ route('learn', $course->slug) }}" class="btn btn-success mb-2">
+                                                <i class="fas fa-play-circle mr-1"></i> Lanjut Belajar
+                                            </a>
+                                        @else
+                                            <a href="{{ route('courses.checkout', $course->slug) }}" class="btn btn-primary mb-2">
+                                                <i class="fas fa-shopping-cart mr-1"></i> Beli Kelas
+                                            </a>
+                                        @endif
                                     @endguest
                                 </div>
                             </div>

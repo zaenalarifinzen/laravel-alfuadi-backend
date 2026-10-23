@@ -40,7 +40,7 @@
                 <p class="homepage-section-lead">
                     Pilih program belajar yang sesuai dengan minat Anda.
                 </p>
-                <a href="{{ route('courses') }}" class="btn btn-outline-primary">Cari kelas</a>
+                <a href="{{ route('courses.index') }}" class="btn btn-outline-primary">Cari kelas</a>
             </div>
 
         </section>

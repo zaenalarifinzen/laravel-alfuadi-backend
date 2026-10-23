@@ -28,13 +28,19 @@ use App\Http\Controllers\User\ReviewController as UserReviewController;
 use Illuminate\Support\Facades\Route;
 
 // Public routes
-Route::get('/', function () {return view('homepage');})->name('home');
+Route::get('/', function () {
+    return view('homepage');
+})->name('home');
 Route::get('/courses', [UserCourseController::class, 'index'])->name('courses.index');
 Route::get('/courses/{course:slug}', [UserCourseController::class, 'show'])->name('courses.show');
-Route::get('/enrollments', function () {return view('pages.course.enrollment', ['type_menu' => 'enrollments']);})->name('enrollments');
+Route::get('/enrollments', function () {
+    return view('pages.course.enrollment', ['type_menu' => 'enrollments']);
+})->name('enrollments');
 Route::get('quran', [QuranController::class, 'index'])->name('quran.index');
 Route::get('quran/surah', [QuranController::class, 'versesOfSurah'])->name('quran.surah');
-Route::get('metode-alfuadi', function () {return view('pages.metode-alfuadi.introducing');})->name('metode-alfuadi');
+Route::get('metode-alfuadi', function () {
+    return view('pages.metode-alfuadi.introducing');
+})->name('metode-alfuadi');
 
 Route::resource('surahs', SurahController::class);
 Route::resource('verses', VerseController::class);
@@ -161,18 +167,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Data Nahwu Resource
         Route::get('/words/data/data-nahwu', [NahwuDataController::class, 'getAll']);
+
+        // Course
+        Route::get('/courses/{course:slug}/checkout', [UserCourseController::class, 'checkout'])->name('courses.checkout');
+        Route::post('/courses/{course:slug}/checkout', [UserCourseController::class, 'processCheckout'])->name('courses.checkout.process');
     });
 
     // User
-    Route::get('/profile', function () {return view('pages.users.profile', ['type_menu' => 'profile']);})->name('profile');
+    Route::get('/profile', function () {
+        return view('pages.users.profile', ['type_menu' => 'profile']);
+    })->name('profile');
     Route::put('/profile', [UserController::class, 'updateProfile'])->name('profile.update');
-    
+
     // Learning
     Route::get('/courses/{course:slug}/{lesson?}', [LearningController::class, 'show'])->name('learn');
 
     // Quiz
-    Route::get('/courses/{course:slug}/lessons/{lesson}/quizzes/{quiz}', [UserQuizController::class, 'show'])->name('quiz.show');
-    Route::post('/courses/{course:slug}/lessons/{lesson}/quizzes/{quiz}', [UserQuizController::class, 'submit'])->name('quiz.submit');
+    Route::get('/courses/{course:slug}/lessons/{lesson}/quizzes/{quiz?}', [UserQuizController::class, 'show'])->name('quiz.show');
+    Route::post('/courses/{course:slug}/lessons/{lesson}/quizzes/{quiz?}', [UserQuizController::class, 'submit'])->name('quiz.submit');
 
     // Review
     Route::post('/courses/{course}/review', [UserReviewController::class, 'store'])->name('review.store');
