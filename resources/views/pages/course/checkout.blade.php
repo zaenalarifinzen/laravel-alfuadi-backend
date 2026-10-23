@@ -579,6 +579,19 @@
                                         <label class="custom-control-label"></label>
                                     </div>
                                 </div>
+
+                                <div class="bank-option-card" onclick="selectBank(this, 'Dana', '0829 019 2841', 'Al-Fuadi Learning Center')">
+                                    <div class="bank-info">
+                                        <span class="bank-badge bca">DANA</span>
+                                        <div class="bank-details">
+                                            <div class="bank-name">Transfer ke E-Wallet Dana</div>
+                                        </div>
+                                    </div>
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" name="bank_radio" class="custom-control-input">
+                                        <label class="custom-control-label"></label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -984,44 +997,48 @@
             return;
         }
 
-        const currentTotal = recalculateTotal();
+        recalculateTotal();
 
-        // JIKA DISKON 100% ATAU KURSUS GRATIS:
-        if (courseData.isFree || currentTotal === 0) {
-            form.submit();
-            return;
-        }
+        // Tampilkan status loading di tombol
+        const btnSubmit = document.getElementById('btnSubmitCheckout');
+        btnSubmit.disabled = true;
+        btnSubmit.innerHTML = '<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span> Memproses pesanan...';
 
-        // JIKA BERBAYAR (TRANSFER BANK):
-        openConfirmationModal(currentTotal);
+        // Submit form ke server (tersimpan ke database transactions)
+        form.submit();
     }
 
     // Buka Modal Instruksi Pembayaran & Kontak CS
-    function openConfirmationModal(totalAmount) {
-        const buyerName = document.querySelector('input[name="buyer_name"]').value || 'Peserta';
-        const buyerEmail = document.querySelector('input[name="buyer_email"]').value || '-';
-        const buyerWa = document.getElementById('inputWhatsapp').value || '-';
+    function openConfirmationModal(totalAmount, customInvoice = null, customBankName = null, customBankAccount = null) {
+        const buyerName = document.querySelector('input[name="buyer_name"]')?.value || 'Peserta';
+        const buyerEmail = document.querySelector('input[name="buyer_email"]')?.value || '-';
+        const buyerWa = document.getElementById('inputWhatsapp')?.value || '-';
+
+        const invoiceCode = customInvoice || courseData.invoice;
+        const bankName = customBankName || courseData.selectedBank.name;
+        const bankAccount = customBankAccount || courseData.selectedBank.account;
+        const bankHolder = courseData.selectedBank.holder;
 
         // Set Isi Modal
-        document.getElementById('modalInvoiceNumber').textContent = courseData.invoice;
+        document.getElementById('modalInvoiceNumber').textContent = invoiceCode;
         document.getElementById('modalTotalTransfer').textContent = formatRupiah(totalAmount);
         document.getElementById('modalRawTransferAmount').textContent = totalAmount;
         document.getElementById('modalStepAmount').textContent = formatRupiah(totalAmount);
 
-        document.getElementById('modalBankNameBadge').textContent = courseData.selectedBank.name;
-        document.getElementById('modalAccountNumber').textContent = courseData.selectedBank.account;
-        document.getElementById('modalAccountHolder').textContent = courseData.selectedBank.holder;
+        document.getElementById('modalBankNameBadge').textContent = bankName;
+        document.getElementById('modalAccountNumber').textContent = bankAccount;
+        document.getElementById('modalAccountHolder').textContent = bankHolder;
 
         // Generate WhatsApp URL ke nomor CS dengan pesan template otomatis
         const waMessage = 
 `Halo Admin Al-Fuadi, saya ingin konfirmasi pembayaran untuk pendaftaran kursus:
-- *No. Invoice:* ${courseData.invoice}
+- *No. Invoice:* ${invoiceCode}
 - *Kursus:* ${courseData.title}
 - *Nama Peserta:* ${buyerName}
 - *Email:* ${buyerEmail}
 - *No. WhatsApp:* ${buyerWa}
 - *Total Transfer:* ${formatRupiah(totalAmount)}
-- *Bank Tujuan:* ${courseData.selectedBank.name} (${courseData.selectedBank.account})
+- *Bank Tujuan:* ${bankName} (${bankAccount})
 
 Berikut saya lampirkan bukti transfernya. Mohon bantuannya untuk verifikasi dan aktivasi kelas saya. Terima kasih!`;
 
@@ -1069,8 +1086,12 @@ Berikut saya lampirkan bukti transfernya. Mohon bantuannya untuk verifikasi dan 
         @if(session('checkout_success'))
             const successData = @json(session('checkout_success'));
             if (successData) {
-                courseData.invoice = successData.invoice;
-                openConfirmationModal(successData.total_amount);
+                openConfirmationModal(
+                    successData.total_amount,
+                    successData.invoice,
+                    successData.bank_name,
+                    successData.bank_account
+                );
             }
         @endif
     });

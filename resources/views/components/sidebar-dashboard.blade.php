@@ -18,6 +18,10 @@
                     <a class="nav-link" href="{{ route ('dashboard.courses.index')}}"><i class="fas fa-chalkboard-user"></i>
                         <span>Kelas Online</span></a>
                 </li>
+                <li class="{{ $type_menu === 'transactions' ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('dashboard.transactions.index') }}"><i class="fas fa-receipt"></i>
+                        <span>Transaksi Pesanan</span></a>
+                </li>
                 <li class="nav-item dropdown {{ Request::is('dashboard/exercises') || 
                     Request::is('dashboard/exercise-levels') ? 'active' : '' }}">
                     <a href="#" class="nav-link has-dropdown"><i

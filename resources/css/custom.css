@@ -430,6 +430,7 @@ body.sidebar-mini .main-sidebar .sidebar-menu>li ul.dropdown-menu li.active>a:ho
 
 .card {
     border-radius: 12px;
+    overflow: hidden;
 }
 
 .card.card-primary {

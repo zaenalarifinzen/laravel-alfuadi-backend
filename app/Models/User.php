@@ -77,6 +77,14 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Relation to Transactions
+     */
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
+    /**
      * Check if user is enrolled in a course
      */
     public function isEnrolled(Course $course): bool

@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\LessonController;
 use App\Http\Controllers\Admin\QuestionController;
 use App\Http\Controllers\Admin\QuizController;
+use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\KalimatController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\KedudukanController;
@@ -99,6 +100,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('/courses/{course}', [CourseController::class, 'update'])->name('courses.update');
             Route::get('/courses/{course}/student', [CourseController::class, 'students'])->name('courses.students');
             Route::get('/courses/{course}/review', [CourseController::class, 'reviews'])->name('courses.reviews');
+
+            // Transactions (Pesanan Kursus)
+            Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
+            Route::get('/transactions/{transaction}', [TransactionController::class, 'show'])->name('transactions.show');
+            Route::post('/transactions/{transaction}/approve', [TransactionController::class, 'approve'])->name('transactions.approve');
+            Route::post('/transactions/{transaction}/reject', [TransactionController::class, 'reject'])->name('transactions.reject');
 
 
             // Lessons
