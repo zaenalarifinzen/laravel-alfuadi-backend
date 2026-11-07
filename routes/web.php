@@ -34,9 +34,7 @@ Route::get('/', function () {
 })->name('home');
 Route::get('/courses', [UserCourseController::class, 'index'])->name('courses.index');
 Route::get('/courses/{course:slug}', [UserCourseController::class, 'show'])->name('courses.show');
-Route::get('/enrollments', function () {
-    return view('pages.course.enrollment', ['type_menu' => 'enrollments']);
-})->name('enrollments');
+Route::get('/enrollments', [UserCourseController::class, 'indexEnrolled'])->name('enrollments');
 Route::get('quran', [QuranController::class, 'index'])->name('quran.index');
 Route::get('quran/surah', [QuranController::class, 'versesOfSurah'])->name('quran.surah');
 Route::get('metode-alfuadi', function () {

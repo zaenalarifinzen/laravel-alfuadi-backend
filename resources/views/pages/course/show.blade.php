@@ -132,7 +132,7 @@
                                         </a>
                                     @else
                                         @if(auth()->user()->isEnrolled($course))
-                                            <a href="{{ route('learn', $course->slug) }}" class="btn btn-success btn-lg mb-2">
+                                            <a href="{{ route('learn', [$course->slug, $course->lessons->first()] ) }}" class="btn btn-success btn-lg mb-2">
                                                 <i class="fas fa-play-circle mr-1"></i> Lanjut Belajar
                                             </a>
                                         @else

@@ -31,6 +31,27 @@ class CourseController extends Controller
         return view('pages.course.index', compact('courses', 'categories'));
     }
 
+    public function indexEnrolled(Request $request)
+    {
+        $user = auth()->user();
+
+        $enrolledCourses = Course::whereHas('enrollments', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })
+        ->with(['mentor', 'category'])
+        ->withCount('enrollments', 'reviews')
+        ->withAvg('reviews', 'rating')
+        ->when($request->search, fn($q, $search) => $q->where('title', 'like', "%{$search}%"))
+        ->when($request->category, fn($q, $category) => $q->where('category_id', 'like', "%{$category}%"))
+        ->latest()
+        ->paginate(12);
+
+        $categories = Category::all();
+        $type_menu = 'enrollment';
+
+        return view('pages.course.enrollment', compact('enrolledCourses', 'categories', 'type_menu'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */

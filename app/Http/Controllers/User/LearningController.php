@@ -13,10 +13,10 @@ class LearningController extends Controller
     {
         $user = auth()->user();
 
-        // if (!$user->isEnrolled($course)) {
-        //     return redirect()->route('courses.show', $course->slug)
-        //         ->with('error', 'Anda belum terdaftar di kursus ini.');
-        // }
+        if (!$user->isEnrolled($course)) {
+            return redirect()->route('courses.show', $course->slug)
+                ->with('error', 'Anda belum terdaftar di kursus ini.');
+        }
 
         $course->loadMissing('category');
         $lessons = $course->lessons()->with('quizzes')->get();

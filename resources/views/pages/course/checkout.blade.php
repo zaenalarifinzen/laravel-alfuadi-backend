@@ -157,8 +157,8 @@
 
     .bank-badge.bsi { background: #00a39d; color: #fff; }
     .bank-badge.bca { background: #005baa; color: #fff; }
-    .bank-badge.mandiri { background: #003366; color: #fff; }
-    .bank-badge.bri { background: #00529c; color: #fff; }
+    .bank-badge.sea { background: #eb8e25; color: #fff; }
+    .bank-badge.dana { background: #2f8fe2; color: #fff; }
 
     .bank-details .bank-name {
         font-weight: 700;
@@ -569,7 +569,7 @@
                                 
                                 <div class="bank-option-card" onclick="selectBank(this, 'Seabank (BKE)', '829 019 2841', 'Al-Fuadi Learning Center')">
                                     <div class="bank-info">
-                                        <span class="bank-badge bca">SEA</span>
+                                        <span class="bank-badge sea">SEA</span>
                                         <div class="bank-details">
                                             <div class="bank-name">Transfer ke Bank Seabank</div>
                                         </div>
@@ -582,7 +582,7 @@
 
                                 <div class="bank-option-card" onclick="selectBank(this, 'Dana', '0829 019 2841', 'Al-Fuadi Learning Center')">
                                     <div class="bank-info">
-                                        <span class="bank-badge bca">DANA</span>
+                                        <span class="bank-badge dana">DANA</span>
                                         <div class="bank-details">
                                             <div class="bank-name">Transfer ke E-Wallet Dana</div>
                                         </div>
